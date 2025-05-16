@@ -1,5 +1,17 @@
 # Astro Starter Kit: Basics
 
+## 🚧 Local Development
+
+<!-- Instructions for running the project locally -->
+
+## 🏗️ Build
+
+<!-- Instructions for building the project -->
+
+## 🚀 Deploy
+
+<!-- Instructions for deploying the project -->
+
 ```sh
 npm create astro@latest -- --template basics
 ```
