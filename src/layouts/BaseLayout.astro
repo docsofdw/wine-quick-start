@@ -1,0 +1,26 @@
+---
+// Base HTML layout for all site pages
+// Props: { title?: string; description?: string }
+import '../styles/global.css';
+
+const {
+  title = 'Wine Quick Start',
+  description = 'Expert-led wine pairing and vintage insights',
+} = Astro.props;
+---
+<!doctype html>
+<html lang="en" class="scroll-smooth">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="generator" content={Astro.generator} />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+
+    <!-- Preload fonts / styles if needed -->
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  </head>
+  <body class="min-h-screen bg-white text-gray-900 antialiased">
+    <slot />
+  </body>
+</html> 

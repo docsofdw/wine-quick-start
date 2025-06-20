@@ -1,0 +1,22 @@
+---
+import PairingLayout from '../../layouts/PairingLayout.astro';
+const frontmatter = {
+  title: 'Test Pairing Page',
+  description: 'Demo of the new template',
+  wine_type: 'white',
+  lwin_ids: ['LW123456'],
+  structured_data: { "@type": "Article", "name": "Test" },
+  expert_score: 10,
+};
+---
+<PairingLayout frontmatter={frontmatter}>
+  <div slot="expert-intro">
+    Sommelier intro blurb …
+  </div>
+  <div slot="wine-specs">
+    | Spec | Value |
+    |------|-------|
+    | Body | Medium |
+  </div>
+  Main article **markdown** goes here.
+</PairingLayout>

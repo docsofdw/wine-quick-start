@@ -1,0 +1,76 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import StructuredData from '../components/wine/StructuredData.astro';
+import PriceBadge from '../components/wine/PriceBadge.astro';
+import PairingWidget from '../components/wine/PairingWidget.astro';
+
+// Props expected: { frontmatter: { title: string; description?: string; wine_type?: string; lwin_ids?: string[]; structured_data?: any; expert_score?: number } }
+const { frontmatter } = Astro.props;
+const {
+  title,
+  description = '',
+  wine_type = 'red',
+  lwin_ids = [],
+  structured_data,
+  expert_score = 10,
+} = frontmatter ?? {};
+
+// Guard: block build/render if QA score below 8
+if (expert_score < 8) {
+  throw new Error(`Page blocked: QA score ${expert_score} below threshold`);
+}
+---
+
+<BaseLayout title={title} description={description}>
+  {/* Embed JSON-LD structured data */}
+  <StructuredData data={structured_data} />
+
+  <article class="mx-auto max-w-4xl px-4 py-8">
+    <!-- Expert intro slot (100-word sommelier section) -->
+    <header class="mb-8">
+      <h1 class="mb-4 text-4xl font-bold">{title}</h1>
+      <div class="expert-intro rounded-lg border-l-4 border-amber-400 bg-amber-50 p-6">
+        <slot name="expert-intro" />
+      </div>
+    </header>
+
+    <!-- Wine spec & price information -->
+    <section class="structured-block mb-8 rounded-lg bg-gray-50 p-6">
+      <h2 class="mb-4 text-2xl font-semibold">Wine Details</h2>
+      <div class="grid gap-6 md:grid-cols-2">
+        <div class="wine-specs prose max-w-none">
+          <slot name="wine-specs" />
+        </div>
+        <div class="price-data flex flex-col gap-3">
+          {lwin_ids.map((id: string) => (
+            <PriceBadge lwinId={id} />
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- Main content slot from generated markdown/HTML -->
+    <div class="prose prose-lg max-w-none">
+      <slot />
+    </div>
+
+    <!-- Interactive feedback widget -->
+    <section class="interactive-widget mt-12">
+      <PairingWidget wineType={wine_type} />
+    </section>
+
+    <!-- Citation footer -->
+    <footer class="mt-12 border-t pt-8 text-sm text-gray-600">
+      <h3 class="mb-2 font-semibold">Sources &amp; Data</h3>
+      <ul class="space-y-1">
+        <li>
+          Wine data: <a class="underline" href="https://www.liv-ex.com/wwd/lwin/">LWIN Database</a>
+        </li>
+        <li>
+          Pricing: <a class="underline" href="https://wine-searcher.com">Wine-Searcher API</a>
+        </li>
+        <li>Expert framework: SomAI Body-Acid-Tannin methodology</li>
+      </ul>
+    </footer>
+  </article>
+</BaseLayout> 

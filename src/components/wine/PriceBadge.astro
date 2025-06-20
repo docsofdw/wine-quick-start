@@ -1,0 +1,24 @@
+---
+interface Props {
+  lwinId: string;
+}
+
+const { lwinId } = Astro.props as Props;
+
+// TODO: Replace with real Wine-Searcher API call (server side) when keys are available
+const priceData = {
+  average_price: '$45',
+  currency: 'USD',
+  updated: new Date().toISOString().slice(0, 10),
+};
+---
+<div
+  class="inline-flex flex-col items-start rounded-lg bg-green-100 px-4 py-2 text-green-800"
+  aria-label={`Average market price for wine LWIN ${lwinId}`}
+>
+  <span class="text-lg font-semibold">
+    {priceData.average_price} {priceData.currency}
+  </span>
+  <span class="text-xs text-green-700">Avg. market price</span>
+  <span class="text-[10px] text-gray-500">Updated: {priceData.updated}</span>
+</div> 
