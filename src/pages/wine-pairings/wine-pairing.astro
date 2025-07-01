@@ -1,0 +1,136 @@
+---
+import ModernPairingLayout from '../../layouts/ModernPairingLayout.astro';
+
+const frontmatter = {
+  title: "Wine pairing: Pairing Guide & Reviews",
+  description: "Discover the perfect wine pairing with our expert wine guide. Get professional recommendations, tasting notes, and food pairing suggestions from certified sommeliers.",
+  wine_type: "red",
+  author: "Wine Quick Start Expert",
+  readTime: "6 min",
+  expert_score: 8,
+  structured_data: {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "Wine pairing: Pairing Guide & Reviews",
+    "description": "Discover the perfect wine pairing with our expert wine guide. Get professional recommendations, tasting notes, and food pairing suggestions from certified sommeliers.",
+    "author": {
+      "@type": "Organization",
+      "name": "Wine Quick Start"
+    },
+    "datePublished": "2025-07-01T16:58:25.315Z",
+    "dateModified": "2025-07-01T16:58:25.315Z",
+    "keywords": "wine pairing",
+    "articleSection": "Wine Guides"
+  },
+  wines: [
+  {
+    "name": "2020 Château Reserve",
+    "region": "Burgundy, France",
+    "price": "32",
+    "rating": "90",
+    "type": "red",
+    "notes": "Excellent example of wine pairing with balanced flavors and great food pairing potential.",
+    "link": "https://wine-searcher.com/find/wine-pairing-1"
+  },
+  {
+    "name": "2021 Domaine Premium Selection",
+    "region": "Tuscany, Italy",
+    "price": "45",
+    "rating": "92",
+    "type": "red",
+    "notes": "Excellent example of wine pairing with balanced flavors and great food pairing potential.",
+    "link": "https://wine-searcher.com/find/wine-pairing-2"
+  }
+]
+};
+---
+
+<ModernPairingLayout frontmatter={frontmatter}>
+  <div slot="quick-answer">
+    <p><strong>Quick Answer:</strong> For wine pairing, focus on wines with balanced characteristics that complement food without overpowering. Look for quality producers and proper storage for the best experience.</p>
+  </div>
+
+  <div class="bg-wine-50 p-4 rounded-lg mb-8">
+    <div class="flex justify-between items-center text-sm text-gray-600">
+      <span>Search Volume: 8,100/month</span>
+      <span>Keyword Difficulty: 0/100</span>
+    </div>
+  </div>
+
+    <h2>Understanding Wine pairing</h2>
+
+  <p>When it comes to wine pairing, the key is understanding how wine characteristics complement your food. The fundamental principle is to match the intensity of both the wine and the dish.</p>
+
+  <h2>Expert Wine Recommendations</h2>
+
+  <h3>Light & Delicate Options</h3>
+
+  <p>**Sauvignon Blanc** - Crisp acidity cuts through rich dishes</p>
+
+    <li>**Price Range**: $15-25</li>
+
+    <li>**Best Producers**: Kim Crawford, Oyster Bay</li>
+
+    <li>**Serving Temperature**: 45-50°F</li>
+
+  <p>**Pinot Noir** - Elegant and food-friendly</p>
+
+    <li>**Price Range**: $20-35</li>
+
+    <li>**Best Producers**: La Crema, Bogle</li>
+
+    <li>**Serving Temperature**: 60-65°F</li>
+
+  <h3>Bold & Full-Bodied Choices</h3>
+
+  <p>**Cabernet Sauvignon** - Rich and powerful</p>
+
+    <li>**Price Range**: $25-45</li>
+
+    <li>**Best Producers**: Columbia Crest, 14 Hands</li>
+
+    <li>**Serving Temperature**: 65-68°F</li>
+
+  <h2>BAT Framework Analysis</h2>
+
+  <p>**Body**: Medium to full-bodied wines work best</p>
+
+  <p>**Acidity**: High acidity wines cleanse the palate</p>
+
+  <p>**Tannins**: Moderate tannins provide structure without overwhelming</p>
+
+  <h2>Food Pairing Principles</h2>
+
+  <p>1. **Match Intensity**: Light wines with delicate dishes</p>
+
+  <p>2. **Consider Sauce**: Wine should complement the dominant flavors</p>
+
+  <p>3. **Regional Pairing**: Italian wines with Italian food</p>
+
+  <p>4. **Season Appropriately**: Light wines for summer, bold for winter</p>
+
+  <h2>Where to Buy</h2>
+
+    <li>**Total Wine**: Best selection and competitive pricing</li>
+
+    <li>**Costco**: Excellent value for everyday wines</li>
+
+    <li>**Local Wine Shops**: Expert recommendations and unique finds</li>
+
+    <li>**Online**: Wine.com and Vivino for convenience</li>
+
+  <h2>Serving Tips</h2>
+
+    <li>Decant full-bodied reds 30-60 minutes before serving</li>
+
+    <li>Chill whites and light reds in refrigerator 2-3 hours</li>
+
+    <li>Use proper glassware to enhance aromatics</li>
+
+    <li>Serve at correct temperature for optimal flavor</li>
+
+  <h2>Expert's Final Recommendation</h2>
+
+  <p>For wine pairing, I recommend starting with a **medium-bodied wine with balanced acidity**. This provides the best foundation for most pairing situations while remaining approachable for beginners.</p>
+
+</ModernPairingLayout>
