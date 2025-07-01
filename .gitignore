@@ -13,13 +13,31 @@ yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
 
-# environment variables
+# environment variables - CRITICAL FOR SECURITY
 .env
-.env.production
 .env.local
+.env.production
+.env.development
+.env.test
+*.env
+.env.*
+
+# API keys and secrets - NEVER COMMIT THESE
+*api*key*
+*secret*
+*token*
+.vscode/settings.json
 
 # macOS-specific files
 .DS_Store
 
 # jetbrains setting folder
 .idea/
+
+# Temporary files
+*.tmp
+*.temp
+
+# Security sensitive files
+config/keys.json
+config/secrets.json
