@@ -1,0 +1,106 @@
+---
+// Email capture component for wine list building
+interface Props {
+  title?: string;
+  subtitle?: string;
+  buttonText?: string;
+  leadMagnet?: string;
+}
+
+const {
+  title = "Get Expert Wine Recommendations",
+  subtitle = "Join 5,000+ wine enthusiasts receiving weekly pairing tips and exclusive recommendations.",
+  buttonText = "Get Free Wine Guide",
+  leadMagnet = "Free Wine Pairing Cheat Sheet"
+} = Astro.props;
+---
+
+<div class="bg-gradient-to-r from-wine-600 to-wine-800 text-white p-8 rounded-xl shadow-lg">
+  <div class="max-w-2xl mx-auto text-center">
+    <h3 class="text-2xl font-bold mb-3">{title}</h3>
+    <p class="text-wine-100 mb-6">{subtitle}</p>
+    
+    <form 
+      class="flex flex-col sm:flex-row gap-4 max-w-md mx-auto"
+      onsubmit="handleEmailSubmit(event)"
+    >
+      <input 
+        type="email" 
+        name="email"
+        placeholder="Your email address" 
+        required
+        class="flex-1 px-4 py-3 rounded-lg text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-wine-300"
+      />
+      <button 
+        type="submit"
+        class="bg-white text-wine-800 font-semibold px-6 py-3 rounded-lg hover:bg-wine-50 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-wine-300"
+      >
+        {buttonText}
+      </button>
+    </form>
+    
+    <p class="text-sm text-wine-200 mt-4">
+      📚 {leadMagnet} • 🔒 No spam, unsubscribe anytime
+    </p>
+    
+    <div class="flex justify-center items-center mt-6 space-x-6 text-sm text-wine-200">
+      <div class="flex items-center">
+        <span class="mr-2">⭐</span>
+        <span>5,000+ Subscribers</span>
+      </div>
+      <div class="flex items-center">
+        <span class="mr-2">🍷</span>
+        <span>Expert Curated</span>
+      </div>
+      <div class="flex items-center">
+        <span class="mr-2">📧</span>
+        <span>Weekly Tips</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  function handleEmailSubmit(event) {
+    event.preventDefault();
+    const form = event.target as HTMLFormElement;
+    const email = (form.elements.namedItem('email') as HTMLInputElement).value;
+    
+    // Simple validation
+    if (!email || !email.includes('@')) {
+      alert('Please enter a valid email address');
+      return;
+    }
+    
+    // Store email (replace with actual email service integration)
+    console.log('Email captured:', email);
+    
+    // Show success message
+    form.innerHTML = `
+      <div class="text-center">
+        <div class="text-2xl mb-2">🎉</div>
+        <h4 class="text-xl font-semibold mb-2">Welcome to the Wine Community!</h4>
+        <p class="text-wine-100">Check your email for your free wine pairing guide.</p>
+      </div>
+    `;
+    
+    // In production, integrate with:
+    // - ConvertKit API
+    // - Mailchimp API  
+    // - Supabase email table
+    // - Custom email service
+    
+    // Example Supabase integration:
+    /*
+    fetch('/api/subscribe', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ 
+        email, 
+        source: window.location.pathname,
+        lead_magnet: 'wine_pairing_guide'
+      })
+    });
+    */
+  }
+</script>

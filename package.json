@@ -7,18 +7,29 @@
     "build": "astro build",
     "preview": "astro preview",
     "astro": "astro",
-    "test:supabase": "tsx src/scripts/test-supabase.ts"
+    "test:setup": "node test-setup.js",
+    "test:supabase": "tsx src/scripts/test-supabase.ts",
+    "test:dataforseo": "tsx src/scripts/test-dataforseo.ts",
+    "setup:database": "tsx src/scripts/setup-database.ts",
+    "check:database": "tsx src/scripts/check-database-data.ts",
+    "fix:wine-pages": "tsx src/scripts/fix-wine-pages-table.ts",
+    "test:daily": "tsx src/scripts/test-daily-automation.ts",
+    "import:pages": "tsx src/scripts/import-existing-pages.ts",
+    "wine:daily": "tsx src/scripts/daily-wine-automation.ts",
+    "wine:keywords": "tsx src/scripts/keyword-research-pipeline.ts",
+    "wine:simple": "tsx src/scripts/simple-wine-workflow.ts",
+    "wine:workflow": "npm run wine:keywords && npm run wine:daily"
   },
   "dependencies": {
     "@astrojs/mdx": "^4.2.6",
-    "@astrojs/tailwind": "^6.0.2",
     "@astrojs/sitemap": "^3.4.1",
+    "@astrojs/tailwind": "^6.0.2",
+    "@supabase/supabase-js": "^2.39.6",
     "astro": "^5.7.13",
-    "tailwindcss": "^3.4.4",
-    "@supabase/supabase-js": "^2.39.6"
+    "tailwindcss": "^3.4.4"
   },
   "devDependencies": {
     "dotenv": "^16.3.1",
-    "tsx": "^4.6.2"
+    "tsx": "^4.20.3"
   }
 }

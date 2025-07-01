@@ -1,0 +1,90 @@
+---
+import PairingLayout from '../../layouts/PairingLayout.astro';
+import PairingWidget from '../../components/wine/PairingWidget.astro';
+import PriceBadge from '../../components/wine/PriceBadge.astro';
+import StructuredData from '../../components/wine/StructuredData.astro';
+
+const frontmatter = {
+  title: "Bordeaux wine guide: Expert Pairing Guide 2024",
+  description: "Discover the perfect bordeaux wine guide with our expert wine guide. Get professional pairing recommendations, tasting notes, and price insights for the best wine experience.",
+  keywords: ["bordeaux wine guide","bordeaux wine guide 2024","best bordeaux wine guide","bordeaux wine guide guide","bordeaux wine guide recommendations","bordeaux pairing"],
+  publishDate: "2025-07-01"
+};
+---
+
+<PairingLayout frontmatter={frontmatter}>
+  <StructuredData data={{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "Perfect Bordeaux wine guide - Wine Expert Tips",
+  "description": "Discover the perfect bordeaux wine guide with our expert wine guide. Get professional pairing recommendations, tasting notes, and price insights for the best wine experience.",
+  "author": {
+    "@type": "Organization",
+    "name": "Wine Quick Start"
+  },
+  "datePublished": "2025-07-01T02:06:10.883Z",
+  "dateModified": "2025-07-01T02:06:10.883Z"
+}} />
+  
+  <article class="prose prose-lg max-w-4xl mx-auto">
+    <h1 class="text-4xl font-bold text-wine-900 mb-6">{frontmatter.title}</h1>
+    
+    <div class="lead text-xl text-gray-700 mb-8">
+      {frontmatter.description}
+    </div>
+
+    <PairingWidget />
+
+    <div class="content">
+            <h2 class="text-2xl font-semibold text-wine-800 mt-8 mb-4">Understanding Bordeaux wine guide</h2>
+
+      <p class="mb-4">When it comes to bordeaux wine guide, understanding the fundamental principles of wine selection is crucial...</p>
+
+      <h2 class="text-2xl font-semibold text-wine-800 mt-8 mb-4">Expert Recommendations</h2>
+
+      <p class="mb-4">Based on extensive research and tasting notes...</p>
+
+      <h2 class="text-2xl font-semibold text-wine-800 mt-8 mb-4">Tasting Notes & Flavor Profiles</h2>
+
+      <h3 class="text-xl font-medium text-wine-700 mt-6 mb-3">Primary Characteristics</h3>
+      <p class="mb-4">- **Acidity**: Medium to high</p>
+      <p class="mb-4">- **Body**: Medium-bodied</p>
+      <p class="mb-4">- **Tannins**: Soft and approachable</p>
+      <p class="mb-4">- **Alcohol**: 12-14%</p>
+
+      <h2 class="text-2xl font-semibold text-wine-800 mt-8 mb-4">Food Pairing Guide</h2>
+
+      <p class="mb-4">The best pairings for this wine include...</p>
+
+      <h2 class="text-2xl font-semibold text-wine-800 mt-8 mb-4">Where to Buy</h2>
+
+      <p class="mb-4">Current market prices and availability...</p>
+
+      <h2 class="text-2xl font-semibold text-wine-800 mt-8 mb-4">Serving Tips</h2>
+
+      <p class="mb-4">For the optimal experience...</p>
+    </div>
+
+    <div class="mt-12 p-6 bg-wine-50 rounded-lg">
+      <h3 class="text-lg font-semibold mb-4">Wine Recommendations</h3>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <PriceBadge 
+          wineName="Featured Selection 1" 
+          price="$25-35" 
+          rating="92"
+        />
+        <PriceBadge 
+          wineName="Featured Selection 2" 
+          price="$15-25" 
+          rating="89"
+        />
+      </div>
+    </div>
+    
+    <div class="mt-8 text-center">
+      <p class="text-sm text-gray-600">
+        Last updated: {new Date().toLocaleDateString()}
+      </p>
+    </div>
+  </article>
+</PairingLayout>

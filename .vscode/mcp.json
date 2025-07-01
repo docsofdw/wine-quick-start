@@ -1,0 +1,53 @@
+{
+  "inputs": [
+    {
+      "type": "promptString",
+      "id": "firecrawlApiKey",
+      "description": "Firecrawl API Key (starts with fc-)",
+      "password": true
+    },
+    {
+      "type": "promptString",
+      "id": "perplexityApiKey",
+      "description": "Perplexity API Key",
+      "password": true
+    },
+    {
+      "type": "promptString",
+      "id": "dataForSeoLogin",
+      "description": "DataForSEO Login/Username",
+      "password": false
+    },
+    {
+      "type": "promptString",
+      "id": "dataForSeoPassword",
+      "description": "DataForSEO Password",
+      "password": true
+    }
+  ],
+  "servers": {
+    "firecrawl": {
+      "command": "npx",
+      "args": ["-y", "firecrawl-mcp"],
+      "env": {
+        "FIRECRAWL_API_KEY": "fc-990a774838074a5eae8eac23a9297947"
+      }
+    },
+    "perplexity": {
+      "command": "uvx",
+      "args": ["perplexity-mcp"],
+      "env": {
+        "PERPLEXITY_API_KEY": "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",
+        "PERPLEXITY_MODEL": "sonar"
+      }
+    },
+    "dataforseo": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-dataforseo"],
+      "env": {
+        "DATAFORSEO_LOGIN": "${dataForSeoLogin}",
+        "DATAFORSEO_PASSWORD": "${dataForSeoPassword}"
+      }
+    }
+  }
+} 
