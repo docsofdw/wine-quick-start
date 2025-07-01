@@ -59,221 +59,24 @@ const currentPath = Astro.url.pathname;
 
     
     <style>
-        /* Clean Wine Design System */
-        :root {
-            /* Purple Palette (Primary) */
-            --purple-50: #faf5ff;
-            --purple-100: #f3e8ff;
-            --purple-200: #e9d5ff;
-            --purple-300: #d8b4fe;
-            --purple-400: #c084fc;
-            --purple-500: #a855f7;
-            --purple-600: #9333ea;
-            --purple-700: #7c3aed;
-            --purple-800: #6b21a8;
-            --purple-900: #581c87;
-            
-            /* Blue Palette (Secondary) */
-            --blue-600: #2563eb;
-            --blue-700: #1d4ed8;
-            
-            /* Gray Palette */
-            --gray-50: #f9fafb;
-            --gray-100: #f3f4f6;
-            --gray-200: #e5e7eb;
-            --gray-300: #d1d5db;
-            --gray-400: #9ca3af;
-            --gray-500: #6b7280;
-            --gray-600: #4b5563;
-            --gray-700: #374151;
-            --gray-800: #1f2937;
-            --gray-900: #111827;
-            
-            /* Gradients */
-            --gradient-primary: linear-gradient(135deg, #7c3aed 0%, #2563eb 100%);
-            
-
-            
-            /* Shadows */
-            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
-            --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1);
-            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1);
-            --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1);
-            
-            /* Transitions */
-            --transition: 0.2s ease;
-        }
-
-        /* Base Styles */
+        /* Only minimal custom styles needed - Tailwind handles the rest */
         html {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
-            line-height: 1.6;
         }
         
-        body {
-            color: var(--gray-700);
-            background: #fefefe;
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
-        }
-        
-        /* Typography */
-        h1, h2, h3, h4, h5, h6 {
-            font-weight: 700;
-            line-height: 1.2;
-            color: var(--gray-900);
-        }
-        
-        /* Custom container for consistent spacing */
-        .container {
-            max-width: 80rem;
-            margin: 0 auto;
-            padding: 0 1.5rem;
-            width: 100%;
-        }
-        
-        @media (min-width: 1024px) {
-            .container {
-                padding: 0 2rem;
-            }
-        }
-        
-        /* Buttons */
-        .btn-primary {
-            background: var(--gradient-primary);
-            color: white;
-            font-weight: 600;
-            padding: 0.75rem 2rem;
-            border-radius: 0.5rem;
-            transition: all var(--transition);
-            box-shadow: var(--shadow-lg);
-            border: none;
-            cursor: pointer;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            text-decoration: none;
-        }
-        
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: var(--shadow-xl);
-        }
-        
-        .btn-secondary {
-            background: white;
-            color: var(--purple-600);
-            font-weight: 600;
-            padding: 0.75rem 2rem;
-            border-radius: 0.5rem;
-            transition: all var(--transition);
-            border: 1px solid var(--gray-200);
-            cursor: pointer;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            text-decoration: none;
-        }
-        
-        .btn-secondary:hover {
-            background: var(--gray-50);
-            border-color: var(--purple-300);
-        }
-        
-
-        
-        /* Links */
-        a {
-            color: var(--purple-600);
-            text-decoration: none;
-            transition: color var(--transition);
-        }
-        
-        a:hover {
-            color: var(--purple-700);
-        }
-        
-        /* Focus States */
-        .focus-ring:focus {
-            outline: 2px solid var(--purple-500);
-            outline-offset: 2px;
-        }
-        
-        /* Utilities */
-        .text-gradient {
-            background: var(--gradient-primary);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-        
-        /* Mobile Menu */
+        /* Mobile Menu Animation */
         .mobile-menu {
             transform: translateX(100%);
-            transition: transform var(--transition);
+            transition: transform 0.2s ease;
         }
         
         .mobile-menu.open {
             transform: translateX(0);
         }
         
-
-        
-        /* Responsive Typography */
-        @media (max-width: 640px) {
-            h1 { font-size: 2.25rem; }
-            h2 { font-size: 1.875rem; }
-            h3 { font-size: 1.5rem; }
-        }
-        
-        /* Newsletter Form Fix */
-        .newsletter-form {
-            display: flex;
-            flex-direction: column;
-            gap: 0.75rem;
-            max-width: 28rem;
-            margin: 0 auto;
-        }
-        
-        @media (min-width: 640px) {
-            .newsletter-form {
-                flex-direction: row;
-            }
-        }
-        
-        .newsletter-input {
-            flex: 1;
-            padding: 0.75rem 1rem;
-            border-radius: 0.5rem;
-            background-color: rgb(31 41 55);
-            border: 1px solid rgb(55 65 81);
-            color: white;
-            font-size: 1rem;
-        }
-        
-        .newsletter-input::placeholder {
-            color: rgb(156 163 175);
-        }
-        
-        .newsletter-input:focus {
-            outline: none;
-            border-color: var(--purple-500);
-        }
-        
-        .newsletter-button {
-            background-color: var(--purple-600);
-            color: white;
-            padding: 0.75rem 1.5rem;
-            border-radius: 0.5rem;
-            font-weight: 600;
-            font-size: 1rem;
-            border: none;
-            cursor: pointer;
-            transition: background-color var(--transition);
-        }
-        
-        .newsletter-button:hover {
-            background-color: var(--purple-700);
+        /* Focus ring utility */
+        .focus-ring:focus {
+            @apply outline-2 outline-purple-500 outline-offset-2;
         }
     </style>
 </head>
@@ -284,33 +87,33 @@ const currentPath = Astro.url.pathname;
     </a>
     
     <!-- Header -->
-    <header class="bg-white border-b border-gray-200 sticky top-0 z-50">
+    <header class="bg-white border-b border-gray-200 sticky top-0 z-50 shadow-sm">
         <div class="container">
-            <div class="flex justify-between items-center py-4">
+            <div class="flex justify-between items-center h-16">
                 <!-- Logo -->
-                <a href="/" class="text-2xl font-bold text-purple-600 focus-ring rounded px-2 py-1">
+                <a href="/" class="text-xl md:text-2xl font-bold text-purple-600 focus-ring rounded-md px-2 py-1 hover:text-purple-700 transition-colors">
                     Wine Quick Start
                 </a>
                 
                 <!-- Desktop Navigation -->
-                <nav class="hidden md:flex space-x-8">
+                <nav class="hidden md:flex items-center space-x-1">
                     <a href="/wine-pairings/" 
-                       class={`text-gray-600 hover:text-purple-600 font-medium transition focus-ring rounded px-3 py-2 ${currentPath.startsWith('/wine-pairings') ? 'text-purple-600' : ''}`}>
+                       class={`px-4 py-2 rounded-md font-medium transition-all duration-200 focus-ring ${currentPath.startsWith('/wine-pairings') ? 'text-purple-600 bg-purple-50' : 'text-gray-700 hover:text-purple-600 hover:bg-purple-50'}`}>
                         Pairings
                     </a>
                     <a href="/learn/" 
-                       class={`text-gray-600 hover:text-purple-600 font-medium transition focus-ring rounded px-3 py-2 ${currentPath.startsWith('/learn') ? 'text-purple-600' : ''}`}>
+                       class={`px-4 py-2 rounded-md font-medium transition-all duration-200 focus-ring ${currentPath.startsWith('/learn') ? 'text-purple-600 bg-purple-50' : 'text-gray-700 hover:text-purple-600 hover:bg-purple-50'}`}>
                         Learn
                     </a>
                     <a href="/buy/" 
-                       class={`text-gray-600 hover:text-purple-600 font-medium transition focus-ring rounded px-3 py-2 ${currentPath.startsWith('/buy') ? 'text-purple-600' : ''}`}>
+                       class={`px-4 py-2 rounded-md font-medium transition-all duration-200 focus-ring ${currentPath.startsWith('/buy') ? 'text-purple-600 bg-purple-50' : 'text-gray-700 hover:text-purple-600 hover:bg-purple-50'}`}>
                         Buy
                     </a>
                 </nav>
                 
                 <!-- Mobile Menu Button -->
                 <button 
-                    class="md:hidden p-2 text-gray-600 hover:text-purple-600 transition focus-ring rounded"
+                    class="md:hidden p-2 text-gray-600 hover:text-purple-600 hover:bg-purple-50 rounded-md transition-all duration-200 focus-ring"
                     aria-label="Toggle mobile menu"
                     aria-expanded="false"
                     id="mobile-menu-button"
@@ -324,28 +127,39 @@ const currentPath = Astro.url.pathname;
         </div>
         
         <!-- Mobile Navigation Menu -->
-        <div class="mobile-menu fixed inset-y-0 right-0 w-80 max-w-full bg-white border-l border-gray-200 md:hidden shadow-xl" id="mobile-menu">
+        <div class="mobile-menu fixed inset-y-0 right-0 w-full max-w-sm bg-white border-l border-gray-200 md:hidden shadow-xl z-50" id="mobile-menu">
             <div class="flex flex-col h-full">
-                <div class="flex-1 overflow-y-auto pt-20 pb-6">
-                    <nav class="px-6 space-y-2">
-                        <a href="/wine-pairings/" class="block px-4 py-3 text-lg font-medium text-gray-700 hover:bg-gray-50 rounded-lg transition">
-                            🍷 Wine Pairings
-                        </a>
-                        <a href="/learn/" class="block px-4 py-3 text-lg font-medium text-gray-700 hover:bg-gray-50 rounded-lg transition">
-                            📚 Learn Wine
-                        </a>
-                        <a href="/buy/" class="block px-4 py-3 text-lg font-medium text-gray-700 hover:bg-gray-50 rounded-lg transition">
-                            🛒 Buy Wine
-                        </a>
-                        <div class="pt-6">
-                            <a href="#newsletter" class="btn-primary w-full justify-center">
-                                Join Newsletter
-                            </a>
-                        </div>
-                    </nav>
+                <div class="flex items-center justify-between p-4 border-b border-gray-200">
+                    <span class="text-lg font-bold text-purple-600">Menu</span>
+                    <button class="p-2 text-gray-400 hover:text-gray-600 rounded-md" onclick="document.getElementById('mobile-menu-button').click()">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
+                    </button>
                 </div>
-                <div class="border-t border-gray-200 p-6">
-                    <p class="text-sm text-gray-500">Simple wine guidance from certified sommeliers.</p>
+                <div class="flex-1 overflow-y-auto p-4">
+                    <nav class="space-y-1">
+                        <a href="/wine-pairings/" class="flex items-center px-4 py-3 text-base font-medium text-gray-700 hover:bg-purple-50 hover:text-purple-600 rounded-lg transition-all duration-200">
+                            <span class="mr-3 text-lg">🍷</span>
+                            Wine Pairings
+                        </a>
+                        <a href="/learn/" class="flex items-center px-4 py-3 text-base font-medium text-gray-700 hover:bg-purple-50 hover:text-purple-600 rounded-lg transition-all duration-200">
+                            <span class="mr-3 text-lg">📚</span>
+                            Learn Wine
+                        </a>
+                        <a href="/buy/" class="flex items-center px-4 py-3 text-base font-medium text-gray-700 hover:bg-purple-50 hover:text-purple-600 rounded-lg transition-all duration-200">
+                            <span class="mr-3 text-lg">🛒</span>
+                            Buy Wine
+                        </a>
+                    </nav>
+                    <div class="mt-8">
+                        <a href="#newsletter" class="btn-primary w-full justify-center text-center">
+                            Join Newsletter
+                        </a>
+                    </div>
+                </div>
+                <div class="border-t border-gray-200 p-4 bg-gray-50">
+                    <p class="text-sm text-gray-600 text-center">Simple wine guidance from certified sommeliers</p>
                 </div>
             </div>
         </div>
@@ -359,38 +173,42 @@ const currentPath = Astro.url.pathname;
     <!-- Footer -->
     <footer class="bg-gray-900 text-white section-padding-sm">
         <div class="container">
-            <div class="grid md:grid-cols-4 gap-8 mb-8">
-                <div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-8">
+                <div class="lg:col-span-1">
                     <div class="text-xl font-bold text-purple-400 mb-4">Wine Quick Start</div>
-                    <p class="text-gray-400 text-sm">Simple wine guidance from certified sommeliers.</p>
+                    <p class="text-gray-400 text-sm leading-relaxed mb-4">Simple wine guidance from certified sommeliers. Find the perfect wine for any occasion.</p>
                 </div>
                 <div>
-                    <h5 class="font-semibold mb-4">Explore</h5>
-                    <ul class="space-y-2 text-sm text-gray-400">
-                        <li><a href="/wine-pairings/" class="hover:text-white transition">Wine Pairings</a></li>
-                        <li><a href="/learn/" class="hover:text-white transition">Learn</a></li>
-                        <li><a href="/buy/" class="hover:text-white transition">Buy</a></li>
+                    <h5 class="font-semibold mb-4 text-white">Explore</h5>
+                    <ul class="space-y-3 text-sm">
+                        <li><a href="/wine-pairings/" class="text-gray-400 hover:text-purple-400 transition-colors duration-200">Wine Pairings</a></li>
+                        <li><a href="/learn/" class="text-gray-400 hover:text-purple-400 transition-colors duration-200">Learn Wine</a></li>
+                        <li><a href="/buy/" class="text-gray-400 hover:text-purple-400 transition-colors duration-200">Buy Wine</a></li>
                     </ul>
                 </div>
                 <div>
-                    <h5 class="font-semibold mb-4">Popular</h5>
-                    <ul class="space-y-2 text-sm text-gray-400">
-                        <li><a href="/wine-pairings/best-wine-with-salmon/" class="hover:text-white transition">Wine with Salmon</a></li>
-                        <li><a href="/learn/what-is-natural-wine/" class="hover:text-white transition">Natural Wine Guide</a></li>
-                        <li><a href="/buy/buy-natural-wine/" class="hover:text-white transition">Buy Natural Wine</a></li>
+                    <h5 class="font-semibold mb-4 text-white">Popular Guides</h5>
+                    <ul class="space-y-3 text-sm">
+                        <li><a href="/wine-pairings/best-wine-with-salmon/" class="text-gray-400 hover:text-purple-400 transition-colors duration-200">Wine with Salmon</a></li>
+                        <li><a href="/wine-pairings/pinot-noir-food-pairing/" class="text-gray-400 hover:text-purple-400 transition-colors duration-200">Pinot Noir Pairing</a></li>
+                        <li><a href="/learn/bordeaux-wine-guide/" class="text-gray-400 hover:text-purple-400 transition-colors duration-200">Bordeaux Guide</a></li>
                     </ul>
                 </div>
                 <div>
-                    <h5 class="font-semibold mb-4">Connect</h5>
-                    <ul class="space-y-2 text-sm text-gray-400">
-                        <li><a href="#newsletter" class="hover:text-white transition">Newsletter</a></li>
-                        <li><a href="/about/" class="hover:text-white transition">About</a></li>
-                        <li><a href="/contact/" class="hover:text-white transition">Contact</a></li>
+                    <h5 class="font-semibold mb-4 text-white">Connect</h5>
+                    <ul class="space-y-3 text-sm">
+                        <li><a href="#newsletter" class="text-gray-400 hover:text-purple-400 transition-colors duration-200">Newsletter</a></li>
+                        <li><a href="/about/" class="text-gray-400 hover:text-purple-400 transition-colors duration-200">About</a></li>
+                        <li><a href="/contact/" class="text-gray-400 hover:text-purple-400 transition-colors duration-200">Contact</a></li>
                     </ul>
                 </div>
             </div>
-            <div class="border-t border-gray-800 pt-8 text-center text-sm text-gray-400">
-                <p>&copy; 2024 Wine Quick Start. All rights reserved.</p>
+            <div class="border-t border-gray-800 pt-6 flex flex-col md:flex-row justify-between items-center gap-4">
+                <p class="text-sm text-gray-400">&copy; 2024 Wine Quick Start. All rights reserved.</p>
+                <div class="flex items-center gap-4 text-sm text-gray-400">
+                    <a href="/privacy/" class="hover:text-purple-400 transition-colors duration-200">Privacy</a>
+                    <a href="/terms/" class="hover:text-purple-400 transition-colors duration-200">Terms</a>
+                </div>
             </div>
         </div>
     </footer>
