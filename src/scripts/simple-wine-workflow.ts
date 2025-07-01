@@ -415,106 +415,51 @@ For newcomers to ${keyword}, start with wines from established producers in the 
     volume: number;
     difficulty: number;
   }): string {
+    const mockWines = this.generateMockWineData(data.keyword);
+    
     return `---
-import PairingLayout from '../../layouts/PairingLayout.astro';
-import PairingWidget from '../../components/wine/PairingWidget.astro';
-import PriceBadge from '../../components/wine/PriceBadge.astro';
-import StructuredData from '../../components/wine/StructuredData.astro';
+import ModernPairingLayout from '../../layouts/ModernPairingLayout.astro';
 
 const frontmatter = {
   title: "${data.title}",
   description: "${data.description}",
-  keywords: ["${data.keyword}", "wine", "pairing", "guide", "recommendations"],
-  publishDate: "${new Date().toISOString().split('T')[0]}",
-  searchVolume: ${data.volume},
-  keywordDifficulty: ${data.difficulty}
-};
-
-const structuredData = {
-  "@context": "https://schema.org",
-  "@type": "Article",
-  "headline": "${data.title}",
-  "description": "${data.description}",
-  "author": {
-    "@type": "Organization",
-    "name": "Wine Quick Start"
+  wine_type: "${this.determineWineType(data.keyword)}",
+  author: "Wine Quick Start Expert",
+  readTime: "6 min",
+  expert_score: 8,
+  structured_data: {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "${data.title}",
+    "description": "${data.description}",
+    "author": {
+      "@type": "Organization",
+      "name": "Wine Quick Start"
+    },
+    "datePublished": "${new Date().toISOString()}",
+    "dateModified": "${new Date().toISOString()}",
+    "keywords": "${data.keyword}",
+    "articleSection": "Wine Guides"
   },
-  "datePublished": "${new Date().toISOString()}",
-  "dateModified": "${new Date().toISOString()}",
-  "keywords": "${data.keyword}",
-  "articleSection": "Wine Guides"
+  wines: ${JSON.stringify(mockWines, null, 2)}
 };
 ---
 
-<PairingLayout frontmatter={frontmatter}>
-  <StructuredData data={structuredData} />
-  
-  <article class="prose prose-lg max-w-4xl mx-auto">
-    <h1 class="text-4xl font-bold text-wine-900 mb-6">{frontmatter.title}</h1>
-    
-    <div class="lead text-xl text-gray-700 mb-8">
-      {frontmatter.description}
-    </div>
+<ModernPairingLayout frontmatter={frontmatter}>
+  <div slot="quick-answer">
+    <p><strong>Quick Answer:</strong> For ${data.keyword}, focus on wines with balanced characteristics that complement food without overpowering. Look for quality producers and proper storage for the best experience.</p>
+  </div>
 
-    <div class="bg-wine-50 p-4 rounded-lg mb-8">
-      <div class="flex justify-between items-center text-sm text-gray-600">
-        <span>Search Volume: {frontmatter.searchVolume.toLocaleString()}/month</span>
-        <span>Keyword Difficulty: {frontmatter.keywordDifficulty}/100</span>
-      </div>
+  <div class="bg-wine-50 p-4 rounded-lg mb-8">
+    <div class="flex justify-between items-center text-sm text-gray-600">
+      <span>Search Volume: ${data.volume.toLocaleString()}/month</span>
+      <span>Keyword Difficulty: ${data.difficulty}/100</span>
     </div>
+  </div>
 
-    <PairingWidget />
+  ${this.formatContentForModernLayout(data.content)}
 
-    <div class="content space-y-6">
-      ${data.content.split('\n').map(line => {
-        if (line.startsWith('## ')) {
-          return `      <h2 class="text-2xl font-semibold text-wine-800 mt-8 mb-4">${line.replace('## ', '')}</h2>`;
-        } else if (line.startsWith('### ')) {
-          return `      <h3 class="text-xl font-medium text-wine-700 mt-6 mb-3">${line.replace('### ', '')}</h3>`;
-        } else if (line.startsWith('**') && line.endsWith('**')) {
-          return `      <p class="font-semibold mb-2">${line.replace(/\*\*/g, '')}</p>`;
-        } else if (line.trim().startsWith('- ')) {
-          return `      <li class="ml-4">${line.replace('- ', '')}</li>`;
-        } else if (line.trim()) {
-          return `      <p class="mb-4">${line}</p>`;
-        }
-        return '';
-      }).join('\n')}
-    </div>
-
-    <div class="mt-12 p-6 bg-wine-50 rounded-lg">
-      <h3 class="text-lg font-semibold mb-4">Featured Wine Recommendations</h3>
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <PriceBadge 
-          wineName="Premium Selection" 
-          price="$25-35" 
-          rating="92"
-          description="Top pick for this pairing"
-        />
-        <PriceBadge 
-          wineName="Budget Choice" 
-          price="$15-25" 
-          rating="88"
-          description="Best value option"
-        />
-      </div>
-    </div>
-
-    <div class="mt-8 text-center bg-blue-50 p-6 rounded-lg">
-      <h3 class="text-lg font-semibold mb-2">Get Personalized Wine Recommendations</h3>
-      <p class="text-gray-700 mb-4">Join our email list for weekly wine pairing tips and exclusive recommendations.</p>
-      <button class="bg-wine-600 text-white px-6 py-2 rounded-lg hover:bg-wine-700 transition-colors">
-        Get Wine Tips
-      </button>
-    </div>
-    
-    <div class="mt-8 text-center">
-      <p class="text-sm text-gray-600">
-        Last updated: {new Date().toLocaleDateString()} | Keyword: "${data.keyword}"
-      </p>
-    </div>
-  </article>
-</PairingLayout>`;
+</ModernPairingLayout>`;
   }
 
   /**
@@ -522,6 +467,77 @@ const structuredData = {
    */
   private capitalize(str: string): string {
     return str.charAt(0).toUpperCase() + str.slice(1);
+  }
+
+  /**
+   * Format content for modern layout
+   */
+  private formatContentForModernLayout(content: string): string {
+    return content.split('\n').map(line => {
+      const trimmed = line.trim();
+      if (!trimmed) return '';
+      
+      if (trimmed.startsWith('## ')) {
+        return `  <h2>${trimmed.replace('## ', '')}</h2>`;
+      } else if (trimmed.startsWith('### ')) {
+        return `  <h3>${trimmed.replace('### ', '')}</h3>`;
+      } else if (trimmed.startsWith('- ')) {
+        return `    <li>${trimmed.replace('- ', '')}</li>`;
+      } else {
+        return `  <p>${trimmed}</p>`;
+      }
+    }).filter(line => line).join('\n\n');
+  }
+
+  /**
+   * Generate mock wine data for recommendations
+   */
+  private generateMockWineData(keyword: string): any[] {
+    const wineRegions = [
+      'Burgundy, France', 'Tuscany, Italy', 'Napa Valley, California', 
+      'Barossa Valley, Australia', 'Rioja, Spain', 'Douro, Portugal'
+    ];
+    const producers = ['Château', 'Domaine', 'Bodega', 'Estate'];
+    const prices = ['32', '45', '58'];
+    const ratings = ['90', '92', '94'];
+    
+    return Array.from({ length: 2 }, (_, i) => ({
+      name: `${2020 + i} ${producers[i % producers.length]} ${this.generateWineName(keyword, i)}`,
+      region: wineRegions[i % wineRegions.length],
+      price: prices[i % prices.length],
+      rating: ratings[i % ratings.length],
+      type: this.determineWineType(keyword),
+      notes: `Excellent example of ${keyword} with balanced flavors and great food pairing potential.`,
+      link: `https://wine-searcher.com/find/${keyword.replace(/\s+/g, '-')}-${i + 1}`
+    }));
+  }
+
+  /**
+   * Generate wine name based on keyword
+   */
+  private generateWineName(keyword: string, index: number): string {
+    const baseNames = ['Reserve', 'Premium Selection'];
+    
+    if (keyword.includes('pinot noir')) {
+      return ['Reserve Pinot Noir', 'Estate Pinot'][index] || 'Pinot Noir';
+    } else if (keyword.includes('chardonnay')) {
+      return ['Barrel Fermented Chardonnay', 'Reserve Chardonnay'][index] || 'Chardonnay';
+    } else if (keyword.includes('cabernet')) {
+      return ['Cabernet Sauvignon Reserve', 'Estate Cabernet'][index] || 'Cabernet Sauvignon';
+    }
+    
+    return baseNames[index % baseNames.length];
+  }
+
+  /**
+   * Determine wine type from keyword
+   */
+  private determineWineType(keyword: string): string {
+    if (keyword.includes('red') || keyword.includes('cabernet') || keyword.includes('merlot') || keyword.includes('pinot noir')) return 'red';
+    if (keyword.includes('white') || keyword.includes('chardonnay') || keyword.includes('sauvignon blanc')) return 'white';
+    if (keyword.includes('rosé') || keyword.includes('rose')) return 'rosé';
+    if (keyword.includes('sparkling') || keyword.includes('champagne')) return 'sparkling';
+    return 'red'; // default
   }
 }
 

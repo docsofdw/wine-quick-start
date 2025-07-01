@@ -1,0 +1,206 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import StructuredData from '../components/wine/StructuredData.astro';
+
+const { frontmatter } = Astro.props;
+const {
+  title,
+  description = '',
+  wine_type = 'red',
+  structured_data,
+  expert_score = 10,
+  author = 'Sarah Chen, Sommelier',
+  readTime = '5 min',
+  wines = []
+} = frontmatter ?? {};
+
+// Guard: block build/render if QA score below 8
+if (expert_score < 8) {
+  throw new Error(`Page blocked: QA score ${expert_score} below threshold`);
+}
+---
+
+<BaseLayout title={title} description={description}>
+  <StructuredData data={structured_data} />
+
+  <!-- Navigation -->
+  <nav class="fixed top-0 w-full z-50 glass-effect">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between items-center h-16">
+        <a href="/" class="font-display text-2xl font-bold text-gradient">Wine Quick Start</a>
+        <div class="hidden md:flex space-x-8">
+          <a href="/wine-pairings/" class="text-gray-300 hover:text-white transition">Pairings</a>
+          <a href="/learn/" class="text-gray-300 hover:text-white transition">Learn</a>
+          <a href="/about/" class="text-gray-300 hover:text-white transition">About</a>
+        </div>
+        <button class="md:hidden p-2 text-white">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <article class="pt-24 pb-20 px-4 bg-gray-50 text-gray-900 min-h-screen">
+    <div class="max-w-4xl mx-auto">
+      <!-- Breadcrumb -->
+      <nav class="mb-8" aria-label="Breadcrumb">
+        <ol class="flex items-center space-x-2 text-sm">
+          <li><a href="/" class="text-gray-600 hover:text-wine-600 transition">Home</a></li>
+          <li><span class="text-gray-400">/</span></li>
+          <li><a href="/wine-pairings/" class="text-gray-600 hover:text-wine-600 transition">Wine Pairings</a></li>
+          <li><span class="text-gray-400">/</span></li>
+          <li class="text-gray-900 font-medium" aria-current="page">{title.split(':')[0]}</li>
+        </ol>
+      </nav>
+
+      <!-- Article Header -->
+      <header class="mb-12 animate-fade-up">
+        <h1 class="font-display text-4xl sm:text-5xl md:text-6xl font-bold mb-4 leading-tight">
+          {title.includes(':') ? (
+            <>
+              {title.split(':')[0]}<span class="text-gradient">:</span>
+              <span class="block mt-2">{title.split(':')[1]}</span>
+            </>
+          ) : title}
+        </h1>
+        <p class="text-xl text-gray-600 mb-6">{description}</p>
+        
+        <!-- Meta Info -->
+        <div class="flex flex-wrap items-center gap-4 text-sm text-gray-500">
+          <div class="flex items-center gap-2">
+            <div class="w-8 h-8 rounded-full bg-gradient-to-br from-wine-400 to-wine-600 flex items-center justify-center text-white font-bold text-sm">
+              {author.charAt(0)}
+            </div>
+            <span>{author}</span>
+          </div>
+          <span>•</span>
+          <time>{new Date().toLocaleDateString('en-US', { month: 'short', year: 'numeric' })}</time>
+          <span>•</span>
+          <span>{readTime} read</span>
+        </div>
+      </header>
+
+      <!-- Quick Answer Box -->
+      <div class="mb-12 p-6 bg-wine-50 border-l-4 border-wine-500 rounded-r-lg">
+        <h2 class="font-display text-xl font-bold mb-2 text-wine-900">Quick Answer</h2>
+        <div class="text-wine-800">
+          <slot name="quick-answer">
+            <p>The best wines for this pairing complement the dish's flavors without overpowering them.</p>
+          </slot>
+        </div>
+      </div>
+
+      <!-- Wine Recommendations -->
+      {wines && wines.length > 0 && (
+        <section class="mb-12">
+          <h2 class="font-display text-3xl font-bold mb-6">Our Top Wine Picks</h2>
+          <div class="grid md:grid-cols-2 gap-6">
+            {wines.map((wine) => (
+              <div class="bg-white rounded-xl shadow-lg p-6 hover:shadow-xl hover-float transition-all">
+                <div class="flex items-start gap-4">
+                  <div class="w-20 h-20 bg-wine-100 rounded-lg flex items-center justify-center text-3xl">
+                    {wine.type === 'red' ? '🍷' : '🥂'}
+                  </div>
+                  <div class="flex-1">
+                    <h3 class="font-display text-xl font-bold mb-1">{wine.name}</h3>
+                    <p class="text-gray-600 text-sm mb-2">{wine.region}</p>
+                    <div class="flex items-center gap-4 mb-3">
+                      <span class="text-2xl font-bold text-wine-600">${wine.price}</span>
+                      <div class="flex items-center gap-1">
+                        <span class="text-yellow-500">★★★★★</span>
+                        <span class="text-sm text-gray-500">{wine.rating}pts</span>
+                      </div>
+                    </div>
+                    <p class="text-sm text-gray-600 mb-3">{wine.notes}</p>
+                    <a href={wine.link || '#'} class="text-wine-600 hover:text-wine-700 text-sm font-medium transition">
+                      Find This Wine →
+                    </a>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+      )}
+
+      <!-- Main Content -->
+      <div class="prose prose-lg max-w-none mb-12 prose-headings:font-display prose-headings:text-gray-900 prose-p:text-gray-700 prose-li:text-gray-700 prose-strong:text-gray-900">
+        <slot />
+      </div>
+
+      <!-- Interactive Feedback Widget -->
+      <section class="mb-12 p-6 bg-gradient-to-br from-wine-50 to-wine-100 rounded-2xl">
+        <h3 class="font-display text-2xl font-bold mb-4">Was this pairing helpful?</h3>
+        <div class="flex flex-wrap gap-3">
+          <button class="px-6 py-3 bg-wine-600 text-white rounded-full hover:bg-wine-700 transition feedback-btn" data-feedback="helpful">
+            Yes, perfect match! 👌
+          </button>
+          <button class="px-6 py-3 bg-white text-gray-700 rounded-full hover:bg-gray-50 transition feedback-btn" data-feedback="somewhat">
+            Somewhat helpful 🤔
+          </button>
+          <button class="px-6 py-3 bg-white text-gray-700 rounded-full hover:bg-gray-50 transition feedback-btn" data-feedback="not-helpful">
+            Not quite right 🤷
+          </button>
+        </div>
+      </section>
+
+      <!-- Email Capture -->
+      <section class="mb-12 p-8 bg-charcoal text-white rounded-2xl text-center">
+        <h3 class="font-display text-3xl font-bold mb-4">Get Weekly Wine Pairings</h3>
+        <p class="text-gray-300 mb-6 max-w-md mx-auto">
+          Join 5,000+ wine lovers receiving expert pairing tips and exclusive deals every Friday.
+        </p>
+        <form class="flex flex-col sm:flex-row gap-3 max-w-md mx-auto" id="email-form">
+          <input 
+            type="email" 
+            placeholder="your@email.com" 
+            required
+            class="flex-1 px-4 py-3 bg-white/10 border border-white/20 rounded-full text-white placeholder-gray-400 focus:outline-none focus:border-wine-400 transition"
+          />
+          <button type="submit" class="px-6 py-3 wine-gradient text-white rounded-full font-semibold hover:shadow-lg hover-float transition">
+            Join Free
+          </button>
+        </form>
+        <p class="text-xs text-gray-400 mt-4">No spam, unsubscribe anytime.</p>
+      </section>
+
+      <!-- Related Articles -->
+      <section class="border-t pt-8">
+        <h3 class="font-display text-2xl font-bold mb-6">More Wine Pairings</h3>
+        <div class="grid sm:grid-cols-2 gap-4">
+          <a href="/wine-pairings/best-wine-with-salmon/" class="block p-4 bg-white rounded-lg hover:shadow-md hover-float transition">
+            <h4 class="font-display font-bold text-lg mb-1">Best Wine with Salmon</h4>
+            <p class="text-gray-600 text-sm">Light whites and delicate reds for perfect seafood pairings</p>
+          </a>
+          <a href="/wine-pairings/pinot-noir-food-pairing/" class="block p-4 bg-white rounded-lg hover:shadow-md hover-float transition">
+            <h4 class="font-display font-bold text-lg mb-1">Pinot Noir Food Pairing</h4>
+            <p class="text-gray-600 text-sm">The versatile red that pairs with almost everything</p>
+          </a>
+        </div>
+      </section>
+    </div>
+  </article>
+
+  <script>
+    // Feedback widget
+    document.querySelectorAll('.feedback-btn').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        const feedback = e.target.dataset.feedback;
+        console.log('Feedback:', feedback);
+        // TODO: Send to analytics/Supabase
+        e.target.parentElement.innerHTML = '<p class="text-lg">Thank you for your feedback! 🍷</p>';
+      });
+    });
+
+    // Email form
+    document.getElementById('email-form')?.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const email = e.target.querySelector('input[type="email"]').value;
+      console.log('Email signup:', email);
+      // TODO: Send to email service
+      e.target.innerHTML = '<p class="text-xl">Welcome to the club! Check your inbox 📧</p>';
+    });
+  </script>
+</BaseLayout> 

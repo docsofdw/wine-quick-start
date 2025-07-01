@@ -1,26 +1,146 @@
 ---
-// Base HTML layout for all site pages
+// Base HTML layout for all site pages with modern design system
 // Props: { title?: string; description?: string }
 import '../styles/global.css';
 
 const {
-  title = 'Wine Quick Start',
-  description = 'Expert-led wine pairing and vintage insights',
+  title = 'Wine Quick Start - Expert Wine Pairings & Guides',
+  description = 'Perfect wine pairings for every meal. Expert recommendations, tasting notes, and insider knowledge to elevate your wine experience.',
 } = Astro.props;
 ---
-<!doctype html>
-<html lang="en" class="scroll-smooth">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="generator" content={Astro.generator} />
     <title>{title}</title>
     <meta name="description" content={description} />
+    
+    <!-- SEO and Social -->
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary_large_image" />
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,100..900;1,9..144,100..900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <style>
+        /* Wine color palette */
+        :root {
+            --wine-50: #fdf2f4;
+            --wine-100: #fce7eb;
+            --wine-200: #f9d0d9;
+            --wine-300: #f4a8bb;
+            --wine-400: #ed7798;
+            --wine-500: #e24776;
+            --wine-600: #ce2659;
+            --wine-700: #ad1a47;
+            --wine-800: #91173d;
+            --wine-900: #7c1638;
+            --wine-950: #44061a;
+            --cream: #FAF7F2;
+            --charcoal: #1C1917;
+        }
 
-    <!-- Preload fonts / styles if needed -->
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  </head>
-  <body class="min-h-screen bg-white text-gray-900 antialiased">
+        .wine-gradient {
+            background: linear-gradient(135deg, #e24776 0%, #ad1a47 100%);
+        }
+        
+        .text-gradient {
+            background: linear-gradient(135deg, #e24776 0%, #ad1a47 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .hover-float:hover {
+            transform: translateY(-4px);
+            transition: transform 0.3s ease;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        @keyframes fadeUp {
+            0% { opacity: 0; transform: translateY(20px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+        
+        @keyframes shimmer {
+            0% { background-position: -200% 0; }
+            100% { background-position: 200% 0; }
+        }
+        
+        .animate-float {
+            animation: float 6s ease-in-out infinite;
+        }
+        
+        .animate-fade-up {
+            animation: fadeUp 0.5s ease-out;
+        }
+        
+        .animate-shimmer {
+            animation: shimmer 2s linear infinite;
+        }
+        
+        .shimmer {
+            background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.08) 50%, transparent 100%);
+            background-size: 200% 100%;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #1C1917;
+            color: white;
+        }
+        
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Fraunces', serif;
+        }
+
+        /* Wine color utilities */
+        .bg-wine-50 { background-color: var(--wine-50); }
+        .bg-wine-100 { background-color: var(--wine-100); }
+        .bg-wine-500 { background-color: var(--wine-500); }
+        .bg-wine-600 { background-color: var(--wine-600); }
+        .bg-wine-700 { background-color: var(--wine-700); }
+        .text-wine-300 { color: var(--wine-300); }
+        .text-wine-400 { color: var(--wine-400); }
+        .text-wine-500 { color: var(--wine-500); }
+        .text-wine-600 { color: var(--wine-600); }
+        .text-wine-700 { color: var(--wine-700); }
+        .text-wine-800 { color: var(--wine-800); }
+        .text-wine-900 { color: var(--wine-900); }
+        .border-wine-400 { border-color: var(--wine-400); }
+        .border-wine-500 { border-color: var(--wine-500); }
+        .bg-charcoal { background-color: var(--charcoal); }
+        .hover\:bg-wine-700:hover { background-color: var(--wine-700); }
+        .hover\:text-wine-300:hover { color: var(--wine-300); }
+        .hover\:text-wine-700:hover { color: var(--wine-700); }
+        
+        /* Display font utility */
+        .font-display {
+            font-family: 'Fraunces', serif;
+        }
+    </style>
+</head>
+<body class="antialiased">
     <slot />
-  </body>
+</body>
 </html> 

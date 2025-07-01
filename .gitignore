@@ -41,3 +41,4 @@ pnpm-debug.log*
 # Security sensitive files
 config/keys.json
 config/secrets.json
+.vercel

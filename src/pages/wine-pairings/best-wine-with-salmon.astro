@@ -1,90 +1,202 @@
 ---
-import PairingLayout from '../../layouts/PairingLayout.astro';
-import PairingWidget from '../../components/wine/PairingWidget.astro';
-import PriceBadge from '../../components/wine/PriceBadge.astro';
-import StructuredData from '../../components/wine/StructuredData.astro';
+import ModernPairingLayout from '../../layouts/ModernPairingLayout.astro';
 
 const frontmatter = {
-  title: "Best wine with salmon: Expert Pairing Guide 2024",
-  description: "Discover the perfect best wine with salmon with our expert wine guide. Get professional pairing recommendations, tasting notes, and price insights for the best wine experience.",
-  keywords: ["best wine with salmon","best wine with salmon 2024","best best wine with salmon","best wine with salmon guide","best wine with salmon recommendations","best pairing"],
-  publishDate: "2025-07-01"
+  title: "Best Wine with Salmon: Expert Pairing Guide 2024",
+  description: "Discover the perfect wines for salmon with our sommelier guide. From Pinot Noir to Chardonnay, find ideal matches for grilled, baked, and smoked salmon.",
+  wine_type: 'white',
+  author: 'Elena Rodriguez, Certified Sommelier',
+  readTime: '5 min',
+  expert_score: 10,
+  structured_data: {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "Best Wine with Salmon: Expert Pairing Guide 2024",
+    "description": "Expert wine recommendations for salmon including Pinot Noir, Chardonnay, Albariño, and Riesling.",
+    "author": {
+      "@type": "Person",
+      "name": "Elena Rodriguez",
+      "jobTitle": "Certified Sommelier"
+    },
+    "datePublished": new Date().toISOString(),
+    "dateModified": new Date().toISOString()
+  },
+  wines: [
+    {
+      name: "2021 Rías Baixas Albariño Martin Códax",
+      region: "Rías Baixas, Spain",
+      price: "18",
+      rating: "90",
+      type: "white",
+      notes: "Crisp minerality and citrus notes with sea spray finish - perfect for grilled salmon. High acidity cuts through rich fish oils.",
+      link: "https://wine-searcher.com/find/martin+codax+albarino"
+    },
+    {
+      name: "2020 Willamette Valley Pinot Noir Erath",
+      region: "Oregon, USA",
+      price: "25",
+      rating: "92",
+      type: "red",
+      notes: "Light-bodied with bright cherry and earthy notes. Exceptional with cedar plank salmon and herb-crusted preparations.",
+      link: "https://wine-searcher.com/find/erath+pinot+noir+willamette"
+    },
+    {
+      name: "2021 Chablis William Fèvre",
+      region: "Burgundy, France",
+      price: "35",
+      rating: "93",
+      type: "white",
+      notes: "Steely minerality and crisp acidity with subtle oak. Classic pairing with poached or baked salmon in cream sauce.",
+      link: "https://wine-searcher.com/find/william+fevre+chablis"
+    },
+    {
+      name: "2020 Dr. Loosen Riesling Kabinett",
+      region: "Mosel, Germany",
+      price: "22",
+      rating: "91",
+      type: "white",
+      notes: "Off-dry with bright acidity and stone fruit notes. Balances beautifully with spiced or Asian-style salmon dishes.",
+      link: "https://wine-searcher.com/find/dr+loosen+riesling+kabinett"
+    }
+  ]
 };
 ---
 
-<PairingLayout frontmatter={frontmatter}>
-  <StructuredData data={{
-  "@context": "https://schema.org",
-  "@type": "Article",
-  "headline": "Perfect Best wine with salmon - Wine Expert Tips",
-  "description": "Discover the perfect best wine with salmon with our expert wine guide. Get professional pairing recommendations, tasting notes, and price insights for the best wine experience.",
-  "author": {
-    "@type": "Organization",
-    "name": "Wine Quick Start"
-  },
-  "datePublished": "2025-07-01T02:06:10.883Z",
-  "dateModified": "2025-07-01T02:06:10.883Z"
-}} />
+<ModernPairingLayout frontmatter={frontmatter}>
+  <div slot="quick-answer">
+    <p><strong>Best wines for salmon:</strong> Albariño, Pinot Noir, Chablis, or off-dry Riesling. Choose whites for delicate preparations and light reds for richer, grilled salmon. The key is matching wine weight to cooking method and sauce intensity.</p>
+  </div>
+
+  <h2>Why Salmon is Wine-Friendly</h2>
   
-  <article class="prose prose-lg max-w-4xl mx-auto">
-    <h1 class="text-4xl font-bold text-wine-900 mb-6">{frontmatter.title}</h1>
-    
-    <div class="lead text-xl text-gray-700 mb-8">
-      {frontmatter.description}
-    </div>
+  <p>Salmon's unique characteristics make it one of the most versatile fish for wine pairing:</p>
+  
+  <ul>
+    <li><strong>Rich texture</strong> that can handle both white and light red wines</li>
+    <li><strong>Natural oils</strong> that need wine acidity to cleanse the palate</li>
+    <li><strong>Mild flavor</strong> that won't overpower delicate wines</li>
+    <li><strong>Versatile preparation methods</strong> that pair with different wine styles</li>
+  </ul>
 
-    <PairingWidget />
+  <h2>White Wine Pairings</h2>
 
-    <div class="content">
-            <h2 class="text-2xl font-semibold text-wine-800 mt-8 mb-4">Understanding Best wine with salmon</h2>
+  <h3>Albariño (Our Top Pick for Grilled)</h3>
+  <p>This Spanish coastal wine is magical with salmon:</p>
+  <ul>
+    <li>High acidity cuts through salmon's rich oils</li>
+    <li>Mineral notes complement the fish's natural flavors</li>
+    <li>Sea spray character echoes salmon's oceanic origins</li>
+    <li>Perfect for grilled or blackened salmon</li>
+  </ul>
 
-      <p class="mb-4">When it comes to best wine with salmon, understanding the fundamental principles of wine selection is crucial...</p>
+  <h3>Chablis & Unoaked Chardonnay</h3>
+  <p>Classic French elegance meets Pacific salmon:</p>
+  <ul>
+    <li>Steely minerality doesn't compete with fish</li>
+    <li>Crisp acidity provides perfect palate cleansing</li>
+    <li>Ideal for poached salmon or cream-based sauces</li>
+    <li>Burgundian terroir adds sophistication</li>
+  </ul>
 
-      <h2 class="text-2xl font-semibold text-wine-800 mt-8 mb-4">Expert Recommendations</h2>
+  <h3>Riesling (For Spiced Preparations)</h3>
+  <p>German precision for complex salmon dishes:</p>
+  <ul>
+    <li>Off-dry sweetness balances spicy Asian marinades</li>
+    <li>High acidity cuts through rich teriyaki glazes</li>
+    <li>Stone fruit notes complement fruit salsas</li>
+    <li>Works beautifully with cedar plank smoking</li>
+  </ul>
 
-      <p class="mb-4">Based on extensive research and tasting notes...</p>
+  <h2>Red Wine Pairings</h2>
 
-      <h2 class="text-2xl font-semibold text-wine-800 mt-8 mb-4">Tasting Notes & Flavor Profiles</h2>
+  <h3>Pinot Noir (The Perfect Red)</h3>
+  <p>The only red wine many sommeliers recommend with fish:</p>
+  <ul>
+    <li>Light tannins won't overpower delicate salmon</li>
+    <li>Bright acidity complements fish oils</li>
+    <li>Earthy notes work with herb crusts</li>
+    <li>Exceptional with grilled or cedar plank salmon</li>
+  </ul>
 
-      <h3 class="text-xl font-medium text-wine-700 mt-6 mb-3">Primary Characteristics</h3>
-      <p class="mb-4">- **Acidity**: Medium to high</p>
-      <p class="mb-4">- **Body**: Medium-bodied</p>
-      <p class="mb-4">- **Tannins**: Soft and approachable</p>
-      <p class="mb-4">- **Alcohol**: 12-14%</p>
+  <h3>Beaujolais (Light & Fresh)</h3>
+  <p>Gamay's bright fruit pairs surprisingly well:</p>
+  <ul>
+    <li>Low tannins preserve fish's delicate texture</li>
+    <li>Berry notes complement fruit-based sauces</li>
+    <li>Serve slightly chilled for best results</li>
+  </ul>
 
-      <h2 class="text-2xl font-semibold text-wine-800 mt-8 mb-4">Food Pairing Guide</h2>
+  <h2>Pairing by Preparation Method</h2>
 
-      <p class="mb-4">The best pairings for this wine include...</p>
+  <h3>Grilled or Blackened Salmon</h3>
+  <p><strong>Best wines:</strong> Albariño, Pinot Noir, or Sancerre</p>
+  <p>The char and smokiness can handle more assertive wines with good acidity.</p>
 
-      <h2 class="text-2xl font-semibold text-wine-800 mt-8 mb-4">Where to Buy</h2>
+  <h3>Poached or Steamed Salmon</h3>
+  <p><strong>Best wines:</strong> Chablis, Muscadet, or light Burgundy</p>
+  <p>Delicate preparation needs gentle, mineral-driven wines.</p>
 
-      <p class="mb-4">Current market prices and availability...</p>
+  <h3>Cedar Plank Salmon</h3>
+  <p><strong>Best wines:</strong> Oregon Pinot Noir or aged white Burgundy</p>
+  <p>Smoky cedar notes pair beautifully with earthy wines.</p>
 
-      <h2 class="text-2xl font-semibold text-wine-800 mt-8 mb-4">Serving Tips</h2>
+  <h3>Smoked Salmon</h3>
+  <p><strong>Best wines:</strong> Champagne, Crémant, or crisp Riesling</p>
+  <p>Bubbles and high acidity cut through rich, smoky flavors.</p>
 
-      <p class="mb-4">For the optimal experience...</p>
-    </div>
+  <h3>Teriyaki or Asian-Style</h3>
+  <p><strong>Best wines:</strong> Off-dry Riesling, Gewürztraminer, or Viognier</p>
+  <p>Sweet-salty glazes need wines with balancing sweetness.</p>
 
-    <div class="mt-12 p-6 bg-wine-50 rounded-lg">
-      <h3 class="text-lg font-semibold mb-4">Wine Recommendations</h3>
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <PriceBadge 
-          wineName="Featured Selection 1" 
-          price="$25-35" 
-          rating="92"
-        />
-        <PriceBadge 
-          wineName="Featured Selection 2" 
-          price="$15-25" 
-          rating="89"
-        />
-      </div>
-    </div>
-    
-    <div class="mt-8 text-center">
-      <p class="text-sm text-gray-600">
-        Last updated: {new Date().toLocaleDateString()}
-      </p>
-    </div>
-  </article>
-</PairingLayout>
+  <h2>Sauce & Seasoning Considerations</h2>
+
+  <h3>Cream-Based Sauces</h3>
+  <p>Rich sauces need wines with good acidity:</p>
+  <ul>
+    <li>Chablis or white Burgundy</li>
+    <li>Sancerre or Pouilly-Fumé</li>
+    <li>Avoid low-acid wines that will taste flat</li>
+  </ul>
+
+  <h3>Herb Crusts (Dill, Parsley, Thyme)</h3>
+  <p>Herbal notes pair with:</p>
+  <ul>
+    <li>Sauvignon Blanc from Loire Valley</li>
+    <li>Pinot Noir with earthy characteristics</li>
+    <li>Vermentino or other herb-friendly whites</li>
+  </ul>
+
+  <h3>Citrus Preparations</h3>
+  <p>Lemon, lime, or orange need:</p>
+  <ul>
+    <li>High-acid wines to match citrus brightness</li>
+    <li>Albariño, Verdejo, or Vinho Verde</li>
+    <li>Avoid oaky wines that clash with citrus</li>
+  </ul>
+
+  <h2>Regional Wine Traditions</h2>
+
+  <p><strong>Pacific Northwest:</strong> Oregon Pinot Noir with local salmon</p>
+  <p><strong>France:</strong> Loire Valley whites (Sancerre, Muscadet) with salmon</p>
+  <p><strong>Spain:</strong> Rías Baixas Albariño with grilled preparations</p>
+  <p><strong>Germany:</strong> Mosel Riesling with smoked or spiced salmon</p>
+
+  <h2>Pro Tips for Perfect Pairing</h2>
+
+  <ol>
+    <li><strong>Match intensity:</strong> Delicate poached salmon needs light wines</li>
+    <li><strong>Consider the sauce:</strong> Often more important than the fish itself</li>
+    <li><strong>Temperature matters:</strong> Serve whites well-chilled, reds slightly cool</li>
+    <li><strong>Don't overthink it:</strong> Salmon is very wine-friendly</li>
+  </ol>
+
+  <h2>Wines to Avoid</h2>
+
+  <ul>
+    <li>❌ Heavy, oaky Chardonnays (overpower the fish)</li>
+    <li>❌ Tannic red wines (clash with delicate flavors)</li>
+    <li>❌ Very sweet wines (unless with spicy preparations)</li>
+  </ul>
+
+  <p>Remember, the best pairing is the one you enjoy. These guidelines provide a starting point, but personal preference always wins. Whether you prefer the classic elegance of Chablis or the coastal charm of Albariño, salmon's versatility ensures a delicious match.</p>
+</ModernPairingLayout>

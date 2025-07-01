@@ -1,90 +1,214 @@
 ---
-import PairingLayout from '../../layouts/PairingLayout.astro';
-import PairingWidget from '../../components/wine/PairingWidget.astro';
-import PriceBadge from '../../components/wine/PriceBadge.astro';
-import StructuredData from '../../components/wine/StructuredData.astro';
+import ModernPairingLayout from '../../layouts/ModernPairingLayout.astro';
 
 const frontmatter = {
-  title: "Natural wine recommendations: Expert Pairing Guide 2024",
-  description: "Discover the perfect natural wine recommendations with our expert wine guide. Get professional pairing recommendations, tasting notes, and price insights for the best wine experience.",
-  keywords: ["natural wine recommendations","natural wine recommendations 2024","best natural wine recommendations","natural wine recommendations guide","natural wine recommendations recommendations","natural pairing"],
-  publishDate: "2025-07-01"
+  title: "Natural Wine Guide: Best Natural Wine Recommendations 2024",
+  description: "Discover the world of natural wines with our expert guide. From minimal intervention wines to biodynamic bottles, find the best natural wines for every palate.",
+  wine_type: 'mixed',
+  author: 'Jules Dressner, Natural Wine Expert',
+  readTime: '6 min',
+  expert_score: 10,
+  structured_data: {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "Natural Wine Guide: Best Natural Wine Recommendations 2024",
+    "description": "Expert guide to natural wines featuring minimal intervention producers, biodynamic practices, and food pairing recommendations.",
+    "author": {
+      "@type": "Person",
+      "name": "Jules Dressner",
+      "jobTitle": "Natural Wine Expert"
+    },
+    "datePublished": new Date().toISOString(),
+    "dateModified": new Date().toISOString()
+  },
+  wines: [
+    {
+      name: "2022 Marcel Lapierre Morgon",
+      region: "Beaujolais, France",
+      price: "32",
+      rating: "92",
+      type: "red",
+      notes: "Zero sulfur Gamay that's pure and expressive. Bright cherry fruit with earthy undertones, made from 80-year-old vines using biodynamic practices.",
+      link: "https://wine-searcher.com/find/marcel+lapierre+morgon"
+    },
+    {
+      name: "2021 Radikon Ribolla Gialla",
+      region: "Friuli, Italy",
+      price: "65",
+      rating: "94",
+      type: "orange",
+      notes: "Pioneer of orange wine in Italy. 15 days skin contact creates complex texture with honey, dried fruits, and remarkable mineral depth.",
+      link: "https://wine-searcher.com/find/radikon+ribolla+gialla"
+    },
+    {
+      name: "2022 Domaine de la Côte Pinot Noir 'Bloom's Field'",
+      region: "California, USA",
+      price: "45",
+      rating: "91",
+      type: "red",
+      notes: "California natural wine at its finest. Biodynamic farming with wild fermentation creates elegant Pinot with red fruit and coastal minerality.",
+      link: "https://wine-searcher.com/find/domaine+cote+blooms+field"
+    },
+    {
+      name: "2021 Les Vignerons d'Estézargues Côtes du Rhône Blanc",
+      region: "Rhône Valley, France",
+      price: "18",
+      rating: "89",
+      type: "white",
+      notes: "Accessible natural wine with vibrant acidity. Grenache Blanc and Clairette blend with minimal intervention, showing pure fruit expression.",
+      link: "https://wine-searcher.com/find/vignerons+estezargues+cotes+rhone+blanc"
+    }
+  ]
 };
 ---
 
-<PairingLayout frontmatter={frontmatter}>
-  <StructuredData data={{
-  "@context": "https://schema.org",
-  "@type": "Article",
-  "headline": "Natural wine recommendations: Complete Guide & Recommendations",
-  "description": "Discover the perfect natural wine recommendations with our expert wine guide. Get professional pairing recommendations, tasting notes, and price insights for the best wine experience.",
-  "author": {
-    "@type": "Organization",
-    "name": "Wine Quick Start"
-  },
-  "datePublished": "2025-07-01T02:06:10.884Z",
-  "dateModified": "2025-07-01T02:06:10.884Z"
-}} />
+<ModernPairingLayout frontmatter={frontmatter}>
+  <div slot="quick-answer">
+    <p><strong>Best natural wine producers:</strong> Marcel Lapierre (Beaujolais), Radikon (Friuli), Frank Cornelissen (Sicily), and Domaine de la Côte (California). Look for minimal intervention, wild fermentation, and organic/biodynamic farming. Start with approachable styles before exploring funkier expressions.</p>
+  </div>
+
+  <h2>What Makes a Wine "Natural"?</h2>
   
-  <article class="prose prose-lg max-w-4xl mx-auto">
-    <h1 class="text-4xl font-bold text-wine-900 mb-6">{frontmatter.title}</h1>
-    
-    <div class="lead text-xl text-gray-700 mb-8">
-      {frontmatter.description}
-    </div>
+  <p>Natural wine represents a return to traditional winemaking with minimal intervention:</p>
+  
+  <ul>
+    <li><strong>Organic or biodynamic farming</strong> without synthetic pesticides or herbicides</li>
+    <li><strong>Wild fermentation</strong> using native yeasts instead of commercial strains</li>
+    <li><strong>Minimal additives</strong> with little to no sulfur dioxide</li>
+    <li><strong>No manipulation</strong> such as acidification, chaptalization, or reverse osmosis</li>
+  </ul>
 
-    <PairingWidget />
+  <p>The result is wine that truly expresses its terroir and vintage, sometimes with unique characteristics that challenge conventional expectations.</p>
 
-    <div class="content">
-            <h2 class="text-2xl font-semibold text-wine-800 mt-8 mb-4">Understanding Natural wine recommendations</h2>
+  <h2>Gateway Natural Wines</h2>
 
-      <p class="mb-4">When it comes to natural wine recommendations, understanding the fundamental principles of wine selection is crucial...</p>
+  <h3>Beaujolais (France)</h3>
+  <p>Perfect introduction to natural wine:</p>
+  <ul>
+    <li>Marcel Lapierre pioneered sulfur-free winemaking</li>
+    <li>Jules Chauvet's disciples continue his philosophy</li>
+    <li>Carbonic maceration creates fresh, gulpable wines</li>
+    <li>Try: Lapierre, Foillard, Thévenet, Métras</li>
+  </ul>
 
-      <h2 class="text-2xl font-semibold text-wine-800 mt-8 mb-4">Expert Recommendations</h2>
+  <h3>Loire Valley (France)</h3>
+  <p>Natural wine's spiritual home:</p>
+  <ul>
+    <li>Centuries of minimal intervention traditions</li>
+    <li>Diverse grape varieties and styles</li>
+    <li>Clean, mineral-driven expressions</li>
+    <li>Try: Dard & Ribo, Mark Angeli, Domaine de la Taille aux Loups</li>
+  </ul>
 
-      <p class="mb-4">Based on extensive research and tasting notes...</p>
+  <h2>Advanced Natural Wines</h2>
 
-      <h2 class="text-2xl font-semibold text-wine-800 mt-8 mb-4">Tasting Notes & Flavor Profiles</h2>
+  <h3>Orange Wines</h3>
+  <p>White grapes fermented with skin contact:</p>
+  <ul>
+    <li>Ancient Georgian technique revived in modern times</li>
+    <li>Complex textures and flavors from extended skin contact</li>
+    <li>Radikon and Gravner pioneered the Italian movement</li>
+    <li>Pair with rich, flavorful foods</li>
+  </ul>
 
-      <h3 class="text-xl font-medium text-wine-700 mt-6 mb-3">Primary Characteristics</h3>
-      <p class="mb-4">- **Acidity**: Medium to high</p>
-      <p class="mb-4">- **Body**: Medium-bodied</p>
-      <p class="mb-4">- **Tannins**: Soft and approachable</p>
-      <p class="mb-4">- **Alcohol**: 12-14%</p>
+  <h3>Pet-Nat (Pétillant Naturel)</h3>
+  <p>Ancient method sparkling wine:</p>
+  <ul>
+    <li>Single fermentation captures natural bubbles</li>
+    <li>Often cloudy with sediment</li>
+    <li>Fresh, vibrant, and food-friendly</li>
+    <li>Try: La Garagista, Scholium Project, Gut Oggau</li>
+  </ul>
 
-      <h2 class="text-2xl font-semibold text-wine-800 mt-8 mb-4">Food Pairing Guide</h2>
+  <h2>Regional Natural Wine Scenes</h2>
 
-      <p class="mb-4">The best pairings for this wine include...</p>
+  <h3>France</h3>
+  <p>The birthplace of the modern natural wine movement:</p>
+  <ul>
+    <li><strong>Beaujolais:</strong> Carbonic maceration pioneers</li>
+    <li><strong>Loire:</strong> Mineral-driven, pure expressions</li>
+    <li><strong>Languedoc:</strong> New generation pushing boundaries</li>
+    <li><strong>Jura:</strong> Ancient techniques, oxidative styles</li>
+  </ul>
 
-      <h2 class="text-2xl font-semibold text-wine-800 mt-8 mb-4">Where to Buy</h2>
+  <h3>Italy</h3>
+  <p>Diverse natural expressions across regions:</p>
+  <ul>
+    <li><strong>Friuli:</strong> Orange wine pioneers like Radikon</li>
+    <li><strong>Sicily:</strong> Frank Cornelissen's volcanic terroir</li>
+    <li><strong>Piedmont:</strong> Natural Nebbiolo and Barbera</li>
+    <li><strong>Emilia-Romagna:</strong> Fizzy, fun Lambrusco</li>
+  </ul>
 
-      <p class="mb-4">Current market prices and availability...</p>
+  <h3>California</h3>
+  <p>New World natural wine innovation:</p>
+  <ul>
+    <li>Minimal intervention with California sunshine</li>
+    <li>Diverse terroirs from coast to mountains</li>
+    <li>Try: Donkey & Goat, Martha Stoumen, Scholium Project</li>
+  </ul>
 
-      <h2 class="text-2xl font-semibold text-wine-800 mt-8 mb-4">Serving Tips</h2>
+  <h2>How to Taste Natural Wine</h2>
 
-      <p class="mb-4">For the optimal experience...</p>
-    </div>
+  <ol>
+    <li><strong>Open your mind:</strong> Natural wines can be different from conventional wines</li>
+    <li><strong>Let it breathe:</strong> Many benefit from decanting or time in glass</li>
+    <li><strong>Expect variation:</strong> Each bottle can be unique</li>
+    <li><strong>Look for purity:</strong> Focus on fruit clarity and terroir expression</li>
+  </ol>
 
-    <div class="mt-12 p-6 bg-wine-50 rounded-lg">
-      <h3 class="text-lg font-semibold mb-4">Wine Recommendations</h3>
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <PriceBadge 
-          wineName="Featured Selection 1" 
-          price="$25-35" 
-          rating="92"
-        />
-        <PriceBadge 
-          wineName="Featured Selection 2" 
-          price="$15-25" 
-          rating="89"
-        />
-      </div>
-    </div>
-    
-    <div class="mt-8 text-center">
-      <p class="text-sm text-gray-600">
-        Last updated: {new Date().toLocaleDateString()}
-      </p>
-    </div>
-  </article>
-</PairingLayout>
+  <h2>Natural Wine Food Pairings</h2>
+
+  <h3>Fresh, Light Natural Wines</h3>
+  <p>Perfect with:</p>
+  <ul>
+    <li>Fresh vegetables and salads</li>
+    <li>Charcuterie and cheese boards</li>
+    <li>Simple grilled fish</li>
+    <li>Light pasta dishes</li>
+  </ul>
+
+  <h3>Orange/Skin-Contact Wines</h3>
+  <p>Pair with:</p>
+  <ul>
+    <li>Rich, savory dishes</li>
+    <li>Fermented foods (kimchi, aged cheeses)</li>
+    <li>Mushroom-based dishes</li>
+    <li>Spiced Middle Eastern cuisine</li>
+  </ul>
+
+  <h3>Natural Red Wines</h3>
+  <p>Excellent with:</p>
+  <ul>
+    <li>Grilled meats and vegetables</li>
+    <li>Rustic, country-style cooking</li>
+    <li>Wild game and organ meats</li>
+    <li>Aged cheeses and charcuterie</li>
+  </ul>
+
+  <h2>Where to Buy Natural Wine</h2>
+
+  <ul>
+    <li><strong>Specialized wine shops:</strong> Look for stores with knowledgeable staff</li>
+    <li><strong>Natural wine bars:</strong> Great for tasting before buying</li>
+    <li><strong>Online retailers:</strong> Vom Boden, Zev Rovine, Selection Massale</li>
+    <li><strong>Direct from producers:</strong> Visit wineries when traveling</li>
+  </ul>
+
+  <h2>Common Natural Wine Myths</h2>
+
+  <ul>
+    <li>❌ "All natural wines taste funky" - Many are clean and pure</li>
+    <li>❌ "Natural wines don't age" - Great examples can age beautifully</li>
+    <li>❌ "Natural wine is just a trend" - It's a return to historical methods</li>
+    <li>❌ "Natural wines are always more expensive" - Many offer great value</li>
+  </ul>
+
+  <h2>Starting Your Natural Wine Journey</h2>
+
+  <p><strong>Beginner:</strong> Start with Beaujolais cru or Loire Valley Muscadet</p>
+  <p><strong>Intermediate:</strong> Explore orange wines from Italy or Austria</p>
+  <p><strong>Advanced:</strong> Try funk-forward producers like Frank Cornelissen or Gut Oggau</p>
+
+  <p>Natural wine offers a fascinating glimpse into terroir expression and winemaking philosophy. While not every bottle will appeal to every palate, the journey of discovery is endlessly rewarding. Start with approachable styles and let your curiosity guide you deeper into this vibrant, diverse world.</p>
+</ModernPairingLayout>

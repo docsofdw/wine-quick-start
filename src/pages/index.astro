@@ -1,11 +1,226 @@
 ---
-import Welcome from '../components/Welcome.astro';
-import Layout from '../layouts/Layout.astro';
+import BaseLayout from '../layouts/BaseLayout.astro';
 
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+const pairings = [
+  {
+    title: "Best Wine with Salmon",
+    slug: "best-wine-with-salmon",
+    description: "Light whites like Albariño or delicate Pinot Noir perfectly complement salmon's rich oils.",
+    searches: "880",
+    readTime: "5 min"
+  },
+  {
+    title: "Pinot Noir Food Pairing",
+    slug: "pinot-noir-food-pairing", 
+    description: "The versatile red that pairs beautifully with everything from duck to mushrooms.",
+    searches: "1.2k",
+    readTime: "7 min"
+  },
+  {
+    title: "Wine for Mushroom Risotto",
+    slug: "wine-pairing-mushroom-risotto",
+    description: "Earthy Nebbiolo or aged Chardonnay enhance risotto's creamy umami flavors.",
+    searches: "320",
+    readTime: "4 min"
+  },
+  {
+    title: "Bordeaux Wine Guide",
+    slug: "bordeaux-wine-guide",
+    description: "Master the world's most prestigious wine region with our complete Bordeaux guide.",
+    searches: "2.4k", 
+    readTime: "10 min"
+  },
+  {
+    title: "Natural Wine Guide",
+    slug: "natural-wine-recommendations",
+    description: "Discover the best natural wines from organic vineyards around the world.",
+    searches: "1.5k",
+    readTime: "6 min"
+  }
+];
 ---
 
-<Layout>
-	<Welcome />
-</Layout>
+<BaseLayout 
+  title="Wine Quick Start - Expert Wine Pairings & Guides"
+  description="Perfect wine pairings for every meal. Expert recommendations, tasting notes, and insider knowledge to elevate your wine experience."
+>
+  <!-- Navigation -->
+  <nav class="fixed top-0 w-full z-50 glass-effect">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between items-center h-16">
+        <div class="flex items-center">
+          <span class="font-display text-2xl font-bold text-gradient">Wine Quick Start</span>
+        </div>
+        <div class="hidden md:flex space-x-8">
+          <a href="/wine-pairings/" class="text-gray-300 hover:text-white transition">Pairings</a>
+          <a href="/learn/" class="text-gray-300 hover:text-white transition">Learn</a>
+          <a href="/about/" class="text-gray-300 hover:text-white transition">About</a>
+        </div>
+        <button class="md:hidden p-2 text-white">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <section class="min-h-screen flex items-center justify-center px-4 pt-16 bg-charcoal">
+    <div class="max-w-7xl mx-auto text-center animate-fade-up">
+      <h1 class="font-display text-5xl sm:text-7xl md:text-8xl font-bold mb-6">
+        <span class="text-gradient">Perfect Wine</span><br>
+        <span class="text-white">For Every Moment</span>
+      </h1>
+      <p class="text-xl sm:text-2xl text-gray-300 mb-8 max-w-2xl mx-auto">
+        Expert wine pairings, curated recommendations, and insider knowledge to elevate your wine experience.
+      </p>
+      <div class="flex flex-col sm:flex-row gap-4 justify-center">
+        <a href="/wine-pairings/" class="wine-gradient text-white px-8 py-4 rounded-full font-semibold hover-float shadow-2xl inline-block">
+          Explore Pairings
+        </a>
+        <button class="glass-effect text-white px-8 py-4 rounded-full font-semibold hover:bg-white/10 transition">
+          Join 5,000+ Wine Lovers
+        </button>
+      </div>
+      
+      <!-- Trust Indicators -->
+      <div class="mt-16 flex flex-wrap justify-center gap-8 text-gray-400">
+        <div class="flex items-center gap-2">
+          <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+          </svg>
+          <span>4.9/5 from 500+ reviews</span>
+        </div>
+        <div class="flex items-center gap-2">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+          </svg>
+          <span>Updated daily</span>
+        </div>
+        <div class="flex items-center gap-2">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
+          </svg>
+          <span>Trusted by sommeliers</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Wine Pairing Cards -->
+  <section class="py-20 px-4 bg-charcoal">
+    <div class="max-w-7xl mx-auto">
+      <h2 class="font-display text-4xl sm:text-5xl font-bold text-center mb-4">
+        <span class="text-gradient">Popular Pairings</span>
+      </h2>
+      <p class="text-xl text-gray-300 text-center mb-12 max-w-2xl mx-auto">
+        Discover perfect wine matches for your favorite dishes
+      </p>
+      
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {pairings.map((pairing) => (
+          <article class="group relative overflow-hidden rounded-2xl glass-effect p-6 hover:transform hover:-translate-y-1 transition-all duration-300">
+            <div class="absolute inset-0 wine-gradient opacity-0 group-hover:opacity-10 transition-opacity"></div>
+            <div class="relative z-10">
+              <div class="mb-4">
+                <span class="inline-block px-3 py-1 bg-wine-500/20 text-wine-300 rounded-full text-sm font-medium">
+                  {pairing.searches} searches/mo
+                </span>
+              </div>
+              <h3 class="font-display text-2xl font-bold mb-2 text-white">{pairing.title}</h3>
+              <p class="text-gray-300 mb-4">{pairing.description}</p>
+              <div class="flex items-center justify-between">
+                <span class="text-sm text-gray-400">{pairing.readTime} read</span>
+                <a href={`/wine-pairings/${pairing.slug}/`} class="inline-flex items-center text-wine-400 hover:text-wine-300 font-medium transition">
+                  Read Guide
+                  <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                  </svg>
+                </a>
+              </div>
+            </div>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Email Capture Section -->
+  <section class="py-20 px-4 bg-black">
+    <div class="max-w-4xl mx-auto text-center">
+      <h2 class="font-display text-4xl sm:text-5xl font-bold mb-4 text-white">
+        Get Weekly Wine Wisdom
+      </h2>
+      <p class="text-xl text-gray-300 mb-8 max-w-2xl mx-auto">
+        Join thousands receiving expert pairing tips, seasonal recommendations, and exclusive deals every Friday.
+      </p>
+      <form class="flex flex-col sm:flex-row gap-4 max-w-md mx-auto" id="newsletter-form">
+        <input 
+          type="email" 
+          placeholder="your@email.com" 
+          required
+          class="flex-1 px-6 py-4 bg-white/10 border border-white/20 rounded-full text-white placeholder-gray-400 focus:outline-none focus:border-wine-400 transition"
+        />
+        <button 
+          type="submit" 
+          class="px-8 py-4 wine-gradient text-white rounded-full font-semibold hover:shadow-2xl hover-float transition"
+        >
+          Join Free
+        </button>
+      </form>
+      <p class="text-sm text-gray-500 mt-4">No spam, unsubscribe anytime. 5,234 wine lovers and counting.</p>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="bg-black border-t border-gray-800 py-12 px-4">
+    <div class="max-w-7xl mx-auto">
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
+        <div>
+          <h4 class="font-display text-xl font-bold text-gradient mb-4">Wine Quick Start</h4>
+          <p class="text-gray-400 text-sm">Expert wine knowledge, simplified.</p>
+        </div>
+        <div>
+          <h5 class="font-semibold mb-3 text-white">Explore</h5>
+          <ul class="space-y-2 text-sm text-gray-400">
+            <li><a href="/wine-pairings/" class="hover:text-white transition">Wine Pairings</a></li>
+            <li><a href="/guides/" class="hover:text-white transition">Wine Guides</a></li>
+            <li><a href="/learn/" class="hover:text-white transition">Learn Wine</a></li>
+          </ul>
+        </div>
+        <div>
+          <h5 class="font-semibold mb-3 text-white">Resources</h5>
+          <ul class="space-y-2 text-sm text-gray-400">
+            <li><a href="/wine-101/" class="hover:text-white transition">Wine 101</a></li>
+            <li><a href="/tasting-guide/" class="hover:text-white transition">Tasting Guide</a></li>
+            <li><a href="/storage-tips/" class="hover:text-white transition">Storage Tips</a></li>
+          </ul>
+        </div>
+        <div>
+          <h5 class="font-semibold mb-3 text-white">Connect</h5>
+          <ul class="space-y-2 text-sm text-gray-400">
+            <li><a href="/newsletter/" class="hover:text-white transition">Newsletter</a></li>
+            <li><a href="/contact/" class="hover:text-white transition">Contact</a></li>
+            <li><a href="/about/" class="hover:text-white transition">About</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="border-t border-gray-800 pt-8 text-center text-sm text-gray-400">
+        <p>&copy; 2024 Wine Quick Start. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Newsletter form
+    document.getElementById('newsletter-form')?.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const form = e.target as HTMLFormElement;
+      const email = form.querySelector('input[type="email"]') as HTMLInputElement;
+      console.log('Email signup:', email?.value);
+      // TODO: Send to email service
+      form.innerHTML = '<p class="text-xl">Welcome to the club! Check your inbox 📧</p>';
+    });
+  </script>
+</BaseLayout>
