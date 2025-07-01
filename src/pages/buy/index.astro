@@ -1,0 +1,201 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+const featuredGuides = [
+  {
+    title: "Buy Natural Wine",
+    slug: "buy-natural-wine",
+    description: "Where to find and buy the best natural wines online and in stores. Complete guide with price comparisons and trusted retailers.",
+    readTime: "6 min",
+    category: "Natural",
+    priceRange: "$15-45"
+  },
+  {
+    title: "Buy Orange Wine",
+    slug: "buy-orange-wine",
+    description: "Expert guide to purchasing orange wines, from budget-friendly bottles to premium selections from top producers worldwide.",
+    readTime: "5 min",
+    category: "Orange",
+    priceRange: "$18-60"
+  },
+  {
+    title: "Orange Wine Price Guide",
+    slug: "orange-wine-price",
+    description: "Complete pricing guide for orange wines from budget to premium. Learn when to splurge and when to save on quality bottles.",
+    readTime: "4 min",
+    category: "Pricing",
+    priceRange: "$12-80"
+  },
+  {
+    title: "Natural Wine Buy Guide",
+    slug: "natural-wine-buy",
+    description: "Best natural wine retailers and what to look for when shopping.",
+    readTime: "5 min",
+    category: "Natural",
+    priceRange: "$20-50"
+  },
+  {
+    title: "Orange Wine Buy Guide",
+    slug: "orange-wine-buy",
+    description: "Where to buy authentic orange wines and avoid counterfeits.",
+    readTime: "4 min",
+    category: "Orange",
+    priceRange: "$15-40"
+  }
+];
+
+const categories = [
+  { name: "Natural", count: 8, icon: "🌱", description: "Organic & biodynamic wines" },
+  { name: "Orange", count: 6, icon: "🧡", description: "Skin-contact white wines" },
+  { name: "Pricing", count: 12, icon: "💰", description: "Price guides & value picks" },
+  { name: "Regions", count: 10, icon: "🗺️", description: "Regional buying guides" },
+  { name: "Online", count: 15, icon: "🛒", description: "Best online wine shops" },
+  { name: "Local", count: 7, icon: "🏪", description: "Find local wine stores" }
+];
+
+const priceRanges = [
+  { range: "Under $20", count: 45, description: "Great everyday wines" },
+  { range: "$20-40", count: 38, description: "Premium quality picks" },
+  { range: "$40-80", count: 22, description: "Special occasion wines" },
+  { range: "$80+", count: 12, description: "Ultra-premium bottles" }
+];
+
+const schema = {
+  "@context": "https://schema.org",
+  "@type": "CollectionPage",
+  "name": "Buy Wine - Best Wine Purchasing Guides & Price Comparisons",
+  "description": "Expert wine buying guides with price comparisons, retailer reviews, and insider tips. Find the best wines to buy online and in stores.",
+  "url": "https://winequickstart.com/buy/"
+};
+---
+
+<BaseLayout 
+  title="Buy Wine - Best Wine Purchasing Guides & Price Comparisons"
+  description="Expert wine buying guides with price comparisons, retailer reviews, and insider tips. Find the best wines to buy online and in stores."
+  schema={schema}
+>
+  <!-- Hero Section -->
+  <section class="bg-gradient-to-br from-purple-600 to-blue-700 text-white section-padding">
+    <div class="container text-center">
+      <h1 class="text-5xl font-bold mb-6 leading-tight">Buy Wine</h1>
+      <p class="text-xl mb-10 opacity-90 max-w-2xl mx-auto">
+        Expert buying guides with price comparisons, retailer reviews, and insider tips to help you find the perfect wines at the best prices.
+      </p>
+      
+      <!-- Quick Stats -->
+      <div class="flex flex-wrap justify-center gap-8 text-sm opacity-80">
+        <div class="flex items-center gap-2">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1"/>
+          </svg>
+          <span>Price Comparisons</span>
+        </div>
+        <div class="flex items-center gap-2">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+          </svg>
+          <span>Verified Retailers</span>
+        </div>
+        <div class="flex items-center gap-2">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/>
+          </svg>
+          <span>Best Value Picks</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Price Range Navigation -->
+  <section class="section-padding-sm bg-gray-50">
+    <div class="container">
+      <h2 class="text-xl font-semibold text-center mb-6 text-gray-900">Shop by Price Range</h2>
+      <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+        {priceRanges.map((price) => (
+          <button class="wine-card text-center p-4">
+            <div class="text-2xl mb-2">💰</div>
+            <h3 class="font-semibold text-gray-900 mb-1">
+              {price.range}
+            </h3>
+            <p class="text-xs text-gray-500 mb-2">{price.description}</p>
+            <span class="text-xs text-gray-400">{price.count} recommendations</span>
+          </button>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Categories -->
+  <section class="section-padding-sm border-b border-gray-200">
+    <div class="container">
+      <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+        {categories.map((category) => (
+          <button class="wine-card text-center p-4">
+            <div class="text-2xl mb-2">{category.icon}</div>
+            <h3 class="font-semibold text-gray-900 mb-1">
+              {category.name}
+            </h3>
+            <p class="text-xs text-gray-500 mb-2">{category.description}</p>
+            <span class="text-xs text-gray-400">{category.count} guides</span>
+          </button>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Featured Buying Guides -->
+  <section class="section-padding">
+    <div class="container">
+      <div class="text-center mb-12">
+        <h2 class="text-4xl font-bold mb-4 text-gray-900">Featured Buying Guides</h2>
+        <p class="text-lg text-gray-600 max-w-2xl mx-auto">
+          Expert recommendations on where to buy and what to pay for quality wines
+        </p>
+      </div>
+      
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {featuredGuides.map((guide) => (
+          <article class="wine-card group">
+            <div class="flex items-center justify-between mb-4">
+              <span class="inline-block px-3 py-1 bg-purple-100 text-purple-700 rounded-full text-sm font-medium">
+                {guide.category}
+              </span>
+              <span class="text-xs px-2 py-1 bg-green-100 text-green-700 rounded font-medium">
+                {guide.priceRange}
+              </span>
+            </div>
+            
+            <h3 class="text-xl font-bold mb-3 text-gray-900 group-hover:text-purple-600 transition">
+              <a href={`/buy/${guide.slug}/`}>{guide.title}</a>
+            </h3>
+            
+            <p class="text-gray-600 mb-6 leading-relaxed flex-grow">
+              {guide.description}
+            </p>
+            
+            <div class="flex items-center justify-between">
+              <span class="text-sm text-gray-500">{guide.readTime} read</span>
+              <a href={`/buy/${guide.slug}/`} 
+                 class="text-purple-600 font-medium hover:text-purple-700 transition">
+                View Guide →
+              </a>
+            </div>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <script>
+    // Price range and category filtering (placeholder for future implementation)
+    document.querySelectorAll('button[data-price], button[data-category]')?.forEach(button => {
+      button.addEventListener('click', (e) => {
+        const target = e.currentTarget as HTMLElement;
+        const priceRange = target.dataset.price;
+        const category = target.dataset.category;
+        console.log('Filter by:', { priceRange, category });
+        // TODO: Implement filtering
+      });
+    });
+  </script>
+</BaseLayout>

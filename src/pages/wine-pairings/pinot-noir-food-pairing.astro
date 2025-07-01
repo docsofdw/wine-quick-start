@@ -1,169 +1,192 @@
 ---
-import ModernPairingLayout from '../../layouts/ModernPairingLayout.astro';
+import ArticleLayout from '../../layouts/ArticleLayout.astro';
 
-const frontmatter = {
-  title: "Pinot Noir Food Pairing: The Ultimate Guide 2024",
-  description: "Master the art of Pinot Noir food pairing with our sommelier guide. From duck to mushrooms, discover perfect matches for this versatile red wine.",
-  wine_type: 'red',
-  author: 'Marcus Dubois, Master Sommelier',
-  readTime: '7 min',
-  expert_score: 10,
-  structured_data: {
-    "@context": "https://schema.org",
-    "@type": "Article",
-    "headline": "Pinot Noir Food Pairing: The Ultimate Guide 2024",
-    "description": "Expert Pinot Noir food pairing recommendations including duck, salmon, mushrooms, and cheese.",
-    "author": {
-      "@type": "Person",
-      "name": "Marcus Dubois",
-      "jobTitle": "Master Sommelier"
-    },
-    "datePublished": new Date().toISOString(),
-    "dateModified": new Date().toISOString()
+const schema = {
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "Pinot Noir Food Pairing - The Ultimate Guide",
+  "description": "Master the art of Pinot Noir food pairing with our sommelier guide. From duck to mushrooms, discover perfect matches for this versatile red wine.",
+  "author": {
+    "@type": "Person",
+    "name": "Marcus Dubois",
+    "jobTitle": "Master Sommelier"
   },
-  wines: [
-    {
-      name: "2020 Domaine de la Côte Pinot Noir",
-      region: "Sta. Rita Hills, California",
-      price: "45",
-      rating: "93",
-      type: "red",
-      notes: "Elegant and food-friendly with bright cherry, earth, and spice notes that complement a wide range of dishes.",
-      link: "https://wine-searcher.com/find/domaine+cote+pinot+noir"
-    },
-    {
-      name: "2019 Gevrey-Chambertin Louis Jadot",
-      region: "Burgundy, France",
-      price: "85",
-      rating: "95",
-      type: "red",
-      notes: "Classic Burgundian elegance with silky tannins, red fruit, and earthy minerality perfect for game and poultry.",
-      link: "https://wine-searcher.com/find/louis+jadot+gevrey+chambertin"
-    },
-    {
-      name: "2021 Argyle Pinot Noir Reserve",
-      region: "Willamette Valley, Oregon",
-      price: "32",
-      rating: "91",
-      type: "red",
-      notes: "Balanced acidity and soft tannins with cherry and forest floor notes that pair beautifully with salmon and duck.",
-      link: "https://wine-searcher.com/find/argyle+pinot+noir+reserve"
-    },
-    {
-      name: "2020 Cloudy Bay Pinot Noir",
-      region: "Central Otago, New Zealand",
-      price: "28",
-      rating: "90",
-      type: "red",
-      notes: "Fresh and vibrant with plum and herb notes, excellent with roasted vegetables and light meats.",
-      link: "https://wine-searcher.com/find/cloudy+bay+pinot+noir"
-    }
-  ]
+  "datePublished": "2024-01-15",
+  "dateModified": "2024-01-15"
 };
 ---
 
-<ModernPairingLayout frontmatter={frontmatter}>
-  <div slot="quick-answer">
-    <p><strong>Best foods for Pinot Noir:</strong> Duck, salmon, mushroom dishes, roasted chicken, and aged cheeses. Pinot Noir's moderate tannins and bright acidity make it incredibly food-friendly. Avoid very spicy foods or heavy red meat dishes.</p>
-  </div>
-
-  <h2>Why Pinot Noir is Perfect for Food</h2>
+<ArticleLayout 
+  title="Pinot Noir Food Pairing - The Ultimate Guide"
+  description="Master the art of Pinot Noir food pairing with our sommelier guide. From duck to mushrooms, discover perfect matches for this versatile red wine."
+  category="Red Wine Pairing"
+  author="Marcus Dubois, Master Sommelier"
+  readTime="7 min"
+  schema={schema}
+>
   
-  <p>Pinot Noir is considered the ultimate food wine because of its unique characteristics:</p>
+  <p><strong>Quick Answer:</strong> Pinot Noir pairs exceptionally with duck, salmon, mushrooms, and soft cheeses. Its light tannins, bright acidity, and earthy complexity make it the most food-friendly red wine.</p>
+
+  <h2>Why Pinot Noir is the Perfect Food Wine</h2>
+  
+  <p>Pinot Noir stands apart from other red wines due to its unique characteristics:</p>
   
   <ul>
-    <li><strong>Moderate tannins</strong> that won't overpower delicate flavors</li>
-    <li><strong>Bright acidity</strong> that cleanses the palate and cuts through rich foods</li>
-    <li><strong>Medium body</strong> that bridges light and heavy dishes</li>
-    <li><strong>Complex aromatics</strong> that complement rather than compete with food</li>
+    <li><strong>Light tannins</strong> that don't overpower delicate dishes</li>
+    <li><strong>Bright acidity</strong> that cleanses the palate</li>
+    <li><strong>Medium body</strong> that bridges light and heavy foods</li>
+    <li><strong>Earthy complexity</strong> that complements both meat and vegetables</li>
   </ul>
 
-  <h2>Classic Pinot Noir Pairings</h2>
+  <h2>Perfect Pinot Noir Pairings</h2>
 
-  <h3>Duck (The Perfect Match)</h3>
-  <p>Duck and Pinot Noir is one of gastronomy's greatest partnerships:</p>
+  <h3>Duck - The Classic Match</h3>
+  <p>The quintessential Pinot Noir pairing:</p>
   <ul>
-    <li>Duck's rich fat is balanced by Pinot's acidity</li>
-    <li>Earthy flavors in both wine and duck complement each other</li>
-    <li>Works with duck breast, confit, or roasted whole duck</li>
+    <li>Duck's rich, gamey flavor matches Pinot's earthy notes</li>
+    <li>Wine's acidity cuts through duck's fat</li>
+    <li>Both have medium intensity that complement each other</li>
+    <li>Traditional in Burgundy for centuries</li>
   </ul>
 
-  <h3>Salmon & Fish</h3>
-  <p>One of the few reds that pairs beautifully with fish:</p>
+  <h3>Salmon - Red Wine with Fish</h3>
+  <p>One of the few red wines that works with fish:</p>
   <ul>
-    <li>Light tannins won't clash with delicate fish flavors</li>
-    <li>Particularly excellent with grilled or cedar plank salmon</li>
-    <li>Also works with tuna, trout, and meaty fish preparations</li>
+    <li>Salmon's meaty texture can handle light red wine</li>
+    <li>Pinot's delicate tannins won't overpower the fish</li>
+    <li>Especially good with grilled or cedar plank salmon</li>
+    <li>Oregon Pinot Noir with Pacific salmon is magical</li>
   </ul>
+
+  <h3>Mushrooms - Earthy Perfection</h3>
+  <p>A natural partnership:</p>
+  <ul>
+    <li>Both wine and mushrooms share earthy, forest floor notes</li>
+    <li>Pinot's umami qualities enhance mushroom dishes</li>
+    <li>Perfect with mushroom risotto, pizza, or pasta</li>
+    <li>Wild mushrooms especially complement aged Burgundy</li>
+  </ul>
+
+  <h3>Roasted Chicken & Turkey</h3>
+  <p>Poultry's best friend:</p>
+  <ul>
+    <li>Light enough not to overpower white meat</li>
+    <li>Rich enough to complement dark meat</li>
+    <li>Herbs and spices in poultry echo wine's complexity</li>
+    <li>Excellent with both casual and holiday preparations</li>
+  </ul>
+
+  <h2>Cheese Pairings</h2>
+
+  <h3>Soft, Creamy Cheeses</h3>
+  <p><strong>Perfect matches:</strong> Brie, Camembert, triple-cream cheeses</p>
+  <p>Pinot's acidity cuts through rich, creamy textures while complementing earthy rinds.</p>
+
+  <h3>Medium-Aged Cheeses</h3>
+  <p><strong>Great options:</strong> Gruyère, aged Gouda, Comté</p>
+  <p>Nutty, complex flavors in aged cheeses mirror Pinot's sophistication.</p>
+
+  <h3>Goat Cheese</h3>
+  <p>Fresh or aged goat cheese works beautifully:</p>
+  <ul>
+    <li>Tangy cheese balances wine's fruit</li>
+    <li>Especially good with herb-crusted goat cheese</li>
+    <li>Try with warm goat cheese salads</li>
+  </ul>
+
+  <h2>Vegetarian Pinot Noir Pairings</h2>
 
   <h3>Mushroom Dishes</h3>
-  <p>Pinot Noir's earthy character makes it ideal for mushrooms:</p>
   <ul>
-    <li>Wild mushroom risotto becomes transcendent</li>
-    <li>Mushroom pasta, soups, and tarts all work beautifully</li>
-    <li>The wine's earthiness echoes mushroom terroir</li>
+    <li>Mushroom risotto with aged Parmesan</li>
+    <li>Wild mushroom pizza with truffle oil</li>
+    <li>Portobello mushroom "steaks"</li>
+    <li>Mushroom and herb pasta</li>
   </ul>
 
-  <h2>Regional Pairing Styles</h2>
-
-  <h3>Burgundy (France)</h3>
-  <p>Elegant and refined, perfect for:</p>
+  <h3>Root Vegetables</h3>
   <ul>
-    <li>Coq au vin and classic French preparations</li>
-    <li>Aged soft cheeses like Brie and Camembert</li>
-    <li>Roasted chicken with herbs</li>
+    <li>Roasted beets with goat cheese</li>
+    <li>Caramelized carrots and parsnips</li>
+    <li>Sweet potato dishes</li>
+    <li>Roasted vegetable medleys</li>
   </ul>
 
-  <h3>Oregon Pinot Noir</h3>
-  <p>Fruit-forward and food-friendly, excellent with:</p>
+  <h2>Regional Pinot Noir Styles</h2>
+
+  <h3>Burgundy, France</h3>
+  <p><strong>Style:</strong> Elegant, earthy, mineral-driven</p>
+  <p><strong>Best with:</strong> Classic French cuisine, game birds, coq au vin</p>
+
+  <h3>Oregon, USA</h3>
+  <p><strong>Style:</strong> Bright fruit, balanced acidity, food-friendly</p>
+  <p><strong>Best with:</strong> Pacific salmon, roasted chicken, farm-to-table cuisine</p>
+
+  <h3>California (Sonoma/Santa Barbara)</h3>
+  <p><strong>Style:</strong> Riper fruit, slightly more body</p>
+  <p><strong>Best with:</strong> Grilled meats, barbecue, bold flavors</p>
+
+  <h3>New Zealand</h3>
+  <p><strong>Style:</strong> Bright, herbaceous, fresh</p>
+  <p><strong>Best with:</strong> Lamb, herbs, lighter preparations</p>
+
+  <h2>Cooking Methods That Love Pinot Noir</h2>
+
+  <h3>Roasting</h3>
+  <p>Roasted meats and vegetables develop caramelized flavors that complement Pinot's complexity.</p>
+
+  <h3>Braising</h3>
+  <p>Slow-cooked dishes with wine reductions are natural partners.</p>
+
+  <h3>Grilling</h3>
+  <p>Light char and smoke enhance Pinot's earthy characteristics.</p>
+
+  <h3>Sautéing</h3>
+  <p>Quick-cooked dishes with herbs and butter work beautifully.</p>
+
+  <h2>Expert Wine Recommendations</h2>
+
+  <h3>Domaine de la Côte Pinot Noir ($45)</h3>
+  <p>Elegant and food-friendly with bright cherry, earth, and spice notes that complement a wide range of dishes.</p>
+
+  <h3>Gevrey-Chambertin Louis Jadot ($85)</h3>
+  <p>Classic Burgundian elegance with silky tannins, red fruit, and earthy minerality perfect for game and poultry.</p>
+
+  <h3>Argyle Pinot Noir Reserve ($32)</h3>
+  <p>Balanced acidity and soft tannins with cherry and forest floor notes that pair beautifully with salmon and duck.</p>
+
+  <h2>What NOT to Pair with Pinot Noir</h2>
+
   <ul>
-    <li>Pacific Northwest salmon and seafood</li>
-    <li>Roasted pork tenderloin</li>
-    <li>Vegetarian dishes and roasted vegetables</li>
+    <li>❌ Very spicy foods (overwhelm delicate flavors)</li>
+    <li>❌ Heavy, creamy sauces (need more robust wines)</li>
+    <li>❌ Grilled red meat (better with Cabernet or Syrah)</li>
+    <li>❌ Very salty foods (clash with wine's elegance)</li>
   </ul>
 
-  <h3>California Pinot Noir</h3>
-  <p>Richer and more powerful, pairs well with:</p>
-  <ul>
-    <li>Grilled lamb chops</li>
-    <li>BBQ with fruit-based sauces</li>
-    <li>Stronger flavored dishes</li>
-  </ul>
-
-  <h2>Cheese Pairing Guide</h2>
-
-  <p>Pinot Noir works beautifully with cheese:</p>
-  <ul>
-    <li><strong>Soft-ripened:</strong> Brie, Camembert, triple cream cheeses</li>
-    <li><strong>Semi-hard:</strong> Gruyère, aged cheddar, Comté</li>
-    <li><strong>Goat cheese:</strong> Fresh chèvre, aged goat cheeses</li>
-    <li><strong>Avoid:</strong> Very strong blue cheeses (too overpowering)</li>
-  </ul>
-
-  <h2>Cooking Methods That Work</h2>
+  <h2>Serving Tips for Perfect Pairings</h2>
 
   <ol>
-    <li><strong>Roasting:</strong> Brings out complementary earthy flavors</li>
-    <li><strong>Grilling:</strong> Adds smokiness that pairs with wine's complexity</li>
-    <li><strong>Braising:</strong> Creates rich, wine-friendly sauces</li>
-    <li><strong>Sautéing:</strong> Quick cooking preserves delicate flavors</li>
+    <li><strong>Temperature:</strong> Serve slightly cool (60-65°F) for best food compatibility</li>
+    <li><strong>Glassware:</strong> Use Burgundy glasses to concentrate aromatics</li>
+    <li><strong>Timing:</strong> Open 30 minutes before serving to allow breathing</li>
+    <li><strong>Storage:</strong> Keep bottles on their side in cool, dark place</li>
   </ol>
-
-  <h2>Foods to Avoid</h2>
-
-  <ul>
-    <li>❌ Very spicy dishes (overwhelm the wine's subtlety)</li>
-    <li>❌ Heavy red meat steaks (too rich, need bigger wines)</li>
-    <li>❌ Overly sweet preparations (clash with wine's dry character)</li>
-    <li>❌ Very salty or heavily cured meats (compete with wine)</li>
-  </ul>
 
   <h2>Seasonal Pairing Ideas</h2>
 
-  <p><strong>Spring:</strong> Lamb with herbs, fresh salmon, asparagus dishes</p>
-  <p><strong>Summer:</strong> Grilled salmon, duck salad, tomato-based dishes</p>
-  <p><strong>Fall:</strong> Wild mushroom dishes, roasted duck, game birds</p>
-  <p><strong>Winter:</strong> Braised short ribs, coq au vin, aged cheeses</p>
+  <h3>Spring</h3>
+  <p>Fresh herbs, lamb, asparagus, morel mushrooms</p>
 
-  <p>The beauty of Pinot Noir lies in its versatility. As the saying goes, "Burgundy makes you think of silly things, Bordeaux makes you talk about them, and Champagne makes you do them." Start with these classics and let your palate guide you to new discoveries.</p>
-</ModernPairingLayout>
+  <h3>Summer</h3>
+  <p>Grilled salmon, herb-crusted chicken, farmers market vegetables</p>
+
+  <h3>Fall</h3>
+  <p>Duck, wild mushrooms, root vegetables, harvest cuisine</p>
+
+  <h3>Winter</h3>
+  <p>Braised meats, hearty stews, aged cheeses, comfort foods</p>
+
+  <p>Pinot Noir's versatility makes it the ultimate food wine. Its balance of fruit, earth, and acidity allows it to complement rather than compete with food. Whether you're enjoying a simple roasted chicken dinner or a sophisticated duck confit, Pinot Noir enhances the dining experience like no other red wine.</p>
+
+</ArticleLayout>

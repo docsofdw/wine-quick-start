@@ -1,0 +1,163 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+const featuredGuides = [
+  {
+    title: "What is Natural Wine?",
+    slug: "what-is-natural-wine",
+    description: "Everything you need to know about natural wine, from production methods to tasting notes and where to find the best bottles.",
+    readTime: "8 min",
+    category: "Wine Types"
+  },
+  {
+    title: "Bordeaux Wine Guide",
+    slug: "bordeaux-wine-guide",
+    description: "Master the world's most prestigious wine region with our complete guide to appellations, grape varieties, and vintage recommendations.",
+    readTime: "12 min",
+    category: "Wine Regions"
+  },
+  {
+    title: "What is Orange Wine?",
+    slug: "what-is-orange-wine",
+    description: "Discover the ancient winemaking technique that's taking the modern wine world by storm, with tasting notes and food pairing suggestions.",
+    readTime: "7 min",
+    category: "Wine Types"
+  },
+  {
+    title: "Best Orange Wine",
+    slug: "best-orange-wine",
+    description: "Our top picks for orange wines across all price points and styles.",
+    readTime: "6 min",
+    category: "Reviews"
+  },
+  {
+    title: "Natural Wine Recommendations",
+    slug: "natural-wine-recommendations",
+    description: "Curated selection of the finest natural wines from around the world.",
+    readTime: "10 min",
+    category: "Reviews"
+  }
+];
+
+const categories = [
+  { name: "Wine Types", count: 15, icon: "🍇", description: "Understand different wine styles" },
+  { name: "Wine Regions", count: 12, icon: "🗺️", description: "Explore famous wine territories" },
+  { name: "Reviews", count: 8, icon: "⭐", description: "Expert wine recommendations" },
+  { name: "Tasting", count: 6, icon: "👃", description: "Learn to taste like a pro" },
+  { name: "History", count: 4, icon: "📚", description: "Wine culture and traditions" },
+  { name: "Production", count: 5, icon: "🏭", description: "How wine is made" }
+];
+
+const schema = {
+  "@context": "https://schema.org",
+  "@type": "CollectionPage",
+  "name": "Learn About Wine - Expert Wine Education Guides",
+  "description": "Comprehensive wine education from certified sommeliers. Learn about wine varieties, regions, tasting techniques, and wine culture.",
+  "url": "https://winequickstart.com/learn/"
+};
+---
+
+<BaseLayout 
+  title="Learn About Wine - Expert Wine Education Guides"
+  description="Comprehensive wine education from certified sommeliers. Learn about wine varieties, regions, tasting techniques, and wine culture."
+  schema={schema}
+>
+  <!-- Hero Section -->
+  <section class="bg-gradient-to-br from-purple-600 to-blue-700 text-white section-padding">
+    <div class="container text-center">
+      <h1 class="text-5xl font-bold mb-6 leading-tight">Learn Wine</h1>
+      <p class="text-xl mb-10 opacity-90 max-w-2xl mx-auto">
+        Master wine with comprehensive guides from certified sommeliers. From basics to advanced techniques, start your wine education journey today.
+      </p>
+      
+      <!-- Quick Stats -->
+      <div class="flex flex-wrap justify-center gap-8 text-sm opacity-80">
+        <div class="flex items-center gap-2">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l9-5-9-5-9 5 9 5z"/>
+          </svg>
+          <span>50+ Expert Guides</span>
+        </div>
+        <div class="flex items-center gap-2">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+          </svg>
+          <span>Certified Sommelier Content</span>
+        </div>
+        <div class="flex items-center gap-2">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+          </svg>
+          <span>Beginner to Expert</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Categories -->
+  <section class="section-padding-sm bg-gray-50">
+    <div class="container">
+      <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+        {categories.map((category) => (
+          <button class="wine-card text-center p-4">
+            <div class="text-2xl mb-2">{category.icon}</div>
+            <h3 class="font-semibold text-gray-900 mb-1">
+              {category.name}
+            </h3>
+            <p class="text-xs text-gray-500 mb-2">{category.description}</p>
+            <span class="text-xs text-gray-400">{category.count} guides</span>
+          </button>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Featured Guides -->
+  <section class="section-padding">
+    <div class="container">
+      <div class="text-center mb-12">
+        <h2 class="text-4xl font-bold mb-4 text-gray-900">Featured Guides</h2>
+        <p class="text-lg text-gray-600 max-w-2xl mx-auto">
+          Essential wine knowledge curated by our expert sommeliers
+        </p>
+      </div>
+      
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {featuredGuides.map((guide) => (
+          <article class="wine-card group">
+            <div class="flex items-center justify-between mb-4">
+              <span class="inline-block px-3 py-1 bg-purple-100 text-purple-700 rounded-full text-sm font-medium">
+                {guide.category}
+              </span>
+              <span class="text-sm text-gray-500">{guide.readTime}</span>
+            </div>
+            
+            <h3 class="text-xl font-bold mb-3 text-gray-900 group-hover:text-purple-600 transition">
+              <a href={`/learn/${guide.slug}/`}>{guide.title}</a>
+            </h3>
+            
+            <p class="text-gray-600 mb-6 leading-relaxed flex-grow">
+              {guide.description}
+            </p>
+            
+            <a href={`/learn/${guide.slug}/`} 
+               class="text-purple-600 font-medium hover:text-purple-700 transition">
+              Read Guide →
+            </a>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <script>
+    // Category functionality (placeholder for future implementation)
+    document.querySelectorAll('button[data-category]')?.forEach(button => {
+      button.addEventListener('click', (e) => {
+        const category = (e.currentTarget as HTMLElement).dataset.category;
+        console.log('Learn category:', category);
+        // TODO: Implement category filtering
+      });
+    });
+  </script>
+</BaseLayout>

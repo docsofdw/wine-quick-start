@@ -98,7 +98,7 @@ class WineContentAutomation {
   /**
    * Get count of pages created today
    */
-  private async getTodaysPagesCount(): Promise<number> {
+  protected async getTodaysPagesCount(): Promise<number> {
     const today = new Date().toISOString().split('T')[0];
     
     const { data, error } = await this.supabase
@@ -118,7 +118,7 @@ class WineContentAutomation {
   /**
    * Get unused keywords from database (prioritized by search volume and priority)
    */
-  private async getUnusedWineKeywords(limit: number = 5): Promise<WineKeyword[]> {
+  protected async getUnusedWineKeywords(limit: number = 5): Promise<WineKeyword[]> {
     // First, get existing page slugs to avoid duplicates
     const { data: existingPages } = await this.supabase
       .from('wine_pages')
@@ -174,7 +174,7 @@ class WineContentAutomation {
   /**
    * Generate wine pairing pages
    */
-  private async generateWinePages(keywords: WineKeyword[]): Promise<ContentTemplate[]> {
+  protected async generateWinePages(keywords: WineKeyword[]): Promise<ContentTemplate[]> {
     const pages: ContentTemplate[] = [];
     
     for (const kw of keywords) {
@@ -369,7 +369,7 @@ For the optimal experience with ${keyword.keyword}:
   /**
    * Quality check pages (6/10 threshold for better success rate)
    */
-  private async qualityCheckPages(pages: ContentTemplate[]): Promise<ContentTemplate[]> {
+  protected async qualityCheckPages(pages: ContentTemplate[]): Promise<ContentTemplate[]> {
     const qualityPages = [];
     
     for (const page of pages) {
@@ -419,7 +419,7 @@ For the optimal experience with ${keyword.keyword}:
   /**
    * Save pages to Supabase and mark keywords as used
    */
-  private async saveToDatabase(pages: ContentTemplate[]): Promise<void> {
+  protected async saveToDatabase(pages: ContentTemplate[]): Promise<void> {
     for (const page of pages) {
       // Save the page
       const { error: pageError } = await this.supabase
@@ -460,20 +460,72 @@ For the optimal experience with ${keyword.keyword}:
   }
 
   /**
-   * Generate Astro files
+   * Determine the best filepath based on keyword intent and type
    */
-  private async generateAstroFiles(pages: ContentTemplate[]): Promise<void> {
+  protected determineFilepath(keyword: string): string {
+    const lowerKeyword = keyword.toLowerCase();
+    
+    // Purchase-focused content
+    if (lowerKeyword.includes('buy') || 
+        lowerKeyword.includes('price') || 
+        lowerKeyword.includes('cost') ||
+        lowerKeyword.includes('purchase') ||
+        lowerKeyword.includes('where to buy')) {
+      return 'buy';
+    }
+    
+    // Educational content
+    if (lowerKeyword.includes('what is') ||
+        lowerKeyword.includes('guide') ||
+        lowerKeyword.includes('best') ||
+        lowerKeyword.includes('how to') ||
+        lowerKeyword.includes('learn') ||
+        lowerKeyword.includes('understanding') ||
+        lowerKeyword.includes('types of') ||
+        lowerKeyword.includes('introduction')) {
+      return 'learn';
+    }
+    
+    // Food pairing content
+    if (lowerKeyword.includes('pairing') ||
+        lowerKeyword.includes('with food') ||
+        lowerKeyword.includes('goes with') ||
+        lowerKeyword.includes('pairs with') ||
+        lowerKeyword.includes('food match') ||
+        lowerKeyword.includes('serve with')) {
+      return 'wine-pairings';
+    }
+    
+    // Default: if it's about wine varieties or regions, put in learn
+    if (lowerKeyword.includes('wine') || 
+        lowerKeyword.includes('bordeaux') ||
+        lowerKeyword.includes('burgundy') ||
+        lowerKeyword.includes('pinot') ||
+        lowerKeyword.includes('chardonnay') ||
+        lowerKeyword.includes('cabernet')) {
+      return 'learn';
+    }
+    
+    // Fallback to wine-pairings
+    return 'wine-pairings';
+  }
+
+  /**
+   * Generate Astro files with smart filepath routing
+   */
+  protected async generateAstroFiles(pages: ContentTemplate[]): Promise<void> {
     const fs = await import('fs/promises');
     
     for (const page of pages) {
       const astroContent = this.generateAstroFile(page);
-      const filePath = `src/pages/wine-pairings/${page.slug}.astro`;
+      const directory = this.determineFilepath(page.keywords[0]);
+      const filePath = `src/pages/${directory}/${page.slug}.astro`;
       
       try {
         await fs.writeFile(filePath, astroContent);
-        console.log(`📄 Generated Astro file: ${page.slug}.astro`);
+        console.log(`📄 Generated Astro file: ${directory}/${page.slug}.astro`);
       } catch (error) {
-        console.error(`Failed to write file ${page.slug}.astro:`, error);
+        console.error(`Failed to write file ${directory}/${page.slug}.astro:`, error);
       }
     }
   }

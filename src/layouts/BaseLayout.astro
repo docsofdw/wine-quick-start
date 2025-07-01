@@ -1,12 +1,16 @@
 ---
-// Base HTML layout for all site pages with modern design system
-// Props: { title?: string; description?: string }
+// Clean, Simple Base Layout - Consistent Style Guide
 import '../styles/global.css';
 
 const {
-  title = 'Wine Quick Start - Expert Wine Pairings & Guides',
-  description = 'Perfect wine pairings for every meal. Expert recommendations, tasting notes, and insider knowledge to elevate your wine experience.',
+  title = 'Wine Quick Start - Simple Wine Guidance',
+  description = 'Simple wine guidance from certified sommeliers. Find the right wine for any occasion.',
+  canonical,
+  schema
 } = Astro.props;
+
+const canonicalURL = canonical || new URL(Astro.url.pathname, Astro.site);
+const currentPath = Astro.url.pathname;
 ---
 
 <!DOCTYPE html>
@@ -15,132 +19,447 @@ const {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="generator" content={Astro.generator} />
+    
+    <!-- Core SEO -->
     <title>{title}</title>
     <meta name="description" content={description} />
+    <link rel="canonical" href={canonicalURL} />
     
-    <!-- SEO and Social -->
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonicalURL} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
-    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Wine Quick Start" />
+    
+    <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:url" content={canonicalURL} />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    
+    <!-- Additional Meta -->
+    <meta name="robots" content="index, follow" />
+    <meta name="author" content="Wine Quick Start" />
+    <meta name="theme-color" content="#7c3aed" />
     
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,100..900;1,9..144,100..900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+    
+    <!-- Structured Data -->
+    {schema && (
+      <script type="application/ld+json" set:html={JSON.stringify(schema)} />
+    )}
+    
+
     
     <style>
-        /* Wine color palette */
+        /* Clean Wine Design System */
         :root {
-            --wine-50: #fdf2f4;
-            --wine-100: #fce7eb;
-            --wine-200: #f9d0d9;
-            --wine-300: #f4a8bb;
-            --wine-400: #ed7798;
-            --wine-500: #e24776;
-            --wine-600: #ce2659;
-            --wine-700: #ad1a47;
-            --wine-800: #91173d;
-            --wine-900: #7c1638;
-            --wine-950: #44061a;
-            --cream: #FAF7F2;
-            --charcoal: #1C1917;
+            /* Purple Palette (Primary) */
+            --purple-50: #faf5ff;
+            --purple-100: #f3e8ff;
+            --purple-200: #e9d5ff;
+            --purple-300: #d8b4fe;
+            --purple-400: #c084fc;
+            --purple-500: #a855f7;
+            --purple-600: #9333ea;
+            --purple-700: #7c3aed;
+            --purple-800: #6b21a8;
+            --purple-900: #581c87;
+            
+            /* Blue Palette (Secondary) */
+            --blue-600: #2563eb;
+            --blue-700: #1d4ed8;
+            
+            /* Gray Palette */
+            --gray-50: #f9fafb;
+            --gray-100: #f3f4f6;
+            --gray-200: #e5e7eb;
+            --gray-300: #d1d5db;
+            --gray-400: #9ca3af;
+            --gray-500: #6b7280;
+            --gray-600: #4b5563;
+            --gray-700: #374151;
+            --gray-800: #1f2937;
+            --gray-900: #111827;
+            
+            /* Gradients */
+            --gradient-primary: linear-gradient(135deg, #7c3aed 0%, #2563eb 100%);
+            
+
+            
+            /* Shadows */
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+            --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+            --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1);
+            
+            /* Transitions */
+            --transition: 0.2s ease;
         }
 
-        .wine-gradient {
-            background: linear-gradient(135deg, #e24776 0%, #ad1a47 100%);
+        /* Base Styles */
+        html {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+            line-height: 1.6;
         }
         
+        body {
+            color: var(--gray-700);
+            background: #fefefe;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        
+        /* Typography */
+        h1, h2, h3, h4, h5, h6 {
+            font-weight: 700;
+            line-height: 1.2;
+            color: var(--gray-900);
+        }
+        
+        /* Custom container for consistent spacing */
+        .container {
+            max-width: 80rem;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+            width: 100%;
+        }
+        
+        @media (min-width: 1024px) {
+            .container {
+                padding: 0 2rem;
+            }
+        }
+        
+        /* Buttons */
+        .btn-primary {
+            background: var(--gradient-primary);
+            color: white;
+            font-weight: 600;
+            padding: 0.75rem 2rem;
+            border-radius: 0.5rem;
+            transition: all var(--transition);
+            box-shadow: var(--shadow-lg);
+            border: none;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            text-decoration: none;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-xl);
+        }
+        
+        .btn-secondary {
+            background: white;
+            color: var(--purple-600);
+            font-weight: 600;
+            padding: 0.75rem 2rem;
+            border-radius: 0.5rem;
+            transition: all var(--transition);
+            border: 1px solid var(--gray-200);
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            text-decoration: none;
+        }
+        
+        .btn-secondary:hover {
+            background: var(--gray-50);
+            border-color: var(--purple-300);
+        }
+        
+
+        
+        /* Links */
+        a {
+            color: var(--purple-600);
+            text-decoration: none;
+            transition: color var(--transition);
+        }
+        
+        a:hover {
+            color: var(--purple-700);
+        }
+        
+        /* Focus States */
+        .focus-ring:focus {
+            outline: 2px solid var(--purple-500);
+            outline-offset: 2px;
+        }
+        
+        /* Utilities */
         .text-gradient {
-            background: linear-gradient(135deg, #e24776 0%, #ad1a47 100%);
+            background: var(--gradient-primary);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
         }
         
-        .glass-effect {
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+        /* Mobile Menu */
+        .mobile-menu {
+            transform: translateX(100%);
+            transition: transform var(--transition);
         }
         
-        .hover-float:hover {
-            transform: translateY(-4px);
-            transition: transform 0.3s ease;
+        .mobile-menu.open {
+            transform: translateX(0);
         }
         
-        @keyframes float {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-10px); }
-        }
-        
-        @keyframes fadeUp {
-            0% { opacity: 0; transform: translateY(20px); }
-            100% { opacity: 1; transform: translateY(0); }
-        }
-        
-        @keyframes shimmer {
-            0% { background-position: -200% 0; }
-            100% { background-position: 200% 0; }
-        }
-        
-        .animate-float {
-            animation: float 6s ease-in-out infinite;
-        }
-        
-        .animate-fade-up {
-            animation: fadeUp 0.5s ease-out;
-        }
-        
-        .animate-shimmer {
-            animation: shimmer 2s linear infinite;
-        }
-        
-        .shimmer {
-            background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.08) 50%, transparent 100%);
-            background-size: 200% 100%;
-        }
-        
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: #1C1917;
-            color: white;
-        }
-        
-        h1, h2, h3, h4, h5, h6 {
-            font-family: 'Fraunces', serif;
-        }
 
-        /* Wine color utilities */
-        .bg-wine-50 { background-color: var(--wine-50); }
-        .bg-wine-100 { background-color: var(--wine-100); }
-        .bg-wine-500 { background-color: var(--wine-500); }
-        .bg-wine-600 { background-color: var(--wine-600); }
-        .bg-wine-700 { background-color: var(--wine-700); }
-        .text-wine-300 { color: var(--wine-300); }
-        .text-wine-400 { color: var(--wine-400); }
-        .text-wine-500 { color: var(--wine-500); }
-        .text-wine-600 { color: var(--wine-600); }
-        .text-wine-700 { color: var(--wine-700); }
-        .text-wine-800 { color: var(--wine-800); }
-        .text-wine-900 { color: var(--wine-900); }
-        .border-wine-400 { border-color: var(--wine-400); }
-        .border-wine-500 { border-color: var(--wine-500); }
-        .bg-charcoal { background-color: var(--charcoal); }
-        .hover\:bg-wine-700:hover { background-color: var(--wine-700); }
-        .hover\:text-wine-300:hover { color: var(--wine-300); }
-        .hover\:text-wine-700:hover { color: var(--wine-700); }
         
-        /* Display font utility */
-        .font-display {
-            font-family: 'Fraunces', serif;
+        /* Responsive Typography */
+        @media (max-width: 640px) {
+            h1 { font-size: 2.25rem; }
+            h2 { font-size: 1.875rem; }
+            h3 { font-size: 1.5rem; }
+        }
+        
+        /* Newsletter Form Fix */
+        .newsletter-form {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+            max-width: 28rem;
+            margin: 0 auto;
+        }
+        
+        @media (min-width: 640px) {
+            .newsletter-form {
+                flex-direction: row;
+            }
+        }
+        
+        .newsletter-input {
+            flex: 1;
+            padding: 0.75rem 1rem;
+            border-radius: 0.5rem;
+            background-color: rgb(31 41 55);
+            border: 1px solid rgb(55 65 81);
+            color: white;
+            font-size: 1rem;
+        }
+        
+        .newsletter-input::placeholder {
+            color: rgb(156 163 175);
+        }
+        
+        .newsletter-input:focus {
+            outline: none;
+            border-color: var(--purple-500);
+        }
+        
+        .newsletter-button {
+            background-color: var(--purple-600);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            font-size: 1rem;
+            border: none;
+            cursor: pointer;
+            transition: background-color var(--transition);
+        }
+        
+        .newsletter-button:hover {
+            background-color: var(--purple-700);
         }
     </style>
 </head>
-<body class="antialiased">
-    <slot />
+<body>
+    <!-- Skip Link for Accessibility -->
+    <a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 bg-purple-600 text-white px-4 py-2 rounded focus-ring">
+        Skip to main content
+    </a>
+    
+    <!-- Header -->
+    <header class="bg-white border-b border-gray-200 sticky top-0 z-50">
+        <div class="container">
+            <div class="flex justify-between items-center py-4">
+                <!-- Logo -->
+                <a href="/" class="text-2xl font-bold text-purple-600 focus-ring rounded px-2 py-1">
+                    Wine Quick Start
+                </a>
+                
+                <!-- Desktop Navigation -->
+                <nav class="hidden md:flex space-x-8">
+                    <a href="/wine-pairings/" 
+                       class={`text-gray-600 hover:text-purple-600 font-medium transition focus-ring rounded px-3 py-2 ${currentPath.startsWith('/wine-pairings') ? 'text-purple-600' : ''}`}>
+                        Pairings
+                    </a>
+                    <a href="/learn/" 
+                       class={`text-gray-600 hover:text-purple-600 font-medium transition focus-ring rounded px-3 py-2 ${currentPath.startsWith('/learn') ? 'text-purple-600' : ''}`}>
+                        Learn
+                    </a>
+                    <a href="/buy/" 
+                       class={`text-gray-600 hover:text-purple-600 font-medium transition focus-ring rounded px-3 py-2 ${currentPath.startsWith('/buy') ? 'text-purple-600' : ''}`}>
+                        Buy
+                    </a>
+                </nav>
+                
+                <!-- Mobile Menu Button -->
+                <button 
+                    class="md:hidden p-2 text-gray-600 hover:text-purple-600 transition focus-ring rounded"
+                    aria-label="Toggle mobile menu"
+                    aria-expanded="false"
+                    id="mobile-menu-button"
+                >
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" class="menu-icon"></path>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" class="close-icon hidden"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        
+        <!-- Mobile Navigation Menu -->
+        <div class="mobile-menu fixed inset-y-0 right-0 w-80 max-w-full bg-white border-l border-gray-200 md:hidden shadow-xl" id="mobile-menu">
+            <div class="flex flex-col h-full">
+                <div class="flex-1 overflow-y-auto pt-20 pb-6">
+                    <nav class="px-6 space-y-2">
+                        <a href="/wine-pairings/" class="block px-4 py-3 text-lg font-medium text-gray-700 hover:bg-gray-50 rounded-lg transition">
+                            🍷 Wine Pairings
+                        </a>
+                        <a href="/learn/" class="block px-4 py-3 text-lg font-medium text-gray-700 hover:bg-gray-50 rounded-lg transition">
+                            📚 Learn Wine
+                        </a>
+                        <a href="/buy/" class="block px-4 py-3 text-lg font-medium text-gray-700 hover:bg-gray-50 rounded-lg transition">
+                            🛒 Buy Wine
+                        </a>
+                        <div class="pt-6">
+                            <a href="#newsletter" class="btn-primary w-full justify-center">
+                                Join Newsletter
+                            </a>
+                        </div>
+                    </nav>
+                </div>
+                <div class="border-t border-gray-200 p-6">
+                    <p class="text-sm text-gray-500">Simple wine guidance from certified sommeliers.</p>
+                </div>
+            </div>
+        </div>
+    </header>
+    
+    <!-- Main Content -->
+    <main id="main-content">
+        <slot />
+    </main>
+    
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white section-padding-sm">
+        <div class="container">
+            <div class="grid md:grid-cols-4 gap-8 mb-8">
+                <div>
+                    <div class="text-xl font-bold text-purple-400 mb-4">Wine Quick Start</div>
+                    <p class="text-gray-400 text-sm">Simple wine guidance from certified sommeliers.</p>
+                </div>
+                <div>
+                    <h5 class="font-semibold mb-4">Explore</h5>
+                    <ul class="space-y-2 text-sm text-gray-400">
+                        <li><a href="/wine-pairings/" class="hover:text-white transition">Wine Pairings</a></li>
+                        <li><a href="/learn/" class="hover:text-white transition">Learn</a></li>
+                        <li><a href="/buy/" class="hover:text-white transition">Buy</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h5 class="font-semibold mb-4">Popular</h5>
+                    <ul class="space-y-2 text-sm text-gray-400">
+                        <li><a href="/wine-pairings/best-wine-with-salmon/" class="hover:text-white transition">Wine with Salmon</a></li>
+                        <li><a href="/learn/what-is-natural-wine/" class="hover:text-white transition">Natural Wine Guide</a></li>
+                        <li><a href="/buy/buy-natural-wine/" class="hover:text-white transition">Buy Natural Wine</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h5 class="font-semibold mb-4">Connect</h5>
+                    <ul class="space-y-2 text-sm text-gray-400">
+                        <li><a href="#newsletter" class="hover:text-white transition">Newsletter</a></li>
+                        <li><a href="/about/" class="hover:text-white transition">About</a></li>
+                        <li><a href="/contact/" class="hover:text-white transition">Contact</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="border-t border-gray-800 pt-8 text-center text-sm text-gray-400">
+                <p>&copy; 2024 Wine Quick Start. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+    
+    <!-- Mobile Menu Script -->
+    <script>
+        // Mobile menu functionality
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const menuIcon = document.querySelector('.menu-icon');
+        const closeIcon = document.querySelector('.close-icon');
+        
+        if (mobileMenuButton && mobileMenu) {
+            mobileMenuButton.addEventListener('click', () => {
+                const isOpen = mobileMenu.classList.contains('open');
+                
+                if (isOpen) {
+                    mobileMenu.classList.remove('open');
+                    mobileMenuButton.setAttribute('aria-expanded', 'false');
+                    menuIcon?.classList.remove('hidden');
+                    closeIcon?.classList.add('hidden');
+                    document.body.style.overflow = '';
+                } else {
+                    mobileMenu.classList.add('open');
+                    mobileMenuButton.setAttribute('aria-expanded', 'true');
+                    menuIcon?.classList.add('hidden');
+                    closeIcon?.classList.remove('hidden');
+                    document.body.style.overflow = 'hidden';
+                }
+            });
+            
+            // Close menu when clicking outside
+            document.addEventListener('click', (e) => {
+                if (!mobileMenu.contains(e.target) && !mobileMenuButton.contains(e.target)) {
+                    mobileMenu.classList.remove('open');
+                    mobileMenuButton.setAttribute('aria-expanded', 'false');
+                    menuIcon?.classList.remove('hidden');
+                    closeIcon?.classList.add('hidden');
+                    document.body.style.overflow = '';
+                }
+            });
+            
+            // Close menu on escape key
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' && mobileMenu.classList.contains('open')) {
+                    mobileMenu.classList.remove('open');
+                    mobileMenuButton.setAttribute('aria-expanded', 'false');
+                    menuIcon?.classList.remove('hidden');
+                    closeIcon?.classList.add('hidden');
+                    document.body.style.overflow = '';
+                    mobileMenuButton.focus();
+                }
+            });
+        }
+        
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', (e) => {
+                e.preventDefault();
+                const href = (e.currentTarget as HTMLAnchorElement).getAttribute('href');
+                const target = href ? document.querySelector(href) : null;
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+    </script>
 </body>
-</html> 
+</html>

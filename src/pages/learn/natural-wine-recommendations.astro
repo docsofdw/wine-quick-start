@@ -1,71 +1,31 @@
 ---
-import ModernPairingLayout from '../../layouts/ModernPairingLayout.astro';
+import ArticleLayout from '../../layouts/ArticleLayout.astro';
 
-const frontmatter = {
-  title: "Natural Wine Guide: Best Natural Wine Recommendations 2024",
-  description: "Discover the world of natural wines with our expert guide. From minimal intervention wines to biodynamic bottles, find the best natural wines for every palate.",
-  wine_type: 'mixed',
-  author: 'Jules Dressner, Natural Wine Expert',
-  readTime: '6 min',
-  expert_score: 10,
-  structured_data: {
-    "@context": "https://schema.org",
-    "@type": "Article",
-    "headline": "Natural Wine Guide: Best Natural Wine Recommendations 2024",
-    "description": "Expert guide to natural wines featuring minimal intervention producers, biodynamic practices, and food pairing recommendations.",
-    "author": {
-      "@type": "Person",
-      "name": "Jules Dressner",
-      "jobTitle": "Natural Wine Expert"
-    },
-    "datePublished": new Date().toISOString(),
-    "dateModified": new Date().toISOString()
+const schema = {
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "Natural Wine Guide - Best Natural Wine Recommendations",
+  "description": "Discover the world of natural wines with our expert guide. From minimal intervention wines to biodynamic bottles, find the best natural wines for every palate.",
+  "author": {
+    "@type": "Person",
+    "name": "Jules Dressner",
+    "jobTitle": "Natural Wine Expert"
   },
-  wines: [
-    {
-      name: "2022 Marcel Lapierre Morgon",
-      region: "Beaujolais, France",
-      price: "32",
-      rating: "92",
-      type: "red",
-      notes: "Zero sulfur Gamay that's pure and expressive. Bright cherry fruit with earthy undertones, made from 80-year-old vines using biodynamic practices.",
-      link: "https://wine-searcher.com/find/marcel+lapierre+morgon"
-    },
-    {
-      name: "2021 Radikon Ribolla Gialla",
-      region: "Friuli, Italy",
-      price: "65",
-      rating: "94",
-      type: "orange",
-      notes: "Pioneer of orange wine in Italy. 15 days skin contact creates complex texture with honey, dried fruits, and remarkable mineral depth.",
-      link: "https://wine-searcher.com/find/radikon+ribolla+gialla"
-    },
-    {
-      name: "2022 Domaine de la Côte Pinot Noir 'Bloom's Field'",
-      region: "California, USA",
-      price: "45",
-      rating: "91",
-      type: "red",
-      notes: "California natural wine at its finest. Biodynamic farming with wild fermentation creates elegant Pinot with red fruit and coastal minerality.",
-      link: "https://wine-searcher.com/find/domaine+cote+blooms+field"
-    },
-    {
-      name: "2021 Les Vignerons d'Estézargues Côtes du Rhône Blanc",
-      region: "Rhône Valley, France",
-      price: "18",
-      rating: "89",
-      type: "white",
-      notes: "Accessible natural wine with vibrant acidity. Grenache Blanc and Clairette blend with minimal intervention, showing pure fruit expression.",
-      link: "https://wine-searcher.com/find/vignerons+estezargues+cotes+rhone+blanc"
-    }
-  ]
+  "datePublished": "2024-01-15",
+  "dateModified": "2024-01-15"
 };
 ---
 
-<ModernPairingLayout frontmatter={frontmatter}>
-  <div slot="quick-answer">
-    <p><strong>Best natural wine producers:</strong> Marcel Lapierre (Beaujolais), Radikon (Friuli), Frank Cornelissen (Sicily), and Domaine de la Côte (California). Look for minimal intervention, wild fermentation, and organic/biodynamic farming. Start with approachable styles before exploring funkier expressions.</p>
-  </div>
+<ArticleLayout 
+  title="Natural Wine Guide - Best Natural Wine Recommendations"
+  description="Discover the world of natural wines with our expert guide. From minimal intervention wines to biodynamic bottles, find the best natural wines for every palate."
+  category="Wine Education"
+  author="Jules Dressner, Natural Wine Expert"
+  readTime="8 min"
+  schema={schema}
+>
+  
+  <p><strong>Quick Answer:</strong> Best natural wine producers include Marcel Lapierre (Beaujolais), Radikon (Friuli), Frank Cornelissen (Sicily), and Domaine de la Côte (California). Look for minimal intervention, wild fermentation, and organic/biodynamic farming. Start with approachable styles before exploring funkier expressions.</p>
 
   <h2>What Makes a Wine "Natural"?</h2>
   
@@ -210,5 +170,20 @@ const frontmatter = {
   <p><strong>Intermediate:</strong> Explore orange wines from Italy or Austria</p>
   <p><strong>Advanced:</strong> Try funk-forward producers like Frank Cornelissen or Gut Oggau</p>
 
+  <h2>Expert Wine Recommendations</h2>
+  
+  <h3>Marcel Lapierre Morgon ($32)</h3>
+  <p>Zero sulfur Gamay that's pure and expressive. Bright cherry fruit with earthy undertones, made from 80-year-old vines using biodynamic practices.</p>
+  
+  <h3>Radikon Ribolla Gialla ($65)</h3>
+  <p>Pioneer of orange wine in Italy. 15 days skin contact creates complex texture with honey, dried fruits, and remarkable mineral depth.</p>
+  
+  <h3>Domaine de la Côte Pinot Noir 'Bloom's Field' ($45)</h3>
+  <p>California natural wine at its finest. Biodynamic farming with wild fermentation creates elegant Pinot with red fruit and coastal minerality.</p>
+  
+  <h3>Les Vignerons d'Estézargues Côtes du Rhône Blanc ($18)</h3>
+  <p>Accessible natural wine with vibrant acidity. Grenache Blanc and Clairette blend with minimal intervention, showing pure fruit expression.</p>
+
   <p>Natural wine offers a fascinating glimpse into terroir expression and winemaking philosophy. While not every bottle will appeal to every palate, the journey of discovery is endlessly rewarding. Start with approachable styles and let your curiosity guide you deeper into this vibrant, diverse world.</p>
-</ModernPairingLayout>
+
+</ArticleLayout>

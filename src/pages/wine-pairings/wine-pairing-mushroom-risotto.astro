@@ -1,71 +1,31 @@
 ---
-import ModernPairingLayout from '../../layouts/ModernPairingLayout.astro';
+import ArticleLayout from '../../layouts/ArticleLayout.astro';
 
-const frontmatter = {
-  title: "Wine Pairing for Mushroom Risotto: Expert Guide 2024",
-  description: "Discover wines that enhance risotto's creamy texture and earthy mushroom flavors with our sommelier-approved guide.",
-  wine_type: 'red',
-  author: 'Sarah Chen, Sommelier',
-  readTime: '4 min',
-  expert_score: 10,
-  structured_data: {
-    "@context": "https://schema.org",
-    "@type": "Article",
-    "headline": "Wine Pairing for Mushroom Risotto: Expert Guide 2024",
-    "description": "Expert wine recommendations for mushroom risotto including Nebbiolo, Burgundy, and Barbera.",
-    "author": {
-      "@type": "Person",
-      "name": "Sarah Chen",
-      "jobTitle": "Sommelier"
-    },
-    "datePublished": new Date().toISOString(),
-    "dateModified": new Date().toISOString()
+const schema = {
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "Wine Pairing for Mushroom Risotto - Expert Guide",
+  "description": "Discover the perfect wines for mushroom risotto with our sommelier guide. From Nebbiolo to Burgundy, find ideal matches for this earthy, creamy dish.",
+  "author": {
+    "@type": "Person",
+    "name": "Sarah Chen",
+    "jobTitle": "Sommelier"
   },
-  wines: [
-    {
-      name: "2019 Produttori del Barbaresco Nebbiolo",
-      region: "Piedmont, Italy",
-      price: "28",
-      rating: "94",
-      type: "red",
-      notes: "Earthy notes of truffle and dried herbs echo the mushroom flavors while bright acidity cuts through the cream.",
-      link: "https://wine-searcher.com/find/produttori+barbaresco+nebbiolo"
-    },
-    {
-      name: "2018 Louis Jadot Chassagne-Montrachet",
-      region: "Burgundy, France",
-      price: "65",
-      rating: "93",
-      type: "white",
-      notes: "Rich, buttery Chardonnay with enough weight to match the risotto's creaminess and subtle oak notes.",
-      link: "https://wine-searcher.com/find/louis+jadot+chassagne+montrachet"
-    },
-    {
-      name: "2020 G.D. Vajra Barbera d'Alba",
-      region: "Piedmont, Italy", 
-      price: "22",
-      rating: "91",
-      type: "red",
-      notes: "Fresh acidity and soft tannins with earthy cherry notes that complement mushroom umami perfectly.",
-      link: "https://wine-searcher.com/find/vajra+barbera+alba"
-    },
-    {
-      name: "2019 Domaine Huet Vouvray Sec",
-      region: "Loire Valley, France",
-      price: "35",
-      rating: "92",
-      type: "white",
-      notes: "Crisp Chenin Blanc with honeyed notes and zippy acidity to balance the rich, creamy risotto.",
-      link: "https://wine-searcher.com/find/huet+vouvray+sec"
-    }
-  ]
+  "datePublished": "2024-01-15",
+  "dateModified": "2024-01-15"
 };
 ---
 
-<ModernPairingLayout frontmatter={frontmatter}>
-  <div slot="quick-answer">
-    <p><strong>Best wines for mushroom risotto:</strong> Nebbiolo, aged white Burgundy, or Barbera. These wines complement the dish's earthy, creamy profile without overpowering delicate mushroom flavors. For a budget option, try a crisp Vouvray.</p>
-  </div>
+<ArticleLayout 
+  title="Wine Pairing for Mushroom Risotto - Expert Guide"
+  description="Discover the perfect wines for mushroom risotto with our sommelier guide. From Nebbiolo to Burgundy, find ideal matches for this earthy, creamy dish."
+  category="Pairing Guide"
+  author="Sarah Chen, Sommelier"
+  readTime="6 min"
+  schema={schema}
+>
+  
+  <p><strong>Quick Answer:</strong> Nebbiolo, aged white Burgundy, or Barbera. These wines complement mushroom risotto's earthy, creamy profile without overpowering delicate mushroom flavors. For a budget option, try a crisp Vouvray.</p>
 
   <h2>Why These Wines Work</h2>
   
@@ -141,5 +101,20 @@ const frontmatter = {
     <li>❌ Sweet wines clash with the savory umami flavors</li>
   </ul>
 
+  <h2>Expert Wine Recommendations</h2>
+  
+  <h3>Produttori del Barbaresco Nebbiolo ($28)</h3>
+  <p>Earthy notes of truffle and dried herbs echo the mushroom flavors while bright acidity cuts through the cream.</p>
+  
+  <h3>Louis Jadot Chassagne-Montrachet ($65)</h3>
+  <p>Rich, buttery Chardonnay with enough weight to match the risotto's creaminess and subtle oak notes.</p>
+  
+  <h3>G.D. Vajra Barbera d'Alba ($22)</h3>
+  <p>Fresh acidity and soft tannins with earthy cherry notes that complement mushroom umami perfectly.</p>
+  
+  <h3>Domaine Huet Vouvray Sec ($35)</h3>
+  <p>Crisp Chenin Blanc with honeyed notes and zippy acidity to balance the rich, creamy risotto.</p>
+
   <p>Remember, the best pairing is ultimately the wine you enjoy. These recommendations provide a starting point for your own delicious discoveries.</p>
-</ModernPairingLayout>
+
+</ArticleLayout>
