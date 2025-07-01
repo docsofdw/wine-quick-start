@@ -539,7 +539,7 @@ For the optimal experience with ${keyword.keyword}:
     const expert = this.getRandomExpert();
     
     return `---
-import ModernPairingLayout from '../../layouts/ModernPairingLayout.astro';
+import ArticleLayout from '../../layouts/ArticleLayout.astro';
 
 const frontmatter = {
   title: "${page.title}",
@@ -553,14 +553,14 @@ const frontmatter = {
 };
 ---
 
-<ModernPairingLayout frontmatter={frontmatter}>
+<ArticleLayout title={frontmatter.title} description={frontmatter.description} author={frontmatter.author} readTime={frontmatter.readTime} category="Wine Guide" schema={frontmatter.structured_data}>
   <div slot="quick-answer">
     <p><strong>Quick Answer:</strong> ${this.generateQuickAnswer(page.keywords[0])}</p>
   </div>
 
 ${this.formatContentForAstro(page.content)}
 
-</ModernPairingLayout>`;
+</ArticleLayout>`;
   }
 
   /**

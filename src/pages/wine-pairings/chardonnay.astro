@@ -1,18 +1,24 @@
 ---
-import ModernPairingLayout from '../../layouts/ModernPairingLayout.astro';
+import ArticleLayout from '../../layouts/ArticleLayout.astro';
+
+const title = "Perfect Chardonnay - Expert Recommendations";
+const description = "Discover the perfect chardonnay with our expert wine guide. Get professional recommendations, tasting notes, and food pairing suggestions from certified sommeliers.";
+const author = "Wine Quick Start Expert";
+const readTime = "6 min";
+const category = "White Wine";
 
 const frontmatter = {
-  title: "Perfect Chardonnay - Expert Recommendations",
-  description: "Discover the perfect chardonnay with our expert wine guide. Get professional recommendations, tasting notes, and food pairing suggestions from certified sommeliers.",
+  title,
+  description,
   wine_type: "white",
-  author: "Wine Quick Start Expert",
-  readTime: "6 min",
+  author,
+  readTime,
   expert_score: 8,
   structured_data: {
     "@context": "https://schema.org",
     "@type": "Article",
-    "headline": "Perfect Chardonnay - Expert Recommendations",
-    "description": "Discover the perfect chardonnay with our expert wine guide. Get professional recommendations, tasting notes, and food pairing suggestions from certified sommeliers.",
+    "headline": title,
+    "description": description,
     "author": {
       "@type": "Organization",
       "name": "Wine Quick Start"
@@ -45,17 +51,9 @@ const frontmatter = {
 };
 ---
 
-<ModernPairingLayout frontmatter={frontmatter}>
-  <div slot="quick-answer">
-    <p><strong>Quick Answer:</strong> For chardonnay, focus on wines with balanced characteristics that complement food without overpowering. Look for quality producers and proper storage for the best experience.</p>
-  </div>
-
-  <div class="bg-wine-50 p-4 rounded-lg mb-8">
-    <div class="flex justify-between items-center text-sm text-gray-600">
-      <span>Search Volume: 60,500/month</span>
-      <span>Keyword Difficulty: 0/100</span>
-    </div>
-  </div>
+<ArticleLayout {title} {description} {author} {readTime} {category} schema={frontmatter.structured_data}>
+  
+  <p><strong>Quick Answer:</strong> For chardonnay, focus on wines with balanced characteristics that complement food without overpowering. Look for quality producers and proper storage for the best experience.</p>
 
     <h2>Chardonnay Overview</h2>
 
@@ -147,4 +145,4 @@ const frontmatter = {
 
   <p>Chardonnay from top producers can age 10-15 years and appreciate in value. Look for limited releases and vineyard-designate wines.</p>
 
-</ModernPairingLayout>
+</ArticleLayout>

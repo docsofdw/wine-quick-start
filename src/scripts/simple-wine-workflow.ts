@@ -418,7 +418,7 @@ For newcomers to ${keyword}, start with wines from established producers in the 
     const mockWines = this.generateMockWineData(data.keyword);
     
     return `---
-import ModernPairingLayout from '../../layouts/ModernPairingLayout.astro';
+import ArticleLayout from '../../layouts/ArticleLayout.astro';
 
 const frontmatter = {
   title: "${data.title}",
@@ -445,7 +445,7 @@ const frontmatter = {
 };
 ---
 
-<ModernPairingLayout frontmatter={frontmatter}>
+<ArticleLayout title={frontmatter.title} description={frontmatter.description} author={frontmatter.author} readTime={frontmatter.readTime} category="Wine Guide" schema={frontmatter.structured_data}>
   <div slot="quick-answer">
     <p><strong>Quick Answer:</strong> For ${data.keyword}, focus on wines with balanced characteristics that complement food without overpowering. Look for quality producers and proper storage for the best experience.</p>
   </div>
@@ -459,7 +459,7 @@ const frontmatter = {
 
   ${this.formatContentForModernLayout(data.content)}
 
-</ModernPairingLayout>`;
+</ArticleLayout>`;
   }
 
   /**
