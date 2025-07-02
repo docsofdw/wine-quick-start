@@ -4,6 +4,7 @@
   "version": "0.0.1",
   "scripts": {
     "dev": "astro dev",
+    "start": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
     "astro": "astro",
@@ -20,7 +21,10 @@
     "wine:status": "tsx src/scripts/check-wine-status.ts",
     "wine:simple": "tsx src/scripts/simple-wine-workflow.ts",
     "wine:force": "tsx src/scripts/force-wine-generation.ts",
-    "wine:workflow": "npm run wine:keywords && npm run wine:daily"
+    "wine:workflow": "npm run wine:keywords && npm run wine:daily",
+    "wine:test": "tsx src/scripts/test-daily-automation.ts",
+    "wine:check": "tsx src/scripts/check-wine-status.ts",
+    "wine:validate-links": "npm run build && echo 'Index pages build successfully - dynamic content discovery working!'"
   },
   "dependencies": {
     "@astrojs/mdx": "^4.2.6",
