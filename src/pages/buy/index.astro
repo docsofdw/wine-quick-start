@@ -18,17 +18,46 @@ interface AstroFile {
   };
 }
 
+// Helper function to properly capitalize titles
+function capitalizeTitle(title: string): string {
+  return title
+    .split(' ')
+    .map(word => {
+      // Handle special cases for wine terms
+      if (word.toLowerCase() === 'wine') return 'Wine';
+      if (word.toLowerCase() === 'bordeaux') return 'Bordeaux';
+      if (word.toLowerCase() === 'natural') return 'Natural';
+      if (word.toLowerCase() === 'orange') return 'Orange';
+      if (word.toLowerCase() === 'guide') return 'Guide';
+      if (word.toLowerCase() === 'recommendations') return 'Recommendations';
+      if (word.toLowerCase() === 'complete') return 'Complete';
+      if (word.toLowerCase() === 'professional') return 'Professional';
+      if (word.toLowerCase() === 'expert') return 'Expert';
+      if (word.toLowerCase() === 'cheap') return 'Cheap';
+      if (word.toLowerCase() === 'under') return 'Under';
+      if (word.toLowerCase() === 'price') return 'Price';
+      if (word.toLowerCase() === 'perfect') return 'Perfect';
+      if (word.toLowerCase() === 'tips') return 'Tips';
+      // Capitalize first letter of other words
+      return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
+    })
+    .join(' ');
+}
+
 // Dynamically discover all buy articles
 const buyFiles = await Astro.glob('./*.astro') as AstroFile[];
 const featuredGuides: GuideData[] = buyFiles
   .filter((file: AstroFile) => !file.url?.includes('/index')) // Exclude index.astro
   .map((file: AstroFile) => {
-    const frontmatter = file.frontmatter || file.default?.frontmatter || {};
+    // Try multiple ways to access frontmatter
+    const frontmatter = file.frontmatter || file.default?.frontmatter || (file as any).$$metadata?.frontmatter || {};
     const slug = file.url?.split('/').pop()?.replace(/\/$/, '') || 'unknown';
     
-    // Extract metadata from frontmatter
-    const title = frontmatter.title || `${slug.replace(/-/g, ' ')} Guide`;
-    const description = frontmatter.description || `Expert guide for ${slug.replace(/-/g, ' ')}`;
+    // Extract metadata from frontmatter with proper capitalization
+    let title = frontmatter.title || capitalizeTitle(slug.replace(/-/g, ' ') + ' Guide');
+    title = capitalizeTitle(title); // Ensure proper capitalization
+    
+    const description = frontmatter.description || `Expert guide for ${capitalizeTitle(slug.replace(/-/g, ' '))}`;
     const readTime = frontmatter.readTime || '5 min';
     
     // Categorize and price range based on content
