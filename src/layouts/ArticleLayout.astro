@@ -23,7 +23,7 @@ const {
         <div class="flex justify-center items-center gap-4 text-sm text-gray-500">
           <span>By {author}</span>
           <span>•</span>
-          <span>{readTime} read</span>
+          <time datetime={new Date().toISOString()}>{readTime} read</time>
         </div>
       </header>
       
@@ -35,14 +35,14 @@ const {
       <footer class="max-w-3xl mx-auto mt-16 pt-8 border-t border-gray-200">
         <div class="text-center">
           <h3 class="text-lg font-semibold mb-4 text-gray-900">Continue Reading</h3>
-          <div class="flex flex-col sm:flex-row gap-4 justify-center">
+          <nav class="flex flex-col sm:flex-row gap-4 justify-center">
             <a href="/wine-pairings/" class="btn-secondary">
               More Wine Pairings
             </a>
             <a href="/learn/" class="btn-secondary">
               Wine Education
             </a>
-          </div>
+          </nav>
         </div>
       </footer>
     </div>
@@ -50,51 +50,318 @@ const {
 </BaseLayout>
 
 <style>
+  /* Base Typography */
   .prose {
     color: #374151;
-    line-height: 1.7;
+    line-height: 1.75;
   }
   
+  /* Headings */
   .prose h2 {
     font-size: 1.875rem;
     font-weight: 700;
-    margin-top: 2rem;
-    margin-bottom: 1rem;
+    margin-top: 3rem;
+    margin-bottom: 1.5rem;
     color: #111827;
+    letter-spacing: -0.025em;
   }
   
   .prose h3 {
     font-size: 1.5rem;
     font-weight: 600;
-    margin-top: 1.5rem;
-    margin-bottom: 0.75rem;
+    margin-top: 2.5rem;
+    margin-bottom: 1.25rem;
     color: #111827;
+    letter-spacing: -0.025em;
   }
   
+  /* Paragraphs */
   .prose p {
-    margin-bottom: 1.25rem;
+    margin-bottom: 1.5rem;
+    font-size: 1.125rem;
   }
   
+  /* Lists */
   .prose ul, .prose ol {
-    margin-bottom: 1.25rem;
+    margin-top: 0;
+    margin-bottom: 2rem;
     padding-left: 1.5rem;
   }
   
   .prose li {
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.75rem;
+    line-height: 1.75;
+    font-size: 1.125rem;
+    list-style-type: disc;
   }
   
+  .prose li:last-child {
+    margin-bottom: 0;
+  }
+  
+  /* Bold text sections that act as subheadings */
+  .prose p strong:first-child:only-child {
+    display: block;
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #111827;
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+  }
+  
+  /* Ensure proper spacing between paragraph-heading pairs */
+  .prose p:has(strong:first-child:only-child) + ul {
+    margin-top: -0.5rem;
+  }
+  
+  /* Links */
+  .prose a {
+    color: #7c3aed;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+  
+  .prose a:hover {
+    color: #5b21b6;
+    text-decoration-thickness: 2px;
+  }
+  
+  /* Strong emphasis */
   .prose strong {
     font-weight: 600;
     color: #111827;
   }
   
-  .prose a {
-    color: #7c3aed;
-    text-decoration: underline;
+  /* Special handling for first elements */
+  .prose > *:first-child {
+    margin-top: 0 !important;
   }
   
-  .prose a:hover {
-    color: #5b21b6;
+  /* Last element spacing */
+  .prose > *:last-child {
+    margin-bottom: 0;
+  }
+  
+  /* Mobile optimizations */
+  @media (max-width: 639px) {
+    .prose {
+      font-size: 1rem;
+    }
+    
+    .prose h2 {
+      font-size: 1.5rem;
+      margin-top: 2.5rem;
+      margin-bottom: 1.25rem;
+    }
+    
+    .prose h3 {
+      font-size: 1.25rem;
+      margin-top: 2rem;
+      margin-bottom: 1rem;
+    }
+    
+    .prose p {
+      font-size: 1rem;
+      margin-bottom: 1.25rem;
+    }
+    
+    .prose li {
+      font-size: 1rem;
+      margin-bottom: 0.5rem;
+    }
+    
+    .prose p strong:first-child:only-child {
+      font-size: 1.125rem;
+      margin-top: 1.75rem;
+      margin-bottom: 0.875rem;
+    }
+  }
+  
+  /* Desktop optimizations */
+  @media (min-width: 1024px) {
+    .prose h2 {
+      font-size: 2.25rem;
+      margin-top: 4rem;
+      margin-bottom: 2rem;
+    }
+    
+    .prose h3 {
+      font-size: 1.75rem;
+      margin-top: 3rem;
+      margin-bottom: 1.5rem;
+    }
+    
+    .prose p {
+      font-size: 1.1875rem;
+      margin-bottom: 1.75rem;
+    }
+    
+    .prose li {
+      font-size: 1.1875rem;
+      margin-bottom: 0.875rem;
+    }
+    
+    .prose p strong:first-child:only-child {
+      font-size: 1.375rem;
+      margin-top: 2.5rem;
+      margin-bottom: 1.25rem;
+    }
+  }
+  
+  /* Print styles */
+  @media print {
+    .prose {
+      font-size: 12pt;
+      line-height: 1.5;
+    }
+    
+    .prose h2 {
+      page-break-before: auto;
+      page-break-after: avoid;
+    }
+    
+    .prose ul, .prose ol {
+      page-break-inside: avoid;
+    }
   }
 </style>
+
+<script>
+  // Process markdown-style bold text and optimize content structure
+  document.addEventListener('DOMContentLoaded', () => {
+    const prose = document.querySelector('.prose');
+    if (!prose) return;
+    
+    // Process all text nodes to convert **text** to <strong>text</strong>
+    function processTextNodes(element: Element) {
+      const walker = document.createTreeWalker(
+        element,
+        NodeFilter.SHOW_TEXT,
+        null
+      );
+      
+      const textNodes: Text[] = [];
+      let node;
+      while (node = walker.nextNode()) {
+        if (node.nodeValue && node.nodeValue.includes('**')) {
+          textNodes.push(node as Text);
+        }
+      }
+      
+      textNodes.forEach(textNode => {
+        const content = textNode.nodeValue || '';
+        if (content.includes('**')) {
+          const span = document.createElement('span');
+          span.innerHTML = content.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+          textNode.parentNode?.replaceChild(span, textNode);
+        }
+      });
+    }
+    
+    processTextNodes(prose);
+    
+    // Optimize spacing for standalone bold paragraphs
+    const paragraphs = prose.querySelectorAll('p');
+    paragraphs.forEach(p => {
+      const trimmedText = p.textContent?.trim() || '';
+      const strongElements = p.querySelectorAll('strong');
+      
+      // If paragraph contains only a strong element (like a subheading)
+      if (strongElements.length === 1 && 
+          strongElements[0].textContent?.trim() === trimmedText) {
+        p.classList.add('strong-heading');
+      }
+    });
+    
+    // Group orphaned list items
+    const children = Array.from(prose.children);
+    let orphanedLis: Element[] = [];
+    
+    for (let i = 0; i < children.length; i++) {
+      const child = children[i];
+      
+      if (child.tagName === 'LI') {
+        orphanedLis.push(child);
+        
+        // Check if next element is not LI or if it's the last element
+        const nextElement = children[i + 1];
+        if (!nextElement || nextElement.tagName !== 'LI') {
+          if (orphanedLis.length > 0) {
+            const ul = document.createElement('ul');
+            orphanedLis.forEach(li => {
+              ul.appendChild(li.cloneNode(true));
+            });
+            
+            prose.insertBefore(ul, orphanedLis[0]);
+            orphanedLis.forEach(li => li.remove());
+            orphanedLis = [];
+          }
+        }
+      }
+    }
+    
+    // Add semantic markup for better SEO
+    const firstParagraph = prose.querySelector('p');
+    if (firstParagraph && !firstParagraph.hasAttribute('itemprop')) {
+      firstParagraph.setAttribute('itemprop', 'description');
+    }
+    
+    // Ensure proper heading hierarchy
+    const headings = prose.querySelectorAll('h1, h2, h3, h4, h5, h6');
+    let lastLevel = 1;
+    headings.forEach(heading => {
+      const level = parseInt(heading.tagName.charAt(1));
+      if (level - lastLevel > 1) {
+        console.warn(`Heading hierarchy issue: ${heading.tagName} follows h${lastLevel}`);
+      }
+      lastLevel = level;
+    });
+  });
+  
+  // Lazy load images for better performance
+  if ('IntersectionObserver' in window) {
+    const imageObserver = new IntersectionObserver((entries, observer) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const img = entry.target as HTMLImageElement;
+          if (img.dataset.src) {
+            img.src = img.dataset.src;
+            img.removeAttribute('data-src');
+            observer.unobserve(img);
+          }
+        }
+      });
+    });
+    
+    document.querySelectorAll('img[data-src]').forEach(img => {
+      imageObserver.observe(img);
+    });
+  }
+</script>
+
+<!-- SEO Schema Markup -->
+<script type="application/ld+json" set:html={JSON.stringify({
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": title,
+  "description": description,
+  "author": {
+    "@type": "Person",
+    "name": author
+  },
+  "datePublished": new Date().toISOString(),
+  "dateModified": new Date().toISOString(),
+  "publisher": {
+    "@type": "Organization",
+    "name": "Wine Quick Start",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "/logo.png"
+    }
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": Astro.url.href
+  }
+})} />
+</script>

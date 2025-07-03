@@ -7,51 +7,23 @@ const author = "Wine Quick Start Expert";
 const readTime = "6 min";
 const category = "White Wine";
 
-const frontmatter = {
-  title,
-  description,
-  wine_type: "white",
-  author,
-  readTime,
-  expert_score: 8,
-  structured_data: {
-    "@context": "https://schema.org",
-    "@type": "Article",
-    "headline": title,
-    "description": description,
-    "author": {
-      "@type": "Organization",
-      "name": "Wine Quick Start"
-    },
-    "datePublished": "2025-07-01T16:58:25.637Z",
-    "dateModified": "2025-07-01T16:58:25.637Z",
-    "keywords": "chardonnay",
-    "articleSection": "Wine Guides"
+const schema = {
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": title,
+  "description": description,
+  "author": {
+    "@type": "Organization",
+    "name": "Wine Quick Start"
   },
-  wines: [
-  {
-    "name": "2020 Château Barrel Fermented Chardonnay",
-    "region": "Burgundy, France",
-    "price": "32",
-    "rating": "90",
-    "type": "white",
-    "notes": "Excellent example of chardonnay with balanced flavors and great food pairing potential.",
-    "link": "https://wine-searcher.com/find/chardonnay-1"
-  },
-  {
-    "name": "2021 Domaine Reserve Chardonnay",
-    "region": "Tuscany, Italy",
-    "price": "45",
-    "rating": "92",
-    "type": "white",
-    "notes": "Excellent example of chardonnay with balanced flavors and great food pairing potential.",
-    "link": "https://wine-searcher.com/find/chardonnay-2"
-  }
-]
+  "datePublished": "2025-07-01T16:58:25.637Z",
+  "dateModified": "2025-07-01T16:58:25.637Z",
+  "keywords": "chardonnay",
+  "articleSection": "Wine Guides"
 };
 ---
 
-<ArticleLayout {title} {description} {author} {readTime} {category} schema={frontmatter.structured_data}>
+<ArticleLayout {title} {description} {author} {readTime} {category} {schema}>
   
   <p><strong>Quick Answer:</strong> For chardonnay, focus on wines with balanced characteristics that complement food without overpowering. Look for quality producers and proper storage for the best experience.</p>
 
@@ -62,14 +34,12 @@ const frontmatter = {
   <h2>Tasting Profile</h2>
 
   <h3>Primary Characteristics</h3>
-
+  <ul>
     <li>**Color**: Medium ruby to deep garnet</li>
-
     <li>**Aroma**: Cherry, berry, and subtle earthy notes</li>
-
     <li>**Palate**: Balanced fruit with moderate tannins</li>
-
     <li>**Finish**: Clean and lingering</li>
+  </ul>
 
   <h3>BAT Framework</h3>
 
@@ -84,52 +54,46 @@ const frontmatter = {
   <h3>Under $20</h3>
 
   <p>**Columbia Crest Grand Estates** - $12-15</p>
-
+  <ul>
     <li>Great introduction to the varietal</li>
-
     <li>Consistent quality and availability</li>
-
     <li>Perfect for everyday drinking</li>
+  </ul>
 
   <h3>$20-40 Range</h3>
 
   <p>**La Crema Sonoma Coast** - $25-30</p>
-
+  <ul>
     <li>Complex and well-balanced</li>
-
     <li>Excellent food pairing wine</li>
-
     <li>From renowned California producer</li>
+  </ul>
 
   <h3>Premium ($40+)</h3>
 
   <p>**Domaine de la Côte Sta. Rita Hills** - $45-55</p>
-
+  <ul>
     <li>Premium expression of the varietal</li>
-
     <li>Limited production, cellar-worthy</li>
-
     <li>Investment-grade quality</li>
+  </ul>
 
   <h2>Food Pairing Guide</h2>
 
   <h3>Perfect Matches</h3>
-
+  <ul>
     <li>Grilled salmon and herb-crusted chicken</li>
-
     <li>Mushroom risotto and roasted vegetables</li>
-
     <li>Soft cheeses like Brie and Camembert</li>
-
     <li>Charcuterie and Mediterranean dishes</li>
+  </ul>
 
   <h3>Avoid Pairing With</h3>
-
+  <ul>
     <li>Very spicy foods that overpower the wine</li>
-
     <li>Heavy cream sauces that mask the fruit</li>
-
     <li>Strong blue cheeses that compete</li>
+  </ul>
 
   <h2>Storage & Serving</h2>
 
