@@ -53,197 +53,175 @@ const {
   /* Base Typography */
   .prose {
     color: #374151;
-    line-height: 1.75;
+    line-height: 1.8;
   }
   
   /* Headings */
-  .prose h2 {
+  .prose :global(h2) {
     font-size: 1.875rem;
     font-weight: 700;
+    margin-top: 3.5rem;
+    margin-bottom: 1.75rem;
+    color: #111827;
+    letter-spacing: -0.025em;
+  }
+  
+  .prose :global(h3) {
+    font-size: 1.5rem;
+    font-weight: 600;
     margin-top: 3rem;
     margin-bottom: 1.5rem;
     color: #111827;
     letter-spacing: -0.025em;
   }
   
-  .prose h3 {
-    font-size: 1.5rem;
-    font-weight: 600;
-    margin-top: 2.5rem;
-    margin-bottom: 1.25rem;
-    color: #111827;
-    letter-spacing: -0.025em;
-  }
-  
-  /* Paragraphs */
-  .prose p {
-    margin-bottom: 2.5rem;
+  /* All Paragraphs - Generous spacing */
+  .prose :global(p) {
+    margin-bottom: 2rem;
     font-size: 1.125rem;
   }
   
-  /* Reduce spacing when paragraph is followed by a list */
-  .prose p + ul,
-  .prose p + ol {
-    margin-top: -1rem;
-  }
-  
   /* Lists */
-  .prose ul, .prose ol {
+  .prose :global(ul), 
+  .prose :global(ol) {
     margin-top: 0;
-    margin-bottom: 2.5rem;
+    margin-bottom: 2rem;
     padding-left: 1.5rem;
   }
   
-  .prose li {
-    margin-bottom: 1rem;
-    line-height: 1.75;
+  .prose :global(li) {
+    margin-bottom: 0.75rem;
+    line-height: 1.8;
     font-size: 1.125rem;
     list-style-type: disc;
   }
   
-  .prose li:last-child {
+  .prose :global(li:last-child) {
     margin-bottom: 0;
   }
   
-  /* Bold text sections that act as subheadings */
-  .prose p strong:first-child {
-    display: inline;
-    font-size: inherit;
+  /* Bold paragraphs that act as subheadings */
+  .prose :global(p.bold-heading) {
+    font-size: 1.375rem;
     font-weight: 600;
+    margin-top: 3rem;
+    margin-bottom: 1.5rem;
     color: #111827;
   }
   
-  /* Paragraphs containing only bold text (major subheadings) */
-  .prose p:has(> strong:only-child) {
-    font-size: 1.375rem;
-    font-weight: 600;
-    margin-bottom: 2rem;
+  /* First bold heading shouldn't have top margin */
+  .prose :global(p.bold-heading:first-child) {
+    margin-top: 0;
   }
   
-  /* Add extra space before major subheadings (except the first one) */
-  .prose p:not(:first-child):has(> strong:only-child) {
-    margin-top: 3.5rem;
+  /* Reduce space between bold headings and their lists */
+  .prose :global(p.bold-heading + ul),
+  .prose :global(p.bold-heading + ol) {
+    margin-top: -0.5rem;
+  }
+  
+  /* Add space after lists before new sections */
+  .prose :global(ul + p),
+  .prose :global(ol + p) {
+    margin-top: 3rem;
   }
   
   /* Links */
-  .prose a {
+  .prose :global(a) {
     color: #7c3aed;
     text-decoration: underline;
     text-underline-offset: 2px;
   }
   
-  .prose a:hover {
+  .prose :global(a:hover) {
     color: #5b21b6;
     text-decoration-thickness: 2px;
   }
   
   /* Strong emphasis */
-  .prose strong {
+  .prose :global(strong) {
     font-weight: 600;
     color: #111827;
   }
   
-  /* Spacing between sections */
-  .prose ul + p,
-  .prose ol + p {
-    margin-top: 3.5rem;
-  }
-  
-  /* Bold text within list items */
-  .prose li strong:first-child {
-    font-weight: 600;
-    color: #111827;
-  }
-  
-  /* Special handling for first elements */
-  .prose > *:first-child {
+  /* First and last element handling */
+  .prose :global(> *:first-child) {
     margin-top: 0 !important;
   }
   
-  /* Last element spacing */
-  .prose > *:last-child {
+  .prose :global(> *:last-child) {
     margin-bottom: 0;
   }
   
   /* Mobile optimizations */
   @media (max-width: 639px) {
-    .prose {
-      font-size: 1rem;
-    }
-    
-    .prose h2 {
+    .prose :global(h2) {
       font-size: 1.5rem;
       margin-top: 2.5rem;
       margin-bottom: 1.25rem;
     }
     
-    .prose h3 {
+    .prose :global(h3) {
       font-size: 1.25rem;
       margin-top: 2rem;
       margin-bottom: 1rem;
     }
     
-    .prose p {
+    .prose :global(p) {
       font-size: 1rem;
-      margin-bottom: 2rem;
-    }
-    
-    .prose li {
-      font-size: 1rem;
-      margin-bottom: 0.75rem;
-    }
-    
-    .prose p:has(> strong:only-child) {
-      font-size: 1.25rem;
       margin-bottom: 1.5rem;
     }
     
-    .prose p:not(:first-child):has(> strong:only-child) {
-      margin-top: 3rem;
+    .prose :global(li) {
+      font-size: 1rem;
+      margin-bottom: 0.5rem;
     }
     
-    .prose ul + p,
-    .prose ol + p {
-      margin-top: 3rem;
+    .prose :global(p.bold-heading) {
+      font-size: 1.25rem;
+      margin-top: 2.5rem;
+      margin-bottom: 1.25rem;
+    }
+    
+    .prose :global(ul + p),
+    .prose :global(ol + p) {
+      margin-top: 2.5rem;
     }
   }
   
   /* Desktop optimizations */
   @media (min-width: 1024px) {
-    .prose h2 {
+    .prose :global(h2) {
       font-size: 2.25rem;
       margin-top: 4rem;
       margin-bottom: 2rem;
     }
     
-    .prose h3 {
+    .prose :global(h3) {
       font-size: 1.75rem;
-      margin-top: 3rem;
-      margin-bottom: 1.5rem;
+      margin-top: 3.5rem;
+      margin-bottom: 1.75rem;
     }
     
-    .prose p {
+    .prose :global(p) {
       font-size: 1.1875rem;
-      margin-bottom: 3rem;
-    }
-    
-    .prose li {
-      font-size: 1.1875rem;
-      margin-bottom: 1.25rem;
-    }
-    
-    .prose p:has(> strong:only-child) {
-      font-size: 1.5rem;
       margin-bottom: 2.5rem;
     }
     
-    .prose p:not(:first-child):has(> strong:only-child) {
-      margin-top: 4rem;
+    .prose :global(li) {
+      font-size: 1.1875rem;
+      margin-bottom: 1rem;
     }
     
-    .prose ul + p,
-    .prose ol + p {
-      margin-top: 4rem;
+    .prose :global(p.bold-heading) {
+      font-size: 1.5rem;
+      margin-top: 3.5rem;
+      margin-bottom: 1.75rem;
+    }
+    
+    .prose :global(ul + p),
+    .prose :global(ol + p) {
+      margin-top: 3.5rem;
     }
   }
   
@@ -254,12 +232,13 @@ const {
       line-height: 1.5;
     }
     
-    .prose h2 {
+    .prose :global(h2) {
       page-break-before: auto;
       page-break-after: avoid;
     }
     
-    .prose ul, .prose ol {
+    .prose :global(ul),
+    .prose :global(ol) {
       page-break-inside: avoid;
     }
   }
@@ -299,25 +278,26 @@ const {
     
     processTextNodes(prose);
     
-    // Optimize spacing for standalone bold paragraphs
+    // Process paragraphs to identify bold-only headings
     const paragraphs = prose.querySelectorAll('p');
     paragraphs.forEach(p => {
-      // First convert ** to strong tags
+      // First convert any remaining ** to strong tags
       if (p.innerHTML.includes('**')) {
         p.innerHTML = p.innerHTML.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
       }
       
-      // Check if this is a subheading paragraph (only contains bold text)
+      // Check if paragraph contains only bold text
       const trimmedText = p.textContent?.trim() || '';
-      const strongElement = p.querySelector('strong');
+      const strongElements = p.querySelectorAll('strong');
       
-      if (strongElement && strongElement.textContent?.trim() === trimmedText) {
-        // This is a subheading paragraph
-        p.classList.add('subheading');
+      // If the paragraph only contains one strong element and nothing else
+      if (strongElements.length === 1 && 
+          strongElements[0].textContent?.trim() === trimmedText) {
+        p.classList.add('bold-heading');
       }
     });
     
-    // Group orphaned list items
+    // Group orphaned list items into proper lists
     const children = Array.from(prose.children);
     let orphanedLis: Element[] = [];
     
@@ -345,7 +325,7 @@ const {
     }
     
     // Add semantic markup for better SEO
-    const firstParagraph = prose.querySelector('p');
+    const firstParagraph = prose.querySelector('p:not(.bold-heading)');
     if (firstParagraph && !firstParagraph.hasAttribute('itemprop')) {
       firstParagraph.setAttribute('itemprop', 'description');
     }
@@ -384,18 +364,17 @@ const {
 </script>
 
 <!-- SEO Schema Markup -->
-<script type="application/ld+json">
-{
+<script type="application/ld+json" set:html={JSON.stringify({
   "@context": "https://schema.org",
   "@type": "Article",
-  "headline": "{title}",
-  "description": "{description}",
+  "headline": title,
+  "description": description,
   "author": {
     "@type": "Person",
-    "name": "{author}"
+    "name": author
   },
-  "datePublished": "{new Date().toISOString()}",
-  "dateModified": "{new Date().toISOString()}",
+  "datePublished": new Date().toISOString(),
+  "dateModified": new Date().toISOString(),
   "publisher": {
     "@type": "Organization",
     "name": "Wine Quick Start",
@@ -406,7 +385,7 @@ const {
   },
   "mainEntityOfPage": {
     "@type": "WebPage",
-    "@id": "{Astro.url}"
+    "@id": Astro.url.href
   }
-}
+})} />
 </script>
