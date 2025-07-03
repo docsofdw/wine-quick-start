@@ -77,19 +77,25 @@ const {
   
   /* Paragraphs */
   .prose p {
-    margin-bottom: 1.5rem;
+    margin-bottom: 2.5rem;
     font-size: 1.125rem;
+  }
+  
+  /* Reduce spacing when paragraph is followed by a list */
+  .prose p + ul,
+  .prose p + ol {
+    margin-top: -1rem;
   }
   
   /* Lists */
   .prose ul, .prose ol {
     margin-top: 0;
-    margin-bottom: 2rem;
+    margin-bottom: 2.5rem;
     padding-left: 1.5rem;
   }
   
   .prose li {
-    margin-bottom: 0.75rem;
+    margin-bottom: 1rem;
     line-height: 1.75;
     font-size: 1.125rem;
     list-style-type: disc;
@@ -101,28 +107,22 @@ const {
   
   /* Bold text sections that act as subheadings */
   .prose p strong:first-child {
-    display: block;
-    font-size: 1.25rem;
+    display: inline;
+    font-size: inherit;
     font-weight: 600;
     color: #111827;
-    margin-bottom: 0.75rem;
   }
   
-  /* Paragraphs containing only bold text (subheadings) */
-  .prose p:has(> strong:first-child:last-child) {
-    margin-top: 2.5rem;
-    margin-bottom: 1rem;
+  /* Paragraphs containing only bold text (major subheadings) */
+  .prose p:has(> strong:only-child) {
+    font-size: 1.375rem;
+    font-weight: 600;
+    margin-bottom: 2rem;
   }
   
-  /* First subheading paragraph shouldn't have top margin */
-  .prose p:first-child:has(> strong:first-child:last-child) {
-    margin-top: 0;
-  }
-  
-  /* Lists following subheading paragraphs */
-  .prose p:has(> strong:first-child:last-child) + ul,
-  .prose p:has(> strong:first-child:last-child) + ol {
-    margin-top: 0;
+  /* Add extra space before major subheadings (except the first one) */
+  .prose p:not(:first-child):has(> strong:only-child) {
+    margin-top: 3.5rem;
   }
   
   /* Links */
@@ -146,13 +146,13 @@ const {
   /* Spacing between sections */
   .prose ul + p,
   .prose ol + p {
-    margin-top: 2.5rem;
+    margin-top: 3.5rem;
   }
   
-  /* Regular paragraphs between lists */
-  .prose ul + p:not(:has(> strong:first-child:last-child)),
-  .prose ol + p:not(:has(> strong:first-child:last-child)) {
-    margin-top: 1.75rem;
+  /* Bold text within list items */
+  .prose li strong:first-child {
+    font-weight: 600;
+    color: #111827;
   }
   
   /* Special handling for first elements */
@@ -185,21 +185,26 @@ const {
     
     .prose p {
       font-size: 1rem;
-      margin-bottom: 1.25rem;
+      margin-bottom: 2rem;
     }
     
     .prose li {
       font-size: 1rem;
-      margin-bottom: 0.5rem;
+      margin-bottom: 0.75rem;
     }
     
-    .prose p strong:first-child {
-      font-size: 1.125rem;
+    .prose p:has(> strong:only-child) {
+      font-size: 1.25rem;
+      margin-bottom: 1.5rem;
     }
     
-    .prose p:has(> strong:first-child:last-child) {
-      margin-top: 2rem;
-      margin-bottom: 0.875rem;
+    .prose p:not(:first-child):has(> strong:only-child) {
+      margin-top: 3rem;
+    }
+    
+    .prose ul + p,
+    .prose ol + p {
+      margin-top: 3rem;
     }
   }
   
@@ -219,21 +224,26 @@ const {
     
     .prose p {
       font-size: 1.1875rem;
-      margin-bottom: 1.75rem;
+      margin-bottom: 3rem;
     }
     
     .prose li {
       font-size: 1.1875rem;
-      margin-bottom: 0.875rem;
-    }
-    
-    .prose p strong:first-child {
-      font-size: 1.375rem;
-    }
-    
-    .prose p:has(> strong:first-child:last-child) {
-      margin-top: 3rem;
       margin-bottom: 1.25rem;
+    }
+    
+    .prose p:has(> strong:only-child) {
+      font-size: 1.5rem;
+      margin-bottom: 2.5rem;
+    }
+    
+    .prose p:not(:first-child):has(> strong:only-child) {
+      margin-top: 4rem;
+    }
+    
+    .prose ul + p,
+    .prose ol + p {
+      margin-top: 4rem;
     }
   }
   
