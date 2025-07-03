@@ -100,18 +100,29 @@ const {
   }
   
   /* Bold text sections that act as subheadings */
-  .prose p strong:first-child:only-child {
+  .prose p strong:first-child {
     display: block;
     font-size: 1.25rem;
     font-weight: 600;
     color: #111827;
-    margin-top: 2rem;
+    margin-bottom: 0.75rem;
+  }
+  
+  /* Paragraphs containing only bold text (subheadings) */
+  .prose p:has(> strong:first-child:last-child) {
+    margin-top: 2.5rem;
     margin-bottom: 1rem;
   }
   
-  /* Ensure proper spacing between paragraph-heading pairs */
-  .prose p:has(strong:first-child:only-child) + ul {
-    margin-top: -0.5rem;
+  /* First subheading paragraph shouldn't have top margin */
+  .prose p:first-child:has(> strong:first-child:last-child) {
+    margin-top: 0;
+  }
+  
+  /* Lists following subheading paragraphs */
+  .prose p:has(> strong:first-child:last-child) + ul,
+  .prose p:has(> strong:first-child:last-child) + ol {
+    margin-top: 0;
   }
   
   /* Links */
@@ -130,6 +141,18 @@ const {
   .prose strong {
     font-weight: 600;
     color: #111827;
+  }
+  
+  /* Spacing between sections */
+  .prose ul + p,
+  .prose ol + p {
+    margin-top: 2.5rem;
+  }
+  
+  /* Regular paragraphs between lists */
+  .prose ul + p:not(:has(> strong:first-child:last-child)),
+  .prose ol + p:not(:has(> strong:first-child:last-child)) {
+    margin-top: 1.75rem;
   }
   
   /* Special handling for first elements */
@@ -170,9 +193,12 @@ const {
       margin-bottom: 0.5rem;
     }
     
-    .prose p strong:first-child:only-child {
+    .prose p strong:first-child {
       font-size: 1.125rem;
-      margin-top: 1.75rem;
+    }
+    
+    .prose p:has(> strong:first-child:last-child) {
+      margin-top: 2rem;
       margin-bottom: 0.875rem;
     }
   }
@@ -201,9 +227,12 @@ const {
       margin-bottom: 0.875rem;
     }
     
-    .prose p strong:first-child:only-child {
+    .prose p strong:first-child {
       font-size: 1.375rem;
-      margin-top: 2.5rem;
+    }
+    
+    .prose p:has(> strong:first-child:last-child) {
+      margin-top: 3rem;
       margin-bottom: 1.25rem;
     }
   }
@@ -263,13 +292,18 @@ const {
     // Optimize spacing for standalone bold paragraphs
     const paragraphs = prose.querySelectorAll('p');
     paragraphs.forEach(p => {
-      const trimmedText = p.textContent?.trim() || '';
-      const strongElements = p.querySelectorAll('strong');
+      // First convert ** to strong tags
+      if (p.innerHTML.includes('**')) {
+        p.innerHTML = p.innerHTML.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+      }
       
-      // If paragraph contains only a strong element (like a subheading)
-      if (strongElements.length === 1 && 
-          strongElements[0].textContent?.trim() === trimmedText) {
-        p.classList.add('strong-heading');
+      // Check if this is a subheading paragraph (only contains bold text)
+      const trimmedText = p.textContent?.trim() || '';
+      const strongElement = p.querySelector('strong');
+      
+      if (strongElement && strongElement.textContent?.trim() === trimmedText) {
+        // This is a subheading paragraph
+        p.classList.add('subheading');
       }
     });
     
@@ -340,17 +374,18 @@ const {
 </script>
 
 <!-- SEO Schema Markup -->
-<script type="application/ld+json" set:html={JSON.stringify({
+<script type="application/ld+json">
+{
   "@context": "https://schema.org",
   "@type": "Article",
-  "headline": title,
-  "description": description,
+  "headline": "{title}",
+  "description": "{description}",
   "author": {
     "@type": "Person",
-    "name": author
+    "name": "{author}"
   },
-  "datePublished": new Date().toISOString(),
-  "dateModified": new Date().toISOString(),
+  "datePublished": "{new Date().toISOString()}",
+  "dateModified": "{new Date().toISOString()}",
   "publisher": {
     "@type": "Organization",
     "name": "Wine Quick Start",
@@ -361,7 +396,7 @@ const {
   },
   "mainEntityOfPage": {
     "@type": "WebPage",
-    "@id": Astro.url.href
+    "@id": "{Astro.url}"
   }
-})} />
+}
 </script>
