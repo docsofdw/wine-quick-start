@@ -38,3 +38,18 @@ CREATE INDEX idx_wine_pages_status ON wine_pages(status);
 CREATE INDEX idx_keyword_opportunities_priority ON keyword_opportunities(priority DESC);
 CREATE INDEX idx_keyword_opportunities_status ON keyword_opportunities(status);
 CREATE INDEX idx_keyword_opportunities_search_volume ON keyword_opportunities(search_volume DESC); 
+-- Newsletter Subscribers Table
+CREATE TABLE IF NOT EXISTS newsletter_subscribers (
+  id SERIAL PRIMARY KEY,
+  email TEXT UNIQUE NOT NULL,
+  subscribed_at TIMESTAMPTZ DEFAULT NOW(),
+  status TEXT DEFAULT 'active' CHECK (status IN ('active', 'unsubscribed')),
+  source TEXT DEFAULT 'website',
+  ip_address TEXT,
+  user_agent TEXT
+);
+
+-- Create index for email lookups
+CREATE INDEX IF NOT EXISTS idx_newsletter_email ON newsletter_subscribers(email);
+CREATE INDEX IF NOT EXISTS idx_newsletter_status ON newsletter_subscribers(status);
+

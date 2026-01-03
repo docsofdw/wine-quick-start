@@ -375,11 +375,11 @@ For the optimal experience with ${keyword.keyword}:
     for (const page of pages) {
       const score = this.calculateQualityScore(page);
       
-      if (score >= 6) {
+      if (score >= 8) {
         qualityPages.push(page);
         console.log(`✅ Page "${page.title}" passed quality check (${score}/10)`);
       } else {
-        console.log(`❌ Page "${page.title}" failed quality check (${score}/10)`);
+        console.log(`❌ Page "${page.title}" failed quality check (${score}/10) - needs improvement`);
       }
     }
     
@@ -554,9 +554,7 @@ const frontmatter = {
 ---
 
 <ArticleLayout title={frontmatter.title} description={frontmatter.description} author={frontmatter.author} readTime={frontmatter.readTime} category="Wine Guide" schema={frontmatter.structured_data}>
-  <div slot="quick-answer">
-    <p><strong>Quick Answer:</strong> ${this.generateQuickAnswer(page.keywords[0])}</p>
-  </div>
+  <p><strong>Quick Answer:</strong> ${this.generateQuickAnswer(page.keywords[0])}</p>
 
 ${this.formatContentForAstro(page.content)}
 
@@ -593,22 +591,51 @@ ${this.formatContentForAstro(page.content)}
    * Format content for Astro with proper structure
    */
   private formatContentForAstro(content: string): string {
-    return content.split('\n').map(line => {
-      const trimmed = line.trim();
-      if (!trimmed) return '';
+    const lines = content.split('\n');
+    const result: string[] = [];
+    let inList = false;
+    
+    for (let i = 0; i < lines.length; i++) {
+      const trimmed = lines[i].trim();
+      if (!trimmed) continue;
       
       if (trimmed.startsWith('## ')) {
-        return `  <h2>${trimmed.replace('## ', '')}</h2>`;
+        // Close any open list before heading
+        if (inList) {
+          result.push('  </ul>');
+          inList = false;
+        }
+        result.push(`  <h2>${trimmed.replace('## ', '')}</h2>`);
       } else if (trimmed.startsWith('### ')) {
-        return `  <h3>${trimmed.replace('### ', '')}</h3>`;
-      } else if (trimmed.startsWith('- ')) {
-        return `    <li>${trimmed.replace('- ', '')}</li>`;
-      } else if (trimmed.startsWith('* ')) {
-        return `    <li>${trimmed.replace('* ', '')}</li>`;
+        // Close any open list before subheading
+        if (inList) {
+          result.push('  </ul>');
+          inList = false;
+        }
+        result.push(`  <h3>${trimmed.replace('### ', '')}</h3>`);
+      } else if (trimmed.startsWith('- ') || trimmed.startsWith('* ')) {
+        // Start list if not already in one
+        if (!inList) {
+          result.push('  <ul>');
+          inList = true;
+        }
+        result.push(`    <li>${trimmed.replace(/^[*-] /, '')}</li>`);
       } else {
-        return `  <p>${trimmed}</p>`;
+        // Close any open list before paragraph
+        if (inList) {
+          result.push('  </ul>');
+          inList = false;
+        }
+        result.push(`  <p>${trimmed}</p>`);
       }
-    }).filter(line => line).join('\n\n');
+    }
+    
+    // Close any remaining open list
+    if (inList) {
+      result.push('  </ul>');
+    }
+    
+    return result.filter(line => line).join('\n\n');
   }
 
   /**

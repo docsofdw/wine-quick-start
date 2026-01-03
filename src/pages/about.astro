@@ -1,0 +1,141 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const schema = {
+  "@context": "https://schema.org",
+  "@type": "AboutPage",
+  "name": "About Wine Quick Start",
+  "description": "Learn about Wine Quick Start's mission to make wine education accessible to everyone.",
+  "url": "https://winequickstart.com/about/"
+};
+---
+
+<BaseLayout 
+  title="About Wine Quick Start - Expert Wine Education"
+  description="Learn about Wine Quick Start's mission to make wine education accessible to everyone through expert guidance and simple recommendations."
+  schema={schema}
+>
+  <!-- Hero Section -->
+  <section class="bg-gradient-to-br from-purple-600 to-blue-700 text-white section-padding">
+    <div class="container text-center">
+      <h1 class="text-5xl font-bold mb-6 leading-tight">About Wine Quick Start</h1>
+      <p class="text-xl opacity-90 max-w-2xl mx-auto">
+        Making wine education accessible, one pairing at a time.
+      </p>
+    </div>
+  </section>
+
+  <!-- Mission Section -->
+  <section class="section-padding">
+    <div class="container max-w-4xl">
+      <h2 class="text-3xl font-bold mb-6 text-gray-900">Our Mission</h2>
+      <div class="prose prose-lg max-w-none">
+        <p>Wine Quick Start was founded on a simple belief: wine education should be accessible, practical, and enjoyable for everyone—not just sommeliers and collectors.</p>
+        
+        <p>We cut through the intimidation and complexity that often surrounds wine, providing straightforward guidance backed by professional expertise. Whether you're choosing a bottle for dinner tonight or learning about wine regions, we're here to help.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- What We Do Section -->
+  <section class="section-padding bg-gray-50">
+    <div class="container max-w-4xl">
+      <h2 class="text-3xl font-bold mb-8 text-gray-900">What We Do</h2>
+      
+      <div class="grid md:grid-cols-3 gap-8">
+        <div class="wine-card">
+          <div class="text-3xl mb-4">🍷</div>
+          <h3 class="text-xl font-semibold mb-3 text-gray-900">Food Pairings</h3>
+          <p class="text-gray-600">Expert wine pairing recommendations for every dish, from everyday meals to special occasions.</p>
+        </div>
+        
+        <div class="wine-card">
+          <div class="text-3xl mb-4">📚</div>
+          <h3 class="text-xl font-semibold mb-3 text-gray-900">Wine Education</h3>
+          <p class="text-gray-600">Comprehensive guides to wine varieties, regions, and tasting techniques explained simply.</p>
+        </div>
+        
+        <div class="wine-card">
+          <div class="text-3xl mb-4">🛒</div>
+          <h3 class="text-xl font-semibold mb-3 text-gray-900">Smart Buying</h3>
+          <p class="text-gray-600">Price comparisons, value recommendations, and trusted retailer suggestions.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Our Approach Section -->
+  <section class="section-padding">
+    <div class="container max-w-4xl">
+      <h2 class="text-3xl font-bold mb-6 text-gray-900">Our Approach</h2>
+      <div class="prose prose-lg max-w-none">
+        <h3>Evidence-Based Recommendations</h3>
+        <p>Our content is created by certified sommeliers and wine professionals with decades of combined experience. We base our recommendations on established pairing principles, regional expertise, and extensive tasting notes.</p>
+
+        <h3>Practical, Not Pretentious</h3>
+        <p>Wine should enhance your meals and experiences, not intimidate you. We focus on practical advice you can use immediately, whether you're shopping at a local wine store or planning a dinner party.</p>
+
+        <h3>Transparency</h3>
+        <p>When we recommend wines or retailers, we're transparent about any affiliate relationships. Our primary goal is providing valuable information—monetization is secondary.</p>
+
+        <h3>Continuous Learning</h3>
+        <p>The wine world is constantly evolving with new producers, trends, and discoveries. We regularly update our content to reflect current information and emerging wine regions.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Values Section -->
+  <section class="section-padding bg-gray-50">
+    <div class="container max-w-4xl">
+      <h2 class="text-3xl font-bold mb-8 text-gray-900">Our Values</h2>
+      
+      <div class="space-y-6">
+        <div class="wine-card">
+          <h3 class="text-xl font-semibold mb-2 text-gray-900">Accessibility</h3>
+          <p class="text-gray-600">Wine knowledge should be available to everyone, regardless of experience level or budget.</p>
+        </div>
+        
+        <div class="wine-card">
+          <h3 class="text-xl font-semibold mb-2 text-gray-900">Quality</h3>
+          <p class="text-gray-600">Every piece of content is reviewed by wine professionals for accuracy and practical value.</p>
+        </div>
+        
+        <div class="wine-card">
+          <h3 class="text-xl font-semibold mb-2 text-gray-900">Community</h3>
+          <p class="text-gray-600">We're building a community of wine enthusiasts who learn and share experiences together.</p>
+        </div>
+        
+        <div class="wine-card">
+          <h3 class="text-xl font-semibold mb-2 text-gray-900">Responsibility</h3>
+          <p class="text-gray-600">We promote responsible wine enjoyment and respect for different drinking preferences.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Team Section -->
+  <section class="section-padding">
+    <div class="container max-w-4xl">
+      <h2 class="text-3xl font-bold mb-6 text-gray-900">Our Expert Contributors</h2>
+      <div class="prose prose-lg max-w-none">
+        <p>Wine Quick Start content is created by a team of certified sommeliers, wine educators, and industry professionals including:</p>
+        <ul>
+          <li><strong>Master Sommeliers</strong> with Court of Master Sommeliers certification</li>
+          <li><strong>Certified Sommeliers</strong> with extensive restaurant and retail experience</li>
+          <li><strong>Wine Consultants</strong> specializing in food pairing and wine education</li>
+          <li><strong>Regional Experts</strong> with deep knowledge of specific wine regions</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact Section -->
+  <section class="section-padding bg-purple-50">
+    <div class="container max-w-4xl text-center">
+      <h2 class="text-3xl font-bold mb-4 text-gray-900">Get In Touch</h2>
+      <p class="text-lg text-gray-600 mb-8">Have questions, suggestions, or feedback? We'd love to hear from you.</p>
+      <a href="/contact/" class="btn-primary">Contact Us</a>
+    </div>
+  </section>
+</BaseLayout>
+

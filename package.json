@@ -24,7 +24,8 @@
     "wine:workflow": "npm run wine:keywords && npm run wine:daily",
     "wine:test": "tsx src/scripts/test-daily-automation.ts",
     "wine:check": "tsx src/scripts/check-wine-status.ts",
-    "wine:validate-links": "npm run build && echo 'Index pages build successfully - dynamic content discovery working!'"
+    "wine:validate-links": "npm run build && echo 'Index pages build successfully - dynamic content discovery working!'",
+    "seed:keywords": "tsx src/scripts/seed-keywords.ts"
   },
   "dependencies": {
     "@astrojs/mdx": "^4.2.6",
