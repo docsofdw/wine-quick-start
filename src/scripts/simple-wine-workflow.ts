@@ -470,23 +470,54 @@ const frontmatter = {
   }
 
   /**
-   * Format content for modern layout
+   * Format content for modern layout with proper HTML structure
    */
   private formatContentForModernLayout(content: string): string {
-    return content.split('\n').map(line => {
-      const trimmed = line.trim();
-      if (!trimmed) return '';
-      
+    const lines = content.split('\n');
+    const result: string[] = [];
+    let inList = false;
+
+    for (let i = 0; i < lines.length; i++) {
+      const trimmed = lines[i].trim();
+      if (!trimmed) continue;
+
       if (trimmed.startsWith('## ')) {
-        return `  <h2>${trimmed.replace('## ', '')}</h2>`;
+        // Close any open list before heading
+        if (inList) {
+          result.push('  </ul>');
+          inList = false;
+        }
+        result.push(`  <h2>${trimmed.replace('## ', '')}</h2>`);
       } else if (trimmed.startsWith('### ')) {
-        return `  <h3>${trimmed.replace('### ', '')}</h3>`;
-      } else if (trimmed.startsWith('- ')) {
-        return `    <li>${trimmed.replace('- ', '')}</li>`;
+        // Close any open list before subheading
+        if (inList) {
+          result.push('  </ul>');
+          inList = false;
+        }
+        result.push(`  <h3>${trimmed.replace('### ', '')}</h3>`);
+      } else if (trimmed.startsWith('- ') || trimmed.startsWith('* ')) {
+        // Start list if not already in one
+        if (!inList) {
+          result.push('  <ul>');
+          inList = true;
+        }
+        result.push(`    <li>${trimmed.replace(/^[*-] /, '')}</li>`);
       } else {
-        return `  <p>${trimmed}</p>`;
+        // Close any open list before paragraph
+        if (inList) {
+          result.push('  </ul>');
+          inList = false;
+        }
+        result.push(`  <p>${trimmed}</p>`);
       }
-    }).filter(line => line).join('\n\n');
+    }
+
+    // Close any remaining open list
+    if (inList) {
+      result.push('  </ul>');
+    }
+
+    return result.filter(line => line).join('\n\n');
   }
 
   /**

@@ -46,14 +46,28 @@ const featuredPairings = [
   }
 ];
 
-const categories = [
-  { name: "Seafood", count: 12, icon: "🐟" },
-  { name: "Red Wine", count: 18, icon: "🍷" },
-  { name: "White Wine", count: 15, icon: "🥂" },
-  { name: "Italian", count: 8, icon: "🇮🇹" },
-  { name: "Natural", count: 6, icon: "🌱" },
-  { name: "Orange Wine", count: 4, icon: "🧡" }
-];
+// Dynamically compute category counts from actual content
+const categoryIcons: Record<string, string> = {
+  "Seafood": "🐟",
+  "Red Wine": "🍷",
+  "White Wine": "🥂",
+  "Italian": "🇮🇹",
+  "Natural": "🌱",
+  "Orange Wine": "🧡"
+};
+
+const categoryCounts = featuredPairings.reduce((acc, pairing) => {
+  acc[pairing.category] = (acc[pairing.category] || 0) + 1;
+  return acc;
+}, {} as Record<string, number>);
+
+const categories = Object.entries(categoryCounts)
+  .map(([name, count]) => ({
+    name,
+    count,
+    icon: categoryIcons[name] || "🍷"
+  }))
+  .sort((a, b) => b.count - a.count);
 
 const schema = {
   "@context": "https://schema.org",
@@ -105,8 +119,13 @@ const schema = {
   <section class="section-padding-sm bg-gray-50">
     <div class="container">
       <div class="flex flex-wrap justify-center gap-4">
+        <button class="filter-btn flex items-center gap-2 px-4 py-2 bg-white rounded-full shadow-sm border-2 border-purple-500 hover:shadow-md transition" data-category="all">
+          <span class="text-lg">📚</span>
+          <span class="text-gray-700 font-medium">All</span>
+          <span class="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded-full">{featuredPairings.length}</span>
+        </button>
         {categories.map((category) => (
-          <button class="flex items-center gap-2 px-4 py-2 bg-white rounded-full shadow-sm border border-gray-200 hover:border-purple-300 hover:shadow-md transition">
+          <button class="filter-btn flex items-center gap-2 px-4 py-2 bg-white rounded-full shadow-sm border border-gray-200 hover:border-purple-300 hover:shadow-md transition" data-category={category.name}>
             <span class="text-lg">{category.icon}</span>
             <span class="text-gray-700 font-medium">{category.name}</span>
             <span class="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded-full">{category.count}</span>
@@ -126,41 +145,69 @@ const schema = {
         </p>
       </div>
       
-      <div class="wine-grid wine-grid-3">
+      <div id="pairings-grid" class="wine-grid wine-grid-3">
         {featuredPairings.map((pairing) => (
-          <article class="wine-card group">
+          <article class="wine-card group pairing-card" data-category={pairing.category}>
             <div class="flex items-center justify-between mb-4">
               <span class="inline-block px-3 py-1 bg-purple-100 text-purple-700 rounded-full text-sm font-medium">
                 {pairing.category}
               </span>
               <span class="text-sm text-gray-500">{pairing.readTime}</span>
             </div>
-            
+
             <h3 class="text-xl font-bold mb-3 text-gray-900 group-hover:text-purple-600 transition">
               <a href={`/wine-pairings/${pairing.slug}/`}>{pairing.title}</a>
             </h3>
-            
+
             <p class="text-gray-600 mb-6 leading-relaxed flex-grow">
               {pairing.description}
             </p>
-            
-            <a href={`/wine-pairings/${pairing.slug}/`} 
+
+            <a href={`/wine-pairings/${pairing.slug}/`}
                class="text-purple-600 font-medium hover:text-purple-700 transition">
               Read Guide →
             </a>
           </article>
         ))}
       </div>
+      <p id="no-results" class="text-center text-gray-500 py-12 hidden">No pairings found in this category.</p>
     </div>
   </section>
 
   <script>
-    // Category filtering functionality (placeholder for future implementation)
-    document.querySelectorAll('button[data-category]')?.forEach(button => {
-      button.addEventListener('click', (e) => {
-        const category = (e.currentTarget as HTMLElement).dataset.category;
-        console.log('Filter by category:', category);
-        // TODO: Implement filtering
+    // Category filtering functionality
+    const filterButtons = document.querySelectorAll('.filter-btn');
+    const pairingCards = document.querySelectorAll('.pairing-card');
+    const noResults = document.getElementById('no-results');
+
+    filterButtons.forEach(button => {
+      button.addEventListener('click', () => {
+        const category = (button as HTMLElement).dataset.category;
+
+        // Update active button state
+        filterButtons.forEach(btn => {
+          btn.classList.remove('border-purple-500', 'border-2');
+          btn.classList.add('border-gray-200', 'border');
+        });
+        button.classList.remove('border-gray-200', 'border');
+        button.classList.add('border-purple-500', 'border-2');
+
+        // Filter cards
+        let visibleCount = 0;
+        pairingCards.forEach(card => {
+          const cardCategory = (card as HTMLElement).dataset.category;
+          if (category === 'all' || cardCategory === category) {
+            (card as HTMLElement).style.display = '';
+            visibleCount++;
+          } else {
+            (card as HTMLElement).style.display = 'none';
+          }
+        });
+
+        // Show/hide no results message
+        if (noResults) {
+          noResults.classList.toggle('hidden', visibleCount > 0);
+        }
       });
     });
   </script>

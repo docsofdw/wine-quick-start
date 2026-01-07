@@ -85,14 +85,27 @@ const featuredGuides: GuideData[] = learnFiles
     return a.title.localeCompare(b.title);
   });
 
-const categories = [
-  { name: "Wine Types", count: 15, icon: "🍇", description: "Understand different wine styles" },
-  { name: "Wine Regions", count: 12, icon: "🗺️", description: "Explore famous wine territories" },
-  { name: "Reviews", count: 8, icon: "⭐", description: "Expert wine recommendations" },
-  { name: "Tasting", count: 6, icon: "👃", description: "Learn to taste like a pro" },
-  { name: "History", count: 4, icon: "📚", description: "Wine culture and traditions" },
-  { name: "Production", count: 5, icon: "🏭", description: "How wine is made" }
-];
+// Dynamically compute category counts from actual content
+const categoryMeta: Record<string, { icon: string; description: string }> = {
+  "Wine Types": { icon: "🍇", description: "Understand different wine styles" },
+  "Wine Regions": { icon: "🗺️", description: "Explore famous wine territories" },
+  "Reviews": { icon: "⭐", description: "Expert wine recommendations" },
+  "Wine Guide": { icon: "📖", description: "Comprehensive wine guides" }
+};
+
+const categoryCounts = featuredGuides.reduce((acc, guide) => {
+  acc[guide.category] = (acc[guide.category] || 0) + 1;
+  return acc;
+}, {} as Record<string, number>);
+
+const categories = Object.entries(categoryCounts)
+  .map(([name, count]) => ({
+    name,
+    count,
+    icon: categoryMeta[name]?.icon || "📚",
+    description: categoryMeta[name]?.description || "Wine education content"
+  }))
+  .sort((a, b) => b.count - a.count);
 
 const schema = {
   "@context": "https://schema.org",
@@ -143,9 +156,15 @@ const schema = {
   <!-- Categories -->
   <section class="section-padding-sm bg-gray-50">
     <div class="container">
-      <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+      <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-7 gap-4">
+        <button class="wine-card text-center p-4 filter-btn active ring-2 ring-purple-500" data-category="all">
+          <div class="text-2xl mb-2">📚</div>
+          <h3 class="font-semibold text-gray-900 mb-1">All Guides</h3>
+          <p class="text-xs text-gray-500 mb-2">Browse everything</p>
+          <span class="text-xs text-gray-400">{featuredGuides.length} guides</span>
+        </button>
         {categories.map((category) => (
-          <button class="wine-card text-center p-4">
+          <button class="wine-card text-center p-4 filter-btn" data-category={category.name}>
             <div class="text-2xl mb-2">{category.icon}</div>
             <h3 class="font-semibold text-gray-900 mb-1">
               {category.name}
@@ -168,41 +187,67 @@ const schema = {
         </p>
       </div>
       
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      <div id="guides-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         {featuredGuides.map((guide: GuideData) => (
-          <article class="wine-card group">
+          <article class="wine-card group guide-card" data-category={guide.category}>
             <div class="flex items-center justify-between mb-4">
               <span class="inline-block px-3 py-1 bg-purple-100 text-purple-700 rounded-full text-sm font-medium">
                 {guide.category}
               </span>
               <span class="text-sm text-gray-500">{guide.readTime}</span>
             </div>
-            
+
             <h3 class="text-xl font-bold mb-3 text-gray-900 group-hover:text-purple-600 transition">
               <a href={`/learn/${guide.slug}/`}>{guide.title}</a>
             </h3>
-            
+
             <p class="text-gray-600 mb-6 leading-relaxed flex-grow">
               {guide.description}
             </p>
-            
-            <a href={`/learn/${guide.slug}/`} 
+
+            <a href={`/learn/${guide.slug}/`}
                class="text-purple-600 font-medium hover:text-purple-700 transition">
               Read Guide →
             </a>
           </article>
         ))}
       </div>
+      <p id="no-results" class="text-center text-gray-500 py-12 hidden">No guides found in this category.</p>
     </div>
   </section>
 
   <script>
-    // Category functionality (placeholder for future implementation)
-    document.querySelectorAll('button[data-category]')?.forEach(button => {
-      button.addEventListener('click', (e) => {
-        const category = (e.currentTarget as HTMLElement).dataset.category;
-        console.log('Learn category:', category);
-        // TODO: Implement category filtering
+    // Category filtering functionality
+    const filterButtons = document.querySelectorAll('.filter-btn');
+    const guideCards = document.querySelectorAll('.guide-card');
+    const noResults = document.getElementById('no-results');
+
+    filterButtons.forEach(button => {
+      button.addEventListener('click', () => {
+        const category = (button as HTMLElement).dataset.category;
+
+        // Update active button state
+        filterButtons.forEach(btn => {
+          btn.classList.remove('active', 'ring-2', 'ring-purple-500');
+        });
+        button.classList.add('active', 'ring-2', 'ring-purple-500');
+
+        // Filter cards
+        let visibleCount = 0;
+        guideCards.forEach(card => {
+          const cardCategory = (card as HTMLElement).dataset.category;
+          if (category === 'all' || cardCategory === category) {
+            (card as HTMLElement).style.display = '';
+            visibleCount++;
+          } else {
+            (card as HTMLElement).style.display = 'none';
+          }
+        });
+
+        // Show/hide no results message
+        if (noResults) {
+          noResults.classList.toggle('hidden', visibleCount > 0);
+        }
       });
     });
   </script>

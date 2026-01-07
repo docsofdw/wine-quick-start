@@ -98,21 +98,27 @@ const featuredGuides: GuideData[] = buyFiles
     return a.title.localeCompare(b.title);
   });
 
-const categories = [
-  { name: "Natural", count: 8, icon: "🌱", description: "Organic & biodynamic wines" },
-  { name: "Orange", count: 6, icon: "🧡", description: "Skin-contact white wines" },
-  { name: "Pricing", count: 12, icon: "💰", description: "Price guides & value picks" },
-  { name: "Regions", count: 10, icon: "🗺️", description: "Regional buying guides" },
-  { name: "Online", count: 15, icon: "🛒", description: "Best online wine shops" },
-  { name: "Local", count: 7, icon: "🏪", description: "Find local wine stores" }
-];
+// Dynamically compute category counts from actual content
+const categoryMeta: Record<string, { icon: string; description: string }> = {
+  "Natural": { icon: "🌱", description: "Organic & biodynamic wines" },
+  "Orange": { icon: "🧡", description: "Skin-contact white wines" },
+  "Pricing": { icon: "💰", description: "Price guides & value picks" },
+  "Buying Guide": { icon: "🛒", description: "Wine buying guides" }
+};
 
-const priceRanges = [
-  { range: "Under $20", count: 45, description: "Great everyday wines" },
-  { range: "$20-40", count: 38, description: "Premium quality picks" },
-  { range: "$40-80", count: 22, description: "Special occasion wines" },
-  { range: "$80+", count: 12, description: "Ultra-premium bottles" }
-];
+const categoryCounts = featuredGuides.reduce((acc, guide) => {
+  acc[guide.category] = (acc[guide.category] || 0) + 1;
+  return acc;
+}, {} as Record<string, number>);
+
+const categories = Object.entries(categoryCounts)
+  .map(([name, count]) => ({
+    name,
+    count,
+    icon: categoryMeta[name]?.icon || "📚",
+    description: categoryMeta[name]?.description || "Wine buying content"
+  }))
+  .sort((a, b) => b.count - a.count);
 
 const schema = {
   "@context": "https://schema.org",
@@ -160,31 +166,19 @@ const schema = {
     </div>
   </section>
 
-  <!-- Price Range Navigation -->
+  <!-- Category Filter -->
   <section class="section-padding-sm bg-gray-50">
     <div class="container">
-      <h2 class="text-xl font-semibold text-center mb-6 text-gray-900">Shop by Price Range</h2>
-      <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        {priceRanges.map((price) => (
-          <button class="wine-card text-center p-4">
-            <div class="text-2xl mb-2">💰</div>
-            <h3 class="font-semibold text-gray-900 mb-1">
-              {price.range}
-            </h3>
-            <p class="text-xs text-gray-500 mb-2">{price.description}</p>
-            <span class="text-xs text-gray-400">{price.count} recommendations</span>
-          </button>
-        ))}
-      </div>
-    </div>
-  </section>
-
-  <!-- Categories -->
-  <section class="section-padding-sm border-b border-gray-200">
-    <div class="container">
-      <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+      <h2 class="text-xl font-semibold text-center mb-6 text-gray-900">Browse by Category</h2>
+      <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-7 gap-4">
+        <button class="wine-card text-center p-4 filter-btn active ring-2 ring-purple-500" data-category="all">
+          <div class="text-2xl mb-2">📚</div>
+          <h3 class="font-semibold text-gray-900 mb-1">All Guides</h3>
+          <p class="text-xs text-gray-500 mb-2">Browse everything</p>
+          <span class="text-xs text-gray-400">{featuredGuides.length} guides</span>
+        </button>
         {categories.map((category) => (
-          <button class="wine-card text-center p-4">
+          <button class="wine-card text-center p-4 filter-btn" data-category={category.name}>
             <div class="text-2xl mb-2">{category.icon}</div>
             <h3 class="font-semibold text-gray-900 mb-1">
               {category.name}
@@ -207,9 +201,9 @@ const schema = {
         </p>
       </div>
       
-      <div class="wine-grid wine-grid-3">
+      <div id="guides-grid" class="wine-grid wine-grid-3">
         {featuredGuides.map((guide: GuideData) => (
-          <article class="wine-card group">
+          <article class="wine-card group guide-card" data-category={guide.category}>
             <div class="flex items-center justify-between mb-4">
               <span class="inline-block px-3 py-1 bg-purple-100 text-purple-700 rounded-full text-sm font-medium">
                 {guide.category}
@@ -218,18 +212,18 @@ const schema = {
                 {guide.priceRange}
               </span>
             </div>
-            
+
             <h3 class="text-xl font-bold mb-3 text-gray-900 group-hover:text-purple-600 transition">
               <a href={`/buy/${guide.slug}/`}>{guide.title}</a>
             </h3>
-            
+
             <p class="text-gray-600 mb-6 leading-relaxed flex-grow">
               {guide.description}
             </p>
-            
+
             <div class="flex items-center justify-between">
               <span class="text-sm text-gray-500">{guide.readTime} read</span>
-              <a href={`/buy/${guide.slug}/`} 
+              <a href={`/buy/${guide.slug}/`}
                  class="text-purple-600 font-medium hover:text-purple-700 transition">
                 View Guide →
               </a>
@@ -237,18 +231,42 @@ const schema = {
           </article>
         ))}
       </div>
+      <p id="no-results" class="text-center text-gray-500 py-12 hidden">No guides found in this category.</p>
     </div>
   </section>
 
   <script>
-    // Price range and category filtering (placeholder for future implementation)
-    document.querySelectorAll('button[data-price], button[data-category]')?.forEach(button => {
-      button.addEventListener('click', (e) => {
-        const target = e.currentTarget as HTMLElement;
-        const priceRange = target.dataset.price;
-        const category = target.dataset.category;
-        console.log('Filter by:', { priceRange, category });
-        // TODO: Implement filtering
+    // Category filtering functionality
+    const filterButtons = document.querySelectorAll('.filter-btn');
+    const guideCards = document.querySelectorAll('.guide-card');
+    const noResults = document.getElementById('no-results');
+
+    filterButtons.forEach(button => {
+      button.addEventListener('click', () => {
+        const category = (button as HTMLElement).dataset.category;
+
+        // Update active button state
+        filterButtons.forEach(btn => {
+          btn.classList.remove('active', 'ring-2', 'ring-purple-500');
+        });
+        button.classList.add('active', 'ring-2', 'ring-purple-500');
+
+        // Filter cards
+        let visibleCount = 0;
+        guideCards.forEach(card => {
+          const cardCategory = (card as HTMLElement).dataset.category;
+          if (category === 'all' || cardCategory === category) {
+            (card as HTMLElement).style.display = '';
+            visibleCount++;
+          } else {
+            (card as HTMLElement).style.display = 'none';
+          }
+        });
+
+        // Show/hide no results message
+        if (noResults) {
+          noResults.classList.toggle('hidden', visibleCount > 0);
+        }
       });
     });
   </script>

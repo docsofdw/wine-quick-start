@@ -8,15 +8,24 @@ export const POST: APIRoute = async ({ request }) => {
   try {
     // Check for Vercel cron job or manual trigger with secret
     const authorization = request.headers.get('authorization');
-    const cronSecret = import.meta.env.CRON_SECRET || 'wine-automation-secret-2024';
-    
+    const cronSecret = import.meta.env.CRON_SECRET;
+
     // Verify this is a legitimate request
     // Vercel cron jobs don't send auth headers, so we check for the cron header
     const vercelCronHeader = request.headers.get('x-vercel-cron');
     const isVercelCron = vercelCronHeader === '1';
-    const isManualWithSecret = authorization === `Bearer ${cronSecret}`;
-    
+    const isManualWithSecret = cronSecret && authorization === `Bearer ${cronSecret}`;
+
     if (!isVercelCron && !isManualWithSecret) {
+      // If manual trigger attempted without CRON_SECRET configured, provide helpful error
+      if (authorization && !cronSecret) {
+        return new Response(JSON.stringify({
+          error: 'CRON_SECRET environment variable is not configured'
+        }), {
+          status: 500,
+          headers: { 'Content-Type': 'application/json' }
+        });
+      }
       return new Response(JSON.stringify({ 
         error: 'Unauthorized - Missing cron header or invalid secret',
         received_headers: {
