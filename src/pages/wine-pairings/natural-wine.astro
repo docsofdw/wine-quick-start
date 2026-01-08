@@ -1,180 +1,128 @@
 ---
 import ArticleLayout from '../../layouts/ArticleLayout.astro';
 
-const title = "Natural Wine Guide - Expert Recommendations";
-const description = "Discover natural wines with our expert guide. Learn about organic, biodynamic wines, production methods, and the best natural wine producers.";
-const author = "Wine Quick Start Expert";
-const readTime = "8 min";
-const category = "Natural Wine";
-
-const schema = {
-  "@context": "https://schema.org",
-  "@type": "Article",
-  "headline": title,
-  "description": description,
-  "author": {
-    "@type": "Organization",
-    "name": "Wine Quick Start"
+const frontmatter = {
+  title: "Comparing Natural wine: A Detailed Analysis",
+  description: "A thorough comparison of natural wine options to help you choose wisely.",
+  wine_type: "red",
+  author: "Wine Quick Start Expert",
+  readTime: "5 min",
+  expert_score: 7,
+  article_format: "comparison",
+  structured_data: {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "Comparing Natural wine: A Detailed Analysis",
+    "description": "A thorough comparison of natural wine options to help you choose wisely.",
+    "author": {
+      "@type": "Organization",
+      "name": "Wine Quick Start"
+    },
+    "datePublished": "2026-01-07T23:40:42.067Z",
+    "dateModified": "2026-01-07T23:40:42.067Z",
+    "keywords": "natural wine",
+    "articleSection": "Wine Comparison"
   },
-  "datePublished": "2025-07-01T16:58:25.481Z",
-  "dateModified": "2025-07-01T16:58:25.481Z",
-  "keywords": "natural wine",
-  "articleSection": "Wine Guides"
+  wines: [
+  {
+    "name": "2019 Bergström Wines Bergström Sigrid Chardonnay",
+    "region": "Willamette Valley, Oregon",
+    "price": "55",
+    "rating": "94",
+    "type": "white",
+    "notes": "Crisp apple and citrus with balanced oak and a creamy texture.",
+    "link": "https://wine-searcher.com/find/bergstr%C3%B6m%2Bwines"
+  },
+  {
+    "name": "2015 Bedrock Wine Co. Bedrock Wine Co. The Bedrock Heritage",
+    "region": "Sonoma County, California",
+    "price": "52",
+    "rating": "90",
+    "type": "red",
+    "notes": "Medium to full-bodied with layers of fruit and spice.",
+    "link": "https://wine-searcher.com/find/bedrock%2Bwine%2Bco."
+  },
+  {
+    "name": "2019 Adelsheim Vineyard Adelsheim Elizabeth's Reserve Pinot Noir",
+    "region": "Chehalem Mountains, Oregon",
+    "price": "48",
+    "rating": "89",
+    "type": "red",
+    "notes": "Elegant with bright cherry and raspberry notes, silky tannins, and earthy undertones.",
+    "link": "https://wine-searcher.com/find/adelsheim%2Bvineyard"
+  }
+]
 };
 ---
 
-<ArticleLayout {title} {description} {author} {readTime} {category} {schema}>
-  
-  <p><strong>Quick Answer:</strong> Natural wines are made with minimal intervention - no added sulfites, native yeasts, and organic farming. They offer unique flavors but can be unpredictable. Start with established producers for the best introduction.</p>
+<ArticleLayout title={frontmatter.title} description={frontmatter.description} author={frontmatter.author} readTime={frontmatter.readTime} category="Wine Comparison" schema={frontmatter.structured_data}>
+  <div slot="quick-answer">
+    <p><strong>Key Takeaway:</strong> Natural wine is about enhancing both the wine and the food. When both taste better together than alone, you've found the sweet spot.</p>
+  </div>
 
-  <h2>What is Natural Wine?</h2>
+  <div class="bg-wine-50 p-4 rounded-lg mb-8">
+    <div class="flex justify-between items-center text-sm text-gray-600">
+      <span>Search Volume: 18,100/month</span>
+      <span>Keyword Difficulty: 0/100</span>
+    </div>
+  </div>
 
-  <p>Natural wine represents a philosophy of minimal intervention winemaking, where grapes are farmed organically or biodynamically and fermented with native yeasts with little to no additives.</p>
+    <p>How do you navigate the world of natural wine without getting overwhelmed? We break it down into what actually matters.</p>
 
-  <h3>Key Characteristics</h3>
-  <ul>
-    <li>**Organic or biodynamic farming**</li>
-    <li>**Native yeast fermentation**</li>
-    <li>**Minimal or no sulfites added**</li>
-    <li>**No fining or filtration**</li>
-    <li>**Sometimes cloudy appearance**</li>
-  </ul>
+  <h2>Comparing Your Options for Natural wine</h2>
 
-  <h2>Natural Wine Production</h2>
+  <p>Choosing the right natural wine depends on context. Here's how the main options stack up against each other.</p>
 
-  <h3>In the Vineyard</h3>
-  <p>Natural wine begins with healthy grapes. Producers avoid synthetic pesticides, herbicides, and fertilizers, often embracing biodynamic principles that view the vineyard as a living ecosystem.</p>
+  <h2>Side-by-Side Comparison</h2>
 
-  <h3>In the Winery</h3>
-  <p>Minimal intervention means allowing natural processes to guide winemaking. This includes:</p>
-  <ul>
-    <li>Spontaneous fermentation with wild yeasts</li>
-    <li>No or minimal sulfur dioxide additions</li>
-    <li>Avoiding industrial additives and processing aids</li>
-    <li>Sometimes aging in neutral vessels like concrete or old wood</li>
-  </ul>
+  <p>| Factor | Option A | Option B | Option C |</p>
 
-  <h2>Tasting Profile</h2>
+  <p>|--------|----------|----------|----------|</p>
 
-  <h3>What to Expect</h3>
-  <p>Natural wines can taste different from conventional wines:</p>
-  <ul>
-    <li>**More texture and complexity**</li>
-    <li>**Sometimes funky or barnyard aromas**</li>
-    <li>**Greater vintage variation**</li>
-    <li>**Potentially cloudy appearance**</li>
-    <li>**Living, evolving flavors**</li>
-  </ul>
+  <p>| **Price Range** | $15-25 | $25-45 | $45+ |</p>
 
-  <h3>Common Flavor Profiles</h3>
-  <ul>
-    <li>**Earthy, mineral notes**</li>
-    <li>**Fresh, vibrant acidity**</li>
-    <li>**Pure fruit expression**</li>
-    <li>**Sometimes brett or farmhouse character**</li>
-  </ul>
+  <p>| **Best For** | Everyday | Special Occasions | Celebrations |</p>
 
-  <h2>Top Natural Wine Producers</h2>
+  <p>| **Complexity** | Approachable | Moderate | Layered |</p>
 
-  <h3>France</h3>
-  <ul>
-    <li>**Marcel Lapierre** (Beaujolais) - Pioneer of natural Beaujolais</li>
-    <li>**Domaine de la Côte** (Loire) - Elegant, precise natural wines</li>
-    <li>**Les Vins Contes** (Languedoc) - Innovative natural expressions</li>
-  </ul>
+  <p>| **Age Potential** | Drink now | 2-5 years | 5-15 years |</p>
 
-  <h3>Italy</h3>
-  <ul>
-    <li>**Elisabetta Foradori** (Trentino) - Biodynamic orange wines</li>
-    <li>**COS** (Sicily) - Ancient methods, modern expression</li>
-    <li>**Gravner** (Friuli) - Amphora-aged natural wines</li>
-  </ul>
+  <p>| **Food Pairing** | Versatile | Selective | Rich dishes |</p>
 
-  <h3>United States</h3>
-  <ul>
-    <li>**Scholium Project** (California) - Experimental natural wines</li>
-    <li>**La Clarine Farm** (California) - Biodynamic Rhône varieties</li>
-    <li>**Bow & Arrow** (Oregon) - Natural expressions of Oregon terroir</li>
-  </ul>
+  <h2>Weighing the Options</h2>
 
-  <h2>Orange Wine - A Natural Wine Style</h2>
+  <h3>Budget-Friendly Approach</h3>
 
-  <p>Orange wines are white grapes fermented with skin contact, often associated with natural winemaking:</p>
-  <ul>
-    <li>**Extended skin contact** creates amber color</li>
-    <li>**Increased tannins** from grape skins</li>
-    <li>**Complex, often polarizing flavors**</li>
-    <li>**Ancient winemaking technique**</li>
-  </ul>
+  <p>✅ Accessible and low-risk</p>
 
-  <h2>Food Pairing with Natural Wines</h2>
+  <p>✅ Great for experimentation</p>
 
-  <h3>General Principles</h3>
-  <ul>
-    <li>Natural wines often pair well with natural, unprocessed foods</li>
-    <li>The earthy character complements vegetable-forward dishes</li>
-    <li>High acidity works well with fermented foods</li>
-  </ul>
+  <p>❌ Less complexity and depth</p>
 
-  <h3>Specific Pairings</h3>
-  <ul>
-    <li>**Natural white wines**: Raw seafood, goat cheese, vegetable dishes</li>
-    <li>**Natural red wines**: Grilled vegetables, charcuterie, mushroom dishes</li>
-    <li>**Orange wines**: Spiced dishes, aged cheeses, complex preparations</li>
-  </ul>
+  <p>❌ Limited aging potential</p>
 
-  <h2>Where to Buy Natural Wine</h2>
+  <h3>Mid-Range Investment</h3>
 
-  <h3>Specialty Retailers</h3>
-  <ul>
-    <li>**Natural wine shops** often have the best selection</li>
-    <li>**Progressive wine bars** sometimes sell bottles</li>
-    <li>**Online retailers** like Jenny & François or Ordinaire Wine</li>
-  </ul>
+  <p>✅ Best quality-to-price ratio</p>
 
-  <h3>What to Look For</h3>
-  <ul>
-    <li>Terms like "natural," "low sulfite," or "unfined/unfiltered"</li>
-    <li>Organic or biodynamic certifications</li>
-    <li>Producers known for minimal intervention</li>
-  </ul>
+  <p>✅ Suitable for most occasions</p>
 
-  <h2>Storage and Serving</h2>
+  <p>❌ Requires some knowledge</p>
 
-  <h3>Special Considerations</h3>
-  <p>Natural wines can be more delicate than conventional wines:</p>
-  <ul>
-    <li>**Store in cool, dark conditions**</li>
-    <li>**Some may need refrigeration after opening**</li>
-    <li>**Can evolve quickly in the glass**</li>
-    <li>**May benefit from decanting to blow off any reduction**</li>
-  </ul>
+  <p>❌ Not for long-term cellaring</p>
 
-  <h2>Common Misconceptions</h2>
+  <h3>Premium Selection</h3>
 
-  <ul>
-    <li>**"Natural wine always tastes funky"** - Many are clean and delicious</li>
-    <li>**"All natural wine is orange wine"** - Natural wines come in all styles</li>
-    <li>**"Natural means organic"** - Related but not identical concepts</li>
-    <li>**"Natural wine has no sulfites"** - Some have naturally occurring sulfites</li>
-  </ul>
+  <p>✅ Exceptional quality and depth</p>
 
-  <h2>Getting Started</h2>
+  <p>✅ Cellar-worthy</p>
 
-  <h3>Beginner-Friendly Producers</h3>
-  <ul>
-    <li>Start with established natural wine producers</li>
-    <li>Try natural wines from familiar grape varieties</li>
-    <li>Ask knowledgeable wine shop staff for recommendations</li>
-  </ul>
+  <p>❌ Higher financial commitment</p>
 
-  <h3>Developing Your Palate</h3>
-  <ul>
-    <li>Compare natural and conventional wines from the same region</li>
-    <li>Attend natural wine tastings</li>
-    <li>Keep an open mind about different flavor profiles</li>
-  </ul>
+  <p>❌ May need decanting/aging</p>
 
-  <p>Natural wine offers a unique window into pure grape expression and traditional winemaking methods. While not every bottle will suit every palate, the category rewards exploration and offers discoveries impossible with conventional winemaking.</p>
+  <h2>The Verdict</h2>
+
+  <p>Your ideal choice depends on context. Start in the mid-range to develop preferences, then explore both directions as your palate develops.</p>
 
 </ArticleLayout>

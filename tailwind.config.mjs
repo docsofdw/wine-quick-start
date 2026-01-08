@@ -6,6 +6,20 @@ export default {
   theme: {
     extend: {
       colors: {
+        // Wine color palette - elegant burgundy tones
+        wine: {
+          50: '#fdf2f4',
+          100: '#fce8eb',
+          200: '#f9d0d9',
+          300: '#f4a9ba',
+          400: '#ec7994',
+          500: '#dc4b6f',
+          600: '#c42d54',
+          700: '#a52145',
+          800: '#8a1e3d',
+          900: '#751c38',
+          950: '#420a1c',
+        },
         purple: {
           50: '#faf5ff',
           100: '#f3e8ff',

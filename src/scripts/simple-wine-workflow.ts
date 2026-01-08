@@ -9,8 +9,37 @@ import { config } from 'dotenv';
 import fs from 'fs/promises';
 import path from 'path';
 
-// Load env vars
+// Load env vars BEFORE dynamic imports that need them
 config({ path: '.env.local', override: true });
+
+// Dynamic import for wine catalog (needs env vars to be loaded first)
+const { getWinesForKeyword } = await import('../lib/wine-catalog.js');
+import type { WineRecommendation } from '../lib/wine-catalog.js';
+
+// Import varied template system
+import {
+  generateVariedContent,
+  generateTitle,
+  generateDescription,
+  type ContentType,
+  type ArticleFormat
+} from '../lib/article-templates.js';
+
+// Import authors for E-E-A-T
+import { getRandomAuthor, getAuthorSchema, type Author } from '../data/authors.js';
+
+// Import internal linking system
+import {
+  findRelatedArticles,
+  autoLinkContent,
+  extractArticleMetadata,
+  registerArticle,
+  articleRegistry,
+  type ArticleEntry
+} from '../lib/internal-linking.js';
+
+// Import regional data
+import { detectRegions, generateRegionBlock, getRandomFacts } from '../data/wine-regions.js';
 
 interface WineKeyword {
   keyword: string;
@@ -112,35 +141,61 @@ class SimpleWineWorkflow {
   }
 
   /**
+   * Determine content type based on keyword
+   */
+  private determineContentType(keyword: string): ContentType {
+    const lowerKeyword = keyword.toLowerCase();
+    if (/pairing|food|with|match/.test(lowerKeyword)) return 'pairing';
+    if (/pinot|chardonnay|cabernet|merlot|sauvignon|riesling|syrah|malbec|zinfandel|grenache/.test(lowerKeyword)) return 'varietal';
+    return 'general';
+  }
+
+  /**
    * Generate a wine page for a specific keyword
    */
   private async generateWinePage(keywordData: WineKeyword): Promise<void> {
     console.log(`📄 Generating page for "${keywordData.keyword}"`);
-    
+
     const slug = keywordData.keyword
       .toLowerCase()
       .replace(/[^a-z0-9 ]/g, '')
       .replace(/\s+/g, '-');
-    
-    const title = this.generateTitle(keywordData.keyword);
-    const description = this.generateDescription(keywordData.keyword);
-    const content = this.generateContent(keywordData.keyword);
-    
+
+    // Fetch real wines from the wine catalog FIRST (needed for varied content)
+    const realWines = await this.fetchRealWines(keywordData.keyword);
+
+    // Determine content type and generate varied content
+    const contentType = this.determineContentType(keywordData.keyword);
+    const variedContent = generateVariedContent(keywordData.keyword, contentType, realWines);
+
+    // Use format-appropriate title and description
+    const title = generateTitle(keywordData.keyword, variedContent.format);
+    const description = generateDescription(keywordData.keyword, variedContent.format);
+
+    // Assign a random author for E-E-A-T
+    const author = getRandomAuthor();
+
     const astroContent = this.generateAstroFile({
       slug,
       title,
       description,
       keyword: keywordData.keyword,
-      content,
+      intro: variedContent.intro,
+      quickAnswer: variedContent.quickAnswer,
+      mainContent: variedContent.mainContent,
+      format: variedContent.format,
       volume: keywordData.volume,
-      difficulty: keywordData.difficulty
+      difficulty: keywordData.difficulty,
+      wines: realWines,
+      author
     });
-    
+
     // Write file
     const filePath = path.join(process.cwd(), 'src/pages/wine-pairings', `${slug}.astro`);
     await fs.writeFile(filePath, astroContent);
-    
+
     console.log(`✅ Created: ${slug}.astro (Volume: ${keywordData.volume}, KD: ${keywordData.difficulty})`);
+    console.log(`   🍷 Using ${realWines.length} real wines from catalog`);
 
     // Save to Supabase if available
     if (this.supabase) {
@@ -151,7 +206,7 @@ class SimpleWineWorkflow {
             slug: slug,
             title: title,
             description: description,
-            content: content.substring(0, 2000) + '...', // Truncate for database
+            content: variedContent.mainContent.substring(0, 2000) + '...', // Truncate for database
             keywords: [keywordData.keyword, 'wine', 'guide'],
             status: 'published'
           });
@@ -404,19 +459,92 @@ For newcomers to ${keyword}, start with wines from established producers in the 
   }
 
   /**
-   * Generate complete Astro file
+   * Fetch real wines from the wine catalog for a given keyword
+   */
+  private async fetchRealWines(keyword: string): Promise<any[]> {
+    try {
+      const wines = await getWinesForKeyword(keyword, 3);
+
+      // Transform to the format expected by the template
+      return wines.map(wine => ({
+        name: wine.name,
+        region: wine.region,
+        price: this.estimatePrice(wine),
+        rating: this.estimateRating(),
+        type: wine.wine_type,
+        notes: wine.notes,
+        link: `https://wine-searcher.com/find/${encodeURIComponent(wine.producer.toLowerCase().replace(/\s+/g, '+'))}`
+      }));
+    } catch (error) {
+      console.warn(`⚠️ Could not fetch real wines for "${keyword}", using fallback`);
+      return this.generateMockWineData(keyword);
+    }
+  }
+
+  /**
+   * Estimate price based on wine characteristics
+   */
+  private estimatePrice(wine: WineRecommendation): string {
+    const producer = wine.producer.toLowerCase();
+    const region = wine.region.toLowerCase();
+
+    if (producer.includes('domaine') || producer.includes('château') ||
+        region.includes('burgundy') || region.includes('champagne') ||
+        region.includes('napa')) {
+      return String(45 + Math.floor(Math.random() * 55));
+    }
+
+    if (region.includes('california') || region.includes('oregon') ||
+        region.includes('bordeaux')) {
+      return String(28 + Math.floor(Math.random() * 32));
+    }
+
+    return String(18 + Math.floor(Math.random() * 22));
+  }
+
+  /**
+   * Estimate rating
+   */
+  private estimateRating(): string {
+    return String(88 + Math.floor(Math.random() * 8));
+  }
+
+  /**
+   * Generate complete Astro file with varied template
    */
   private generateAstroFile(data: {
     slug: string;
     title: string;
     description: string;
     keyword: string;
-    content: string;
+    intro: string;
+    quickAnswer: string;
+    mainContent: string;
+    format: ArticleFormat;
     volume: number;
     difficulty: number;
+    wines: any[];
+    author: Author;
   }): string {
-    const mockWines = this.generateMockWineData(data.keyword);
-    
+    // Map format to category for display
+    const categoryMap: Record<ArticleFormat, string> = {
+      guide: 'Wine Guide',
+      listicle: 'Top Picks',
+      comparison: 'Wine Comparison',
+      review: 'Wine Review',
+      howto: 'How-To Guide'
+    };
+    const category = categoryMap[data.format];
+
+    // Vary read time slightly
+    const readTime = `${5 + Math.floor(Math.random() * 4)} min`;
+
+    // Vary expert score
+    const expertScore = 7 + Math.floor(Math.random() * 3);
+
+    // Generate author schema
+    const authorSchema = getAuthorSchema(data.author);
+
     return `---
 import ArticleLayout from '../../layouts/ArticleLayout.astro';
 
@@ -424,30 +552,47 @@ const frontmatter = {
   title: "${data.title}",
   description: "${data.description}",
   wine_type: "${this.determineWineType(data.keyword)}",
-  author: "Wine Quick Start Expert",
-  readTime: "6 min",
-  expert_score: 8,
+  author: "${data.author.name}",
+  authorSlug: "${data.author.slug}",
+  authorRole: "${data.author.role}",
+  authorCredentials: ${JSON.stringify(data.author.credentials)},
+  readTime: "${readTime}",
+  expert_score: ${expertScore},
+  article_format: "${data.format}",
   structured_data: {
     "@context": "https://schema.org",
     "@type": "Article",
     "headline": "${data.title}",
     "description": "${data.description}",
-    "author": {
+    "author": ${JSON.stringify(authorSchema, null, 4).split('\n').join('\n    ')},
+    "publisher": {
       "@type": "Organization",
-      "name": "Wine Quick Start"
+      "name": "Wine Quick Start",
+      "url": "https://winequickstart.com"
     },
     "datePublished": "${new Date().toISOString()}",
     "dateModified": "${new Date().toISOString()}",
     "keywords": "${data.keyword}",
-    "articleSection": "Wine Guides"
+    "articleSection": "${category}"
   },
-  wines: ${JSON.stringify(mockWines, null, 2)}
+  wines: ${JSON.stringify(data.wines, null, 2)}
 };
 ---
 
-<ArticleLayout title={frontmatter.title} description={frontmatter.description} author={frontmatter.author} readTime={frontmatter.readTime} category="Wine Guide" schema={frontmatter.structured_data}>
+<ArticleLayout title={frontmatter.title} description={frontmatter.description} author={frontmatter.author} readTime={frontmatter.readTime} category="${category}" schema={frontmatter.structured_data}>
   <div slot="quick-answer">
-    <p><strong>Quick Answer:</strong> For ${data.keyword}, focus on wines with balanced characteristics that complement food without overpowering. Look for quality producers and proper storage for the best experience.</p>
+    <p>${data.quickAnswer}</p>
+  </div>
+
+  <!-- Author Attribution -->
+  <div class="bg-gray-50 p-4 rounded-lg mb-6 flex items-center gap-4">
+    <div class="w-12 h-12 rounded-full bg-wine-100 flex items-center justify-center text-wine-700 font-bold">
+      ${data.author.name.split(' ').map(n => n[0]).join('')}
+    </div>
+    <div>
+      <a href="/about/${data.author.slug}" class="font-semibold text-gray-900 hover:text-wine-600">${data.author.name}</a>
+      <p class="text-sm text-gray-600">${data.author.role} | ${data.author.credentials[0]}</p>
+    </div>
   </div>
 
   <div class="bg-wine-50 p-4 rounded-lg mb-8">
@@ -457,9 +602,77 @@ const frontmatter = {
     </div>
   </div>
 
-  ${this.formatContentForModernLayout(data.content)}
+  ${this.formatContentForModernLayout(autoLinkContent(data.intro + '\n\n' + data.mainContent, data.slug, 5))}
+
+  ${this.generateRegionalSection(data.intro + ' ' + data.mainContent)}
+
+  ${this.generateRelatedArticlesSection(data.slug)}
+
+  <!-- Author Bio Footer -->
+  <div class="mt-12 p-6 bg-gray-50 rounded-lg border border-gray-200">
+    <h3 class="text-lg font-semibold mb-3">About the Author</h3>
+    <div class="flex items-start gap-4">
+      <div class="w-16 h-16 rounded-full bg-wine-100 flex items-center justify-center text-wine-700 font-bold text-xl flex-shrink-0">
+        ${data.author.name.split(' ').map(n => n[0]).join('')}
+      </div>
+      <div>
+        <a href="/about/${data.author.slug}" class="font-semibold text-wine-600 hover:text-wine-800">${data.author.name}</a>
+        <p class="text-sm text-gray-600 mb-2">${data.author.role}</p>
+        <p class="text-sm text-gray-700">${data.author.shortBio}</p>
+        <a href="/about/${data.author.slug}" class="text-sm text-wine-600 hover:text-wine-800 mt-2 inline-block">View full profile &rarr;</a>
+      </div>
+    </div>
+  </div>
 
 </ArticleLayout>`;
+  }
+
+  /**
+   * Generate regional section if regions are detected in content
+   */
+  private generateRegionalSection(content: string): string {
+    const regions = detectRegions(content);
+    if (regions.length === 0) return '';
+
+    // Pick the first detected region for a focused deep-dive
+    const primaryRegion = regions[0];
+    const facts = getRandomFacts(primaryRegion.name, 2);
+
+    if (facts.length === 0) return '';
+
+    return `
+  <!-- Regional Deep Dive -->
+  <div class="mt-8 p-6 bg-wine-50 rounded-lg border border-wine-200">
+    <h3 class="text-lg font-semibold mb-3 text-wine-800">Regional Spotlight: ${primaryRegion.name}</h3>
+    <p class="text-gray-700 mb-4">${primaryRegion.climate}</p>
+    <div class="space-y-2">
+      ${facts.map(f => `<p class="text-sm text-gray-600 flex items-start gap-2"><span class="text-wine-600">&#8226;</span> ${f}</p>`).join('\n      ')}
+    </div>
+    <p class="text-sm text-gray-600 mt-4"><strong>Notable Producers:</strong> ${primaryRegion.notableProducers.slice(0, 3).join(', ')}</p>
+    <p class="text-sm text-gray-600 mt-2"><strong>Best Vintages:</strong> ${primaryRegion.bestVintages.slice(0, 5).join(', ')}</p>
+  </div>`;
+  }
+
+  /**
+   * Generate Related Articles section
+   */
+  private generateRelatedArticlesSection(currentSlug: string): string {
+    const related = findRelatedArticles(currentSlug, 4);
+    if (related.length === 0) return '';
+
+    return `
+  <!-- Related Articles -->
+  <div class="mt-10 pt-8 border-t border-gray-200">
+    <h3 class="text-xl font-semibold mb-6">Continue Reading</h3>
+    <div class="grid md:grid-cols-2 gap-4">
+      ${related.map(article => `
+      <a href="${article.url}" class="block p-4 bg-gray-50 rounded-lg hover:bg-wine-50 transition group">
+        <span class="text-xs text-wine-600 uppercase tracking-wide">${article.category.replace('-', ' ')}</span>
+        <h4 class="font-semibold text-gray-900 group-hover:text-wine-600 mt-1">${article.title}</h4>
+        <p class="text-sm text-gray-600 mt-1">${article.topics.slice(0, 3).join(' · ')}</p>
+      </a>`).join('')}
+    </div>
+  </div>`;
   }
 
   /**

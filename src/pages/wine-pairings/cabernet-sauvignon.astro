@@ -1,105 +1,263 @@
 ---
 import ArticleLayout from '../../layouts/ArticleLayout.astro';
 
-const schema = {
-  "@context": "https://schema.org",
-  "@type": "Article",
-  "headline": "Cabernet Sauvignon - Complete Wine Guide",
-  "description": "Discover the perfect Cabernet Sauvignon with our expert wine guide. Get professional recommendations, tasting notes, and food pairing suggestions from certified sommeliers.",
-  "author": {
-    "@type": "Organization",
-    "name": "Wine Quick Start"
+const frontmatter = {
+  title: "Cabernet sauvignon Guide: Everything You Need to Know",
+  description: "Everything you need to know about cabernet sauvignon. Professional guidance on selection, pairing, and enjoyment.",
+  wine_type: "red",
+  author: "James Thornton",
+  authorSlug: "james-thornton",
+  authorRole: "Founder & Lead Wine Consultant",
+  authorCredentials: ["WSET Level 3 Award in Wines","Certified Sommelier (Court of Master Sommeliers)","French Wine Scholar (Wine Scholar Guild)"],
+  readTime: "7 min",
+  expert_score: 9,
+  article_format: "guide",
+  structured_data: {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "Cabernet sauvignon Guide: Everything You Need to Know",
+    "description": "Everything you need to know about cabernet sauvignon. Professional guidance on selection, pairing, and enjoyment.",
+    "author": {
+        "@type": "Person",
+        "name": "James Thornton",
+        "jobTitle": "Founder & Lead Wine Consultant",
+        "description": "Certified Sommelier and WSET Level 3 holder with 10+ years in wine education and consulting.",
+        "url": "https://winequickstart.com/about/james-thornton",
+        "image": "https://winequickstart.com/images/authors/james-thornton.jpg",
+        "sameAs": [
+            "https://linkedin.com/in/jamesthornton",
+            "https://twitter.com/winequickstart",
+            "https://instagram.com/winequickstart"
+        ],
+        "knowsAbout": [
+            "Food & Wine Pairing",
+            "French Wines",
+            "California Wines",
+            "Wine Education"
+        ],
+        "hasCredential": [
+            {
+                "@type": "EducationalOccupationalCredential",
+                "credentialCategory": "Professional Certification",
+                "name": "WSET Level 3 Award in Wines"
+            },
+            {
+                "@type": "EducationalOccupationalCredential",
+                "credentialCategory": "Professional Certification",
+                "name": "Certified Sommelier (Court of Master Sommeliers)"
+            },
+            {
+                "@type": "EducationalOccupationalCredential",
+                "credentialCategory": "Professional Certification",
+                "name": "French Wine Scholar (Wine Scholar Guild)"
+            }
+        ]
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "Wine Quick Start",
+      "url": "https://winequickstart.com"
+    },
+    "datePublished": "2026-01-07T23:53:24.091Z",
+    "dateModified": "2026-01-07T23:53:24.091Z",
+    "keywords": "cabernet sauvignon",
+    "articleSection": "Wine Guide"
   },
-  "datePublished": "2025-07-01",
-  "dateModified": "2025-07-01"
+  wines: [
+  {
+    "name": "2019 Abeja Abeja Cabernet Sauvignon",
+    "region": "Columbia Valley, Washington",
+    "price": "30",
+    "rating": "95",
+    "type": "red",
+    "notes": "Rich cassis and plum flavors with hints of graphite and spice.",
+    "link": "https://wine-searcher.com/find/abeja"
+  },
+  {
+    "name": "2019 Andrew Will Winery Andrew Will Sorella",
+    "region": "Horse Heaven Hills, Washington",
+    "price": "33",
+    "rating": "89",
+    "type": "red",
+    "notes": "Full-bodied with firm tannins and notes of dark fruit and oak.",
+    "link": "https://wine-searcher.com/find/andrew%2Bwill%2Bwinery"
+  },
+  {
+    "name": "2019 Betz Family Winery Betz Family Winery Pere de Famille Cabernet Sauvignon",
+    "region": "Columbia Valley, Washington",
+    "price": "22",
+    "rating": "89",
+    "type": "red",
+    "notes": "Full-bodied with firm tannins and notes of dark fruit and oak.",
+    "link": "https://wine-searcher.com/find/betz%2Bfamily%2Bwinery"
+  }
+]
 };
 ---
 
-<ArticleLayout 
-  title="Cabernet Sauvignon - Complete Wine Guide"
-  description="Discover the perfect Cabernet Sauvignon with our expert wine guide. Get professional recommendations, tasting notes, and food pairing suggestions from certified sommeliers."
-  category="Wine Guide"
-  author="Wine Quick Start Team"
-  readTime="8 min"
-  schema={schema}
->
+<ArticleLayout title={frontmatter.title} description={frontmatter.description} author={frontmatter.author} readTime={frontmatter.readTime} category="Wine Guide" schema={frontmatter.structured_data}>
+  <div slot="quick-answer">
+    <p><strong>The Essentials:</strong> Great cabernet sauvignon isn't about perfection—it's about understanding principles that consistently lead to better experiences.</p>
+  </div>
+
+  <!-- Author Attribution -->
+  <div class="bg-gray-50 p-4 rounded-lg mb-6 flex items-center gap-4">
+    <div class="w-12 h-12 rounded-full bg-wine-100 flex items-center justify-center text-wine-700 font-bold">
+      JT
+    </div>
+    <div>
+      <a href="/about/james-thornton" class="font-semibold text-gray-900 hover:text-wine-600">James Thornton</a>
+      <p class="text-sm text-gray-600">Founder & Lead Wine Consultant | WSET Level 3 Award in Wines</p>
+    </div>
+  </div>
+
+  <div class="bg-wine-50 p-4 rounded-lg mb-8">
+    <div class="flex justify-between items-center text-sm text-gray-600">
+      <span>Search Volume: 90,500/month</span>
+      <span>Keyword Difficulty: 0/100</span>
+    </div>
+  </div>
+
+    <p><a href="/learn/bordeaux-wine-guide" class="internal-link">Cabernet sauvignon</a> has earned its place among the world's noble grapes through centuries of refinement.</p>
+
+  <h2>Understanding <a href="/learn/bordeaux-wine-guide" class="internal-link">Cabernet sauvignon</a></h2>
+
+  <p>The world of <a href="/learn/bordeaux-wine-guide" class="internal-link">cabernet sauvignon</a> offers endless discovery. From regional traditions to modern innovations, there's always something new to learn and taste.</p>
+
+  <h2>Key Characteristics</h2>
+
+  <h3>What to Look For</h3>
+
+  <ul>
+
+    <li>**Balance**: The interplay between fruit, acid, and structure</li>
+
+    <li>**Expression**: How clearly the wine shows its origins</li>
+
+    <li>**Finish**: The lasting impression after each sip</li>
+
+    <li>**Complexity**: Layers of flavor that reveal themselves over time</li>
+
+  </ul>
+
+  <h2>Expert Recommendations</h2>
+
+  <p>Our curated selections represent exceptional quality and value:</p>
+
+  <h3>1. 2019 Abeja Abeja <a href="/learn/bordeaux-wine-guide" class="internal-link">Cabernet Sauvignon</a></h3>
+
+  <p>**Region:** Columbia Valley, Washington</p>
+
+  <p>**Price:** $30 | **Rating:** 95/100</p>
+
+  <p>Rich cassis and plum flavors with hints of graphite and spice.</p>
+
+  <p>[Find this wine →](https://wine-searcher.com/find/abeja)</p>
+
+  <h3>2. 2019 Andrew Will Winery Andrew Will Sorella</h3>
+
+  <p>**Region:** Horse Heaven Hills, Washington</p>
+
+  <p>**Price:** $33 | **Rating:** 89/100</p>
+
+  <p>Full-bodied with firm tannins and notes of dark fruit and oak.</p>
+
+  <p>[Find this wine →](https://wine-searcher.com/find/andrew%2Bwill%2Bwinery)</p>
+
+  <h3>3. 2019 Betz Family Winery Betz Family Winery Pere de Famille <a href="/learn/bordeaux-wine-guide" class="internal-link">Cabernet Sauvignon</a></h3>
+
+  <p>**Region:** Columbia Valley, Washington</p>
+
+  <p>**Price:** $22 | **Rating:** 89/100</p>
+
+  <p>Full-bodied with firm tannins and notes of dark fruit and oak.</p>
+
+  <p>[Find this wine →](https://wine-searcher.com/find/betz%2Bfamily%2Bwinery)</p>
+
+  <h2>Buying Guide</h2>
+
+  <h3>Where to Shop</h3>
+
+  <p>Your best options for <a href="/learn/bordeaux-wine-guide" class="internal-link">cabernet sauvignon</a> purchases:</p>
+
+  <ul>
+
+    <li>**Local Wine Merchants**: Personal recommendations and ability to taste</li>
+
+    <li>**Online Platforms**: Broader selection and user reviews</li>
+
+    <li>**Wine Clubs**: Curated discoveries delivered regularly</li>
+
+    <li>**Auction Houses**: For rare and aged bottles</li>
+
+  </ul>
+
+  <h2>Storage & Serving</h2>
+
+  <p>**Temperature**: 55°F is ideal for long-term storage</p>
+
+  <p>**Humidity**: 60-70% prevents cork drying</p>
+
+  <p>**Position**: Horizontal keeps corks moist</p>
+
+  <p>**Serving**: Let reds breathe; chill whites appropriately</p>
+
   
-  <p><strong>Quick Answer:</strong> Cabernet Sauvignon is the world's most planted wine grape, producing full-bodied reds with blackcurrant, cedar, and tobacco notes. Best paired with red meat, aged cheeses, and robust dishes. Look for wines from Napa Valley, Bordeaux, and Australia.</p>
+  <!-- Regional Deep Dive -->
+  <div class="mt-8 p-6 bg-wine-50 rounded-lg border border-wine-200">
+    <h3 class="text-lg font-semibold mb-3 text-wine-800">Regional Spotlight: Piedmont</h3>
+    <p class="text-gray-700 mb-4">Continental with cold, foggy winters and warm, dry summers. Significant diurnal temperature variation.</p>
+    <div class="space-y-2">
+      <p class="text-sm text-gray-600 flex items-start gap-2"><span class="text-wine-600">&#8226;</span> Barolo is called "the King of Wines and the Wine of Kings."</p>
+      <p class="text-sm text-gray-600 flex items-start gap-2"><span class="text-wine-600">&#8226;</span> Nebbiolo is named for the fog (nebbia) that blankets the Langhe hills during harvest.</p>
+    </div>
+    <p class="text-sm text-gray-600 mt-4"><strong>Notable Producers:</strong> Giacomo Conterno, Bruno Giacosa, Bartolo Mascarello</p>
+    <p class="text-sm text-gray-600 mt-2"><strong>Best Vintages:</strong> 2019, 2016, 2015, 2013, 2010</p>
+  </div>
 
-  <h2>Cabernet Sauvignon Overview</h2>
-
-  <p>Cabernet Sauvignon is the world's most planted wine grape and the king of red wines. Known for its full body, high tannins, and exceptional aging potential, this noble grape produces some of the most celebrated wines globally.</p>
-
-  <h2>Tasting Profile</h2>
-
-  <h3>Primary Characteristics</h3>
-  <ul>
-    <li><strong>Color:</strong> Deep purple to garnet</li>
-    <li><strong>Aroma:</strong> Blackcurrant, cedar, tobacco, vanilla</li>
-    <li><strong>Palate:</strong> Full-bodied with firm tannins</li>
-    <li><strong>Finish:</strong> Long and structured</li>
-  </ul>
-
-  <h3>Classic Flavor Profile</h3>
-  <ul>
-    <li><strong>Fruit:</strong> Blackcurrant, blackberry, dark cherry</li>
-    <li><strong>Herbs:</strong> Mint, eucalyptus, green bell pepper</li>
-    <li><strong>Oak:</strong> Vanilla, cedar, tobacco, chocolate</li>
-    <li><strong>Earth:</strong> Graphite, mineral, leather</li>
-  </ul>
-
-  <h2>Top Cabernet Sauvignon Regions</h2>
-
-  <h3>Napa Valley, California</h3>
-  <p>The gold standard for New World Cabernet Sauvignon. Rich, powerful wines with ripe fruit and excellent aging potential.</p>
-
-  <h3>Bordeaux, France</h3>
-  <p>Home of the original Cabernet blends. Elegant, structured wines that define Old World sophistication.</p>
-
-  <h3>Coonawarra, Australia</h3>
-  <p>Famous terra rossa soil produces distinctive eucalyptus and mint notes with excellent structure.</p>
-
-  <h2>Wine Recommendations by Price</h2>
-
-  <h3>Under $20</h3>
-  <p><strong>Columbia Crest Grand Estates ($15):</strong> Washington State value with consistent quality and approachable style.</p>
-
-  <h3>$20-50 Range</h3>
-  <p><strong>Stag's Leap Wine Cellars Artemis ($35):</strong> Napa Valley elegance with balanced fruit and oak integration.</p>
-
-  <h3>Premium ($50+)</h3>
-  <p><strong>Caymus Napa Valley ($85):</strong> Rich, opulent style that showcases Napa's power and finesse.</p>
-
-  <h2>Food Pairing Guide</h2>
-
-  <h3>Perfect Matches</h3>
-  <ul>
-    <li>Grilled ribeye steak and lamb</li>
-    <li>Hard aged cheeses (Aged Cheddar, Pecorino)</li>
-    <li>Dark chocolate and espresso</li>
-    <li>Herb-crusted roasts</li>
-  </ul>
-
-  <h3>Avoid Pairing With</h3>
-  <ul>
-    <li>Delicate fish (overpowers)</li>
-    <li>Very spicy Asian cuisine</li>
-    <li>Light salads and vegetables</li>
-  </ul>
-
-  <h2>Serving & Storage</h2>
-
-  <p><strong>Serving Temperature:</strong> 60-65°F (16-18°C)</p>
-  <p><strong>Decanting:</strong> 1-2 hours for young wines, 30 minutes for mature</p>
-  <p><strong>Glassware:</strong> Large Bordeaux glass for optimal aeration</p>
-  <p><strong>Aging Potential:</strong> 10-20+ years for quality examples</p>
-
-  <h2>Expert Wine Recommendations</h2>
   
-  <h3>Château Cabernet Sauvignon Reserve ($32)</h3>
-  <p>Excellent example of Cabernet Sauvignon with balanced flavors and great food pairing potential.</p>
-  
-  <h3>Domaine Estate Cabernet ($45)</h3>
-  <p>Premium expression with rich blackcurrant fruit, cedar notes, and excellent aging potential.</p>
+  <!-- Related Articles -->
+  <div class="mt-10 pt-8 border-t border-gray-200">
+    <h3 class="text-xl font-semibold mb-6">Continue Reading</h3>
+    <div class="grid md:grid-cols-2 gap-4">
+      
+      <a href="/learn/bordeaux-wine-guide" class="block p-4 bg-gray-50 rounded-lg hover:bg-wine-50 transition group">
+        <span class="text-xs text-wine-600 uppercase tracking-wide">learn</span>
+        <h4 class="font-semibold text-gray-900 group-hover:text-wine-600 mt-1">Bordeaux Wine Guide</h4>
+        <p class="text-sm text-gray-600 mt-1">wine regions · french wine · bordeaux</p>
+      </a>
+      <a href="/wine-pairings/pinot-noir" class="block p-4 bg-gray-50 rounded-lg hover:bg-wine-50 transition group">
+        <span class="text-xs text-wine-600 uppercase tracking-wide">wine pairings</span>
+        <h4 class="font-semibold text-gray-900 group-hover:text-wine-600 mt-1">Pinot Noir Guide</h4>
+        <p class="text-sm text-gray-600 mt-1">pinot noir · red wine · burgundy</p>
+      </a>
+      <a href="/wine-pairings/pinot-noir-food-pairing" class="block p-4 bg-gray-50 rounded-lg hover:bg-wine-50 transition group">
+        <span class="text-xs text-wine-600 uppercase tracking-wide">wine pairings</span>
+        <h4 class="font-semibold text-gray-900 group-hover:text-wine-600 mt-1">Pinot Noir Food Pairing</h4>
+        <p class="text-sm text-gray-600 mt-1">pinot noir · food pairing · red wine</p>
+      </a>
+      <a href="/wine-pairings/chardonnay" class="block p-4 bg-gray-50 rounded-lg hover:bg-wine-50 transition group">
+        <span class="text-xs text-wine-600 uppercase tracking-wide">wine pairings</span>
+        <h4 class="font-semibold text-gray-900 group-hover:text-wine-600 mt-1">Chardonnay Guide</h4>
+        <p class="text-sm text-gray-600 mt-1">chardonnay · white wine · burgundy</p>
+      </a>
+    </div>
+  </div>
+
+  <!-- Author Bio Footer -->
+  <div class="mt-12 p-6 bg-gray-50 rounded-lg border border-gray-200">
+    <h3 class="text-lg font-semibold mb-3">About the Author</h3>
+    <div class="flex items-start gap-4">
+      <div class="w-16 h-16 rounded-full bg-wine-100 flex items-center justify-center text-wine-700 font-bold text-xl flex-shrink-0">
+        JT
+      </div>
+      <div>
+        <a href="/about/james-thornton" class="font-semibold text-wine-600 hover:text-wine-800">James Thornton</a>
+        <p class="text-sm text-gray-600 mb-2">Founder & Lead Wine Consultant</p>
+        <p class="text-sm text-gray-700">Certified Sommelier and WSET Level 3 holder with 10+ years in wine education and consulting.</p>
+        <a href="/about/james-thornton" class="text-sm text-wine-600 hover:text-wine-800 mt-2 inline-block">View full profile &rarr;</a>
+      </div>
+    </div>
+  </div>
 
 </ArticleLayout>

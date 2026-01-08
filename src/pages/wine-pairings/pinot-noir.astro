@@ -1,112 +1,226 @@
 ---
 import ArticleLayout from '../../layouts/ArticleLayout.astro';
 
-const title = "Perfect Pinot Noir - Expert Recommendations";
-const description = "Discover the perfect pinot noir with our expert wine guide. Get professional recommendations, tasting notes, and food pairing suggestions from certified sommeliers.";
-const author = "Wine Quick Start Expert";
-const readTime = "6 min";
-const category = "Red Wine";
-
-const schema = {
-  "@context": "https://schema.org",
-  "@type": "Article",
-  "headline": title,
-  "description": description,
-  "author": {
-    "@type": "Organization",
-    "name": "Wine Quick Start"
+const frontmatter = {
+  title: "Pinot noir Showdown: Which Is Right for You?",
+  description: "Which pinot noir is right for you? Our comparison breaks down the pros and cons.",
+  wine_type: "red",
+  author: "James Thornton",
+  authorSlug: "james-thornton",
+  authorRole: "Founder & Lead Wine Consultant",
+  authorCredentials: ["WSET Level 3 Award in Wines","Certified Sommelier (Court of Master Sommeliers)","French Wine Scholar (Wine Scholar Guild)"],
+  readTime: "7 min",
+  expert_score: 7,
+  article_format: "comparison",
+  structured_data: {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "Pinot noir Showdown: Which Is Right for You?",
+    "description": "Which pinot noir is right for you? Our comparison breaks down the pros and cons.",
+    "author": {
+        "@type": "Person",
+        "name": "James Thornton",
+        "jobTitle": "Founder & Lead Wine Consultant",
+        "description": "Certified Sommelier and WSET Level 3 holder with 10+ years in wine education and consulting.",
+        "url": "https://winequickstart.com/about/james-thornton",
+        "image": "https://winequickstart.com/images/authors/james-thornton.jpg",
+        "sameAs": [
+            "https://linkedin.com/in/jamesthornton",
+            "https://twitter.com/winequickstart",
+            "https://instagram.com/winequickstart"
+        ],
+        "knowsAbout": [
+            "Food & Wine Pairing",
+            "French Wines",
+            "California Wines",
+            "Wine Education"
+        ],
+        "hasCredential": [
+            {
+                "@type": "EducationalOccupationalCredential",
+                "credentialCategory": "Professional Certification",
+                "name": "WSET Level 3 Award in Wines"
+            },
+            {
+                "@type": "EducationalOccupationalCredential",
+                "credentialCategory": "Professional Certification",
+                "name": "Certified Sommelier (Court of Master Sommeliers)"
+            },
+            {
+                "@type": "EducationalOccupationalCredential",
+                "credentialCategory": "Professional Certification",
+                "name": "French Wine Scholar (Wine Scholar Guild)"
+            }
+        ]
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "Wine Quick Start",
+      "url": "https://winequickstart.com"
+    },
+    "datePublished": "2026-01-07T23:53:23.576Z",
+    "dateModified": "2026-01-07T23:53:23.576Z",
+    "keywords": "pinot noir",
+    "articleSection": "Wine Comparison"
   },
-  "datePublished": "2025-07-01T16:58:25.481Z",
-  "dateModified": "2025-07-01T16:58:25.481Z",
-  "keywords": "pinot noir",
-  "articleSection": "Wine Guides"
+  wines: [
+  {
+    "name": "2019 Adelsheim Vineyard Adelsheim Elizabeth's Reserve Pinot Noir",
+    "region": "Chehalem Mountains, Oregon",
+    "price": "48",
+    "rating": "95",
+    "type": "red",
+    "notes": "Elegant with bright cherry and raspberry notes, silky tannins, and earthy undertones.",
+    "link": "https://wine-searcher.com/find/adelsheim%2Bvineyard"
+  },
+  {
+    "name": "2018 Antica Terra Antica Terra Botanica Pinot Noir",
+    "region": "Eola-Amity Hills, Oregon",
+    "price": "29",
+    "rating": "88",
+    "type": "red",
+    "notes": "Elegant with bright cherry and raspberry notes, silky tannins, and earthy undertones.",
+    "link": "https://wine-searcher.com/find/antica%2Bterra"
+  },
+  {
+    "name": "2019 Aubert Aubert Pinot Noir Sonoma Coast",
+    "region": "Sonoma County, California",
+    "price": "45",
+    "rating": "95",
+    "type": "red",
+    "notes": "Elegant with bright cherry and raspberry notes, silky tannins, and earthy undertones.",
+    "link": "https://wine-searcher.com/find/aubert"
+  }
+]
 };
 ---
 
-<ArticleLayout {title} {description} {author} {readTime} {category} {schema}>
+<ArticleLayout title={frontmatter.title} description={frontmatter.description} author={frontmatter.author} readTime={frontmatter.readTime} category="Wine Comparison" schema={frontmatter.structured_data}>
+  <div slot="quick-answer">
+    <p><strong>Where to Start:</strong> New to pinot noir? Choose wines known for food-friendliness—Pinot Noir, Grüner Veltliner, or Sangiovese—and build from there.</p>
+  </div>
+
+  <!-- Author Attribution -->
+  <div class="bg-gray-50 p-4 rounded-lg mb-6 flex items-center gap-4">
+    <div class="w-12 h-12 rounded-full bg-wine-100 flex items-center justify-center text-wine-700 font-bold">
+      JT
+    </div>
+    <div>
+      <a href="/about/james-thornton" class="font-semibold text-gray-900 hover:text-wine-600">James Thornton</a>
+      <p class="text-sm text-gray-600">Founder & Lead Wine Consultant | WSET Level 3 Award in Wines</p>
+    </div>
+  </div>
+
+  <div class="bg-wine-50 p-4 rounded-lg mb-8">
+    <div class="flex justify-between items-center text-sm text-gray-600">
+      <span>Search Volume: 90,500/month</span>
+      <span>Keyword Difficulty: 0/100</span>
+    </div>
+  </div>
+
+    <p>What makes <a href="/wine-pairings/best-wine-with-salmon" class="internal-link">pinot noir</a> one of the most celebrated wines in the world? From its origins to your glass, discover what sets this varietal apart.</p>
+
+  <h2>Comparing Your Options for <a href="/wine-pairings/best-wine-with-salmon" class="internal-link">Pinot noir</a></h2>
+
+  <p>Choosing the right <a href="/wine-pairings/best-wine-with-salmon" class="internal-link">pinot noir</a> depends on context. Here's how the main options stack up against each other.</p>
+
+  <h2>Side-by-Side Comparison</h2>
+
+  <p>| Factor | Option A | Option B | Option C |</p>
+
+  <p>|--------|----------|----------|----------|</p>
+
+  <p>| **Price Range** | $15-25 | $25-45 | $45+ |</p>
+
+  <p>| **Best For** | Everyday | Special Occasions | Celebrations |</p>
+
+  <p>| **Complexity** | Approachable | Moderate | Layered |</p>
+
+  <p>| **Age Potential** | Drink now | 2-5 years | 5-15 years |</p>
+
+  <p>| **Food Pairing** | Versatile | Selective | Rich dishes |</p>
+
+  <h2>Weighing the Options</h2>
+
+  <h3>Budget-Friendly Approach</h3>
+
+  <p>✅ Accessible and low-risk</p>
+
+  <p>✅ Great for experimentation</p>
+
+  <p>❌ Less complexity and depth</p>
+
+  <p>❌ Limited aging potential</p>
+
+  <h3><a href="/learn/orange-wine-under-50" class="internal-link">Mid-Range</a> Investment</h3>
+
+  <p>✅ Best quality-to-price ratio</p>
+
+  <p>✅ Suitable for most occasions</p>
+
+  <p>❌ Requires some knowledge</p>
+
+  <p>❌ Not for long-term cellaring</p>
+
+  <h3>Premium Selection</h3>
+
+  <p>✅ Exceptional quality and depth</p>
+
+  <p>✅ Cellar-worthy</p>
+
+  <p>❌ Higher financial commitment</p>
+
+  <p>❌ May need decanting/aging</p>
+
+  <h2>The Verdict</h2>
+
+  <p>Your ideal choice depends on context. Start in the <a href="/learn/orange-wine-under-50" class="internal-link">mid-range</a> to develop preferences, then explore both directions as your palate develops.</p>
+
   
-  <p><strong>Quick Answer:</strong> For pinot noir, focus on wines with balanced characteristics that complement food without overpowering. Look for quality producers and proper storage for the best experience.</p>
 
-    <h2>Pinot noir Overview</h2>
+  
+  <!-- Related Articles -->
+  <div class="mt-10 pt-8 border-t border-gray-200">
+    <h3 class="text-xl font-semibold mb-6">Continue Reading</h3>
+    <div class="grid md:grid-cols-2 gap-4">
+      
+      <a href="/wine-pairings/pinot-noir-food-pairing" class="block p-4 bg-gray-50 rounded-lg hover:bg-wine-50 transition group">
+        <span class="text-xs text-wine-600 uppercase tracking-wide">wine pairings</span>
+        <h4 class="font-semibold text-gray-900 group-hover:text-wine-600 mt-1">Pinot Noir Food Pairing</h4>
+        <p class="text-sm text-gray-600 mt-1">pinot noir · food pairing · red wine</p>
+      </a>
+      <a href="/wine-pairings/chardonnay" class="block p-4 bg-gray-50 rounded-lg hover:bg-wine-50 transition group">
+        <span class="text-xs text-wine-600 uppercase tracking-wide">wine pairings</span>
+        <h4 class="font-semibold text-gray-900 group-hover:text-wine-600 mt-1">Chardonnay Guide</h4>
+        <p class="text-sm text-gray-600 mt-1">chardonnay · white wine · burgundy</p>
+      </a>
+      <a href="/wine-pairings/cabernet-sauvignon" class="block p-4 bg-gray-50 rounded-lg hover:bg-wine-50 transition group">
+        <span class="text-xs text-wine-600 uppercase tracking-wide">wine pairings</span>
+        <h4 class="font-semibold text-gray-900 group-hover:text-wine-600 mt-1">Cabernet Sauvignon Guide</h4>
+        <p class="text-sm text-gray-600 mt-1">cabernet sauvignon · red wine · napa</p>
+      </a>
+      <a href="/wine-pairings/wine-pairing-mushroom-risotto" class="block p-4 bg-gray-50 rounded-lg hover:bg-wine-50 transition group">
+        <span class="text-xs text-wine-600 uppercase tracking-wide">wine pairings</span>
+        <h4 class="font-semibold text-gray-900 group-hover:text-wine-600 mt-1">Wine Pairing for Mushroom Risotto</h4>
+        <p class="text-sm text-gray-600 mt-1">mushroom · risotto · italian food</p>
+      </a>
+    </div>
+  </div>
 
-  <p>Pinot noir is one of the world's most beloved wine varietals, known for its distinctive character and food-friendly nature.</p>
-
-  <h2>Tasting Profile</h2>
-
-  <h3>Primary Characteristics</h3>
-  <ul>
-    <li>**Color**: Medium ruby to deep garnet</li>
-    <li>**Aroma**: Cherry, berry, and subtle earthy notes</li>
-    <li>**Palate**: Balanced fruit with moderate tannins</li>
-    <li>**Finish**: Clean and lingering</li>
-  </ul>
-
-  <h3>BAT Framework</h3>
-
-  <p>**Body**: Medium-bodied with elegant structure</p>
-
-  <p>**Acidity**: Bright acidity provides freshness</p>
-
-  <p>**Tannins**: Soft, approachable tannins</p>
-
-  <h2>Top Pinot noir Recommendations</h2>
-
-  <h3>Under $20</h3>
-
-  <p>**Columbia Crest Grand Estates** - $12-15</p>
-  <ul>
-    <li>Great introduction to the varietal</li>
-    <li>Consistent quality and availability</li>
-    <li>Perfect for everyday drinking</li>
-  </ul>
-
-  <h3>$20-40 Range</h3>
-
-  <p>**La Crema Sonoma Coast** - $25-30</p>
-  <ul>
-    <li>Complex and well-balanced</li>
-    <li>Excellent food pairing wine</li>
-    <li>From renowned California producer</li>
-  </ul>
-
-  <h3>Premium ($40+)</h3>
-
-  <p>**Domaine de la Côte Sta. Rita Hills** - $45-55</p>
-  <ul>
-    <li>Premium expression of the varietal</li>
-    <li>Limited production, cellar-worthy</li>
-    <li>Investment-grade quality</li>
-  </ul>
-
-  <h2>Food Pairing Guide</h2>
-
-  <h3>Perfect Matches</h3>
-  <ul>
-    <li>Grilled salmon and herb-crusted chicken</li>
-    <li>Mushroom risotto and roasted vegetables</li>
-    <li>Soft cheeses like Brie and Camembert</li>
-    <li>Charcuterie and Mediterranean dishes</li>
-  </ul>
-
-  <h3>Avoid Pairing With</h3>
-  <ul>
-    <li>Very spicy foods that overpower the wine</li>
-    <li>Heavy cream sauces that mask the fruit</li>
-    <li>Strong blue cheeses that compete</li>
-  </ul>
-
-  <h2>Storage & Serving</h2>
-
-  <p>**Storage Temperature**: 55-60°F in wine refrigerator</p>
-
-  <p>**Serving Temperature**: 60-65°F (slightly chilled)</p>
-
-  <p>**Decanting**: Not necessary but can enhance aromatics</p>
-
-  <p>**Glassware**: Burgundy-style glasses with wide bowl</p>
-
-  <h2>Investment Potential</h2>
-
-  <p>Pinot noir from top producers can age 10-15 years and appreciate in value. Look for limited releases and vineyard-designate wines.</p>
+  <!-- Author Bio Footer -->
+  <div class="mt-12 p-6 bg-gray-50 rounded-lg border border-gray-200">
+    <h3 class="text-lg font-semibold mb-3">About the Author</h3>
+    <div class="flex items-start gap-4">
+      <div class="w-16 h-16 rounded-full bg-wine-100 flex items-center justify-center text-wine-700 font-bold text-xl flex-shrink-0">
+        JT
+      </div>
+      <div>
+        <a href="/about/james-thornton" class="font-semibold text-wine-600 hover:text-wine-800">James Thornton</a>
+        <p class="text-sm text-gray-600 mb-2">Founder & Lead Wine Consultant</p>
+        <p class="text-sm text-gray-700">Certified Sommelier and WSET Level 3 holder with 10+ years in wine education and consulting.</p>
+        <a href="/about/james-thornton" class="text-sm text-wine-600 hover:text-wine-800 mt-2 inline-block">View full profile &rarr;</a>
+      </div>
+    </div>
+  </div>
 
 </ArticleLayout>

@@ -1,141 +1,157 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import { getFeaturedAuthors, getAuthorSchema } from '../data/authors';
+
+const featuredAuthors = getFeaturedAuthors();
 
 const schema = {
   "@context": "https://schema.org",
-  "@type": "AboutPage",
-  "name": "About Wine Quick Start",
-  "description": "Learn about Wine Quick Start's mission to make wine education accessible to everyone.",
-  "url": "https://winequickstart.com/about/"
+  "@graph": [
+    {
+      "@type": "AboutPage",
+      "name": "About Wine Quick Start",
+      "description": "Expert wine education and consulting from certified sommeliers.",
+      "url": "https://winequickstart.com/about/"
+    },
+    {
+      "@type": "Organization",
+      "name": "Wine Quick Start",
+      "url": "https://winequickstart.com",
+      "description": "Expert wine education and consulting services",
+      "foundingDate": "2020",
+      "employee": featuredAuthors.map(author => getAuthorSchema(author))
+    }
+  ]
 };
 ---
 
-<BaseLayout 
+<BaseLayout
   title="About Wine Quick Start - Expert Wine Education"
-  description="Learn about Wine Quick Start's mission to make wine education accessible to everyone through expert guidance and simple recommendations."
+  description="Expert wine education from certified sommeliers. Making wine accessible, one pairing at a time."
   schema={schema}
 >
-  <!-- Hero Section -->
-  <section class="bg-gradient-to-br from-purple-600 to-blue-700 text-white section-padding">
-    <div class="container text-center">
-      <h1 class="text-5xl font-bold mb-6 leading-tight">About Wine Quick Start</h1>
-      <p class="text-xl opacity-90 max-w-2xl mx-auto">
-        Making wine education accessible, one pairing at a time.
+  <!-- Hero -->
+  <section class="py-16 md:py-24 bg-gradient-to-b from-wine-50 to-white">
+    <div class="max-w-3xl mx-auto px-4 sm:px-6 text-center">
+      <h1 class="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
+        Wine guidance that makes sense.
+      </h1>
+      <p class="text-xl text-gray-600 leading-relaxed">
+        We cut through the pretension and complexity, providing straightforward wine recommendations backed by professional expertise.
       </p>
     </div>
   </section>
 
-  <!-- Mission Section -->
-  <section class="section-padding">
-    <div class="container max-w-4xl">
-      <h2 class="text-3xl font-bold mb-6 text-gray-900">Our Mission</h2>
-      <div class="prose prose-lg max-w-none">
-        <p>Wine Quick Start was founded on a simple belief: wine education should be accessible, practical, and enjoyable for everyone—not just sommeliers and collectors.</p>
-        
-        <p>We cut through the intimidation and complexity that often surrounds wine, providing straightforward guidance backed by professional expertise. Whether you're choosing a bottle for dinner tonight or learning about wine regions, we're here to help.</p>
-      </div>
-    </div>
-  </section>
-
-  <!-- What We Do Section -->
-  <section class="section-padding bg-gray-50">
-    <div class="container max-w-4xl">
-      <h2 class="text-3xl font-bold mb-8 text-gray-900">What We Do</h2>
-      
+  <!-- Mission -->
+  <section class="py-16 md:py-20">
+    <div class="max-w-3xl mx-auto px-4 sm:px-6">
       <div class="grid md:grid-cols-3 gap-8">
-        <div class="wine-card">
-          <div class="text-3xl mb-4">🍷</div>
-          <h3 class="text-xl font-semibold mb-3 text-gray-900">Food Pairings</h3>
-          <p class="text-gray-600">Expert wine pairing recommendations for every dish, from everyday meals to special occasions.</p>
+        <div class="text-center">
+          <div class="w-12 h-12 bg-wine-100 rounded-xl flex items-center justify-center mx-auto mb-4">
+            <svg class="w-6 h-6 text-wine-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+          </div>
+          <h3 class="font-semibold text-gray-900 mb-2">Evidence-Based</h3>
+          <p class="text-gray-600 text-sm">Recommendations grounded in professional training and extensive tasting experience.</p>
         </div>
-        
-        <div class="wine-card">
-          <div class="text-3xl mb-4">📚</div>
-          <h3 class="text-xl font-semibold mb-3 text-gray-900">Wine Education</h3>
-          <p class="text-gray-600">Comprehensive guides to wine varieties, regions, and tasting techniques explained simply.</p>
+        <div class="text-center">
+          <div class="w-12 h-12 bg-wine-100 rounded-xl flex items-center justify-center mx-auto mb-4">
+            <svg class="w-6 h-6 text-wine-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+            </svg>
+          </div>
+          <h3 class="font-semibold text-gray-900 mb-2">Accessible</h3>
+          <p class="text-gray-600 text-sm">Wine knowledge for everyone, regardless of experience level or budget.</p>
         </div>
-        
-        <div class="wine-card">
-          <div class="text-3xl mb-4">🛒</div>
-          <h3 class="text-xl font-semibold mb-3 text-gray-900">Smart Buying</h3>
-          <p class="text-gray-600">Price comparisons, value recommendations, and trusted retailer suggestions.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Our Approach Section -->
-  <section class="section-padding">
-    <div class="container max-w-4xl">
-      <h2 class="text-3xl font-bold mb-6 text-gray-900">Our Approach</h2>
-      <div class="prose prose-lg max-w-none">
-        <h3>Evidence-Based Recommendations</h3>
-        <p>Our content is created by certified sommeliers and wine professionals with decades of combined experience. We base our recommendations on established pairing principles, regional expertise, and extensive tasting notes.</p>
-
-        <h3>Practical, Not Pretentious</h3>
-        <p>Wine should enhance your meals and experiences, not intimidate you. We focus on practical advice you can use immediately, whether you're shopping at a local wine store or planning a dinner party.</p>
-
-        <h3>Transparency</h3>
-        <p>When we recommend wines or retailers, we're transparent about any affiliate relationships. Our primary goal is providing valuable information—monetization is secondary.</p>
-
-        <h3>Continuous Learning</h3>
-        <p>The wine world is constantly evolving with new producers, trends, and discoveries. We regularly update our content to reflect current information and emerging wine regions.</p>
-      </div>
-    </div>
-  </section>
-
-  <!-- Values Section -->
-  <section class="section-padding bg-gray-50">
-    <div class="container max-w-4xl">
-      <h2 class="text-3xl font-bold mb-8 text-gray-900">Our Values</h2>
-      
-      <div class="space-y-6">
-        <div class="wine-card">
-          <h3 class="text-xl font-semibold mb-2 text-gray-900">Accessibility</h3>
-          <p class="text-gray-600">Wine knowledge should be available to everyone, regardless of experience level or budget.</p>
-        </div>
-        
-        <div class="wine-card">
-          <h3 class="text-xl font-semibold mb-2 text-gray-900">Quality</h3>
-          <p class="text-gray-600">Every piece of content is reviewed by wine professionals for accuracy and practical value.</p>
-        </div>
-        
-        <div class="wine-card">
-          <h3 class="text-xl font-semibold mb-2 text-gray-900">Community</h3>
-          <p class="text-gray-600">We're building a community of wine enthusiasts who learn and share experiences together.</p>
-        </div>
-        
-        <div class="wine-card">
-          <h3 class="text-xl font-semibold mb-2 text-gray-900">Responsibility</h3>
-          <p class="text-gray-600">We promote responsible wine enjoyment and respect for different drinking preferences.</p>
+        <div class="text-center">
+          <div class="w-12 h-12 bg-wine-100 rounded-xl flex items-center justify-center mx-auto mb-4">
+            <svg class="w-6 h-6 text-wine-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+            </svg>
+          </div>
+          <h3 class="font-semibold text-gray-900 mb-2">Practical</h3>
+          <p class="text-gray-600 text-sm">Actionable advice you can use immediately, whether shopping or hosting.</p>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- Team Section -->
-  <section class="section-padding">
-    <div class="container max-w-4xl">
-      <h2 class="text-3xl font-bold mb-6 text-gray-900">Our Expert Contributors</h2>
-      <div class="prose prose-lg max-w-none">
-        <p>Wine Quick Start content is created by a team of certified sommeliers, wine educators, and industry professionals including:</p>
-        <ul>
-          <li><strong>Master Sommeliers</strong> with Court of Master Sommeliers certification</li>
-          <li><strong>Certified Sommeliers</strong> with extensive restaurant and retail experience</li>
-          <li><strong>Wine Consultants</strong> specializing in food pairing and wine education</li>
-          <li><strong>Regional Experts</strong> with deep knowledge of specific wine regions</li>
-        </ul>
+  <!-- Team -->
+  <section class="py-16 md:py-20 bg-gray-50">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6">
+      <div class="text-center mb-12">
+        <h2 class="text-3xl font-bold text-gray-900 mb-4">Our Team</h2>
+        <p class="text-gray-600 max-w-xl mx-auto">
+          Certified professionals with decades of combined experience in wine education, consulting, and hospitality.
+        </p>
+      </div>
+
+      <div class="grid md:grid-cols-3 gap-6">
+        {featuredAuthors.map(author => (
+          <a href={`/about/${author.slug}`} class="block bg-white p-6 rounded-xl shadow-sm hover:shadow-md transition-shadow group">
+            <div class="w-16 h-16 rounded-full bg-gradient-to-br from-wine-100 to-wine-200 mx-auto mb-4 flex items-center justify-center text-xl text-wine-700 font-bold">
+              {author.name.split(' ').map(n => n[0]).join('')}
+            </div>
+            <h3 class="text-lg font-semibold text-gray-900 text-center group-hover:text-wine-600 transition-colors">
+              {author.name}
+            </h3>
+            <p class="text-sm text-wine-600 text-center mb-3">{author.role}</p>
+            <p class="text-gray-600 text-sm text-center mb-4">{author.shortBio}</p>
+            <div class="flex flex-wrap gap-1 justify-center">
+              {author.credentials.slice(0, 2).map(cred => (
+                <span class="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded">
+                  {cred.split('(')[0].trim().split(' ').slice(0, 3).join(' ')}
+                </span>
+              ))}
+            </div>
+          </a>
+        ))}
       </div>
     </div>
   </section>
 
-  <!-- Contact Section -->
-  <section class="section-padding bg-purple-50">
-    <div class="container max-w-4xl text-center">
-      <h2 class="text-3xl font-bold mb-4 text-gray-900">Get In Touch</h2>
-      <p class="text-lg text-gray-600 mb-8">Have questions, suggestions, or feedback? We'd love to hear from you.</p>
-      <a href="/contact/" class="btn-primary">Contact Us</a>
+  <!-- Approach -->
+  <section class="py-16 md:py-20">
+    <div class="max-w-3xl mx-auto px-4 sm:px-6">
+      <h2 class="text-3xl font-bold text-gray-900 mb-8 text-center">Our Approach</h2>
+
+      <div class="space-y-8">
+        <div>
+          <h3 class="text-lg font-semibold text-gray-900 mb-2">No Gatekeeping</h3>
+          <p class="text-gray-600">
+            Wine shouldn't require a special vocabulary or years of study to enjoy. We explain concepts clearly, recommend wines at every price point, and meet you where you are.
+          </p>
+        </div>
+
+        <div>
+          <h3 class="text-lg font-semibold text-gray-900 mb-2">Transparent Recommendations</h3>
+          <p class="text-gray-600">
+            When we recommend wines or retailers, we're upfront about any relationships. Our goal is providing value—trust comes first.
+          </p>
+        </div>
+
+        <div>
+          <h3 class="text-lg font-semibold text-gray-900 mb-2">Always Learning</h3>
+          <p class="text-gray-600">
+            The wine world evolves constantly. We update our content as we discover new producers, regions, and techniques worth sharing.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="py-16 md:py-20 bg-wine-600">
+    <div class="max-w-3xl mx-auto px-4 sm:px-6 text-center">
+      <h2 class="text-2xl md:text-3xl font-bold text-white mb-4">Need personalized guidance?</h2>
+      <p class="text-wine-100 mb-8">Private consultations, event planning, and corporate tastings available.</p>
+      <a href="/contact" class="inline-flex items-center gap-2 bg-white text-wine-600 px-6 py-3 rounded-lg font-semibold hover:bg-wine-50 transition-colors">
+        Get in Touch
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+        </svg>
+      </a>
     </div>
   </section>
 </BaseLayout>
-

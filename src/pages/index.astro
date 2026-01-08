@@ -9,21 +9,21 @@ const featuredPairings = [
     readTime: "5 min"
   },
   {
-    title: "Pinot Noir Food Pairing", 
+    title: "Pinot Noir Food Pairing",
     slug: "pinot-noir-food-pairing",
     description: "The versatile red that pairs beautifully with everything from duck to mushrooms.",
     readTime: "7 min"
   },
   {
     title: "Wine for Mushroom Risotto",
-    slug: "wine-pairing-mushroom-risotto", 
+    slug: "wine-pairing-mushroom-risotto",
     description: "Earthy Nebbiolo or aged Chardonnay enhance risotto's creamy umami flavors.",
     readTime: "4 min"
   },
   {
     title: "Bordeaux Wine Guide",
     slug: "bordeaux-wine-guide",
-    description: "Master the world's most prestigious wine region with our complete guide.", 
+    description: "Master the world's most prestigious wine region with our complete guide.",
     readTime: "12 min"
   }
 ];
@@ -31,26 +31,26 @@ const featuredPairings = [
 // Structured data for SEO
 const schema = {
   "@context": "https://schema.org",
-  "@type": "WebSite", 
+  "@type": "WebSite",
   "name": "Wine Quick Start",
-  "description": "Simple wine guidance from certified sommeliers. Find the right wine for any occasion.",
+  "description": "Expert wine guidance from certified sommeliers. Find the right wine for any occasion.",
   "url": "https://winequickstart.com"
 };
 ---
 
-<BaseLayout 
-  title="Wine Quick Start - Simple Wine Guidance"
-  description="Simple wine guidance from certified sommeliers. Find the right wine for any occasion."
+<BaseLayout
+  title="Wine Quick Start - Expert Wine Guidance"
+  description="Expert wine guidance from certified sommeliers. Find the right wine for any occasion."
   schema={schema}
 >
   <!-- Hero -->
-  <section class="bg-gradient-to-br from-purple-600 to-blue-700 text-white section-padding">
+  <section class="bg-gradient-to-br from-wine-700 to-wine-900 text-white section-padding">
     <div class="container text-center">
       <h1 class="text-5xl font-bold mb-6 leading-tight">Perfect Wine, Every Time</h1>
       <p class="text-xl mb-10 opacity-90 max-w-2xl mx-auto">
-        Simple wine guidance from certified sommeliers. Find the right wine for any occasion.
+        Expert wine guidance from certified sommeliers. Find the right wine for any occasion.
       </p>
-      <a href="/wine-pairings/" class="btn-primary">
+      <a href="/wine-pairings/" class="inline-flex items-center gap-2 bg-white text-wine-700 px-6 py-3 rounded-lg font-semibold hover:bg-wine-50 transition-colors">
         Explore Wine Pairings
       </a>
     </div>
@@ -63,37 +63,43 @@ const schema = {
       <p class="text-xl text-center text-gray-600 mb-12 max-w-2xl mx-auto">
         Whether you're pairing, learning, or buying - we've got you covered
       </p>
-      
+
       <div class="wine-grid wine-grid-3">
         <div class="wine-card">
-          <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center mb-6">
-            <span class="text-2xl">🍷</span>
+          <div class="w-12 h-12 bg-wine-50 rounded-lg flex items-center justify-center mb-6">
+            <svg class="w-6 h-6 text-wine-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
           </div>
           <h3 class="text-2xl font-semibold mb-3 text-gray-900">Wine Pairings</h3>
           <p class="text-gray-600 mb-6 flex-grow">Perfect wine matches for your favorite dishes, from salmon to steak.</p>
-          <a href="/wine-pairings/" class="text-purple-600 font-medium hover:text-purple-700 transition">
+          <a href="/wine-pairings/" class="text-wine-600 font-medium hover:text-wine-700 transition">
             Browse Pairings →
           </a>
         </div>
 
         <div class="wine-card">
-          <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center mb-6">
-            <span class="text-2xl">📚</span>
+          <div class="w-12 h-12 bg-wine-50 rounded-lg flex items-center justify-center mb-6">
+            <svg class="w-6 h-6 text-wine-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+            </svg>
           </div>
           <h3 class="text-2xl font-semibold mb-3 text-gray-900">Learn Wine</h3>
           <p class="text-gray-600 mb-6 flex-grow">Simple guides to understanding wine regions, varieties, and tasting.</p>
-          <a href="/learn/" class="text-purple-600 font-medium hover:text-purple-700 transition">
+          <a href="/learn/" class="text-wine-600 font-medium hover:text-wine-700 transition">
             Start Learning →
           </a>
         </div>
 
         <div class="wine-card">
-          <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center mb-6">
-            <span class="text-2xl">🛒</span>
+          <div class="w-12 h-12 bg-wine-50 rounded-lg flex items-center justify-center mb-6">
+            <svg class="w-6 h-6 text-wine-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+            </svg>
           </div>
           <h3 class="text-2xl font-semibold mb-3 text-gray-900">Smart Buying</h3>
           <p class="text-gray-600 mb-6 flex-grow">Where to find great wines at the best prices, with expert recommendations.</p>
-          <a href="/buy/" class="text-purple-600 font-medium hover:text-purple-700 transition">
+          <a href="/buy/" class="text-wine-600 font-medium hover:text-wine-700 transition">
             Shop Smarter →
           </a>
         </div>
@@ -105,7 +111,7 @@ const schema = {
   <section class="section-padding bg-gray-50">
     <div class="container">
       <h2 class="text-4xl font-bold text-center mb-12 text-gray-900">Popular Guides</h2>
-      
+
       <div class="wine-grid wine-grid-4">
         {featuredPairings.map((article) => (
           <article class="wine-card">
@@ -113,7 +119,7 @@ const schema = {
               <span class="text-sm text-gray-500">{article.readTime}</span>
             </div>
             <h3 class="text-lg font-semibold mb-2 text-gray-900">
-              <a href={`/wine-pairings/${article.slug}/`} class="hover:text-purple-600 transition">
+              <a href={`/wine-pairings/${article.slug}/`} class="hover:text-wine-600 transition">
                 {article.title}
               </a>
             </h3>
@@ -131,14 +137,14 @@ const schema = {
         <h2 class="text-4xl font-bold mb-4">Get Weekly Wine Tips</h2>
         <p class="text-xl mb-8 text-gray-300">Join 5,000+ wine lovers getting expert tips every Friday</p>
         <form class="newsletter-form" id="newsletter-form">
-          <input 
-            type="email" 
-            placeholder="your@email.com" 
+          <input
+            type="email"
+            placeholder="your@email.com"
             required
             class="newsletter-input"
           />
-          <button 
-            type="submit" 
+          <button
+            type="submit"
             class="newsletter-button"
           >
             Subscribe
@@ -154,16 +160,16 @@ const schema = {
     const form = document.getElementById('newsletter-form');
     const emailInput = form?.querySelector('input[type="email"]') as HTMLInputElement;
     const submitButton = form?.querySelector('button[type="submit"]') as HTMLButtonElement;
-    
+
     form?.addEventListener('submit', async (e) => {
       e.preventDefault();
-      
+
       if (!emailInput?.value) return;
-      
+
       // Disable form during submission
       submitButton.disabled = true;
       submitButton.textContent = 'Subscribing...';
-      
+
       try {
         const response = await fetch('/api/newsletter', {
           method: 'POST',
@@ -172,22 +178,22 @@ const schema = {
           },
           body: JSON.stringify({ email: emailInput.value })
         });
-        
+
         const result = await response.json();
-        
+
         if (result.success) {
           if (result.alreadySubscribed) {
-            alert('✓ You\'re already on our list! Check your inbox for our latest wine tips.');
+            alert('You\'re already on our list! Check your inbox for our latest wine tips.');
           } else {
-            alert('✓ Welcome to Wine Quick Start! Check your email for confirmation.');
+            alert('Welcome to Wine Quick Start! Check your email for confirmation.');
           }
           emailInput.value = '';
         } else {
-          alert('✗ ' + (result.error || 'Something went wrong. Please try again.'));
+          alert('Error: ' + (result.error || 'Something went wrong. Please try again.'));
         }
       } catch (error) {
         console.error('Newsletter signup error:', error);
-        alert('✗ Network error. Please check your connection and try again.');
+        alert('Network error. Please check your connection and try again.');
       } finally {
         submitButton.disabled = false;
         submitButton.textContent = 'Subscribe';

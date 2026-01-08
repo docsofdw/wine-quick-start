@@ -1,147 +1,219 @@
 ---
 import ArticleLayout from '../../layouts/ArticleLayout.astro';
 
-const title = "Wine Pairing Guide - Expert Recommendations";
-const description = "Master wine pairing with our expert guide. Learn professional techniques, classic combinations, and insider tips from certified sommeliers.";
-const author = "Wine Quick Start Expert";
-const readTime = "8 min";
-const category = "Wine Pairing";
-
-const schema = {
-  "@context": "https://schema.org",
-  "@type": "Article",
-  "headline": title,
-  "description": description,
-  "author": {
-    "@type": "Organization",
-    "name": "Wine Quick Start"
+const frontmatter = {
+  title: "Comparing Wine pairing: A Detailed Analysis",
+  description: "Compare wine pairing options side by side. Make informed decisions with our detailed analysis.",
+  wine_type: "red",
+  author: "Michael Chen",
+  authorSlug: "michael-chen",
+  authorRole: "Wine Buyer & Contributor",
+  authorCredentials: ["WSET Level 3 Award in Wines","Italian Wine Scholar (Wine Scholar Guild)"],
+  readTime: "5 min",
+  expert_score: 9,
+  article_format: "comparison",
+  structured_data: {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "Comparing Wine pairing: A Detailed Analysis",
+    "description": "Compare wine pairing options side by side. Make informed decisions with our detailed analysis.",
+    "author": {
+        "@type": "Person",
+        "name": "Michael Chen",
+        "jobTitle": "Wine Buyer & Contributor",
+        "description": "Wine buyer and Italian Wine Scholar with expertise in sourcing exceptional value wines.",
+        "url": "https://winequickstart.com/about/michael-chen",
+        "image": "https://winequickstart.com/images/authors/michael-chen.jpg",
+        "sameAs": [
+            "https://linkedin.com/in/michaelchenwine"
+        ],
+        "knowsAbout": [
+            "Wine Buying",
+            "Italian Wines",
+            "Pacific Northwest Wines",
+            "Value Wines"
+        ],
+        "hasCredential": [
+            {
+                "@type": "EducationalOccupationalCredential",
+                "credentialCategory": "Professional Certification",
+                "name": "WSET Level 3 Award in Wines"
+            },
+            {
+                "@type": "EducationalOccupationalCredential",
+                "credentialCategory": "Professional Certification",
+                "name": "Italian Wine Scholar (Wine Scholar Guild)"
+            }
+        ]
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "Wine Quick Start",
+      "url": "https://winequickstart.com"
+    },
+    "datePublished": "2026-01-07T23:53:23.016Z",
+    "dateModified": "2026-01-07T23:53:23.016Z",
+    "keywords": "wine pairing",
+    "articleSection": "Wine Comparison"
   },
-  "datePublished": "2025-07-01T16:58:25.481Z",
-  "dateModified": "2025-07-01T16:58:25.481Z",
-  "keywords": "wine pairing",
-  "articleSection": "Wine Guides"
+  wines: [
+  {
+    "name": "2019 Aubert Aubert Pinot Noir Sonoma Coast",
+    "region": "Sonoma County, California",
+    "price": "42",
+    "rating": "90",
+    "type": "red",
+    "notes": "Elegant with bright cherry and raspberry notes, silky tannins, and earthy undertones.",
+    "link": "https://wine-searcher.com/find/aubert"
+  },
+  {
+    "name": "2018 Bartolo Mascarello Bartolo Mascarello Barolo",
+    "region": "Barolo, Piedmont",
+    "price": "37",
+    "rating": "93",
+    "type": "red",
+    "notes": "Rich and expressive with dark fruit character and subtle oak influence.",
+    "link": "https://wine-searcher.com/find/bartolo%2Bmascarello"
+  },
+  {
+    "name": "2019 Beaux Frères Beaux Frères The Beaux Frères Vineyard Pinot Noir",
+    "region": "Ribbon Ridge, Oregon",
+    "price": "35",
+    "rating": "89",
+    "type": "red",
+    "notes": "Delicate red fruit aromas with hints of mushroom and forest floor.",
+    "link": "https://wine-searcher.com/find/beaux%2Bfr%C3%A8res"
+  }
+]
 };
 ---
 
-<ArticleLayout {title} {description} {author} {readTime} {category} {schema}>
+<ArticleLayout title={frontmatter.title} description={frontmatter.description} author={frontmatter.author} readTime={frontmatter.readTime} category="Wine Comparison" schema={frontmatter.structured_data}>
+  <div slot="quick-answer">
+    <p><strong>In Summary:</strong> Mastering wine pairing means understanding how wine components (body, acid, tannin) interact with food elements (fat, salt, spice). The guide below breaks this down into actionable advice.</p>
+  </div>
+
+  <!-- Author Attribution -->
+  <div class="bg-gray-50 p-4 rounded-lg mb-6 flex items-center gap-4">
+    <div class="w-12 h-12 rounded-full bg-wine-100 flex items-center justify-center text-wine-700 font-bold">
+      MC
+    </div>
+    <div>
+      <a href="/about/michael-chen" class="font-semibold text-gray-900 hover:text-wine-600">Michael Chen</a>
+      <p class="text-sm text-gray-600">Wine Buyer & Contributor | WSET Level 3 Award in Wines</p>
+    </div>
+  </div>
+
+  <div class="bg-wine-50 p-4 rounded-lg mb-8">
+    <div class="flex justify-between items-center text-sm text-gray-600">
+      <span>Search Volume: 8,100/month</span>
+      <span>Keyword Difficulty: 0/100</span>
+    </div>
+  </div>
+
+    <p>I still remember the first time a perfect wine pairing elevated a simple dinner into something memorable. That experience changed how I approach wine selection.</p>
+
+  <h2>Comparing Your Options for Wine pairing</h2>
+
+  <p>The wine pairing landscape offers diverse options. This comparison breaks down what distinguishes each approach.</p>
+
+  <h2>Side-by-Side Comparison</h2>
+
+  <p>| Factor | Option A | Option B | Option C |</p>
+
+  <p>|--------|----------|----------|----------|</p>
+
+  <p>| **Price Range** | $15-25 | $25-45 | $45+ |</p>
+
+  <p>| **Best For** | Everyday | Special Occasions | Celebrations |</p>
+
+  <p>| **Complexity** | Approachable | Moderate | Layered |</p>
+
+  <p>| **Age Potential** | Drink now | 2-5 years | 5-15 years |</p>
+
+  <p>| **<a href="/wine-pairings/natural-wine" class="internal-link">Food Pairing</a>** | Versatile | Selective | Rich dishes |</p>
+
+  <h2>Weighing the Options</h2>
+
+  <h3>Budget-Friendly Approach</h3>
+
+  <p>✅ Accessible and low-risk</p>
+
+  <p>✅ Great for experimentation</p>
+
+  <p>❌ Less complexity and depth</p>
+
+  <p>❌ Limited aging potential</p>
+
+  <h3><a href="/learn/orange-wine-under-50" class="internal-link">Mid-Range</a> Investment</h3>
+
+  <p>✅ Best quality-to-price ratio</p>
+
+  <p>✅ Suitable for most occasions</p>
+
+  <p>❌ Requires some knowledge</p>
+
+  <p>❌ Not for long-term cellaring</p>
+
+  <h3>Premium Selection</h3>
+
+  <p>✅ Exceptional quality and depth</p>
+
+  <p>✅ Cellar-worthy</p>
+
+  <p>❌ Higher financial commitment</p>
+
+  <p>❌ May need decanting/aging</p>
+
+  <h2>The Verdict</h2>
+
+  <p>For most wine pairing situations, the <a href="/learn/orange-wine-under-50" class="internal-link">mid-range</a> offers the best balance. Invest in premium for special occasions, and use budget options for learning and everyday enjoyment.</p>
+
   
-  <p><strong>Quick Answer:</strong> Start with basic principles - match intensity, consider dominant flavors, and balance acidity. White wines pair with lighter dishes, reds with heartier fare, but exceptions make wine pairing interesting.</p>
 
-  <h2>Wine Pairing Fundamentals</h2>
+  
+  <!-- Related Articles -->
+  <div class="mt-10 pt-8 border-t border-gray-200">
+    <h3 class="text-xl font-semibold mb-6">Continue Reading</h3>
+    <div class="grid md:grid-cols-2 gap-4">
+      
+      <a href="/wine-pairings/natural-wine" class="block p-4 bg-gray-50 rounded-lg hover:bg-wine-50 transition group">
+        <span class="text-xs text-wine-600 uppercase tracking-wide">wine pairings</span>
+        <h4 class="font-semibold text-gray-900 group-hover:text-wine-600 mt-1">Natural Wine Pairing Guide</h4>
+        <p class="text-sm text-gray-600 mt-1">natural wine · food pairing · organic</p>
+      </a>
+      <a href="/wine-pairings/pinot-noir-food-pairing" class="block p-4 bg-gray-50 rounded-lg hover:bg-wine-50 transition group">
+        <span class="text-xs text-wine-600 uppercase tracking-wide">wine pairings</span>
+        <h4 class="font-semibold text-gray-900 group-hover:text-wine-600 mt-1">Pinot Noir Food Pairing</h4>
+        <p class="text-sm text-gray-600 mt-1">pinot noir · food pairing · red wine</p>
+      </a>
+      <a href="/wine-pairings/best-wine-with-salmon" class="block p-4 bg-gray-50 rounded-lg hover:bg-wine-50 transition group">
+        <span class="text-xs text-wine-600 uppercase tracking-wide">wine pairings</span>
+        <h4 class="font-semibold text-gray-900 group-hover:text-wine-600 mt-1">Best Wine with Salmon</h4>
+        <p class="text-sm text-gray-600 mt-1">salmon · fish pairing · seafood</p>
+      </a>
+      <a href="/wine-pairings/wine-pairing-mushroom-risotto" class="block p-4 bg-gray-50 rounded-lg hover:bg-wine-50 transition group">
+        <span class="text-xs text-wine-600 uppercase tracking-wide">wine pairings</span>
+        <h4 class="font-semibold text-gray-900 group-hover:text-wine-600 mt-1">Wine Pairing for Mushroom Risotto</h4>
+        <p class="text-sm text-gray-600 mt-1">mushroom · risotto · italian food</p>
+      </a>
+    </div>
+  </div>
 
-  <p>Wine pairing is both art and science, combining traditional knowledge with personal preference to create harmonious dining experiences.</p>
-
-  <h2>The BAT Framework</h2>
-
-  <h3>Body</h3>
-  <p>Match the weight of the wine to the weight of the dish. Light wines with delicate foods, full-bodied wines with rich, heavy dishes.</p>
-
-  <h3>Acidity</h3>
-  <p>High-acid wines cut through rich, fatty foods and cleanse the palate. Essential for cream sauces and buttery dishes.</p>
-
-  <h3>Tannins</h3>
-  <p>Tannins in red wines interact with proteins and fats, softening over the course of a meal with the right dishes.</p>
-
-  <h2>Classic Pairing Principles</h2>
-
-  <h3>Complement</h3>
-  <ul>
-    <li>Match similar flavors and intensities</li>
-    <li>Light wines with delicate dishes</li>
-    <li>Bold wines with robust flavors</li>
-  </ul>
-
-  <h3>Contrast</h3>
-  <ul>
-    <li>Use opposite characteristics for balance</li>
-    <li>Sweet wines with spicy food</li>
-    <li>High-acid wines with rich dishes</li>
-  </ul>
-
-  <h2>Food Categories & Wine Matches</h2>
-
-  <h3>Seafood</h3>
-  <ul>
-    <li>**Delicate fish**: Sauvignon Blanc, Pinot Grigio</li>
-    <li>**Rich fish (salmon)**: Chardonnay, light Pinot Noir</li>
-    <li>**Shellfish**: Champagne, Albariño</li>
-  </ul>
-
-  <h3>Poultry</h3>
-  <ul>
-    <li>**Chicken**: Chardonnay, light reds</li>
-    <li>**Duck**: Pinot Noir, Côtes du Rhône</li>
-    <li>**Turkey**: Beaujolais, medium-bodied whites</li>
-  </ul>
-
-  <h3>Red Meat</h3>
-  <ul>
-    <li>**Beef**: Cabernet Sauvignon, Malbec</li>
-    <li>**Lamb**: Syrah, Bordeaux blends</li>
-    <li>**Pork**: Pinot Noir, Riesling</li>
-  </ul>
-
-  <h2>Cheese Pairing Guide</h2>
-
-  <h3>Fresh Cheeses</h3>
-  <p>**Mozzarella, Ricotta**: Light whites like Pinot Grigio or Soave</p>
-
-  <h3>Soft-Ripened</h3>
-  <p>**Brie, Camembert**: Champagne or light reds like Beaujolais</p>
-
-  <h3>Hard Cheeses</h3>
-  <p>**Aged Cheddar, Parmesan**: Bold reds like Cabernet or Barolo</p>
-
-  <h3>Blue Cheeses</h3>
-  <p>**Roquefort, Stilton**: Sweet wines like Port or Sauternes</p>
-
-  <h2>Regional Pairing Wisdom</h2>
-
-  <p>"What grows together, goes together" - this old adage holds true. Italian wines with Italian food, French wines with French cuisine, etc.</p>
-
-  <h3>Italian Combinations</h3>
-  <ul>
-    <li>Chianti with tomato-based pasta</li>
-    <li>Pinot Grigio with seafood risotto</li>
-    <li>Barolo with aged Parmesan</li>
-  </ul>
-
-  <h3>French Classics</h3>
-  <ul>
-    <li>Chablis with oysters</li>
-    <li>Burgundy with coq au vin</li>
-    <li>Sauternes with foie gras</li>
-  </ul>
-
-  <h2>Common Pairing Mistakes</h2>
-
-  <ul>
-    <li>**Overpowering delicate dishes** with bold wines</li>
-    <li>**Ignoring sauce flavors** - often more important than the protein</li>
-    <li>**Serving temperature issues** - affects how wine tastes with food</li>
-    <li>**Not considering cooking method** - grilled vs. poached changes everything</li>
-  </ul>
-
-  <h2>Advanced Techniques</h2>
-
-  <h3>Bridge Ingredients</h3>
-  <p>Use herbs, spices, and sauces that echo wine characteristics. Rosemary with earthy reds, citrus with crisp whites.</p>
-
-  <h3>Seasonal Considerations</h3>
-  <p>Light, fresh wines in summer; rich, warming wines in winter. Let the season guide your choices.</p>
-
-  <h3>Multiple Course Planning</h3>
-  <p>Progress from light to heavy, dry to sweet. Plan the wine journey alongside the meal progression.</p>
-
-  <h2>Building Your Pairing Confidence</h2>
-
-  <p>Start with classic combinations, then experiment. Keep notes on what works. Trust your palate - personal preference trumps rules.</p>
-
-  <h3>Practice Exercises</h3>
-  <ul>
-    <li>Try the same wine with different cheeses</li>
-    <li>Taste wine before and after food</li>
-    <li>Compare how cooking method affects pairing</li>
-  </ul>
+  <!-- Author Bio Footer -->
+  <div class="mt-12 p-6 bg-gray-50 rounded-lg border border-gray-200">
+    <h3 class="text-lg font-semibold mb-3">About the Author</h3>
+    <div class="flex items-start gap-4">
+      <div class="w-16 h-16 rounded-full bg-wine-100 flex items-center justify-center text-wine-700 font-bold text-xl flex-shrink-0">
+        MC
+      </div>
+      <div>
+        <a href="/about/michael-chen" class="font-semibold text-wine-600 hover:text-wine-800">Michael Chen</a>
+        <p class="text-sm text-gray-600 mb-2">Wine Buyer & Contributor</p>
+        <p class="text-sm text-gray-700">Wine buyer and Italian Wine Scholar with expertise in sourcing exceptional value wines.</p>
+        <a href="/about/michael-chen" class="text-sm text-wine-600 hover:text-wine-800 mt-2 inline-block">View full profile &rarr;</a>
+      </div>
+    </div>
+  </div>
 
 </ArticleLayout>

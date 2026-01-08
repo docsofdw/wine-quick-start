@@ -1,0 +1,573 @@
+import { createClient } from '@supabase/supabase-js';
+import type { SupabaseClient } from '@supabase/supabase-js';
+
+// Wine Catalog Database Client
+// Connects to external Supabase project containing real wine data
+
+// Support both Astro (import.meta.env) and Node.js scripts (process.env)
+const wineCatalogUrl = (typeof process !== 'undefined' && process.env?.WINE_CATALOG_URL)
+  || (import.meta.env?.WINE_CATALOG_URL as string);
+const wineCatalogAnonKey = (typeof process !== 'undefined' && process.env?.WINE_CATALOG_ANON_KEY)
+  || (import.meta.env?.WINE_CATALOG_ANON_KEY as string);
+
+let wineCatalogClient: SupabaseClient | null = null;
+
+function getWineCatalogClient(): SupabaseClient {
+  if (!wineCatalogUrl || !wineCatalogAnonKey) {
+    throw new Error(
+      'Wine Catalog environment variables are missing. Please set WINE_CATALOG_URL and WINE_CATALOG_ANON_KEY in your environment.'
+    );
+  }
+
+  if (!wineCatalogClient) {
+    wineCatalogClient = createClient(wineCatalogUrl, wineCatalogAnonKey);
+  }
+
+  return wineCatalogClient;
+}
+
+// ---------------------------------------------------------------------------
+// Wine Catalog Types
+// ---------------------------------------------------------------------------
+
+export interface Wine {
+  id: string;
+  producer: string;
+  wine_name: string;
+  vintage: number | null;
+  region: string | null;
+  subregion: string | null;
+  variety: string | null;
+  bottle_size_ml: number;
+  external_id: string | null;
+  is_cult: boolean;
+  created_at: string;
+}
+
+export interface WineRecommendation {
+  name: string;
+  producer: string;
+  region: string;
+  vintage: number | null;
+  variety: string | null;
+  wine_type: string;
+  notes: string;
+}
+
+// ---------------------------------------------------------------------------
+// Wine Fetching Functions
+// ---------------------------------------------------------------------------
+
+// Map varieties to wine types for filtering
+const redVarieties = ['cabernet', 'merlot', 'pinot noir', 'syrah', 'shiraz', 'zinfandel', 'malbec', 'tempranillo', 'sangiovese', 'nebbiolo', 'grenache', 'mourvedre', 'petite sirah', 'barbera', 'primitivo'];
+const whiteVarieties = ['chardonnay', 'sauvignon blanc', 'riesling', 'pinot grigio', 'pinot gris', 'viognier', 'gewurztraminer', 'chenin blanc', 'semillon', 'gruner veltliner', 'albarino', 'vermentino', 'muscadet'];
+const roseVarieties = ['rose', 'rosé', 'rosato'];
+const sparklingVarieties = ['champagne', 'prosecco', 'cava', 'cremant', 'sparkling', 'brut', 'blanc de blancs', 'blanc de noirs'];
+
+/**
+ * Infer wine type from variety
+ */
+function inferWineType(variety: string | null): string {
+  if (!variety) return 'red';
+  const lowerVariety = variety.toLowerCase();
+
+  if (sparklingVarieties.some(v => lowerVariety.includes(v))) return 'sparkling';
+  if (roseVarieties.some(v => lowerVariety.includes(v))) return 'rosé';
+  if (whiteVarieties.some(v => lowerVariety.includes(v))) return 'white';
+  if (redVarieties.some(v => lowerVariety.includes(v))) return 'red';
+
+  return 'red'; // Default to red
+}
+
+/**
+ * Fetch wines by wine type (red, white, rosé, sparkling, etc.)
+ * Filters by variety since wine_type column doesn't exist
+ */
+export async function getWinesByType(
+  wineType: string,
+  limit: number = 5
+): Promise<Wine[]> {
+  const client = getWineCatalogClient();
+
+  // Map wine type to varieties to search for
+  let varietiesToSearch: string[] = [];
+  const lowerType = wineType.toLowerCase();
+
+  if (lowerType === 'red') varietiesToSearch = redVarieties.slice(0, 5);
+  else if (lowerType === 'white') varietiesToSearch = whiteVarieties.slice(0, 5);
+  else if (lowerType === 'rosé' || lowerType === 'rose') varietiesToSearch = roseVarieties;
+  else if (lowerType === 'sparkling') varietiesToSearch = sparklingVarieties.slice(0, 3);
+
+  if (varietiesToSearch.length === 0) {
+    // Fallback to random wines
+    return getRandomWines(limit);
+  }
+
+  // Build OR query for varieties
+  const orConditions = varietiesToSearch.map(v => `variety.ilike.%${v}%`).join(',');
+
+  const { data, error } = await client
+    .from('wine_catalog')
+    .select('*')
+    .or(orConditions)
+    .limit(limit);
+
+  if (error) {
+    console.error('Error fetching wines by type:', error);
+    return [];
+  }
+
+  return data || [];
+}
+
+/**
+ * Fetch wines by grape variety (pinot noir, chardonnay, etc.)
+ */
+export async function getWinesByVariety(
+  variety: string,
+  limit: number = 5
+): Promise<Wine[]> {
+  const client = getWineCatalogClient();
+
+  const { data, error } = await client
+    .from('wine_catalog')
+    .select('*')
+    .ilike('variety', `%${variety}%`)
+    .limit(limit);
+
+  if (error) {
+    console.error('Error fetching wines by variety:', error);
+    return [];
+  }
+
+  return data || [];
+}
+
+/**
+ * Fetch wines by region (Napa Valley, Burgundy, etc.)
+ */
+export async function getWinesByRegion(
+  region: string,
+  limit: number = 5
+): Promise<Wine[]> {
+  const client = getWineCatalogClient();
+
+  const { data, error } = await client
+    .from('wine_catalog')
+    .select('*')
+    .or(`region.ilike.%${region}%,subregion.ilike.%${region}%`)
+    .limit(limit);
+
+  if (error) {
+    console.error('Error fetching wines by region:', error);
+    return [];
+  }
+
+  return data || [];
+}
+
+/**
+ * Full-text search across wine catalog
+ */
+export async function searchWines(
+  query: string,
+  limit: number = 5
+): Promise<Wine[]> {
+  const client = getWineCatalogClient();
+
+  // Try full-text search first
+  const { data, error } = await client
+    .from('wine_catalog')
+    .select('*')
+    .textSearch('search_tsv', query, { type: 'websearch' })
+    .limit(limit);
+
+  if (error) {
+    console.error('Error searching wines:', error);
+    // Fallback to ilike search
+    return fallbackSearch(query, limit);
+  }
+
+  if (!data || data.length === 0) {
+    return fallbackSearch(query, limit);
+  }
+
+  return data;
+}
+
+async function fallbackSearch(query: string, limit: number): Promise<Wine[]> {
+  const client = getWineCatalogClient();
+
+  const { data, error } = await client
+    .from('wine_catalog')
+    .select('*')
+    .or(`producer.ilike.%${query}%,wine_name.ilike.%${query}%,variety.ilike.%${query}%,region.ilike.%${query}%`)
+    .limit(limit);
+
+  if (error) {
+    console.error('Error in fallback search:', error);
+    return [];
+  }
+
+  return data || [];
+}
+
+/**
+ * Get random wines (for variety in recommendations)
+ */
+export async function getRandomWines(
+  limit: number = 5,
+  wineType?: string
+): Promise<Wine[]> {
+  const client = getWineCatalogClient();
+
+  let query = client
+    .from('wine_catalog')
+    .select('*');
+
+  if (wineType) {
+    query = query.ilike('wine_type', `%${wineType}%`);
+  }
+
+  // Get more wines than needed, then shuffle
+  const { data, error } = await query.limit(limit * 10);
+
+  if (error) {
+    console.error('Error fetching random wines:', error);
+    return [];
+  }
+
+  if (!data || data.length === 0) {
+    return [];
+  }
+
+  // Shuffle and take requested amount
+  const shuffled = data.sort(() => Math.random() - 0.5);
+  return shuffled.slice(0, limit);
+}
+
+// ---------------------------------------------------------------------------
+// Smart Wine Matching for Article Generation
+// ---------------------------------------------------------------------------
+
+/**
+ * Extract wine-related terms from a keyword/topic
+ */
+function extractWineTerms(keyword: string): {
+  wineTypes: string[];
+  varieties: string[];
+  regions: string[];
+  styles: string[];
+} {
+  const lowerKeyword = keyword.toLowerCase();
+
+  const wineTypes = [];
+  const varieties = [];
+  const regions = [];
+  const styles = [];
+
+  // Wine types
+  if (lowerKeyword.includes('red')) wineTypes.push('red');
+  if (lowerKeyword.includes('white')) wineTypes.push('white');
+  if (lowerKeyword.includes('rosé') || lowerKeyword.includes('rose')) wineTypes.push('rosé');
+  if (lowerKeyword.includes('sparkling') || lowerKeyword.includes('champagne')) wineTypes.push('sparkling');
+  if (lowerKeyword.includes('orange')) wineTypes.push('orange');
+  if (lowerKeyword.includes('dessert') || lowerKeyword.includes('sweet')) wineTypes.push('dessert');
+
+  // Common varieties
+  const varietyMap: Record<string, string> = {
+    'pinot noir': 'Pinot Noir',
+    'cabernet': 'Cabernet Sauvignon',
+    'merlot': 'Merlot',
+    'chardonnay': 'Chardonnay',
+    'sauvignon blanc': 'Sauvignon Blanc',
+    'riesling': 'Riesling',
+    'syrah': 'Syrah',
+    'shiraz': 'Shiraz',
+    'zinfandel': 'Zinfandel',
+    'malbec': 'Malbec',
+    'tempranillo': 'Tempranillo',
+    'sangiovese': 'Sangiovese',
+    'nebbiolo': 'Nebbiolo',
+    'grenache': 'Grenache',
+    'viognier': 'Viognier',
+    'gewürztraminer': 'Gewürztraminer',
+    'pinot grigio': 'Pinot Grigio',
+    'pinot gris': 'Pinot Gris',
+    'moscato': 'Moscato',
+    'prosecco': 'Prosecco',
+  };
+
+  for (const [key, value] of Object.entries(varietyMap)) {
+    if (lowerKeyword.includes(key)) {
+      varieties.push(value);
+    }
+  }
+
+  // Regions
+  const regionMap: Record<string, string> = {
+    'napa': 'Napa Valley',
+    'sonoma': 'Sonoma',
+    'burgundy': 'Burgundy',
+    'bordeaux': 'Bordeaux',
+    'champagne': 'Champagne',
+    'tuscany': 'Tuscany',
+    'piedmont': 'Piedmont',
+    'rioja': 'Rioja',
+    'barossa': 'Barossa Valley',
+    'marlborough': 'Marlborough',
+    'oregon': 'Oregon',
+    'willamette': 'Willamette Valley',
+    'rhône': 'Rhône',
+    'rhone': 'Rhône',
+    'loire': 'Loire Valley',
+    'mosel': 'Mosel',
+    'mendoza': 'Mendoza',
+  };
+
+  // Country to regions mapping
+  const countryRegionMap: Record<string, string[]> = {
+    'italian': ['Piedmont', 'Tuscany'],
+    'italy': ['Piedmont', 'Tuscany'],
+    'french': ['Burgundy', 'Bordeaux', 'Champagne', 'Rhône', 'Loire Valley'],
+    'france': ['Burgundy', 'Bordeaux', 'Champagne', 'Rhône', 'Loire Valley'],
+    'spanish': ['Rioja'],
+    'spain': ['Rioja'],
+    'australian': ['Barossa Valley'],
+    'australia': ['Barossa Valley'],
+    'californian': ['Napa Valley', 'Sonoma', 'California'],
+    'california': ['Napa Valley', 'Sonoma', 'California'],
+    'american': ['Napa Valley', 'Sonoma', 'California', 'Oregon', 'Washington'],
+    'german': ['Mosel'],
+    'germany': ['Mosel'],
+    'argentinian': ['Mendoza'],
+    'argentina': ['Mendoza'],
+    'new zealand': ['Marlborough'],
+  };
+
+  for (const [key, value] of Object.entries(regionMap)) {
+    if (lowerKeyword.includes(key)) {
+      regions.push(value);
+    }
+  }
+
+  // Check for country names and add their regions
+  for (const [country, countryRegions] of Object.entries(countryRegionMap)) {
+    if (lowerKeyword.includes(country)) {
+      regions.push(...countryRegions);
+    }
+  }
+
+  // Styles
+  if (lowerKeyword.includes('natural')) styles.push('natural');
+  if (lowerKeyword.includes('organic')) styles.push('organic');
+  if (lowerKeyword.includes('biodynamic')) styles.push('biodynamic');
+  if (lowerKeyword.includes('cheap') || lowerKeyword.includes('budget') || lowerKeyword.includes('under')) styles.push('value');
+  if (lowerKeyword.includes('premium') || lowerKeyword.includes('luxury')) styles.push('premium');
+
+  return { wineTypes, varieties, regions, styles };
+}
+
+/**
+ * Get relevant wines for a given keyword/article topic
+ * This is the main function to use for article generation
+ */
+export async function getWinesForKeyword(
+  keyword: string,
+  count: number = 3
+): Promise<WineRecommendation[]> {
+  const terms = extractWineTerms(keyword);
+  let wines: Wine[] = [];
+
+  // Priority 1: Search by variety (most specific)
+  if (terms.varieties.length > 0) {
+    for (const variety of terms.varieties) {
+      const varietyWines = await getWinesByVariety(variety, count);
+      wines.push(...varietyWines);
+    }
+  }
+
+  // Priority 2: Search by region
+  if (wines.length < count && terms.regions.length > 0) {
+    for (const region of terms.regions) {
+      const regionWines = await getWinesByRegion(region, count - wines.length);
+      wines.push(...regionWines);
+    }
+  }
+
+  // Priority 3: Search by wine type
+  if (wines.length < count && terms.wineTypes.length > 0) {
+    for (const wineType of terms.wineTypes) {
+      const typeWines = await getWinesByType(wineType, count - wines.length);
+      wines.push(...typeWines);
+    }
+  }
+
+  // Priority 4: Full-text search with the keyword
+  if (wines.length < count) {
+    const searchWinesResult = await searchWines(keyword, count - wines.length);
+    wines.push(...searchWinesResult);
+  }
+
+  // Priority 5: Get random wines as fallback
+  if (wines.length < count) {
+    const wineType = terms.wineTypes[0] || undefined;
+    const randomWines = await getRandomWines(count - wines.length, wineType);
+    wines.push(...randomWines);
+  }
+
+  // Remove duplicates and limit to count
+  const uniqueWines = wines.filter((wine, index, self) =>
+    index === self.findIndex(w => w.id === wine.id)
+  ).slice(0, count);
+
+  // Transform to recommendation format
+  return uniqueWines.map(wine => transformToRecommendation(wine, keyword));
+}
+
+/**
+ * Transform a Wine record into a WineRecommendation with generated tasting notes
+ */
+function transformToRecommendation(wine: Wine, keyword: string): WineRecommendation {
+  const fullName = wine.vintage
+    ? `${wine.vintage} ${wine.producer} ${wine.wine_name}`
+    : `${wine.producer} ${wine.wine_name}`;
+
+  const region = wine.subregion
+    ? `${wine.subregion}, ${wine.region || 'Unknown Region'}`
+    : wine.region || 'Unknown Region';
+
+  // Infer wine type from variety
+  const wineType = inferWineType(wine.variety);
+
+  // Generate contextual tasting notes based on variety and type
+  const notes = generateTastingNotes(wine, keyword);
+
+  return {
+    name: fullName,
+    producer: wine.producer,
+    region,
+    vintage: wine.vintage,
+    variety: wine.variety,
+    wine_type: wineType,
+    notes,
+  };
+}
+
+/**
+ * Generate contextual tasting notes based on wine characteristics
+ */
+function generateTastingNotes(wine: Wine, keyword: string): string {
+  const variety = wine.variety?.toLowerCase() || '';
+  const wineType = inferWineType(wine.variety);
+  const region = wine.region?.toLowerCase() || '';
+
+  // Variety-specific notes
+  const varietyNotes: Record<string, string[]> = {
+    'pinot noir': [
+      'Elegant with bright cherry and raspberry notes, silky tannins, and earthy undertones.',
+      'Delicate red fruit aromas with hints of mushroom and forest floor.',
+      'Light-bodied with vibrant acidity and a long, refined finish.',
+    ],
+    'cabernet sauvignon': [
+      'Bold and structured with blackcurrant, cedar, and tobacco notes.',
+      'Full-bodied with firm tannins and notes of dark fruit and oak.',
+      'Rich cassis and plum flavors with hints of graphite and spice.',
+    ],
+    'chardonnay': [
+      'Rich and buttery with notes of tropical fruit and vanilla.',
+      'Crisp apple and citrus with balanced oak and a creamy texture.',
+      'Elegant with stone fruit, subtle minerality, and a long finish.',
+    ],
+    'sauvignon blanc': [
+      'Crisp and refreshing with grapefruit, lime, and herbaceous notes.',
+      'Zesty citrus and tropical fruit with bright acidity.',
+      'Clean and aromatic with notes of green apple and fresh-cut grass.',
+    ],
+    'merlot': [
+      'Soft and approachable with plum, cherry, and chocolate notes.',
+      'Velvety texture with ripe berry fruit and hints of herbs.',
+      'Medium-bodied with supple tannins and a smooth finish.',
+    ],
+    'riesling': [
+      'Aromatic with peach, apricot, and floral notes with bright acidity.',
+      'Off-dry with honeyed citrus and mineral undertones.',
+      'Vibrant and refreshing with green apple and petrol notes.',
+    ],
+    'syrah': [
+      'Dark and intense with blackberry, pepper, and smoky notes.',
+      'Full-bodied with rich dark fruit and savory spice.',
+      'Bold and complex with notes of black olive and leather.',
+    ],
+  };
+
+  // Check for variety match
+  for (const [key, notes] of Object.entries(varietyNotes)) {
+    if (variety.includes(key)) {
+      return notes[Math.floor(Math.random() * notes.length)];
+    }
+  }
+
+  // Generic notes by wine type
+  const typeNotes: Record<string, string[]> = {
+    'red': [
+      'Well-balanced with ripe fruit, integrated tannins, and a lingering finish.',
+      'Rich and expressive with dark fruit character and subtle oak influence.',
+      'Medium to full-bodied with layers of fruit and spice.',
+    ],
+    'white': [
+      'Fresh and aromatic with citrus and stone fruit notes.',
+      'Clean and crisp with balanced acidity and mineral undertones.',
+      'Light and refreshing with bright fruit character.',
+    ],
+    'rosé': [
+      'Dry and refreshing with strawberry and watermelon notes.',
+      'Crisp and fruity with delicate floral aromatics.',
+      'Light-bodied with red berry fruit and a clean finish.',
+    ],
+    'sparkling': [
+      'Fine bubbles with notes of brioche, apple, and citrus.',
+      'Elegant and festive with persistent effervescence.',
+      'Crisp and refreshing with toasty notes and bright acidity.',
+    ],
+    'orange': [
+      'Textured and complex with dried apricot and tea-like tannins.',
+      'Amber-hued with oxidative notes and a grippy finish.',
+      'Unique skin-contact character with honey and spice notes.',
+    ],
+  };
+
+  for (const [key, notes] of Object.entries(typeNotes)) {
+    if (wineType.includes(key)) {
+      return notes[Math.floor(Math.random() * notes.length)];
+    }
+  }
+
+  // Default fallback
+  return 'Well-crafted with balanced fruit, structure, and a satisfying finish.';
+}
+
+/**
+ * Test the wine catalog connection
+ */
+export async function testWineCatalogConnection(): Promise<{
+  success: boolean;
+  count?: number;
+  error?: string;
+}> {
+  try {
+    const client = getWineCatalogClient();
+
+    const { count, error } = await client
+      .from('wine_catalog')
+      .select('*', { count: 'exact', head: true });
+
+    if (error) {
+      return { success: false, error: error.message };
+    }
+
+    return { success: true, count: count || 0 };
+  } catch (err) {
+    return { success: false, error: String(err) };
+  }
+}
