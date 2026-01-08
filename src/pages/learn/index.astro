@@ -17,83 +17,74 @@ interface AstroFile {
   };
 }
 
-// Helper function to properly capitalize titles
-function capitalizeTitle(title: string): string {
-  return title
-    .split(' ')
-    .map(word => {
-      // Handle special cases for wine terms
-      if (word.toLowerCase() === 'wine') return 'Wine';
-      if (word.toLowerCase() === 'bordeaux') return 'Bordeaux';
-      if (word.toLowerCase() === 'natural') return 'Natural';
-      if (word.toLowerCase() === 'orange') return 'Orange';
-      if (word.toLowerCase() === 'guide') return 'Guide';
-      if (word.toLowerCase() === 'recommendations') return 'Recommendations';
-      if (word.toLowerCase() === 'complete') return 'Complete';
-      if (word.toLowerCase() === 'professional') return 'Professional';
-      if (word.toLowerCase() === 'expert') return 'Expert';
-      if (word.toLowerCase() === 'cheap') return 'Cheap';
-      if (word.toLowerCase() === 'under') return 'Under';
-      // Capitalize first letter of other words
-      return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
-    })
+// Helper to extract frontmatter
+function extractFrontmatter(file: AstroFile): any {
+  return file.frontmatter || file.default?.frontmatter || {};
+}
+
+// Helper to format title from slug
+function formatTitle(slug: string): string {
+  return slug
+    .split('-')
+    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
     .join(' ');
+}
+
+// Helper to determine category
+function categorizeArticle(title: string, slug: string): string {
+  const lower = title.toLowerCase() + ' ' + slug.toLowerCase();
+
+  // Wine regions
+  if (lower.includes('bordeaux') || lower.includes('burgundy') || lower.includes('champagne') || lower.includes('napa') || lower.includes('tuscany') || lower.includes('rioja')) return 'Wine Regions';
+
+  // Wine types
+  if (lower.includes('natural wine')) return 'Natural Wine';
+  if (lower.includes('orange wine')) return 'Orange Wine';
+  if (lower.includes('sparkling') || lower.includes('champagne')) return 'Sparkling';
+
+  // Budget/Reviews
+  if (lower.includes('under') || lower.includes('cheap') || lower.includes('budget') || lower.includes('best')) return 'Best Picks';
+  if (lower.includes('review') || lower.includes('recommendation')) return 'Reviews';
+  if (lower.includes('beginner')) return 'Beginners';
+
+  return 'Wine Guide';
 }
 
 // Dynamically discover all learn articles
 const learnFiles = await Astro.glob('./*.astro') as AstroFile[];
-const featuredGuides: GuideData[] = learnFiles
-  .filter((file: AstroFile) => !file.url?.includes('/index')) // Exclude index.astro
+const allGuides: GuideData[] = learnFiles
+  .filter((file: AstroFile) => !file.url?.includes('/index'))
   .map((file: AstroFile) => {
-    // Try multiple ways to access frontmatter
-    const frontmatter = file.frontmatter || file.default?.frontmatter || (file as any).$$metadata?.frontmatter || {};
+    const frontmatter = extractFrontmatter(file);
     const slug = file.url?.split('/').pop()?.replace(/\/$/, '') || 'unknown';
-    
-    // Extract metadata from frontmatter with proper capitalization
-    let title = frontmatter.title || capitalizeTitle(slug.replace(/-/g, ' ') + ' Guide');
-    title = capitalizeTitle(title); // Ensure proper capitalization
-    
-    const description = frontmatter.description || `Expert guide for ${capitalizeTitle(slug.replace(/-/g, ' '))}`;
-    const readTime = frontmatter.readTime || '5 min';
-    
-    // Categorize based on content
-    let category = 'Wine Guide';
-    if (title.toLowerCase().includes('natural wine')) category = 'Wine Types';
-    if (title.toLowerCase().includes('orange wine')) category = 'Wine Types';
-    if (title.toLowerCase().includes('bordeaux')) category = 'Wine Regions';
-    if (title.toLowerCase().includes('recommendation')) category = 'Reviews';
-    if (title.toLowerCase().includes('under')) category = 'Reviews';
-    if (title.toLowerCase().includes('cheap')) category = 'Wine Types';
-    
-    return {
-      title,
-      slug,
-      description,
-      readTime,
-      category
-    };
-  })
-  .sort((a: GuideData, b: GuideData) => {
-    // Sort by category priority, then by title
-    const categoryOrder = ['Wine Regions', 'Wine Types', 'Reviews', 'Wine Guide'];
-    const aPriority = categoryOrder.indexOf(a.category);
-    const bPriority = categoryOrder.indexOf(b.category);
-    
-    if (aPriority !== bPriority) {
-      return aPriority - bPriority;
-    }
-    return a.title.localeCompare(b.title);
-  });
 
-// Dynamically compute category counts from actual content
-const categoryMeta: Record<string, { icon: string; description: string }> = {
-  "Wine Types": { icon: "🍇", description: "Understand different wine styles" },
-  "Wine Regions": { icon: "🗺️", description: "Explore famous wine territories" },
-  "Reviews": { icon: "⭐", description: "Expert wine recommendations" },
-  "Wine Guide": { icon: "📖", description: "Comprehensive wine guides" }
+    let title = frontmatter.title || formatTitle(slug);
+    if (title.includes('Guide:')) {
+      title = title.split('Guide:')[0].trim() + ' Guide';
+    }
+
+    const description = frontmatter.description || `Expert guide for ${formatTitle(slug)}`;
+    const readTime = frontmatter.readTime || '5 min';
+    const category = categorizeArticle(title, slug);
+
+    return { title, slug, description, readTime, category };
+  })
+  .sort((a, b) => a.title.localeCompare(b.title));
+
+// Category icons
+const categoryIcons: Record<string, string> = {
+  "Wine Regions": "🗺️",
+  "Natural Wine": "🌱",
+  "Orange Wine": "🧡",
+  "Sparkling": "🍾",
+  "Best Picks": "⭐",
+  "Reviews": "📝",
+  "Beginners": "🎓",
+  "Wine Guide": "📖"
 };
 
-const categoryCounts = featuredGuides.reduce((acc, guide) => {
+// Compute category counts
+const categoryCounts = allGuides.reduce((acc, guide) => {
   acc[guide.category] = (acc[guide.category] || 0) + 1;
   return acc;
 }, {} as Record<string, number>);
@@ -102,8 +93,7 @@ const categories = Object.entries(categoryCounts)
   .map(([name, count]) => ({
     name,
     count,
-    icon: categoryMeta[name]?.icon || "📚",
-    description: categoryMeta[name]?.description || "Wine education content"
+    icon: categoryIcons[name] || "📚"
   }))
   .sort((a, b) => b.count - a.count);
 
@@ -116,7 +106,7 @@ const schema = {
 };
 ---
 
-<BaseLayout 
+<BaseLayout
   title="Learn About Wine - Expert Wine Education Guides"
   description="Comprehensive wine education from certified sommeliers. Learn about wine varieties, regions, tasting techniques, and wine culture."
   schema={schema}
@@ -128,14 +118,14 @@ const schema = {
       <p class="text-xl mb-10 opacity-90 max-w-2xl mx-auto">
         Master wine with comprehensive guides from certified sommeliers. From basics to advanced techniques, start your wine education journey today.
       </p>
-      
+
       <!-- Quick Stats -->
       <div class="flex flex-wrap justify-center gap-8 text-sm opacity-80">
         <div class="flex items-center gap-2">
           <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l9-5-9-5-9 5 9 5z"/>
           </svg>
-          <span>50+ Expert Guides</span>
+          <span>{allGuides.length} Expert Guides</span>
         </div>
         <div class="flex items-center gap-2">
           <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -153,42 +143,38 @@ const schema = {
     </div>
   </section>
 
-  <!-- Categories -->
+  <!-- Categories Navigation -->
   <section class="section-padding-sm bg-gray-50">
     <div class="container">
-      <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-7 gap-4">
-        <button class="wine-card text-center p-4 filter-btn active ring-2 ring-wine-600" data-category="all">
-          <div class="text-2xl mb-2">📚</div>
-          <h3 class="font-semibold text-gray-900 mb-1">All Guides</h3>
-          <p class="text-xs text-gray-500 mb-2">Browse everything</p>
-          <span class="text-xs text-gray-400">{featuredGuides.length} guides</span>
+      <div class="flex flex-wrap justify-center gap-3">
+        <button class="filter-btn flex items-center gap-2 px-4 py-2 bg-white rounded-full shadow-sm border-2 border-wine-600 hover:shadow-md transition" data-category="all">
+          <span class="text-lg">📚</span>
+          <span class="text-gray-700 font-medium">All</span>
+          <span class="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded-full">{allGuides.length}</span>
         </button>
         {categories.map((category) => (
-          <button class="wine-card text-center p-4 filter-btn" data-category={category.name}>
-            <div class="text-2xl mb-2">{category.icon}</div>
-            <h3 class="font-semibold text-gray-900 mb-1">
-              {category.name}
-            </h3>
-            <p class="text-xs text-gray-500 mb-2">{category.description}</p>
-            <span class="text-xs text-gray-400">{category.count} guides</span>
+          <button class="filter-btn flex items-center gap-2 px-4 py-2 bg-white rounded-full shadow-sm border border-gray-200 hover:border-wine-300 hover:shadow-md transition" data-category={category.name}>
+            <span class="text-lg">{category.icon}</span>
+            <span class="text-gray-700 font-medium">{category.name}</span>
+            <span class="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded-full">{category.count}</span>
           </button>
         ))}
       </div>
     </div>
   </section>
 
-  <!-- Featured Guides -->
+  <!-- All Guides -->
   <section class="section-padding">
     <div class="container">
       <div class="text-center mb-12">
-        <h2 class="text-4xl font-bold mb-4 text-gray-900">Featured Guides</h2>
+        <h2 class="text-4xl font-bold mb-4 text-gray-900">All Learning Guides</h2>
         <p class="text-lg text-gray-600 max-w-2xl mx-auto">
-          Essential wine knowledge curated by our expert sommeliers
+          {allGuides.length} expert guides curated by certified sommeliers
         </p>
       </div>
-      
-      <div id="guides-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-        {featuredGuides.map((guide: GuideData) => (
+
+      <div id="guides-grid" class="wine-grid wine-grid-3">
+        {allGuides.map((guide) => (
           <article class="wine-card group guide-card" data-category={guide.category}>
             <div class="flex items-center justify-between mb-4">
               <span class="inline-block px-3 py-1 bg-wine-50 text-wine-700 rounded-full text-sm font-medium">
@@ -201,7 +187,7 @@ const schema = {
               <a href={`/learn/${guide.slug}/`}>{guide.title}</a>
             </h3>
 
-            <p class="text-gray-600 mb-6 leading-relaxed flex-grow">
+            <p class="text-gray-600 mb-6 leading-relaxed flex-grow line-clamp-3">
               {guide.description}
             </p>
 
@@ -215,40 +201,51 @@ const schema = {
       <p id="no-results" class="text-center text-gray-500 py-12 hidden">No guides found in this category.</p>
     </div>
   </section>
+</BaseLayout>
 
-  <script>
-    // Category filtering functionality
-    const filterButtons = document.querySelectorAll('.filter-btn');
-    const guideCards = document.querySelectorAll('.guide-card');
-    const noResults = document.getElementById('no-results');
+<style>
+  .line-clamp-3 {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+</style>
 
-    filterButtons.forEach(button => {
-      button.addEventListener('click', () => {
-        const category = (button as HTMLElement).dataset.category;
+<script>
+  // Category filtering functionality
+  const filterButtons = document.querySelectorAll('.filter-btn');
+  const guideCards = document.querySelectorAll('.guide-card');
+  const noResults = document.getElementById('no-results');
 
-        // Update active button state
-        filterButtons.forEach(btn => {
-          btn.classList.remove('active', 'ring-2', 'ring-wine-600');
-        });
-        button.classList.add('active', 'ring-2', 'ring-wine-600');
+  filterButtons.forEach(button => {
+    button.addEventListener('click', () => {
+      const category = (button as HTMLElement).dataset.category;
 
-        // Filter cards
-        let visibleCount = 0;
-        guideCards.forEach(card => {
-          const cardCategory = (card as HTMLElement).dataset.category;
-          if (category === 'all' || cardCategory === category) {
-            (card as HTMLElement).style.display = '';
-            visibleCount++;
-          } else {
-            (card as HTMLElement).style.display = 'none';
-          }
-        });
+      // Update active button state
+      filterButtons.forEach(btn => {
+        btn.classList.remove('border-wine-600', 'border-2');
+        btn.classList.add('border-gray-200', 'border');
+      });
+      button.classList.remove('border-gray-200', 'border');
+      button.classList.add('border-wine-600', 'border-2');
 
-        // Show/hide no results message
-        if (noResults) {
-          noResults.classList.toggle('hidden', visibleCount > 0);
+      // Filter cards
+      let visibleCount = 0;
+      guideCards.forEach(card => {
+        const cardCategory = (card as HTMLElement).dataset.category;
+        if (category === 'all' || cardCategory === category) {
+          (card as HTMLElement).style.display = '';
+          visibleCount++;
+        } else {
+          (card as HTMLElement).style.display = 'none';
         }
       });
+
+      // Show/hide no results message
+      if (noResults) {
+        noResults.classList.toggle('hidden', visibleCount > 0);
+      }
     });
-  </script>
-</BaseLayout>
+  });
+</script>
