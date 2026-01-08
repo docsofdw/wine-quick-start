@@ -2,36 +2,38 @@
 import ArticleLayout from '../../layouts/ArticleLayout.astro';
 
 const frontmatter = {
-  title: "Comparing Wine pairing: A Detailed Analysis",
-  description: "Compare wine pairing options side by side. Make informed decisions with our detailed analysis.",
+  title: "Wine pairing: Complete Guide & Expert Tips",
+  description: "Your complete guide to wine pairing. Expert recommendations, tasting notes, and insider tips from certified sommeliers.",
   wine_type: "red",
-  author: "Michael Chen",
-  authorSlug: "michael-chen",
-  authorRole: "Wine Buyer & Contributor",
-  authorCredentials: ["WSET Level 3 Award in Wines","Italian Wine Scholar (Wine Scholar Guild)"],
+  author: "James Thornton",
+  authorSlug: "james-thornton",
+  authorRole: "Founder & Lead Wine Consultant",
+  authorCredentials: ["WSET Level 3 Award in Wines","Certified Sommelier (Court of Master Sommeliers)","French Wine Scholar (Wine Scholar Guild)"],
   readTime: "5 min",
-  expert_score: 9,
-  article_format: "comparison",
+  expert_score: 8,
+  article_format: "guide",
   structured_data: {
     "@context": "https://schema.org",
     "@type": "Article",
-    "headline": "Comparing Wine pairing: A Detailed Analysis",
-    "description": "Compare wine pairing options side by side. Make informed decisions with our detailed analysis.",
+    "headline": "Wine pairing: Complete Guide & Expert Tips",
+    "description": "Your complete guide to wine pairing. Expert recommendations, tasting notes, and insider tips from certified sommeliers.",
     "author": {
         "@type": "Person",
-        "name": "Michael Chen",
-        "jobTitle": "Wine Buyer & Contributor",
-        "description": "Wine buyer and Italian Wine Scholar with expertise in sourcing exceptional value wines.",
-        "url": "https://winequickstart.com/about/michael-chen",
-        "image": "https://winequickstart.com/images/authors/michael-chen.jpg",
+        "name": "James Thornton",
+        "jobTitle": "Founder & Lead Wine Consultant",
+        "description": "Certified Sommelier and WSET Level 3 holder with 10+ years in wine education and consulting.",
+        "url": "https://winequickstart.com/about/james-thornton",
+        "image": "https://winequickstart.com/images/authors/james-thornton.jpg",
         "sameAs": [
-            "https://linkedin.com/in/michaelchenwine"
+            "https://linkedin.com/in/jamesthornton",
+            "https://twitter.com/winequickstart",
+            "https://instagram.com/winequickstart"
         ],
         "knowsAbout": [
-            "Wine Buying",
-            "Italian Wines",
-            "Pacific Northwest Wines",
-            "Value Wines"
+            "Food & Wine Pairing",
+            "French Wines",
+            "California Wines",
+            "Wine Education"
         ],
         "hasCredential": [
             {
@@ -42,7 +44,12 @@ const frontmatter = {
             {
                 "@type": "EducationalOccupationalCredential",
                 "credentialCategory": "Professional Certification",
-                "name": "Italian Wine Scholar (Wine Scholar Guild)"
+                "name": "Certified Sommelier (Court of Master Sommeliers)"
+            },
+            {
+                "@type": "EducationalOccupationalCredential",
+                "credentialCategory": "Professional Certification",
+                "name": "French Wine Scholar (Wine Scholar Guild)"
             }
         ]
     },
@@ -51,56 +58,56 @@ const frontmatter = {
       "name": "Wine Quick Start",
       "url": "https://winequickstart.com"
     },
-    "datePublished": "2026-01-07T23:53:23.016Z",
-    "dateModified": "2026-01-07T23:53:23.016Z",
+    "datePublished": "2026-01-08T00:14:02.421Z",
+    "dateModified": "2026-01-08T00:14:02.421Z",
     "keywords": "wine pairing",
-    "articleSection": "Wine Comparison"
+    "articleSection": "Wine Guide"
   },
   wines: [
   {
     "name": "2019 Aubert Aubert Pinot Noir Sonoma Coast",
     "region": "Sonoma County, California",
-    "price": "42",
-    "rating": "90",
+    "price": "53",
+    "rating": "89",
     "type": "red",
     "notes": "Elegant with bright cherry and raspberry notes, silky tannins, and earthy undertones.",
     "link": "https://wine-searcher.com/find/aubert"
   },
   {
-    "name": "2018 Bartolo Mascarello Bartolo Mascarello Barolo",
-    "region": "Barolo, Piedmont",
-    "price": "37",
-    "rating": "93",
+    "name": "2015 Bedrock Wine Co. Bedrock Wine Co. Oakville Farmhouse",
+    "region": "Napa Valley, California",
+    "price": "76",
+    "rating": "94",
     "type": "red",
-    "notes": "Rich and expressive with dark fruit character and subtle oak influence.",
-    "link": "https://wine-searcher.com/find/bartolo%2Bmascarello"
+    "notes": "Medium to full-bodied with layers of fruit and spice.",
+    "link": "https://wine-searcher.com/find/bedrock%2Bwine%2Bco."
   },
   {
-    "name": "2019 Beaux Frères Beaux Frères The Beaux Frères Vineyard Pinot Noir",
-    "region": "Ribbon Ridge, Oregon",
-    "price": "35",
+    "name": "2018 Bedrock Wine Co. Bedrock Wine Co. Oakville Farmhouse",
+    "region": "Napa Valley, California",
+    "price": "98",
     "rating": "89",
     "type": "red",
-    "notes": "Delicate red fruit aromas with hints of mushroom and forest floor.",
-    "link": "https://wine-searcher.com/find/beaux%2Bfr%C3%A8res"
+    "notes": "Medium to full-bodied with layers of fruit and spice.",
+    "link": "https://wine-searcher.com/find/bedrock%2Bwine%2Bco."
   }
 ]
 };
 ---
 
-<ArticleLayout title={frontmatter.title} description={frontmatter.description} author={frontmatter.author} readTime={frontmatter.readTime} category="Wine Comparison" schema={frontmatter.structured_data}>
+<ArticleLayout title={frontmatter.title} description={frontmatter.description} author={frontmatter.author} readTime={frontmatter.readTime} category="Wine Guide" schema={frontmatter.structured_data}>
   <div slot="quick-answer">
-    <p><strong>In Summary:</strong> Mastering wine pairing means understanding how wine components (body, acid, tannin) interact with food elements (fat, salt, spice). The guide below breaks this down into actionable advice.</p>
+    <p><strong>Our Recommendation:</strong> Start your wine pairing journey with medium-bodied wines that offer versatility. As you develop preferences, explore bolder or more delicate options.</p>
   </div>
 
   <!-- Author Attribution -->
   <div class="bg-gray-50 p-4 rounded-lg mb-6 flex items-center gap-4">
     <div class="w-12 h-12 rounded-full bg-wine-100 flex items-center justify-center text-wine-700 font-bold">
-      MC
+      JT
     </div>
     <div>
-      <a href="/about/michael-chen" class="font-semibold text-gray-900 hover:text-wine-600">Michael Chen</a>
-      <p class="text-sm text-gray-600">Wine Buyer & Contributor | WSET Level 3 Award in Wines</p>
+      <a href="/about/james-thornton" class="font-semibold text-gray-900 hover:text-wine-600">James Thornton</a>
+      <p class="text-sm text-gray-600">Founder & Lead Wine Consultant | WSET Level 3 Award in Wines</p>
     </div>
   </div>
 
@@ -111,65 +118,94 @@ const frontmatter = {
     </div>
   </div>
 
-    <p>I still remember the first time a perfect wine pairing elevated a simple dinner into something memorable. That experience changed how I approach wine selection.</p>
+    <p>With over 10,000 wine and food combinations possible, navigating wine pairing might seem daunting. These core principles simplify everything.</p>
 
-  <h2>Comparing Your Options for Wine pairing</h2>
+  <h2>Understanding Wine pairing</h2>
 
-  <p>The wine pairing landscape offers diverse options. This comparison breaks down what distinguishes each approach.</p>
+  <p>Approaching wine pairing with curiosity rather than intimidation opens up remarkable experiences. Here's what matters most.</p>
 
-  <h2>Side-by-Side Comparison</h2>
+  <h2>Key Characteristics</h2>
 
-  <p>| Factor | Option A | Option B | Option C |</p>
+  <h3>What to Look For</h3>
 
-  <p>|--------|----------|----------|----------|</p>
+  <p>When evaluating wine pairing, experienced tasters focus on:</p>
 
-  <p>| **Price Range** | $15-25 | $25-45 | $45+ |</p>
+  <p>1. **Aromatic intensity** and purity of fruit</p>
 
-  <p>| **Best For** | Everyday | Special Occasions | Celebrations |</p>
+  <p>2. **Structural elements** like tannin and acidity</p>
 
-  <p>| **Complexity** | Approachable | Moderate | Layered |</p>
+  <p>3. **Length and persistence** on the palate</p>
 
-  <p>| **Age Potential** | Drink now | 2-5 years | 5-15 years |</p>
+  <p>4. **Overall harmony** between components</p>
 
-  <p>| **<a href="/wine-pairings/natural-wine" class="internal-link">Food Pairing</a>** | Versatile | Selective | Rich dishes |</p>
+  <h2>Expert Recommendations</h2>
 
-  <h2>Weighing the Options</h2>
+  <p>Our curated selections represent exceptional quality and value:</p>
 
-  <h3>Budget-Friendly Approach</h3>
+  <h3>1. 2019 Aubert Aubert <a href="/wine-pairings/pinot-noir" class="internal-link">Pinot Noir</a> Sonoma Coast</h3>
 
-  <p>✅ Accessible and low-risk</p>
+  <p>**Region:** Sonoma County, <a href="/wine-pairings/pinot-noir" class="internal-link">California</a></p>
 
-  <p>✅ Great for experimentation</p>
+  <p>**Price:** $53 | **Rating:** 89/100</p>
 
-  <p>❌ Less complexity and depth</p>
+  <p>Elegant with bright cherry and raspberry notes, silky tannins, and earthy undertones.</p>
 
-  <p>❌ Limited aging potential</p>
+  <p>[Find this wine →](https://wine-searcher.com/find/aubert)</p>
 
-  <h3><a href="/learn/orange-wine-under-50" class="internal-link">Mid-Range</a> Investment</h3>
+  <h3>2. 2015 Bedrock Wine Co. Bedrock Wine Co. Oakville Farmhouse</h3>
 
-  <p>✅ Best quality-to-price ratio</p>
+  <p>**Region:** <a href="/wine-pairings/cabernet-sauvignon" class="internal-link">Napa Valley</a>, <a href="/wine-pairings/pinot-noir" class="internal-link">California</a></p>
 
-  <p>✅ Suitable for most occasions</p>
+  <p>**Price:** $76 | **Rating:** 94/100</p>
 
-  <p>❌ Requires some knowledge</p>
+  <p>Medium to full-bodied with layers of fruit and spice.</p>
 
-  <p>❌ Not for long-term cellaring</p>
+  <p>[Find this wine →](https://wine-searcher.com/find/bedrock%2Bwine%2Bco.)</p>
 
-  <h3>Premium Selection</h3>
+  <h3>3. 2018 Bedrock Wine Co. Bedrock Wine Co. Oakville Farmhouse</h3>
 
-  <p>✅ Exceptional quality and depth</p>
+  <p>**Region:** <a href="/wine-pairings/cabernet-sauvignon" class="internal-link">Napa Valley</a>, <a href="/wine-pairings/pinot-noir" class="internal-link">California</a></p>
 
-  <p>✅ Cellar-worthy</p>
+  <p>**Price:** $98 | **Rating:** 89/100</p>
 
-  <p>❌ Higher financial commitment</p>
+  <p>Medium to full-bodied with layers of fruit and spice.</p>
 
-  <p>❌ May need decanting/aging</p>
+  <p>[Find this wine →](https://wine-searcher.com/find/bedrock%2Bwine%2Bco.)</p>
 
-  <h2>The Verdict</h2>
+  <h2>Buying Guide</h2>
 
-  <p>For most wine pairing situations, the <a href="/learn/orange-wine-under-50" class="internal-link">mid-range</a> offers the best balance. Invest in premium for special occasions, and use budget options for learning and everyday enjoyment.</p>
+  <h3>Where to Shop</h3>
+
+  <p>Your best options for wine pairing purchases:</p>
+
+  <ul>
+
+    <li>**Local Wine Merchants**: Personal recommendations and ability to taste</li>
+
+    <li>**Online Platforms**: Broader selection and user reviews</li>
+
+    <li>**Wine Clubs**: Curated discoveries delivered regularly</li>
+
+    <li>**Auction Houses**: For rare and aged bottles</li>
+
+  </ul>
+
+  <h2>Storage & Serving</h2>
+
+  <p>Proper storage protects your investment. Keep wines at 55°F with 70% humidity, away from light and vibration. Most wine pairing drinks best within 3-5 years, though premium bottles reward patience.</p>
 
   
+  <!-- Regional Deep Dive -->
+  <div class="mt-8 p-6 bg-wine-50 rounded-lg border border-wine-200">
+    <h3 class="text-lg font-semibold mb-3 text-wine-800">Regional Spotlight: Napa Valley</h3>
+    <p class="text-gray-700 mb-4">Mediterranean with warm, dry summers and mild, wet winters. Significant variation between valley floor and mountain sites.</p>
+    <div class="space-y-2">
+      <p class="text-sm text-gray-600 flex items-start gap-2"><span class="text-wine-600">&#8226;</span> The 1976 Judgment of Paris put Napa on the world stage when local wines beat French classics in blind tasting.</p>
+      <p class="text-sm text-gray-600 flex items-start gap-2"><span class="text-wine-600">&#8226;</span> The "Rutherford Dust" mineral character is a defining feature of the best Rutherford Cabernets.</p>
+    </div>
+    <p class="text-sm text-gray-600 mt-4"><strong>Notable Producers:</strong> Screaming Eagle, Harlan Estate, Opus One</p>
+    <p class="text-sm text-gray-600 mt-2"><strong>Best Vintages:</strong> 2021, 2019, 2018, 2016, 2015</p>
+  </div>
 
   
   <!-- Related Articles -->
@@ -205,13 +241,13 @@ const frontmatter = {
     <h3 class="text-lg font-semibold mb-3">About the Author</h3>
     <div class="flex items-start gap-4">
       <div class="w-16 h-16 rounded-full bg-wine-100 flex items-center justify-center text-wine-700 font-bold text-xl flex-shrink-0">
-        MC
+        JT
       </div>
       <div>
-        <a href="/about/michael-chen" class="font-semibold text-wine-600 hover:text-wine-800">Michael Chen</a>
-        <p class="text-sm text-gray-600 mb-2">Wine Buyer & Contributor</p>
-        <p class="text-sm text-gray-700">Wine buyer and Italian Wine Scholar with expertise in sourcing exceptional value wines.</p>
-        <a href="/about/michael-chen" class="text-sm text-wine-600 hover:text-wine-800 mt-2 inline-block">View full profile &rarr;</a>
+        <a href="/about/james-thornton" class="font-semibold text-wine-600 hover:text-wine-800">James Thornton</a>
+        <p class="text-sm text-gray-600 mb-2">Founder & Lead Wine Consultant</p>
+        <p class="text-sm text-gray-700">Certified Sommelier and WSET Level 3 holder with 10+ years in wine education and consulting.</p>
+        <a href="/about/james-thornton" class="text-sm text-wine-600 hover:text-wine-800 mt-2 inline-block">View full profile &rarr;</a>
       </div>
     </div>
   </div>

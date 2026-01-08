@@ -1,0 +1,158 @@
+---
+import ArticleLayout from '../../layouts/ArticleLayout.astro';
+
+const frontmatter = {
+  title: "Rose wine Guide: Everything You Need to Know",
+  description: "Everything you need to know about rose wine. Professional guidance on selection, pairing, and enjoyment.",
+  wine_type: "rose",
+  author: "Michael Chen",
+  authorSlug: "michael-chen",
+  authorRole: "Wine Buyer & Contributor",
+  authorCredentials: ["WSET Level 3 Award in Wines","Italian Wine Scholar (Wine Scholar Guild)"],
+  readTime: "undefined",
+  expert_score: undefined,
+  article_format: "guide",
+  structured_data: {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "Rose wine Guide: Everything You Need to Know",
+    "description": "Everything you need to know about rose wine. Professional guidance on selection, pairing, and enjoyment.",
+    "author": {
+        "@type": "Person",
+        "name": "Michael Chen",
+        "jobTitle": "Wine Buyer & Contributor",
+        "description": "Wine buyer and Italian Wine Scholar with expertise in sourcing exceptional value wines.",
+        "url": "https://winequickstart.com/about/michael-chen",
+        "image": "https://winequickstart.com/images/authors/michael-chen.jpg",
+        "sameAs": [
+                "https://linkedin.com/in/michaelchenwine"
+        ],
+        "knowsAbout": [
+                "Wine Buying",
+                "Italian Wines",
+                "Pacific Northwest Wines",
+                "Value Wines"
+        ],
+        "hasCredential": [
+                {
+                        "@type": "EducationalOccupationalCredential",
+                        "credentialCategory": "Professional Certification",
+                        "name": "WSET Level 3 Award in Wines"
+                },
+                {
+                        "@type": "EducationalOccupationalCredential",
+                        "credentialCategory": "Professional Certification",
+                        "name": "Italian Wine Scholar (Wine Scholar Guild)"
+                }
+        ]
+},
+    "publisher": {
+      "@type": "Organization",
+      "name": "Wine Quick Start",
+      "url": "https://winequickstart.com"
+    },
+    "datePublished": "2026-01-08T00:17:58.004Z",
+    "dateModified": "2026-01-08T00:17:58.004Z",
+    "keywords": "rose wine",
+    "articleSection": "Wine Guide"
+  },
+  wines: []
+};
+---
+
+<ArticleLayout title={frontmatter.title} description={frontmatter.description} author={frontmatter.author} readTime={frontmatter.readTime} category="Wine Guide" schema={frontmatter.structured_data}>
+  <div slot="quick-answer">
+    <p><strong>undefined:</strong> undefined</p>
+  </div>
+
+  <!-- Author Attribution -->
+  <div class="bg-gray-50 p-4 rounded-lg mb-6 flex items-center gap-4">
+    <div class="w-12 h-12 rounded-full bg-wine-100 flex items-center justify-center text-wine-700 font-bold">
+      MC
+    </div>
+    <div>
+      <a href="/about/michael-chen" class="font-semibold text-gray-900 hover:text-wine-600">Michael Chen</a>
+      <p class="text-sm text-gray-600">Wine Buyer & Contributor | WSET Level 3 Award in Wines</p>
+    </div>
+  </div>
+
+  Global rose wine consumption has grown 23% over the past decade. This surge in popularity hasn't diluted quality—if you know where to look.
+
+  <h2>Understanding Rose wine</h2>
+
+  <p>## Understanding Rose wine
+
+Approaching rose wine with curiosity rather than intimidation opens up remarkable experiences. Here's what matters most.
+
+## Key Characteristics
+
+### What to Look For
+The hallmarks of quality rose wine include vibrant aromatics, well-integrated structure, and a finish that invites another sip. Price doesn't always correlate—knowing what to look for matters more.
+
+## Expert Recommendations
+
+Finding quality rose wine requires knowing trusted producers and regions. Look for wines with consistent critical acclaim and a track record of quality across vintages.
+
+## Buying Guide
+
+### Where to Shop
+Your best options for rose wine purchases:
+- **Local Wine Merchants**: Personal recommendations and ability to taste
+- **Online Platforms**: Broader selection and user reviews
+- **Wine Clubs**: Curated discoveries delivered regularly
+- **Auction Houses**: For rare and aged bottles
+
+## Storage & Serving
+
+**Temperature**: 55°F is ideal for long-term storage
+**Humidity**: 60-70% prevents cork drying
+**Position**: Horizontal keeps corks moist
+**Serving**: Let reds breathe; chill whites appropriately</p>
+
+  <h2>Key Characteristics</h2>
+
+  <h3>What to Look For</h3>
+
+  <ul>
+    <li>**Balance**: The interplay between fruit, acid, and structure</li>
+    <li>**Expression**: How clearly the wine shows its origins</li>
+    <li>**Finish**: The lasting impression after each sip</li>
+    <li>**Complexity**: Layers of flavor that reveal themselves over time</li>
+  </ul>
+
+  <h2>Food Pairing Guide</h2>
+
+  <p>The best food pairings for rose wine depend on the wine's body and flavor profile.</p>
+
+  <h3>Classic Pairings</h3>
+
+  <ul>
+    <li>**Appetizers**: A natural match</li>
+    <li>**Light salads**: Complementary flavors</li>
+    <li>**Fresh fruits**: Perfect balance</li>
+  </ul>
+
+  <!-- Related Articles -->
+  <div class="mt-10 pt-8 border-t border-gray-200">
+    <h3 class="text-xl font-semibold mb-6">Continue Reading</h3>
+    <div class="grid md:grid-cols-2 gap-4">
+    </div>
+  </div>
+
+  <!-- Author Bio Footer -->
+  <div class="mt-12 p-6 bg-gray-50 rounded-lg border border-gray-200">
+    <h3 class="text-lg font-semibold mb-3">About the Author</h3>
+    <div class="flex items-start gap-4">
+      <div class="w-16 h-16 rounded-full bg-wine-100 flex items-center justify-center text-wine-700 font-bold text-xl flex-shrink-0">
+        MC
+      </div>
+      <div>
+        <a href="/about/michael-chen" class="font-semibold text-wine-600 hover:text-wine-800">Michael Chen</a>
+        <p class="text-sm text-gray-600 mb-2">Wine Buyer & Contributor</p>
+        <p class="text-sm text-gray-700">Wine buyer and Italian Wine Scholar with expertise in sourcing exceptional value wines.</p>
+        <a href="/about/michael-chen" class="text-sm text-wine-600 hover:text-wine-800 mt-2 inline-block">View full profile &rarr;</a>
+      </div>
+    </div>
+  </div>
+
+</ArticleLayout>

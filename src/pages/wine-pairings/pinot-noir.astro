@@ -2,38 +2,36 @@
 import ArticleLayout from '../../layouts/ArticleLayout.astro';
 
 const frontmatter = {
-  title: "Pinot noir Showdown: Which Is Right for You?",
-  description: "Which pinot noir is right for you? Our comparison breaks down the pros and cons.",
+  title: "Pinot noir Review: Expert Tasting Notes",
+  description: "Read our detailed pinot noir review before you buy. Professional analysis and scores.",
   wine_type: "red",
-  author: "James Thornton",
-  authorSlug: "james-thornton",
-  authorRole: "Founder & Lead Wine Consultant",
-  authorCredentials: ["WSET Level 3 Award in Wines","Certified Sommelier (Court of Master Sommeliers)","French Wine Scholar (Wine Scholar Guild)"],
-  readTime: "7 min",
-  expert_score: 7,
-  article_format: "comparison",
+  author: "Michael Chen",
+  authorSlug: "michael-chen",
+  authorRole: "Wine Buyer & Contributor",
+  authorCredentials: ["WSET Level 3 Award in Wines","Italian Wine Scholar (Wine Scholar Guild)"],
+  readTime: "6 min",
+  expert_score: 9,
+  article_format: "review",
   structured_data: {
     "@context": "https://schema.org",
     "@type": "Article",
-    "headline": "Pinot noir Showdown: Which Is Right for You?",
-    "description": "Which pinot noir is right for you? Our comparison breaks down the pros and cons.",
+    "headline": "Pinot noir Review: Expert Tasting Notes",
+    "description": "Read our detailed pinot noir review before you buy. Professional analysis and scores.",
     "author": {
         "@type": "Person",
-        "name": "James Thornton",
-        "jobTitle": "Founder & Lead Wine Consultant",
-        "description": "Certified Sommelier and WSET Level 3 holder with 10+ years in wine education and consulting.",
-        "url": "https://winequickstart.com/about/james-thornton",
-        "image": "https://winequickstart.com/images/authors/james-thornton.jpg",
+        "name": "Michael Chen",
+        "jobTitle": "Wine Buyer & Contributor",
+        "description": "Wine buyer and Italian Wine Scholar with expertise in sourcing exceptional value wines.",
+        "url": "https://winequickstart.com/about/michael-chen",
+        "image": "https://winequickstart.com/images/authors/michael-chen.jpg",
         "sameAs": [
-            "https://linkedin.com/in/jamesthornton",
-            "https://twitter.com/winequickstart",
-            "https://instagram.com/winequickstart"
+            "https://linkedin.com/in/michaelchenwine"
         ],
         "knowsAbout": [
-            "Food & Wine Pairing",
-            "French Wines",
-            "California Wines",
-            "Wine Education"
+            "Wine Buying",
+            "Italian Wines",
+            "Pacific Northwest Wines",
+            "Value Wines"
         ],
         "hasCredential": [
             {
@@ -44,12 +42,7 @@ const frontmatter = {
             {
                 "@type": "EducationalOccupationalCredential",
                 "credentialCategory": "Professional Certification",
-                "name": "Certified Sommelier (Court of Master Sommeliers)"
-            },
-            {
-                "@type": "EducationalOccupationalCredential",
-                "credentialCategory": "Professional Certification",
-                "name": "French Wine Scholar (Wine Scholar Guild)"
+                "name": "Italian Wine Scholar (Wine Scholar Guild)"
             }
         ]
     },
@@ -58,44 +51,44 @@ const frontmatter = {
       "name": "Wine Quick Start",
       "url": "https://winequickstart.com"
     },
-    "datePublished": "2026-01-07T23:53:23.576Z",
-    "dateModified": "2026-01-07T23:53:23.576Z",
+    "datePublished": "2026-01-08T00:14:03.016Z",
+    "dateModified": "2026-01-08T00:14:03.016Z",
     "keywords": "pinot noir",
-    "articleSection": "Wine Comparison"
+    "articleSection": "Wine Review"
   },
   wines: [
   {
     "name": "2019 Adelsheim Vineyard Adelsheim Elizabeth's Reserve Pinot Noir",
     "region": "Chehalem Mountains, Oregon",
-    "price": "48",
-    "rating": "95",
+    "price": "49",
+    "rating": "94",
     "type": "red",
-    "notes": "Elegant with bright cherry and raspberry notes, silky tannins, and earthy undertones.",
+    "notes": "Light-bodied with vibrant acidity and a long, refined finish.",
     "link": "https://wine-searcher.com/find/adelsheim%2Bvineyard"
   },
   {
     "name": "2018 Antica Terra Antica Terra Botanica Pinot Noir",
     "region": "Eola-Amity Hills, Oregon",
-    "price": "29",
-    "rating": "88",
+    "price": "35",
+    "rating": "93",
     "type": "red",
-    "notes": "Elegant with bright cherry and raspberry notes, silky tannins, and earthy undertones.",
+    "notes": "Light-bodied with vibrant acidity and a long, refined finish.",
     "link": "https://wine-searcher.com/find/antica%2Bterra"
   },
   {
     "name": "2019 Aubert Aubert Pinot Noir Sonoma Coast",
     "region": "Sonoma County, California",
-    "price": "45",
-    "rating": "95",
+    "price": "48",
+    "rating": "89",
     "type": "red",
-    "notes": "Elegant with bright cherry and raspberry notes, silky tannins, and earthy undertones.",
+    "notes": "Delicate red fruit aromas with hints of mushroom and forest floor.",
     "link": "https://wine-searcher.com/find/aubert"
   }
 ]
 };
 ---
 
-<ArticleLayout title={frontmatter.title} description={frontmatter.description} author={frontmatter.author} readTime={frontmatter.readTime} category="Wine Comparison" schema={frontmatter.structured_data}>
+<ArticleLayout title={frontmatter.title} description={frontmatter.description} author={frontmatter.author} readTime={frontmatter.readTime} category="Wine Review" schema={frontmatter.structured_data}>
   <div slot="quick-answer">
     <p><strong>Where to Start:</strong> New to pinot noir? Choose wines known for food-friendliness—Pinot Noir, Grüner Veltliner, or Sangiovese—and build from there.</p>
   </div>
@@ -103,11 +96,11 @@ const frontmatter = {
   <!-- Author Attribution -->
   <div class="bg-gray-50 p-4 rounded-lg mb-6 flex items-center gap-4">
     <div class="w-12 h-12 rounded-full bg-wine-100 flex items-center justify-center text-wine-700 font-bold">
-      JT
+      MC
     </div>
     <div>
-      <a href="/about/james-thornton" class="font-semibold text-gray-900 hover:text-wine-600">James Thornton</a>
-      <p class="text-sm text-gray-600">Founder & Lead Wine Consultant | WSET Level 3 Award in Wines</p>
+      <a href="/about/michael-chen" class="font-semibold text-gray-900 hover:text-wine-600">Michael Chen</a>
+      <p class="text-sm text-gray-600">Wine Buyer & Contributor | WSET Level 3 Award in Wines</p>
     </div>
   </div>
 
@@ -118,65 +111,52 @@ const frontmatter = {
     </div>
   </div>
 
-    <p>What makes <a href="/wine-pairings/best-wine-with-salmon" class="internal-link">pinot noir</a> one of the most celebrated wines in the world? From its origins to your glass, discover what sets this varietal apart.</p>
+    <p>From everyday bottles to collector gems, <a href="/wine-pairings/best-wine-with-salmon" class="internal-link">pinot noir</a> delivers consistent quality across price points.</p>
 
-  <h2>Comparing Your Options for <a href="/wine-pairings/best-wine-with-salmon" class="internal-link">Pinot noir</a></h2>
+  <h2>Tasting Review: 2019 Adelsheim Vineyard Adelsheim Elizabeth's Reserve <a href="/wine-pairings/best-wine-with-salmon" class="internal-link">Pinot Noir</a></h2>
 
-  <p>Choosing the right <a href="/wine-pairings/best-wine-with-salmon" class="internal-link">pinot noir</a> depends on context. Here's how the main options stack up against each other.</p>
+  <p>**Appearance:** Deep ruby with purple highlights</p>
 
-  <h2>Side-by-Side Comparison</h2>
+  <p>**Nose:** Light-bodied with vibrant acidity and a long, refined finish. developing beautifully in the glass</p>
 
-  <p>| Factor | Option A | Option B | Option C |</p>
+  <p>**Palate:** Full and generous, with layers of flavor that unfold gradually. Well-integrated structure supports the fruit.</p>
 
-  <p>|--------|----------|----------|----------|</p>
+  <p>**Verdict:** 94/100 | **<a href="/learn/cheap-natural-wine" class="internal-link">Value</a>:** Good | **Drink:** Now-2027</p>
 
-  <p>| **Price Range** | $15-25 | $25-45 | $45+ |</p>
+  <h2>How We Rate</h2>
 
-  <p>| **Best For** | Everyday | Special Occasions | Celebrations |</p>
+  <p>Our scoring reflects multiple factors:</p>
 
-  <p>| **Complexity** | Approachable | Moderate | Layered |</p>
+  <p>| Component | Weight | What We Look For |</p>
 
-  <p>| **Age Potential** | Drink now | 2-5 years | 5-15 years |</p>
+  <p>|-----------|--------|------------------|</p>
 
-  <p>| **Food Pairing** | Versatile | Selective | Rich dishes |</p>
+  <p>| **Quality** | 40% | Purity, complexity, balance |</p>
 
-  <h2>Weighing the Options</h2>
+  <p>| **<a href="/learn/cheap-natural-wine" class="internal-link">Value</a>** | 25% | Price-to-quality ratio |</p>
 
-  <h3>Budget-Friendly Approach</h3>
+  <p>| **Typicity** | 20% | True to variety/region |</p>
 
-  <p>✅ Accessible and low-risk</p>
+  <p>| **Drinkability** | 15% | Immediate enjoyment |</p>
 
-  <p>✅ Great for experimentation</p>
+  <p>We taste blind whenever possible to eliminate bias. Scores reflect what's in the glass, not labels or prices.</p>
 
-  <p>❌ Less complexity and depth</p>
+  <h2>Final Assessment</h2>
 
-  <p>❌ Limited aging potential</p>
-
-  <h3><a href="/learn/orange-wine-under-50" class="internal-link">Mid-Range</a> Investment</h3>
-
-  <p>✅ Best quality-to-price ratio</p>
-
-  <p>✅ Suitable for most occasions</p>
-
-  <p>❌ Requires some knowledge</p>
-
-  <p>❌ Not for long-term cellaring</p>
-
-  <h3>Premium Selection</h3>
-
-  <p>✅ Exceptional quality and depth</p>
-
-  <p>✅ Cellar-worthy</p>
-
-  <p>❌ Higher financial commitment</p>
-
-  <p>❌ May need decanting/aging</p>
-
-  <h2>The Verdict</h2>
-
-  <p>Your ideal choice depends on context. Start in the <a href="/learn/orange-wine-under-50" class="internal-link">mid-range</a> to develop preferences, then explore both directions as your palate develops.</p>
+  <p>This <a href="/wine-pairings/best-wine-with-salmon" class="internal-link">pinot noir</a> delivers on its promise. Worth buying for both immediate enjoyment and short-term cellaring. Recommended without reservation.</p>
 
   
+  <!-- Regional Deep Dive -->
+  <div class="mt-8 p-6 bg-wine-50 rounded-lg border border-wine-200">
+    <h3 class="text-lg font-semibold mb-3 text-wine-800">Regional Spotlight: Piedmont</h3>
+    <p class="text-gray-700 mb-4">Continental with cold, foggy winters and warm, dry summers. Significant diurnal temperature variation.</p>
+    <div class="space-y-2">
+      <p class="text-sm text-gray-600 flex items-start gap-2"><span class="text-wine-600">&#8226;</span> Nebbiolo is named for the fog (nebbia) that blankets the Langhe hills during harvest.</p>
+      <p class="text-sm text-gray-600 flex items-start gap-2"><span class="text-wine-600">&#8226;</span> Barolo is called "the King of Wines and the Wine of Kings."</p>
+    </div>
+    <p class="text-sm text-gray-600 mt-4"><strong>Notable Producers:</strong> Giacomo Conterno, Bruno Giacosa, Bartolo Mascarello</p>
+    <p class="text-sm text-gray-600 mt-2"><strong>Best Vintages:</strong> 2019, 2016, 2015, 2013, 2010</p>
+  </div>
 
   
   <!-- Related Articles -->
@@ -212,13 +192,13 @@ const frontmatter = {
     <h3 class="text-lg font-semibold mb-3">About the Author</h3>
     <div class="flex items-start gap-4">
       <div class="w-16 h-16 rounded-full bg-wine-100 flex items-center justify-center text-wine-700 font-bold text-xl flex-shrink-0">
-        JT
+        MC
       </div>
       <div>
-        <a href="/about/james-thornton" class="font-semibold text-wine-600 hover:text-wine-800">James Thornton</a>
-        <p class="text-sm text-gray-600 mb-2">Founder & Lead Wine Consultant</p>
-        <p class="text-sm text-gray-700">Certified Sommelier and WSET Level 3 holder with 10+ years in wine education and consulting.</p>
-        <a href="/about/james-thornton" class="text-sm text-wine-600 hover:text-wine-800 mt-2 inline-block">View full profile &rarr;</a>
+        <a href="/about/michael-chen" class="font-semibold text-wine-600 hover:text-wine-800">Michael Chen</a>
+        <p class="text-sm text-gray-600 mb-2">Wine Buyer & Contributor</p>
+        <p class="text-sm text-gray-700">Wine buyer and Italian Wine Scholar with expertise in sourcing exceptional value wines.</p>
+        <a href="/about/michael-chen" class="text-sm text-wine-600 hover:text-wine-800 mt-2 inline-block">View full profile &rarr;</a>
       </div>
     </div>
   </div>

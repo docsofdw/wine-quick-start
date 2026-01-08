@@ -1,0 +1,151 @@
+---
+import ArticleLayout from '../../layouts/ArticleLayout.astro';
+
+const frontmatter = {
+  title: "Reviewing Sauvignon blanc: What We Found",
+  description: "Expert reviews of sauvignon blanc. Honest assessments to guide your next purchase.",
+  wine_type: "white",
+  author: "Elena Martinez",
+  authorSlug: "elena-martinez",
+  authorRole: "Senior Wine Writer",
+  authorCredentials: ["WSET Level 2 Award in Wines","Certified Specialist of Wine (CSW)"],
+  readTime: "undefined",
+  expert_score: undefined,
+  article_format: "review",
+  structured_data: {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "Reviewing Sauvignon blanc: What We Found",
+    "description": "Expert reviews of sauvignon blanc. Honest assessments to guide your next purchase.",
+    "author": {
+        "@type": "Person",
+        "name": "Elena Martinez",
+        "jobTitle": "Senior Wine Writer",
+        "description": "Wine writer and CSW holder specializing in making wine accessible to beginners.",
+        "url": "https://winequickstart.com/about/elena-martinez",
+        "image": "https://winequickstart.com/images/authors/elena-martinez.jpg",
+        "sameAs": [
+                "https://linkedin.com/in/elenamartinezwine",
+                "https://twitter.com/elenawrites"
+        ],
+        "knowsAbout": [
+                "Wine Writing",
+                "Spanish Wines",
+                "Argentine Wines",
+                "Beginner Education"
+        ],
+        "hasCredential": [
+                {
+                        "@type": "EducationalOccupationalCredential",
+                        "credentialCategory": "Professional Certification",
+                        "name": "WSET Level 2 Award in Wines"
+                },
+                {
+                        "@type": "EducationalOccupationalCredential",
+                        "credentialCategory": "Professional Certification",
+                        "name": "Certified Specialist of Wine (CSW)"
+                }
+        ]
+},
+    "publisher": {
+      "@type": "Organization",
+      "name": "Wine Quick Start",
+      "url": "https://winequickstart.com"
+    },
+    "datePublished": "2026-01-08T00:17:56.728Z",
+    "dateModified": "2026-01-08T00:17:56.728Z",
+    "keywords": "sauvignon blanc",
+    "articleSection": "Wine Guide"
+  },
+  wines: []
+};
+---
+
+<ArticleLayout title={frontmatter.title} description={frontmatter.description} author={frontmatter.author} readTime={frontmatter.readTime} category="Wine Guide" schema={frontmatter.structured_data}>
+  <div slot="quick-answer">
+    <p><strong>undefined:</strong> undefined</p>
+  </div>
+
+  <!-- Author Attribution -->
+  <div class="bg-gray-50 p-4 rounded-lg mb-6 flex items-center gap-4">
+    <div class="w-12 h-12 rounded-full bg-wine-100 flex items-center justify-center text-wine-700 font-bold">
+      EM
+    </div>
+    <div>
+      <a href="/about/elena-martinez" class="font-semibold text-gray-900 hover:text-wine-600">Elena Martinez</a>
+      <p class="text-sm text-gray-600">Senior Wine Writer | WSET Level 2 Award in Wines</p>
+    </div>
+  </div>
+
+  Looking for a wine that delivers complexity without pretension? <a href="/wine-pairings/best-wine-with-salmon" class="internal-link">sauvignon blanc</a> might be exactly what you need.
+
+  <h2>Understanding Sauvignon blanc</h2>
+
+  <p>## Tasting Notes
+
+A thorough evaluation considers appearance, aromatics, palate impression, and finish. Each element contributes to the overall quality assessment.
+
+## How We Rate
+
+Our scoring reflects multiple factors:
+
+| Component | Weight | What We Look For |
+|-----------|--------|------------------|
+| **Quality** | 40% | Purity, complexity, balance |
+| **Value** | 25% | Price-to-quality ratio |
+| **Typicity** | 20% | True to variety/region |
+| **Drinkability** | 15% | Immediate enjoyment |
+
+Scores above 90 represent exceptional wines worth seeking out. 85-89 indicates very good quality. Below 85 suggests acceptable but unremarkable wines.
+
+## Final Assessment
+
+This sauvignon blanc delivers on its promise. Worth buying for both immediate enjoyment and short-term cellaring. Recommended without reservation.</p>
+
+  <h2>Key Characteristics</h2>
+
+  <h3>What to Look For</h3>
+
+  <ul>
+    <li>**Balance**: The interplay between fruit, acid, and structure</li>
+    <li>**Expression**: How clearly the wine shows its origins</li>
+    <li>**Finish**: The lasting impression after each sip</li>
+    <li>**Complexity**: Layers of flavor that reveal themselves over time</li>
+  </ul>
+
+  <h2>Food Pairing Guide</h2>
+
+  <p>The best food pairings for sauvignon blanc depend on the wine's body and flavor profile.</p>
+
+  <h3>Classic Pairings</h3>
+
+  <ul>
+    <li>**Seafood**: A natural match</li>
+    <li>**Creamy sauces**: Complementary flavors</li>
+    <li>**Roasted vegetables**: Perfect balance</li>
+  </ul>
+
+  <!-- Related Articles -->
+  <div class="mt-10 pt-8 border-t border-gray-200">
+    <h3 class="text-xl font-semibold mb-6">Continue Reading</h3>
+    <div class="grid md:grid-cols-2 gap-4">
+    </div>
+  </div>
+
+  <!-- Author Bio Footer -->
+  <div class="mt-12 p-6 bg-gray-50 rounded-lg border border-gray-200">
+    <h3 class="text-lg font-semibold mb-3">About the Author</h3>
+    <div class="flex items-start gap-4">
+      <div class="w-16 h-16 rounded-full bg-wine-100 flex items-center justify-center text-wine-700 font-bold text-xl flex-shrink-0">
+        EM
+      </div>
+      <div>
+        <a href="/about/elena-martinez" class="font-semibold text-wine-600 hover:text-wine-800">Elena Martinez</a>
+        <p class="text-sm text-gray-600 mb-2">Senior Wine Writer</p>
+        <p class="text-sm text-gray-700">Wine writer and CSW holder specializing in making wine accessible to beginners.</p>
+        <a href="/about/elena-martinez" class="text-sm text-wine-600 hover:text-wine-800 mt-2 inline-block">View full profile &rarr;</a>
+      </div>
+    </div>
+  </div>
+
+</ArticleLayout>

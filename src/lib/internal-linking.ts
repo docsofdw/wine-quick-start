@@ -351,43 +351,51 @@ export function buildKeywordLinks(): KeywordLink[] {
 
   for (const article of articleRegistry) {
     // Primary keywords get high priority
-    for (const keyword of article.keywords) {
-      links.push({
-        keyword: keyword.toLowerCase(),
-        variations: generateVariations(keyword),
-        article,
-        priority: 10
-      });
+    if (article.keywords) {
+      for (const keyword of article.keywords) {
+        links.push({
+          keyword: keyword.toLowerCase(),
+          variations: generateVariations(keyword),
+          article,
+          priority: 10
+        });
+      }
     }
 
     // Topics get medium priority
-    for (const topic of article.topics) {
-      links.push({
-        keyword: topic.toLowerCase(),
-        variations: generateVariations(topic),
-        article,
-        priority: 5
-      });
+    if (article.topics) {
+      for (const topic of article.topics) {
+        links.push({
+          keyword: topic.toLowerCase(),
+          variations: generateVariations(topic),
+          article,
+          priority: 5
+        });
+      }
     }
 
     // Varieties get high priority (specific content)
-    for (const variety of article.varieties) {
-      links.push({
-        keyword: variety.toLowerCase(),
-        variations: generateVariations(variety),
-        article,
-        priority: 8
-      });
+    if (article.varieties) {
+      for (const variety of article.varieties) {
+        links.push({
+          keyword: variety.toLowerCase(),
+          variations: generateVariations(variety),
+          article,
+          priority: 8
+        });
+      }
     }
 
     // Regions get medium-high priority
-    for (const region of article.regions) {
-      links.push({
-        keyword: region.toLowerCase(),
-        variations: generateVariations(region),
-        article,
-        priority: 7
-      });
+    if (article.regions) {
+      for (const region of article.regions) {
+        links.push({
+          keyword: region.toLowerCase(),
+          variations: generateVariations(region),
+          article,
+          priority: 7
+        });
+      }
     }
   }
 
