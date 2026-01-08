@@ -1,0 +1,172 @@
+---
+import ArticleLayout from '../../layouts/ArticleLayout.astro';
+
+const frontmatter = {
+  title: "Best Wine with fish: Expert Pairing Guide",
+  description: "Discover the perfect wine with fish. Our sommeliers recommend Sauvignon Blanc and Chablis for the best experience.",
+  wine_type: "white",
+  food: "fish",
+  author: "James Thornton",
+  authorSlug: "james-thornton",
+  authorRole: "Founder & Lead Wine Consultant",
+  authorCredentials: ["WSET Level 3 Award in Wines","Certified Sommelier (Court of Master Sommeliers)","French Wine Scholar (Wine Scholar Guild)"],
+  readTime: "undefined",
+  structured_data: {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "Best Wine with fish: Expert Pairing Guide",
+    "description": "Discover the perfect wine with fish. Our sommeliers recommend Sauvignon Blanc and Chablis for the best experience.",
+    "author": {
+        "@type": "Person",
+        "name": "James Thornton",
+        "jobTitle": "Founder & Lead Wine Consultant",
+        "description": "Certified Sommelier and WSET Level 3 holder with 10+ years in wine education and consulting.",
+        "url": "https://winequickstart.com/about/james-thornton",
+        "image": "https://winequickstart.com/images/authors/james-thornton.jpg",
+        "sameAs": [
+                "https://linkedin.com/in/jamesthornton",
+                "https://twitter.com/winequickstart",
+                "https://instagram.com/winequickstart"
+        ],
+        "knowsAbout": [
+                "Food & Wine Pairing",
+                "French Wines",
+                "California Wines",
+                "Wine Education"
+        ],
+        "hasCredential": [
+                {
+                        "@type": "EducationalOccupationalCredential",
+                        "credentialCategory": "Professional Certification",
+                        "name": "WSET Level 3 Award in Wines"
+                },
+                {
+                        "@type": "EducationalOccupationalCredential",
+                        "credentialCategory": "Professional Certification",
+                        "name": "Certified Sommelier (Court of Master Sommeliers)"
+                },
+                {
+                        "@type": "EducationalOccupationalCredential",
+                        "credentialCategory": "Professional Certification",
+                        "name": "French Wine Scholar (Wine Scholar Guild)"
+                }
+        ]
+},
+    "publisher": {
+      "@type": "Organization",
+      "name": "Wine Quick Start",
+      "url": "https://winequickstart.com"
+    },
+    "datePublished": "2026-01-08T00:20:48.599Z",
+    "dateModified": "2026-01-08T00:20:48.599Z",
+    "keywords": "wine with fish, fish wine pairing, best wine for fish",
+    "articleSection": "Wine Pairing"
+  },
+  wines: []
+};
+---
+
+<ArticleLayout title={frontmatter.title} description={frontmatter.description} author={frontmatter.author} readTime={frontmatter.readTime} category="Food Pairing" schema={frontmatter.structured_data}>
+  <div slot="quick-answer">
+    <p><strong>Quick Answer:</strong> The best wines for fish are **Sauvignon Blanc**, **Chablis**, and **Vermentino**. Sauvignon Blanc is our top pick for its crisp acidity and fresh flavors that complement fish perfectly.</p>
+  </div>
+
+  <!-- Author Attribution -->
+  <div class="bg-gray-50 p-4 rounded-lg mb-6 flex items-center gap-4">
+    <div class="w-12 h-12 rounded-full bg-wine-100 flex items-center justify-center text-wine-700 font-bold">
+      JT
+    </div>
+    <div>
+      <a href="/about/james-thornton" class="font-semibold text-gray-900 hover:text-wine-600">James Thornton</a>
+      <p class="text-sm text-gray-600">Founder & Lead Wine Consultant | WSET Level 3 Award in Wines</p>
+    </div>
+  </div>
+
+  Restaurant sales data reveals that guests who order wine with intentional pairings report significantly higher dining satisfaction.
+
+  <h2>Why Sauvignon Blanc Works Best with Fish</h2>
+
+  <p>Sauvignon Blanc is our sommelier team's top recommendation for fish. The wine's bright acidity cleanses the palate between bites, while its citrus and mineral notes enhance fish's natural flavors.</p>
+
+  <h2>Top 3 Wine Styles for Fish</h2>
+
+  <h3>1. Sauvignon Blanc (Top Pick)</h3>
+
+  <p>Crisp and refreshing, Sauvignon Blanc offers the perfect counterpoint to fish's delicate textures.</p>
+
+  <ul>
+    <li>**Flavor Profile**: Citrus, stone fruit, mineral finish</li>
+    <li>**Why It Works**: Acidity brightens and cleanses</li>
+    <li>**Price Range**: $15-40</li>
+  </ul>
+
+  <h3>2. Chablis (Versatile Choice)</h3>
+
+  <p>Chablis offers a more elegant, nuanced option that pairs beautifully with a variety of fish preparations.</p>
+
+  <ul>
+    <li>**Flavor Profile**: Floral notes, balanced acidity, clean finish</li>
+    <li>**Why It Works**: Versatile enough for simple or complex dishes</li>
+    <li>**Price Range**: $12-30</li>
+  </ul>
+
+  <h3>3. Vermentino (Budget-Friendly)</h3>
+
+  <p>Don't overlook Vermentino as an excellent value option for everyday fish dishes.</p>
+
+  <ul>
+    <li>**Flavor Profile**: Light, crisp, refreshing</li>
+    <li>**Why It Works**: Great quality-to-price ratio</li>
+    <li>**Price Range**: $10-20</li>
+  </ul>
+
+  <h2>Pairing Tips from Our Sommeliers</h2>
+
+  <h3>Consider the Preparation</h3>
+
+  <p>How your fish is prepared matters as much as the fish itself:</p>
+
+  <ul>
+    <li>**Grilled or Roasted**: Go bolder with oaked whites</li>
+    <li>**Light or Poached**: Choose unoaked, crisp whites</li>
+    <li>**With Rich Sauce**: Match the sauce's intensity with your wine choice</li>
+  </ul>
+
+  <h3>Temperature Matters</h3>
+
+  <p>Chill white wines to 45-50°F for optimal refreshment, but not so cold that the flavors are muted.</p>
+
+  <h2>Wines to Avoid with Fish</h2>
+
+  <p>Not every wine works with fish. Here's what to skip:</p>
+
+  <ul>
+    <li>**Heavy oaked wines**: Can clash with lighter preparations</li>
+    <li>**Very sweet wines**: Unless you're pairing with a sweet glaze or sauce</li>
+    <li>**Full-bodied reds**: Usually too heavy for the dish</li>
+  </ul>
+
+  <!-- Related Articles -->
+  <div class="mt-10 pt-8 border-t border-gray-200">
+    <h3 class="text-xl font-semibold mb-6">More Pairing Guides</h3>
+    <div class="grid md:grid-cols-2 gap-4">
+    </div>
+  </div>
+
+  <!-- Author Bio Footer -->
+  <div class="mt-12 p-6 bg-gray-50 rounded-lg border border-gray-200">
+    <h3 class="text-lg font-semibold mb-3">About the Author</h3>
+    <div class="flex items-start gap-4">
+      <div class="w-16 h-16 rounded-full bg-wine-100 flex items-center justify-center text-wine-700 font-bold text-xl flex-shrink-0">
+        JT
+      </div>
+      <div>
+        <a href="/about/james-thornton" class="font-semibold text-wine-600 hover:text-wine-800">James Thornton</a>
+        <p class="text-sm text-gray-600 mb-2">Founder & Lead Wine Consultant</p>
+        <p class="text-sm text-gray-700">Certified Sommelier and WSET Level 3 holder with 10+ years in wine education and consulting.</p>
+        <a href="/about/james-thornton" class="text-sm text-wine-600 hover:text-wine-800 mt-2 inline-block">View full profile &rarr;</a>
+      </div>
+    </div>
+  </div>
+
+</ArticleLayout>
