@@ -14,10 +14,10 @@
       "has": [
         {
           "type": "host",
-          "value": "www.winequickstart.com"
+          "value": "www.winesquickstart.com"
         }
       ],
-      "destination": "https://winequickstart.com/$1",
+      "destination": "https://winesquickstart.com/$1",
       "permanent": true
     }
   ],
