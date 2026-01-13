@@ -1,5 +1,7 @@
 ---
+import { Image } from 'astro:assets';
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import buyHero from '../../assets/images/hero/buy-hero.png';
 
 interface GuideData {
   title: string;
@@ -105,8 +107,18 @@ const schema = {
   schema={schema}
 >
   <!-- Hero Section -->
-  <section class="bg-gradient-to-br from-wine-700 to-wine-900 text-white section-padding">
-    <div class="container text-center">
+  <section class="relative text-white section-padding overflow-hidden">
+    <div class="absolute inset-0 z-0">
+      <Image
+        src={buyHero}
+        alt="Wine shop interior"
+        class="w-full h-full object-cover"
+        widths={[800, 1200, 1920]}
+        sizes="100vw"
+      />
+      <div class="absolute inset-0 bg-gradient-to-br from-wine-900/85 to-wine-800/75"></div>
+    </div>
+    <div class="container text-center relative z-10">
       <h1 class="text-5xl font-bold mb-6 leading-tight">Buy Wine</h1>
       <p class="text-xl mb-10 opacity-90 max-w-2xl mx-auto">
         Expert buying guides with price comparisons, retailer reviews, and insider tips to help you find the perfect wines at the best prices.

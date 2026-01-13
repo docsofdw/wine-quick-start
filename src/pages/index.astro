@@ -1,5 +1,13 @@
 ---
+import { Image } from 'astro:assets';
 import BaseLayout from '../layouts/BaseLayout.astro';
+import WinePairingsIcon from '../components/icons/WinePairingsIcon.astro';
+import LearnWineIcon from '../components/icons/LearnWineIcon.astro';
+import SmartBuyingIcon from '../components/icons/SmartBuyingIcon.astro';
+import TrustSignals from '../components/sections/TrustSignals.astro';
+import FeaturedShowcase from '../components/sections/FeaturedShowcase.astro';
+
+import homepageHero from '../assets/images/hero/homepage-hero.png';
 
 const featuredPairings = [
   {
@@ -43,18 +51,46 @@ const schema = {
   description="Expert wine guidance from certified sommeliers. Find the right wine for any occasion."
   schema={schema}
 >
-  <!-- Hero -->
-  <section class="bg-gradient-to-br from-wine-700 to-wine-900 text-white section-padding">
-    <div class="container text-center">
-      <h1 class="text-5xl font-bold mb-6 leading-tight">Perfect Wine, Every Time</h1>
-      <p class="text-xl mb-10 opacity-90 max-w-2xl mx-auto">
-        Expert wine guidance from certified sommeliers. Find the right wine for any occasion.
-      </p>
-      <a href="/wine-pairings/" class="inline-flex items-center gap-2 bg-white text-wine-700 px-6 py-3 rounded-lg font-semibold hover:bg-wine-50 transition-colors">
-        Explore Wine Pairings
-      </a>
+  <!-- Hero with Background Image -->
+  <section class="relative min-h-[70vh] flex items-center overflow-hidden">
+    <!-- Background Image -->
+    <div class="absolute inset-0 z-0">
+      <Image
+        src={homepageHero}
+        alt="Atmospheric wine cellar background"
+        class="w-full h-full object-cover"
+        widths={[800, 1200, 1920, 2560]}
+        sizes="100vw"
+      />
+      <div class="absolute inset-0 bg-gradient-to-r from-wine-900/90 via-wine-900/70 to-wine-900/50"></div>
+    </div>
+
+    <!-- Hero Content -->
+    <div class="container relative z-10 py-20">
+      <div class="max-w-2xl">
+        <h1 class="font-serif text-5xl md:text-6xl lg:text-7xl font-bold text-white mb-6 leading-tight">
+          Perfect Wine, Every Time
+        </h1>
+        <p class="text-xl md:text-2xl text-wine-100 mb-10 leading-relaxed">
+          Expert wine guidance from certified sommeliers. Find the right wine for any occasion.
+        </p>
+        <div class="flex flex-col sm:flex-row gap-4">
+          <a href="/wine-pairings/" class="btn-primary btn-press">
+            Explore Wine Pairings
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+            </svg>
+          </a>
+          <a href="/learn/" class="btn-secondary bg-white/10 border-white/30 text-white hover:bg-white/20">
+            Start Learning
+          </a>
+        </div>
+      </div>
     </div>
   </section>
+
+  <!-- Trust Signals -->
+  <TrustSignals />
 
   <!-- Main Categories -->
   <section class="section-padding">
@@ -64,66 +100,69 @@ const schema = {
         Whether you're pairing, learning, or buying - we've got you covered
       </p>
 
-      <div class="wine-grid wine-grid-3">
-        <div class="wine-card">
-          <div class="w-12 h-12 bg-wine-50 rounded-lg flex items-center justify-center mb-6">
-            <svg class="w-6 h-6 text-wine-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-            </svg>
+      <div class="wine-grid wine-grid-3 stagger-children">
+        <div class="wine-card group">
+          <div class="w-14 h-14 bg-wine-50 rounded-xl flex items-center justify-center mb-6 group-hover:bg-wine-100 transition-colors">
+            <WinePairingsIcon class="w-8 h-8 text-wine-600" />
           </div>
           <h3 class="text-2xl font-semibold mb-3 text-gray-900">Wine Pairings</h3>
           <p class="text-gray-600 mb-6 flex-grow">Perfect wine matches for your favorite dishes, from salmon to steak.</p>
-          <a href="/wine-pairings/" class="text-wine-600 font-medium hover:text-wine-700 transition">
-            Browse Pairings →
+          <a href="/wine-pairings/" class="text-wine-600 font-medium hover:text-wine-700 transition link-underline inline-block">
+            Browse Pairings
           </a>
         </div>
 
-        <div class="wine-card">
-          <div class="w-12 h-12 bg-wine-50 rounded-lg flex items-center justify-center mb-6">
-            <svg class="w-6 h-6 text-wine-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
-            </svg>
+        <div class="wine-card group">
+          <div class="w-14 h-14 bg-wine-50 rounded-xl flex items-center justify-center mb-6 group-hover:bg-wine-100 transition-colors">
+            <LearnWineIcon class="w-8 h-8 text-wine-600" />
           </div>
           <h3 class="text-2xl font-semibold mb-3 text-gray-900">Learn Wine</h3>
           <p class="text-gray-600 mb-6 flex-grow">Simple guides to understanding wine regions, varieties, and tasting.</p>
-          <a href="/learn/" class="text-wine-600 font-medium hover:text-wine-700 transition">
-            Start Learning →
+          <a href="/learn/" class="text-wine-600 font-medium hover:text-wine-700 transition link-underline inline-block">
+            Start Learning
           </a>
         </div>
 
-        <div class="wine-card">
-          <div class="w-12 h-12 bg-wine-50 rounded-lg flex items-center justify-center mb-6">
-            <svg class="w-6 h-6 text-wine-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
-            </svg>
+        <div class="wine-card group">
+          <div class="w-14 h-14 bg-wine-50 rounded-xl flex items-center justify-center mb-6 group-hover:bg-wine-100 transition-colors">
+            <SmartBuyingIcon class="w-8 h-8 text-wine-600" />
           </div>
           <h3 class="text-2xl font-semibold mb-3 text-gray-900">Smart Buying</h3>
           <p class="text-gray-600 mb-6 flex-grow">Where to find great wines at the best prices, with expert recommendations.</p>
-          <a href="/buy/" class="text-wine-600 font-medium hover:text-wine-700 transition">
-            Shop Smarter →
+          <a href="/buy/" class="text-wine-600 font-medium hover:text-wine-700 transition link-underline inline-block">
+            Shop Smarter
           </a>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- Featured Articles -->
-  <section class="section-padding bg-gray-50">
-    <div class="container">
-      <h2 class="text-4xl font-bold text-center mb-12 text-gray-900">Popular Guides</h2>
+  <!-- Featured Showcase Section -->
+  <FeaturedShowcase />
 
-      <div class="wine-grid wine-grid-4">
+  <!-- Featured Articles -->
+  <section class="section-padding">
+    <div class="container">
+      <h2 class="font-serif text-4xl font-bold text-center mb-4 text-gray-900">Popular Guides</h2>
+      <p class="text-xl text-center text-gray-600 mb-12 max-w-2xl mx-auto">
+        Our most-read articles to help you on your wine journey
+      </p>
+
+      <div class="wine-grid wine-grid-4 stagger-children">
         {featuredPairings.map((article) => (
-          <article class="wine-card">
+          <article class="wine-card group">
             <div class="flex justify-between items-center mb-3">
-              <span class="text-sm text-gray-500">{article.readTime}</span>
+              <span class="text-sm text-wine-600 font-medium">{article.readTime}</span>
             </div>
             <h3 class="text-lg font-semibold mb-2 text-gray-900">
-              <a href={`/wine-pairings/${article.slug}/`} class="hover:text-wine-600 transition">
+              <a href={`/wine-pairings/${article.slug}/`} class="group-hover:text-wine-600 transition">
                 {article.title}
               </a>
             </h3>
             <p class="text-gray-600 text-sm leading-relaxed flex-grow">{article.description}</p>
+            <a href={`/wine-pairings/${article.slug}/`} class="mt-4 text-wine-600 text-sm font-medium link-underline inline-block">
+              Read Guide
+            </a>
           </article>
         ))}
       </div>
@@ -134,7 +173,7 @@ const schema = {
   <section class="section-padding bg-gray-900 text-white" id="newsletter">
     <div class="container">
       <div class="max-w-2xl mx-auto text-center">
-        <h2 class="text-4xl font-bold mb-4">Get Weekly Wine Tips</h2>
+        <h2 class="font-serif text-4xl font-bold mb-4">Get Weekly Wine Tips</h2>
         <p class="text-xl mb-8 text-gray-300">Join 5,000+ wine lovers getting expert tips every Friday</p>
         <form class="newsletter-form" id="newsletter-form">
           <input

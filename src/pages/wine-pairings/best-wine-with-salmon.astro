@@ -1,5 +1,6 @@
 ---
 import ArticleLayout from '../../layouts/ArticleLayout.astro';
+import featuredImage from '../../assets/images/articles/best-wine-with-salmon.png';
 
 const schema = {
   "@context": "https://schema.org",
@@ -16,16 +17,23 @@ const schema = {
 };
 ---
 
-<ArticleLayout 
+<ArticleLayout
   title="Best Wine with Salmon - Expert Pairing Guide"
   description="Discover the perfect wines for salmon with our sommelier guide. From Pinot Noir to Chardonnay, find ideal matches for grilled, baked, and smoked salmon."
   category="Seafood Pairing"
+  categorySlug="wine-pairings"
   author="Elena Rodriguez, Certified Sommelier"
   readTime="5 min"
   schema={schema}
+  featuredImage={featuredImage}
+  relatedArticles={[
+    { title: "Pinot Noir Food Pairing Guide", slug: "pinot-noir-food-pairing", category: "Red Wine", description: "Master the art of pairing Pinot Noir with food" },
+    { title: "Wine for Mushroom Risotto", slug: "wine-pairing-mushroom-risotto", category: "Italian", description: "Perfect wines for creamy risotto dishes" },
+    { title: "Bordeaux Wine Guide", slug: "bordeaux-wine-guide", category: "Wine Regions", description: "Explore the world's most prestigious wine region", basePath: "/learn" }
+  ]}
 >
-  
-  <p><strong>Quick Answer:</strong> Albariño, Pinot Noir, Chablis, or off-dry Riesling. Choose whites for delicate preparations and light reds for richer, grilled salmon. The key is matching wine weight to cooking method and sauce intensity.</p>
+
+  <p slot="quick-answer"><strong>Quick Answer:</strong> Albariño, Pinot Noir, Chablis, or off-dry Riesling. Choose whites for delicate preparations and light reds for richer, grilled salmon. The key is matching wine weight to cooking method and sauce intensity.</p>
 
   <h2>Why Salmon is Wine-Friendly</h2>
   

@@ -1,5 +1,6 @@
 ---
 import ArticleLayout from '../../layouts/ArticleLayout.astro';
+import featuredImage from '../../assets/images/articles/natural-wine.png';
 
 const frontmatter = {
   title: "Natural wine: Comparing Your Best Options",
@@ -95,7 +96,7 @@ const frontmatter = {
 };
 ---
 
-<ArticleLayout title={frontmatter.title} description={frontmatter.description} author={frontmatter.author} readTime={frontmatter.readTime} category="Wine Comparison" schema={frontmatter.structured_data}>
+<ArticleLayout title={frontmatter.title} description={frontmatter.description} author={frontmatter.author} readTime={frontmatter.readTime} category="Wine Comparison" schema={frontmatter.structured_data} featuredImage={featuredImage}>
   <div slot="quick-answer">
     <p><strong>Key Takeaway:</strong> Natural wine is about enhancing both the wine and the food. When both taste better together than alone, you've found the sweet spot.</p>
   </div>

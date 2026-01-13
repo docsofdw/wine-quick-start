@@ -1,0 +1,47 @@
+---
+interface Props {
+  class?: string;
+}
+const { class: className = '' } = Astro.props;
+---
+
+<svg class={className} viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Open book - left page -->
+  <path
+    d="M6 10c4-2 8-2 12 0v28c-4-2-8-2-12 0V10z"
+    stroke="currentColor"
+    stroke-width="2.5"
+    fill="none"
+  />
+  <!-- Open book - right page -->
+  <path
+    d="M30 10c4-2 8-2 12 0v28c-4-2-8-2-12 0V10z"
+    stroke="currentColor"
+    stroke-width="2.5"
+    fill="none"
+  />
+  <!-- Book spine -->
+  <path d="M18 10v28" stroke="currentColor" stroke-width="2.5" />
+  <path d="M30 10v28" stroke="currentColor" stroke-width="2.5" />
+  <!-- Wine drop on page -->
+  <path
+    d="M24 16c-2.5 3.5-4 6-4 8.5a4 4 0 008 0c0-2.5-1.5-5-4-8.5z"
+    fill="currentColor"
+    opacity="0.35"
+  />
+  <!-- Page lines -->
+  <path
+    d="M9 16h6M9 20h6M9 24h4"
+    stroke="currentColor"
+    stroke-width="1.5"
+    stroke-linecap="round"
+    opacity="0.3"
+  />
+  <path
+    d="M33 16h6M33 20h6M33 24h4"
+    stroke="currentColor"
+    stroke-width="1.5"
+    stroke-linecap="round"
+    opacity="0.3"
+  />
+</svg>

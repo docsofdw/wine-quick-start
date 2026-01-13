@@ -1,0 +1,114 @@
+---
+interface Props {
+  class?: string;
+}
+const { class: className } = Astro.props;
+---
+
+<nav class:list={['toc', className]} aria-label="Table of contents">
+  <h4 class="text-sm font-semibold text-gray-900 uppercase tracking-wider mb-4">
+    On This Page
+  </h4>
+  <ul id="toc-list" class="space-y-1 text-sm">
+    <!-- Populated by JavaScript -->
+  </ul>
+</nav>
+
+<style>
+  .toc {
+    @apply p-4 bg-gray-50 rounded-xl border border-gray-100;
+  }
+
+  .toc a {
+    @apply block py-2 px-3 -ml-3 rounded text-gray-600 hover:text-wine-600
+           hover:bg-wine-50 transition-all duration-200 border-l-2 border-transparent;
+  }
+
+  .toc a.active {
+    @apply text-wine-700 border-wine-500 bg-wine-50/50 font-medium;
+  }
+
+  .toc a[data-depth="3"] {
+    @apply pl-6 text-gray-500;
+  }
+</style>
+
+<script>
+  function initTableOfContents() {
+    const tocList = document.getElementById('toc-list');
+    const articleContent = document.querySelector('.article-content');
+
+    if (!tocList || !articleContent) return;
+
+    // Clear any existing content
+    tocList.innerHTML = '';
+
+    // Find all h2 and h3 headings in article content
+    const headings = articleContent.querySelectorAll('h2, h3');
+
+    if (headings.length === 0) {
+      // Hide TOC if no headings found
+      const tocNav = tocList.closest('nav');
+      if (tocNav) tocNav.style.display = 'none';
+      return;
+    }
+
+    headings.forEach((heading, index) => {
+      // Add ID if missing
+      if (!heading.id) {
+        const slug = heading.textContent
+          ?.toLowerCase()
+          .replace(/[^a-z0-9]+/g, '-')
+          .replace(/(^-|-$)/g, '') || `heading-${index}`;
+        heading.id = slug;
+      }
+
+      const li = document.createElement('li');
+      const a = document.createElement('a');
+      a.href = `#${heading.id}`;
+      a.textContent = heading.textContent;
+      a.dataset.depth = heading.tagName.toLowerCase() === 'h3' ? '3' : '2';
+
+      // Smooth scroll on click
+      a.addEventListener('click', (e) => {
+        e.preventDefault();
+        const target = document.getElementById(heading.id);
+        if (target) {
+          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          // Update URL without scrolling
+          history.pushState(null, '', `#${heading.id}`);
+        }
+      });
+
+      li.appendChild(a);
+      tocList.appendChild(li);
+    });
+
+    // Intersection Observer for active state
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          const link = tocList.querySelector(`a[href="#${entry.target.id}"]`);
+          if (entry.isIntersecting) {
+            // Remove active from all
+            tocList.querySelectorAll('a').forEach(a => a.classList.remove('active'));
+            // Add active to current
+            link?.classList.add('active');
+          }
+        });
+      },
+      {
+        rootMargin: '-20% 0px -70% 0px',
+        threshold: 0
+      }
+    );
+
+    headings.forEach((heading) => observer.observe(heading));
+  }
+
+  // Run on page load
+  document.addEventListener('DOMContentLoaded', initTableOfContents);
+
+  // Also run on Astro page transitions
+  document.addEventListener('astro:page-load', initTableOfContents);
+</script>

@@ -1,5 +1,6 @@
 ---
 import ArticleLayout from '../../layouts/ArticleLayout.astro';
+import featuredImage from '../../assets/images/articles/bordeaux-wine-guide.png';
 
 const schema = {
   "@context": "https://schema.org",
@@ -16,13 +17,14 @@ const schema = {
 };
 ---
 
-<ArticleLayout 
+<ArticleLayout
   title="Bordeaux Wine Guide - Complete Expert Guide"
   description="Master Bordeaux wines with our sommelier guide. Explore Left Bank vs Right Bank, food pairings, vintage recommendations, and buying tips from wine experts."
   category="Wine Education"
   author="Philippe Dubois, Master Sommelier"
   readTime="12 min"
   schema={schema}
+  featuredImage={featuredImage}
 >
   
   <p><strong>Quick Answer:</strong> Bordeaux offers exceptional wine diversity - Left Bank Cabernet Sauvignon blends (structured, age-worthy) and Right Bank Merlot blends (approachable, fruit-forward). Pair with red meat, aged cheeses, and rich stews for the ultimate wine experience.</p>

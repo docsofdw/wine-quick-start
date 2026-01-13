@@ -42,3 +42,4 @@ pnpm-debug.log*
 config/keys.json
 config/secrets.json
 .vercel
+.env*.local

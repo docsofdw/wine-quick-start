@@ -1,2 +1,0 @@
-{"location":"daily-wine-automation.ts:33","message":"Constructor entry - checking env vars","data":{"hasUrl":true,"hasKey":true},"timestamp":1767466006307,"sessionId":"debug-session","runId":"initial","hypothesisId":"H2"}
-{"location":"daily-wine-automation.ts:42","message":"Environment variables loaded successfully","data":{"urlPrefix":"https://nsyubkcfsrso","keyLength":208},"timestamp":1767466006315,"sessionId":"debug-session","runId":"initial","hypothesisId":"H2"}

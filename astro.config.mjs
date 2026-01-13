@@ -20,5 +20,11 @@ export default defineConfig({
   adapter: vercel(),
   build: {
     inlineStylesheets: 'auto'
+  },
+  image: {
+    // Use sharp for image optimization
+    service: {
+      entrypoint: 'astro/assets/services/sharp'
+    }
   }
 });

@@ -1,5 +1,6 @@
 ---
 import ArticleLayout from '../../layouts/ArticleLayout.astro';
+import featuredImage from '../../assets/images/articles/pinot-noir.png';
 
 const frontmatter = {
   title: "Pinot noir Review: Expert Tasting Notes",
@@ -88,7 +89,7 @@ const frontmatter = {
 };
 ---
 
-<ArticleLayout title={frontmatter.title} description={frontmatter.description} author={frontmatter.author} readTime={frontmatter.readTime} category="Wine Review" schema={frontmatter.structured_data}>
+<ArticleLayout title={frontmatter.title} description={frontmatter.description} author={frontmatter.author} readTime={frontmatter.readTime} category="Wine Review" schema={frontmatter.structured_data} featuredImage={featuredImage}>
   <div slot="quick-answer">
     <p><strong>Where to Start:</strong> New to pinot noir? Choose wines known for food-friendliness—Pinot Noir, Grüner Veltliner, or Sangiovese—and build from there.</p>
   </div>

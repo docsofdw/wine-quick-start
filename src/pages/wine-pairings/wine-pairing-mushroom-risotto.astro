@@ -1,5 +1,6 @@
 ---
 import ArticleLayout from '../../layouts/ArticleLayout.astro';
+import featuredImage from '../../assets/images/articles/wine-pairing-mushroom-risotto.png';
 
 const schema = {
   "@context": "https://schema.org",
@@ -16,13 +17,14 @@ const schema = {
 };
 ---
 
-<ArticleLayout 
+<ArticleLayout
   title="Wine Pairing for Mushroom Risotto - Expert Guide"
   description="Discover the perfect wines for mushroom risotto with our sommelier guide. From Nebbiolo to Burgundy, find ideal matches for this earthy, creamy dish."
   category="Pairing Guide"
   author="Sarah Chen, Sommelier"
   readTime="6 min"
   schema={schema}
+  featuredImage={featuredImage}
 >
   
   <p><strong>Quick Answer:</strong> Nebbiolo, aged white Burgundy, or Barbera. These wines complement mushroom risotto's earthy, creamy profile without overpowering delicate mushroom flavors. For a budget option, try a crisp Vouvray.</p>

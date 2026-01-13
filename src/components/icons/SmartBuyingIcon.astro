@@ -1,0 +1,37 @@
+---
+interface Props {
+  class?: string;
+}
+const { class: className = '' } = Astro.props;
+---
+
+<svg class={className} viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Shopping bag body -->
+  <path
+    d="M12 16h24l-2 24H14L12 16z"
+    stroke="currentColor"
+    stroke-width="2.5"
+    fill="none"
+  />
+  <!-- Bag handles -->
+  <path
+    d="M18 16v-4a6 6 0 0112 0v4"
+    stroke="currentColor"
+    stroke-width="2.5"
+    fill="none"
+  />
+  <!-- Wine bottle inside bag -->
+  <path
+    d="M22 22v2c0 1-1 2-1 3v8h6v-8c0-1-1-2-1-3v-2h-4z"
+    fill="currentColor"
+    opacity="0.3"
+  />
+  <!-- Cork -->
+  <rect x="23" y="20" width="2" height="3" rx="0.5" fill="currentColor" opacity="0.25" />
+  <!-- Star badge -->
+  <circle cx="36" cy="12" r="6" fill="currentColor" />
+  <path
+    d="M36 8.5l1 2.5h2.5l-2 1.7.8 2.5-2.3-1.7-2.3 1.7.8-2.5-2-1.7H35z"
+    fill="white"
+  />
+</svg>

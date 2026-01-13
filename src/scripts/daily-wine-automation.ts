@@ -5,6 +5,11 @@
 
 import { createClient } from '@supabase/supabase-js';
 import { config } from 'dotenv';
+import Replicate from 'replicate';
+import https from 'https';
+import http from 'http';
+import fs from 'fs';
+import path from 'path';
 
 // Load from .env.local BEFORE dynamic imports that need env vars
 config({ path: '.env.local', override: true });
@@ -12,6 +17,9 @@ config({ path: '.env.local', override: true });
 // Dynamic import for wine catalog (needs env vars to be loaded first)
 const { getWinesForKeyword } = await import('../lib/wine-catalog.js');
 import type { WineRecommendation } from '../lib/wine-catalog.js';
+
+// Import E-E-A-T compliant authors
+import { getRandomAuthor, getAuthorSchema, type Author } from '../data/authors.js';
 
 interface WineKeyword {
   keyword: string;
@@ -33,16 +41,162 @@ interface ContentTemplate {
 
 class WineContentAutomation {
   private supabase;
-  
+  private replicate: Replicate | null = null;
+
   constructor() {
     const supabaseUrl = process.env.SUPABASE_URL;
     const supabaseKey = process.env.SUPABASE_ANON_KEY;
-    
+
     if (!supabaseUrl || !supabaseKey) {
       throw new Error('SUPABASE_URL and SUPABASE_ANON_KEY must be set in .env.local');
     }
-    
+
     this.supabase = createClient(supabaseUrl, supabaseKey);
+
+    // Initialize Replicate for image generation
+    const replicateToken = process.env.REPLICATE_API_TOKEN;
+    if (replicateToken) {
+      this.replicate = new Replicate({ auth: replicateToken });
+      console.log('🎨 Image generation enabled');
+    } else {
+      console.log('⚠️  REPLICATE_API_TOKEN not set - images will not be generated');
+    }
+  }
+
+  /**
+   * Generate image prompt based on keyword
+   */
+  private generateImagePrompt(keyword: string): string {
+    const lowerKeyword = keyword.toLowerCase();
+
+    // Food pairing prompts
+    if (lowerKeyword.includes('pairing') || lowerKeyword.includes('with food')) {
+      return `elegant wine and food pairing spread, multiple wine glasses with different wines, variety of dishes, professional food photography, warm inviting atmosphere, soft natural lighting --ar 16:9`;
+    }
+
+    // Orange wine prompts
+    if (lowerKeyword.includes('orange wine') || lowerKeyword.includes('skin contact')) {
+      if (lowerKeyword.includes('cheap') || lowerKeyword.includes('under')) {
+        return `affordable orange wine bottles, amber colored wines, casual wine bar setting, budget-friendly selection, welcoming atmosphere, warm lighting --ar 16:9`;
+      }
+      if (lowerKeyword.includes('review')) {
+        return `natural orange wine tasting setup, amber-colored wine bottles and glasses arranged for review, tasting notes, professional wine review setting, warm copper tones, soft lighting --ar 16:9`;
+      }
+      if (lowerKeyword.includes('price') || lowerKeyword.includes('buy')) {
+        return `orange wine bottles with price tags in wine shop, amber colored skin-contact wines, helpful buying guide aesthetic, warm inviting lighting --ar 16:9`;
+      }
+      return `selection of orange wines in amber hues, skin contact wines, modern wine bar setting, warm copper and orange tones, professional photography --ar 16:9`;
+    }
+
+    // Natural wine prompts
+    if (lowerKeyword.includes('natural wine')) {
+      if (lowerKeyword.includes('cheap') || lowerKeyword.includes('under') || lowerKeyword.includes('budget')) {
+        return `affordable natural wine bottles with friendly labels, bright welcoming setting, beginner-friendly wine selection, warm natural lighting --ar 16:9`;
+      }
+      if (lowerKeyword.includes('review')) {
+        return `natural wine tasting setup, multiple bottles and glasses, tasting notes paper, professional wine review setting, warm lighting --ar 16:9`;
+      }
+      if (lowerKeyword.includes('price') || lowerKeyword.includes('buy')) {
+        return `natural wine bottles with visible price tags, wine shop display, range of prices shown, helpful buying guide aesthetic, warm lighting --ar 16:9`;
+      }
+      return `natural wine in rustic glass, slightly cloudy appearance, organic vineyard aesthetic, earth tones with burgundy accents, artisanal feeling --ar 16:9`;
+    }
+
+    // Varietal-specific prompts
+    if (lowerKeyword.includes('cabernet')) {
+      return `elegant glass of deep red cabernet sauvignon wine, professional wine photography, dark moody background, soft lighting highlighting wine color --ar 16:9`;
+    }
+    if (lowerKeyword.includes('chardonnay')) {
+      return `glass of golden chardonnay white wine, soft natural lighting, elegant wine glass, subtle oak barrel in background, warm golden tones --ar 16:9`;
+    }
+    if (lowerKeyword.includes('pinot noir')) {
+      return `delicate glass of pinot noir, light ruby red color, professional wine photography, soft natural lighting, burgundy vineyard atmosphere --ar 16:9`;
+    }
+    if (lowerKeyword.includes('merlot')) {
+      return `glass of smooth merlot red wine, velvet burgundy color, professional wine photography, soft ambient lighting, elegant dark setting --ar 16:9`;
+    }
+    if (lowerKeyword.includes('rosé') || lowerKeyword.includes('rose')) {
+      return `beautiful glass of rosé wine, pale salmon pink color, summer terrace setting, soft golden hour lighting, professional wine photography --ar 16:9`;
+    }
+
+    // Default wine prompt
+    return `elegant wine glass on sophisticated table setting, professional wine photography, warm ambient lighting, burgundy accents, clean minimal composition --ar 16:9`;
+  }
+
+  /**
+   * Download image from URL
+   */
+  private async downloadImage(url: string, filepath: string): Promise<void> {
+    return new Promise((resolve, reject) => {
+      const file = fs.createWriteStream(filepath);
+      const protocol = url.startsWith("https") ? https : http;
+
+      protocol.get(url, (response) => {
+        if (response.statusCode === 301 || response.statusCode === 302) {
+          this.downloadImage(response.headers.location as string, filepath).then(resolve).catch(reject);
+          return;
+        }
+
+        response.pipe(file);
+        file.on("finish", () => {
+          file.close();
+          resolve();
+        });
+      }).on("error", (err) => {
+        fs.unlink(filepath, () => {});
+        reject(err);
+      });
+    });
+  }
+
+  /**
+   * Generate image for article using Replicate
+   */
+  private async generateArticleImage(slug: string, keyword: string): Promise<boolean> {
+    if (!this.replicate) {
+      return false;
+    }
+
+    const folderPath = path.join(process.cwd(), 'src/assets/images/articles');
+    const filepath = path.join(folderPath, `${slug}.png`);
+
+    // Skip if already exists
+    if (fs.existsSync(filepath)) {
+      console.log(`   ⏭️  Image ${slug}.png already exists`);
+      return true;
+    }
+
+    // Ensure folder exists
+    if (!fs.existsSync(folderPath)) {
+      fs.mkdirSync(folderPath, { recursive: true });
+    }
+
+    console.log(`   🎨 Generating image for ${slug}...`);
+
+    try {
+      const prompt = this.generateImagePrompt(keyword);
+      const output = await this.replicate.run(
+        "black-forest-labs/flux-schnell",
+        {
+          input: {
+            prompt,
+            num_outputs: 1,
+            aspect_ratio: "16:9",
+            output_format: "png",
+            output_quality: 90,
+          }
+        }
+      );
+
+      const imageUrl = String((output as any)[0]);
+      await this.downloadImage(imageUrl, filepath);
+      console.log(`   ✅ Saved ${slug}.png`);
+      return true;
+
+    } catch (error: any) {
+      console.error(`   ❌ Failed to generate image for ${slug}:`, error.message);
+      return false;
+    }
   }
 
   /**
@@ -120,49 +274,100 @@ class WineContentAutomation {
   }
 
   /**
+   * Normalize keyword for duplicate detection (sort words alphabetically)
+   */
+  private normalizeKeyword(keyword: string): string {
+    return keyword.toLowerCase()
+      .replace(/[^a-z0-9 ]/g, '')
+      .split(' ')
+      .filter(w => w.length > 0)
+      .sort()
+      .join(' ');
+  }
+
+  /**
    * Get unused keywords from database (prioritized by search volume and priority)
+   * Includes duplicate detection to prevent articles with same content in different word order
    */
   protected async getUnusedWineKeywords(limit: number = 5): Promise<WineKeyword[]> {
     // First, get existing page slugs to avoid duplicates
     const { data: existingPages } = await this.supabase
       .from('wine_pages')
       .select('slug');
-    
+
     const existingSlugs = new Set(existingPages?.map(p => p.slug) || []);
-    
-    // Get unused keywords from research
+
+    // Also get ALL used keywords to detect semantic duplicates
+    const { data: usedKeywordsData } = await this.supabase
+      .from('keyword_opportunities')
+      .select('keyword')
+      .eq('status', 'used');
+
+    // Create set of normalized used keywords for duplicate detection
+    const usedNormalizedKeywords = new Set(
+      usedKeywordsData?.map(kw => this.normalizeKeyword(kw.keyword)) || []
+    );
+
+    console.log(`📊 Found ${existingSlugs.size} existing pages, ${usedNormalizedKeywords.size} used keyword patterns`);
+
+    // Get unused keywords from research - fetch more to account for filtering
     const { data: keywordData, error } = await this.supabase
       .from('keyword_opportunities')
       .select('*')
       .or('status.is.null,status.eq.active')
       .order('priority', { ascending: false })
       .order('search_volume', { ascending: false })
-      .limit(limit * 3); // Get more than needed to filter duplicates
-    
+      .limit(limit * 10); // Get many more to account for duplicate filtering
+
     if (error) {
       console.error('Error fetching keywords:', error);
       return [];
     }
-    
+
     if (!keywordData || keywordData.length === 0) {
       return [];
     }
-    
-    // Filter out keywords that already have pages
-    const unusedKeywords = keywordData
-      .filter(kw => {
-        const slug = this.keywordToSlug(kw.keyword);
-        return !existingSlugs.has(slug);
-      })
-      .slice(0, limit)
-      .map(kw => ({
+
+    // Track normalized keywords we're selecting in this batch
+    const selectedNormalizedKeywords = new Set<string>();
+
+    // Filter out keywords that already have pages OR are semantic duplicates
+    const unusedKeywords: WineKeyword[] = [];
+
+    for (const kw of keywordData) {
+      if (unusedKeywords.length >= limit) break;
+
+      const slug = this.keywordToSlug(kw.keyword);
+      const normalized = this.normalizeKeyword(kw.keyword);
+
+      // Skip if slug already exists
+      if (existingSlugs.has(slug)) {
+        continue;
+      }
+
+      // Skip if this is a semantic duplicate of a used keyword
+      if (usedNormalizedKeywords.has(normalized)) {
+        console.log(`   ⏭️  Skipping "${kw.keyword}" (duplicate of used keyword)`);
+        continue;
+      }
+
+      // Skip if this is a semantic duplicate of a keyword we're already selecting
+      if (selectedNormalizedKeywords.has(normalized)) {
+        console.log(`   ⏭️  Skipping "${kw.keyword}" (duplicate in current batch)`);
+        continue;
+      }
+
+      // This keyword is unique - add it
+      selectedNormalizedKeywords.add(normalized);
+      unusedKeywords.push({
         keyword: kw.keyword,
         volume: kw.search_volume || 0,
         difficulty: kw.keyword_difficulty || 0,
         intent: kw.intent || 'informational',
         priority: kw.priority || 5
-      }));
-    
+      });
+    }
+
     return unusedKeywords;
   }
 
@@ -515,22 +720,38 @@ For the optimal experience with ${keyword.keyword}:
   }
 
   /**
-   * Generate Astro files with smart filepath routing
+   * Generate Astro files with smart filepath routing and image generation
    */
   protected async generateAstroFiles(pages: ContentTemplate[]): Promise<void> {
-    const fs = await import('fs/promises');
+    const fsPromises = await import('fs/promises');
 
-    for (const page of pages) {
+    for (let i = 0; i < pages.length; i++) {
+      const page = pages[i];
+
+      // Generate image first (if Replicate is configured)
+      let hasImage = false;
+      if (this.replicate) {
+        hasImage = await this.generateArticleImage(page.slug, page.keywords[0]);
+        // Rate limit delay (10s between image generations)
+        if (hasImage && i < pages.length - 1) {
+          console.log(`   ⏳ Waiting 10s for rate limit...`);
+          await new Promise(resolve => setTimeout(resolve, 10000));
+        }
+      }
+
       // Fetch real wines from the wine catalog
       const realWines = await this.fetchRealWines(page.keywords[0]);
-      const astroContent = this.generateAstroFile(page, realWines);
+      const astroContent = this.generateAstroFile(page, realWines, hasImage);
       const directory = this.determineFilepath(page.keywords[0]);
       const filePath = `src/pages/${directory}/${page.slug}.astro`;
 
       try {
-        await fs.writeFile(filePath, astroContent);
+        await fsPromises.writeFile(filePath, astroContent);
         console.log(`📄 Generated Astro file: ${directory}/${page.slug}.astro`);
         console.log(`   🍷 Using ${realWines.length} real wines from catalog`);
+        if (hasImage) {
+          console.log(`   🖼️  Image linked: ${page.slug}.png`);
+        }
       } catch (error) {
         console.error(`Failed to write file ${directory}/${page.slug}.astro:`, error);
       }
@@ -594,36 +815,107 @@ For the optimal experience with ${keyword.keyword}:
   }
 
   /**
-   * Generate Astro file content using ModernPairingLayout
+   * Generate Astro file content with optional featured image and E-E-A-T compliance
    */
-  private generateAstroFile(page: ContentTemplate, wines: any[]): string {
-    const expert = this.getRandomExpert();
+  private generateAstroFile(page: ContentTemplate, wines: any[], hasImage: boolean = false): string {
+    // Use E-E-A-T compliant author from authors.ts
+    const author = getRandomAuthor();
+    const authorSchema = getAuthorSchema(author);
+
+    // Build E-E-A-T compliant structured data
+    const structuredData = {
+      "@context": "https://schema.org",
+      "@type": "Article",
+      "headline": page.title,
+      "description": page.description,
+      "author": authorSchema,
+      "publisher": {
+        "@type": "Organization",
+        "name": "Wine Quick Start",
+        "url": "https://winesquickstart.com"
+      },
+      "datePublished": new Date().toISOString(),
+      "dateModified": new Date().toISOString(),
+      "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": `https://winesquickstart.com/${this.determineFilepath(page.keywords[0])}/${page.slug}`
+      }
+    };
+
+    // Build imports section
+    const imports = [`import ArticleLayout from '../../layouts/ArticleLayout.astro';`];
+    if (hasImage) {
+      imports.push(`import featuredImage from '../../assets/images/articles/${page.slug}.png';`);
+    }
+
+    // Build ArticleLayout props
+    const layoutProps = [
+      `title={frontmatter.title}`,
+      `description={frontmatter.description}`,
+      `author={frontmatter.author}`,
+      `readTime={frontmatter.readTime}`,
+      `category="Wine Guide"`,
+      `schema={frontmatter.structured_data}`
+    ];
+    if (hasImage) {
+      layoutProps.push(`featuredImage={featuredImage}`);
+    }
 
     return `---
-import ArticleLayout from '../../layouts/ArticleLayout.astro';
+${imports.join('\n')}
 
 const frontmatter = {
   title: "${page.title}",
   description: "${page.description}",
   wine_type: "${this.determineWineType(page.keywords[0])}",
-  author: "${expert.name}, ${expert.title}",
+  author: "${author.name}",
+  authorSlug: "${author.slug}",
+  authorRole: "${author.role}",
+  authorCredentials: ${JSON.stringify(author.credentials)},
   readTime: "${this.estimateReadTime(page.content)}",
   expert_score: 9,
-  structured_data: ${JSON.stringify(page.structuredData, null, 2)},
+  structured_data: ${JSON.stringify(structuredData, null, 2)},
   wines: ${JSON.stringify(wines, null, 2)}
 };
 ---
 
-<ArticleLayout title={frontmatter.title} description={frontmatter.description} author={frontmatter.author} readTime={frontmatter.readTime} category="Wine Guide" schema={frontmatter.structured_data}>
+<ArticleLayout ${layoutProps.join(' ')}>
+  <!-- Author Attribution for E-E-A-T -->
+  <div class="bg-gray-50 p-4 rounded-lg mb-6 flex items-center gap-4">
+    <div class="w-12 h-12 rounded-full bg-wine-100 flex items-center justify-center text-wine-700 font-bold">
+      ${author.name.split(' ').map((n: string) => n[0]).join('')}
+    </div>
+    <div>
+      <a href="/about/${author.slug}" class="font-semibold text-gray-900 hover:text-wine-600">${author.name}</a>
+      <p class="text-sm text-gray-600">${author.role} | ${author.credentials[0]}</p>
+    </div>
+  </div>
+
   <p><strong>Quick Answer:</strong> ${this.generateQuickAnswer(page.keywords[0])}</p>
 
 ${this.formatContentForAstro(page.content)}
+
+  <!-- Author Bio Footer for E-E-A-T -->
+  <div class="mt-12 p-6 bg-gray-50 rounded-lg border border-gray-200">
+    <h3 class="text-lg font-semibold mb-3">About the Author</h3>
+    <div class="flex items-start gap-4">
+      <div class="w-16 h-16 rounded-full bg-wine-100 flex items-center justify-center text-wine-700 font-bold text-xl flex-shrink-0">
+        ${author.name.split(' ').map((n: string) => n[0]).join('')}
+      </div>
+      <div>
+        <a href="/about/${author.slug}" class="font-semibold text-wine-600 hover:text-wine-800">${author.name}</a>
+        <p class="text-sm text-gray-600 mb-2">${author.role}</p>
+        <p class="text-sm text-gray-700">${author.shortBio}</p>
+        <a href="/about/${author.slug}" class="text-sm text-wine-600 hover:text-wine-800 mt-2 inline-block">View full profile →</a>
+      </div>
+    </div>
+  </div>
 
 </ArticleLayout>`;
   }
 
   /**
-   * Get random wine expert for attribution
+   * Get random wine expert for attribution (deprecated - use getRandomAuthor from authors.ts)
    */
   private getRandomExpert(): { name: string; title: string } {
     const experts = [

@@ -1,5 +1,6 @@
 ---
 import ArticleLayout from '../../layouts/ArticleLayout.astro';
+import featuredImage from '../../assets/images/articles/wine-with-lamb.png';
 
 const frontmatter = {
   title: "Best Wine with lamb: Expert Pairing Guide",
@@ -60,7 +61,7 @@ const frontmatter = {
 };
 ---
 
-<ArticleLayout title={frontmatter.title} description={frontmatter.description} author={frontmatter.author} readTime={frontmatter.readTime} category="Food Pairing" schema={frontmatter.structured_data}>
+<ArticleLayout title={frontmatter.title} description={frontmatter.description} author={frontmatter.author} readTime={frontmatter.readTime} category="Food Pairing" schema={frontmatter.structured_data} featuredImage={featuredImage}>
   <div slot="quick-answer">
     <p><strong>Quick Answer:</strong> The best wines for lamb are **Bordeaux**, **Rioja**, and **Côtes du Rhône**. Bordeaux is our top pick for its bold tannins and rich fruit that complement lamb perfectly.</p>
   </div>

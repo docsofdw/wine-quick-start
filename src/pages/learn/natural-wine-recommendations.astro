@@ -1,5 +1,6 @@
 ---
 import ArticleLayout from '../../layouts/ArticleLayout.astro';
+import featuredImage from '../../assets/images/articles/natural-wine-recommendations.png';
 
 const schema = {
   "@context": "https://schema.org",
@@ -16,13 +17,14 @@ const schema = {
 };
 ---
 
-<ArticleLayout 
+<ArticleLayout
   title="Natural Wine Guide - Best Natural Wine Recommendations"
   description="Discover the world of natural wines with our expert guide. From minimal intervention wines to biodynamic bottles, find the best natural wines for every palate."
   category="Wine Education"
   author="Jules Dressner, Natural Wine Expert"
   readTime="8 min"
   schema={schema}
+  featuredImage={featuredImage}
 >
   
   <p><strong>Quick Answer:</strong> Best natural wine producers include Marcel Lapierre (Beaujolais), Radikon (Friuli), Frank Cornelissen (Sicily), and Domaine de la Côte (California). Look for minimal intervention, wild fermentation, and organic/biodynamic farming. Start with approachable styles before exploring funkier expressions.</p>

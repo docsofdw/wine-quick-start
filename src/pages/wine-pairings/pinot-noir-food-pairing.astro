@@ -1,5 +1,6 @@
 ---
 import ArticleLayout from '../../layouts/ArticleLayout.astro';
+import featuredImage from '../../assets/images/articles/pinot-noir-food-pairing.png';
 
 const schema = {
   "@context": "https://schema.org",
@@ -16,13 +17,14 @@ const schema = {
 };
 ---
 
-<ArticleLayout 
+<ArticleLayout
   title="Pinot Noir Food Pairing - The Ultimate Guide"
   description="Master the art of Pinot Noir food pairing with our sommelier guide. From duck to mushrooms, discover perfect matches for this versatile red wine."
   category="Red Wine Pairing"
   author="Marcus Dubois, Master Sommelier"
   readTime="7 min"
   schema={schema}
+  featuredImage={featuredImage}
 >
   
   <p><strong>Quick Answer:</strong> Pinot Noir pairs exceptionally with duck, salmon, mushrooms, and soft cheeses. Its light tannins, bright acidity, and earthy complexity make it the most food-friendly red wine.</p>

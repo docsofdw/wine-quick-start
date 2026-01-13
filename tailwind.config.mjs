@@ -5,6 +5,10 @@ export default {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        sans: ['Inter', 'system-ui', 'sans-serif'],
+        serif: ['Playfair Display', 'Georgia', 'serif'],
+      },
       colors: {
         // Wine color palette - elegant burgundy tones
         wine: {
@@ -31,6 +35,11 @@ export default {
           700: '#7c3aed',
           800: '#6b21a8',
           900: '#581c87',
+        },
+        cream: {
+          50: '#fefdfb',
+          100: '#fdf9f3',
+          200: '#faf3e8',
         }
       },
       maxWidth: {
@@ -38,6 +47,9 @@ export default {
       },
       spacing: {
         'container-padding': '1.5rem',
+        'section': '5rem',
+        'section-lg': '7rem',
+        'section-sm': '3rem',
       }
     },
   },

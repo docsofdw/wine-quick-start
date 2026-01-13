@@ -25,7 +25,8 @@
     "wine:test": "tsx src/scripts/test-daily-automation.ts",
     "wine:check": "tsx src/scripts/check-wine-status.ts",
     "wine:validate-links": "npm run build && echo 'Index pages build successfully - dynamic content discovery working!'",
-    "seed:keywords": "tsx src/scripts/seed-keywords.ts"
+    "seed:keywords": "tsx src/scripts/seed-keywords.ts",
+    "images:generate": "node scripts/generate-images.mjs"
   },
   "dependencies": {
     "@astrojs/mdx": "^4.2.6",
@@ -34,10 +35,12 @@
     "@astrojs/vercel": "^8.2.0",
     "@supabase/supabase-js": "^2.39.6",
     "astro": "^5.7.13",
+    "sharp": "^0.33.5",
     "tailwindcss": "^3.4.4"
   },
   "devDependencies": {
     "dotenv": "^16.3.1",
+    "replicate": "^1.4.0",
     "tsx": "^4.20.3"
   }
 }

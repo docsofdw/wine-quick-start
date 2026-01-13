@@ -1,5 +1,6 @@
 ---
 import ArticleLayout from '../../layouts/ArticleLayout.astro';
+import featuredImage from '../../assets/images/articles/natural-wine-review.png';
 
 const frontmatter = {
   title: "Natural wine review: Complete Guide & Recommendations",
@@ -52,7 +53,7 @@ const frontmatter = {
 };
 ---
 
-<ArticleLayout title={frontmatter.title} description={frontmatter.description} author={frontmatter.author} readTime={frontmatter.readTime} category="Wine Guide" schema={frontmatter.structured_data}>
+<ArticleLayout title={frontmatter.title} description={frontmatter.description} author={frontmatter.author} readTime={frontmatter.readTime} category="Wine Guide" schema={frontmatter.structured_data} featuredImage={featuredImage}>
   <p><strong>Quick Answer:</strong> For natural wine review, look for wines with good balance, appropriate body, and food-friendly characteristics. Quality producers and proper storage ensure the best experience.</p>
 
   <h2>Understanding Natural wine review</h2>

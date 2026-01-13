@@ -1,5 +1,7 @@
 ---
+import { Image } from 'astro:assets';
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import learnHero from '../../assets/images/hero/learn-hero.png';
 
 interface GuideData {
   title: string;
@@ -112,8 +114,18 @@ const schema = {
   schema={schema}
 >
   <!-- Hero Section -->
-  <section class="bg-gradient-to-br from-wine-700 to-wine-900 text-white section-padding">
-    <div class="container text-center">
+  <section class="relative text-white section-padding overflow-hidden">
+    <div class="absolute inset-0 z-0">
+      <Image
+        src={learnHero}
+        alt="Wine education and tasting"
+        class="w-full h-full object-cover"
+        widths={[800, 1200, 1920]}
+        sizes="100vw"
+      />
+      <div class="absolute inset-0 bg-gradient-to-br from-wine-900/85 to-wine-800/75"></div>
+    </div>
+    <div class="container text-center relative z-10">
       <h1 class="text-5xl font-bold mb-6 leading-tight">Learn Wine</h1>
       <p class="text-xl mb-10 opacity-90 max-w-2xl mx-auto">
         Master wine with comprehensive guides from certified sommeliers. From basics to advanced techniques, start your wine education journey today.

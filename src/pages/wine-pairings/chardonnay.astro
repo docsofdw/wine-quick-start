@@ -1,5 +1,6 @@
 ---
 import ArticleLayout from '../../layouts/ArticleLayout.astro';
+import featuredImage from '../../assets/images/articles/chardonnay.png';
 
 const frontmatter = {
   title: "Chardonnay: Our Top Recommendations",
@@ -95,7 +96,7 @@ const frontmatter = {
 };
 ---
 
-<ArticleLayout title={frontmatter.title} description={frontmatter.description} author={frontmatter.author} readTime={frontmatter.readTime} category="Top Picks" schema={frontmatter.structured_data}>
+<ArticleLayout title={frontmatter.title} description={frontmatter.description} author={frontmatter.author} readTime={frontmatter.readTime} category="Top Picks" schema={frontmatter.structured_data} featuredImage={featuredImage}>
   <div slot="quick-answer">
     <p><strong>Key Takeaway:</strong> Chardonnay is about enhancing both the wine and the food. When both taste better together than alone, you've found the sweet spot.</p>
   </div>

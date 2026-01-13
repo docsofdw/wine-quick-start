@@ -1,5 +1,6 @@
 ---
 import ArticleLayout from '../../layouts/ArticleLayout.astro';
+import featuredImage from '../../assets/images/articles/cabernet-sauvignon.png';
 
 const frontmatter = {
   title: "Cabernet sauvignon Showdown: Which Is Right for You?",
@@ -95,7 +96,7 @@ const frontmatter = {
 };
 ---
 
-<ArticleLayout title={frontmatter.title} description={frontmatter.description} author={frontmatter.author} readTime={frontmatter.readTime} category="Wine Comparison" schema={frontmatter.structured_data}>
+<ArticleLayout title={frontmatter.title} description={frontmatter.description} author={frontmatter.author} readTime={frontmatter.readTime} category="Wine Comparison" schema={frontmatter.structured_data} featuredImage={featuredImage}>
   <div slot="quick-answer">
     <p><strong>Our Recommendation:</strong> Start your cabernet sauvignon journey with medium-bodied wines that offer versatility. As you develop preferences, explore bolder or more delicate options.</p>
   </div>
