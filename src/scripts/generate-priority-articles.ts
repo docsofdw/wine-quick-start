@@ -88,56 +88,45 @@ function generateArticleContent(keyword: string, wines: any[], author: any): str
 
   const today = new Date().toISOString().split('T')[0];
 
-  // Generate wine recommendations section
-  const wineRecommendations = wines.length > 0 ? wines.map((wine, i) => `
-### ${i + 1}. ${wine.name}
-
-**Producer:** ${wine.producer}
-**Region:** ${wine.region}
-**Variety:** ${wine.variety || 'Blend'}
-
-${wine.notes}
-`).join('\n') : '';
-
   const content = `---
-title: "${title} - Expert Guide"
-description: "${description}"
-pubDate: "${today}"
-author: "${author.name}"
-authorRole: "${author.role}"
-keywords: ["${keyword}", "${keyword.split(' ').join('", "')}", "wine guide"]
----
-
 import BaseLayout from '../../layouts/BaseLayout.astro';
 
-<BaseLayout title="${title}" description="${description}">
-
-# ${title}
-
-*By ${author.name}, ${author.role} | Updated ${today}*
-
-${generateIntro(keyword)}
-
-## Quick Answer
-
-${generateQuickAnswer(keyword)}
-
-## Our Top Picks
-
-${wineRecommendations || 'Our team is currently curating the best selections for this category. Check back soon!'}
-
-## Expert Tips
-
-${generateExpertTips(keyword)}
-
-## Frequently Asked Questions
-
-${generateFAQ(keyword)}
-
+const frontmatter = {
+  title: "${title} - Expert Guide",
+  description: "${description}",
+  pubDate: "${today}",
+  author: "${author.name}",
+  authorRole: "${author.role}",
+  keywords: ["${keyword}", "${keyword.split(' ').join('", "')}", "wine guide"]
+};
 ---
 
-*${author.name} is a ${author.role} with ${author.credentials.join(', ')}.*
+<BaseLayout title={frontmatter.title} description={frontmatter.description}>
+  <article class="container py-8 max-w-4xl mx-auto">
+    <header class="mb-8">
+      <h1 class="text-4xl font-bold text-wine-800 mb-4">${title}</h1>
+      <p class="text-gray-600">By ${author.name}, ${author.role} | Updated ${today}</p>
+    </header>
 
+    <div class="prose prose-wine max-w-none">
+      <p class="text-lg text-gray-700 mb-6">${generateIntro(keyword)}</p>
+
+      <h2 class="text-2xl font-bold text-wine-700 mt-8 mb-4">Quick Answer</h2>
+      <p class="text-gray-700">${generateQuickAnswer(keyword)}</p>
+
+      <h2 class="text-2xl font-bold text-wine-700 mt-8 mb-4">Our Top Picks</h2>
+      ${generateWineHTML(wines)}
+
+      <h2 class="text-2xl font-bold text-wine-700 mt-8 mb-4">Expert Tips</h2>
+      ${generateExpertTipsHTML(keyword)}
+
+      <h2 class="text-2xl font-bold text-wine-700 mt-8 mb-4">Frequently Asked Questions</h2>
+      ${generateFAQHTML(keyword)}
+
+      <hr class="my-8 border-gray-300" />
+      <p class="text-gray-600 italic">${author.name} is a ${author.role} with ${author.credentials.join(', ')}.</p>
+    </div>
+  </article>
 </BaseLayout>
 `;
 
@@ -173,6 +162,31 @@ function generateExpertTips(keyword: string): string {
 `;
 }
 
+function generateWineHTML(wines: any[]): string {
+  if (wines.length === 0) {
+    return '<p class="text-gray-700">Our team is currently curating the best selections for this category. Check back soon!</p>';
+  }
+  return wines.map((wine, i) => `
+      <div class="bg-gray-50 rounded-lg p-6 mb-4">
+        <h3 class="text-xl font-semibold text-wine-700 mb-2">${i + 1}. ${wine.name}</h3>
+        <p class="text-gray-600 mb-2"><strong>Producer:</strong> ${wine.producer}</p>
+        <p class="text-gray-600 mb-2"><strong>Region:</strong> ${wine.region}</p>
+        <p class="text-gray-600 mb-2"><strong>Variety:</strong> ${wine.variety || 'Blend'}</p>
+        <p class="text-gray-700 mt-3">${wine.notes}</p>
+      </div>`).join('\n');
+}
+
+function generateExpertTipsHTML(keyword: string): string {
+  return `
+      <ol class="list-decimal list-inside space-y-3 text-gray-700">
+        <li><strong>Temperature matters</strong> - Serve whites chilled (45-50°F) and reds slightly below room temperature (60-65°F)</li>
+        <li><strong>Decanting helps</strong> - Give bold reds 30-60 minutes to open up</li>
+        <li><strong>Trust your palate</strong> - The best wine is the one you enjoy most</li>
+        <li><strong>Consider the occasion</strong> - Match wine intensity to food intensity</li>
+        <li><strong>Ask for help</strong> - Wine professionals love sharing their knowledge</li>
+      </ol>`;
+}
+
 function generateFAQ(keyword: string): string {
   return `
 ### What should I look for in ${keyword}?
@@ -187,6 +201,24 @@ Great options exist at every price point. For everyday enjoyment, $15-30 offers 
 
 Keep bottles on their side in a cool, dark place (55°F ideal). Avoid temperature fluctuations and direct sunlight.
 `;
+}
+
+function generateFAQHTML(keyword: string): string {
+  return `
+      <div class="space-y-6">
+        <div>
+          <h3 class="text-lg font-semibold text-wine-700 mb-2">What should I look for in ${keyword}?</h3>
+          <p class="text-gray-700">Focus on balance, quality producers, and wines that match your taste preferences. Price isn't always an indicator of quality.</p>
+        </div>
+        <div>
+          <h3 class="text-lg font-semibold text-wine-700 mb-2">How much should I spend?</h3>
+          <p class="text-gray-700">Great options exist at every price point. For everyday enjoyment, $15-30 offers excellent value. For special occasions, explore the $40-80 range.</p>
+        </div>
+        <div>
+          <h3 class="text-lg font-semibold text-wine-700 mb-2">How do I store wine properly?</h3>
+          <p class="text-gray-700">Keep bottles on their side in a cool, dark place (55°F ideal). Avoid temperature fluctuations and direct sunlight.</p>
+        </div>
+      </div>`;
 }
 
 async function generateArticles() {
