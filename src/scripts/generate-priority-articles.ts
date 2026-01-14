@@ -104,7 +104,7 @@ title: "${title} - Expert Guide"
 description: "${description}"
 pubDate: "${today}"
 author: "${author.name}"
-authorTitle: "${author.title}"
+authorRole: "${author.role}"
 keywords: ["${keyword}", "${keyword.split(' ').join('", "')}", "wine guide"]
 ---
 
@@ -114,7 +114,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 
 # ${title}
 
-*By ${author.name}, ${author.title} | Updated ${today}*
+*By ${author.name}, ${author.role} | Updated ${today}*
 
 ${generateIntro(keyword)}
 
@@ -136,7 +136,7 @@ ${generateFAQ(keyword)}
 
 ---
 
-*${author.name} is a ${author.title} with ${author.credentials.join(', ')}.*
+*${author.name} is a ${author.role} with ${author.credentials.join(', ')}.*
 
 </BaseLayout>
 `;
