@@ -1,12 +1,16 @@
 /**
  * Generate Articles for Top Priority Keywords
  * Avoids duplicates by checking existing pages
+ * Includes AI image generation via Replicate
  */
 
 import { createClient } from '@supabase/supabase-js';
 import { config } from 'dotenv';
 import fs from 'fs';
 import path from 'path';
+import https from 'https';
+import http from 'http';
+import Replicate from 'replicate';
 
 config({ path: '.env.local', override: true });
 
@@ -23,6 +27,118 @@ if (!supabaseUrl || !supabaseAnonKey) {
 }
 
 const client = createClient(supabaseUrl, supabaseAnonKey);
+
+// Initialize Replicate for image generation
+let replicate: Replicate | null = null;
+const replicateToken = process.env.REPLICATE_API_TOKEN;
+if (replicateToken) {
+  replicate = new Replicate({ auth: replicateToken });
+  console.log('🎨 Image generation enabled (Replicate)\n');
+} else {
+  console.log('⚠️  REPLICATE_API_TOKEN not set - images will not be generated\n');
+}
+
+// Image generation functions
+function generateImagePrompt(keyword: string): string {
+  const lowerKeyword = keyword.toLowerCase();
+
+  if (lowerKeyword.includes('champagne')) {
+    return `elegant champagne bottles and glasses, golden bubbles, celebration setting, luxury wine photography, warm ambient lighting, professional photography --ar 16:9`;
+  }
+  if (lowerKeyword.includes('bordeaux')) {
+    return `elegant bordeaux wine bottles and glasses, deep red wine, french chateau aesthetic, professional wine photography, warm lighting --ar 16:9`;
+  }
+  if (lowerKeyword.includes('burgundy')) {
+    return `burgundy wine in crystal glass, pinot noir, french vineyard aesthetic, elegant wine cellar setting, professional photography --ar 16:9`;
+  }
+  if (lowerKeyword.includes('barolo')) {
+    return `italian barolo wine bottles and glasses, piedmont vineyard, nebbiolo grapes, rustic italian setting, professional wine photography --ar 16:9`;
+  }
+  if (lowerKeyword.includes('napa') || lowerKeyword.includes('california')) {
+    return `california wine country, napa valley vineyard, elegant wine glasses, golden hour lighting, professional wine photography --ar 16:9`;
+  }
+  if (lowerKeyword.includes('cabernet')) {
+    return `elegant glass of deep red cabernet sauvignon wine, professional wine photography, dark moody background, soft lighting highlighting wine color --ar 16:9`;
+  }
+  if (lowerKeyword.includes('pinot noir')) {
+    return `delicate glass of pinot noir, light ruby red color, professional wine photography, soft natural lighting, burgundy vineyard atmosphere --ar 16:9`;
+  }
+  if (lowerKeyword.includes('thanksgiving') || lowerKeyword.includes('pairing')) {
+    return `elegant wine and food pairing spread, multiple wine glasses with different wines, thanksgiving dinner setting, professional food photography, warm inviting atmosphere --ar 16:9`;
+  }
+
+  return `elegant wine glass on sophisticated table setting, professional wine photography, warm ambient lighting, burgundy accents, clean minimal composition --ar 16:9`;
+}
+
+async function downloadImage(url: string, filepath: string): Promise<void> {
+  return new Promise((resolve, reject) => {
+    const file = fs.createWriteStream(filepath);
+    const protocol = url.startsWith("https") ? https : http;
+
+    protocol.get(url, (response) => {
+      if (response.statusCode === 301 || response.statusCode === 302) {
+        downloadImage(response.headers.location as string, filepath).then(resolve).catch(reject);
+        return;
+      }
+
+      response.pipe(file);
+      file.on("finish", () => {
+        file.close();
+        resolve();
+      });
+    }).on("error", (err) => {
+      fs.unlink(filepath, () => {});
+      reject(err);
+    });
+  });
+}
+
+async function generateArticleImage(slug: string, keyword: string): Promise<boolean> {
+  if (!replicate) {
+    return false;
+  }
+
+  const folderPath = path.join(process.cwd(), 'src/assets/images/articles');
+  const filepath = path.join(folderPath, `${slug}.png`);
+
+  // Skip if already exists
+  if (fs.existsSync(filepath)) {
+    console.log(`   ⏭️  Image ${slug}.png already exists`);
+    return true;
+  }
+
+  // Ensure folder exists
+  if (!fs.existsSync(folderPath)) {
+    fs.mkdirSync(folderPath, { recursive: true });
+  }
+
+  console.log(`   🎨 Generating image for ${slug}...`);
+
+  try {
+    const prompt = generateImagePrompt(keyword);
+    const output = await replicate.run(
+      "black-forest-labs/flux-schnell",
+      {
+        input: {
+          prompt,
+          num_outputs: 1,
+          aspect_ratio: "16:9",
+          output_format: "png",
+          output_quality: 90,
+        }
+      }
+    );
+
+    const imageUrl = String((output as any)[0]);
+    await downloadImage(imageUrl, filepath);
+    console.log(`   ✅ Saved ${slug}.png`);
+    return true;
+
+  } catch (error: any) {
+    console.error(`   ❌ Failed to generate image for ${slug}:`, error.message);
+    return false;
+  }
+}
 
 // Get existing page slugs
 function getExistingPages(): Set<string> {
@@ -77,8 +193,8 @@ function determineCategory(keyword: string): 'learn' | 'wine-pairings' | 'buy' {
   return 'learn';
 }
 
-// Generate article content
-function generateArticleContent(keyword: string, wines: any[], author: any): string {
+// Generate article content with optional featured image
+function generateArticleContent(keyword: string, wines: any[], author: any, slug: string, hasImage: boolean): string {
   const title = keyword
     .split(' ')
     .map(word => word.charAt(0).toUpperCase() + word.slice(1))
@@ -88,8 +204,41 @@ function generateArticleContent(keyword: string, wines: any[], author: any): str
 
   const today = new Date().toISOString().split('T')[0];
 
+  // Build imports
+  const imports = [`import ArticleLayout from '../../layouts/ArticleLayout.astro';`];
+  if (hasImage) {
+    imports.push(`import featuredImage from '../../assets/images/articles/${slug}.png';`);
+  }
+
+  // Build layout props
+  const layoutProps = [
+    `title={frontmatter.title}`,
+    `description={frontmatter.description}`,
+    `author={frontmatter.author}`,
+    `readTime={frontmatter.readTime}`,
+    `category="Wine Guide"`,
+    `schema={frontmatter.structured_data}`
+  ];
+  if (hasImage) {
+    layoutProps.push(`featuredImage={featuredImage}`);
+  }
+
+  const structuredData = {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": `${title} - Expert Guide`,
+    "description": description,
+    "author": {
+      "@type": "Person",
+      "name": author.name,
+      "jobTitle": author.role
+    },
+    "datePublished": new Date().toISOString(),
+    "dateModified": new Date().toISOString()
+  };
+
   const content = `---
-import BaseLayout from '../../layouts/BaseLayout.astro';
+${imports.join('\n')}
 
 const frontmatter = {
   title: "${title} - Expert Guide",
@@ -97,37 +246,54 @@ const frontmatter = {
   pubDate: "${today}",
   author: "${author.name}",
   authorRole: "${author.role}",
-  keywords: ["${keyword}", "${keyword.split(' ').join('", "')}", "wine guide"]
+  authorSlug: "${author.slug}",
+  readTime: "5 min",
+  keywords: ["${keyword}", "${keyword.split(' ').join('", "')}", "wine guide"],
+  structured_data: ${JSON.stringify(structuredData, null, 4).split('\n').join('\n  ')}
 };
 ---
 
-<BaseLayout title={frontmatter.title} description={frontmatter.description}>
-  <article class="container py-8 max-w-4xl mx-auto">
-    <header class="mb-8">
-      <h1 class="text-4xl font-bold text-wine-800 mb-4">${title}</h1>
-      <p class="text-gray-600">By ${author.name}, ${author.role} | Updated ${today}</p>
-    </header>
-
-    <div class="prose prose-wine max-w-none">
-      <p class="text-lg text-gray-700 mb-6">${generateIntro(keyword)}</p>
-
-      <h2 class="text-2xl font-bold text-wine-700 mt-8 mb-4">Quick Answer</h2>
-      <p class="text-gray-700">${generateQuickAnswer(keyword)}</p>
-
-      <h2 class="text-2xl font-bold text-wine-700 mt-8 mb-4">Our Top Picks</h2>
-      ${generateWineHTML(wines)}
-
-      <h2 class="text-2xl font-bold text-wine-700 mt-8 mb-4">Expert Tips</h2>
-      ${generateExpertTipsHTML(keyword)}
-
-      <h2 class="text-2xl font-bold text-wine-700 mt-8 mb-4">Frequently Asked Questions</h2>
-      ${generateFAQHTML(keyword)}
-
-      <hr class="my-8 border-gray-300" />
-      <p class="text-gray-600 italic">${author.name} is a ${author.role} with ${author.credentials.join(', ')}.</p>
+<ArticleLayout ${layoutProps.join(' ')}>
+  <!-- Author Attribution -->
+  <div class="bg-gray-50 p-4 rounded-lg mb-6 flex items-center gap-4">
+    <div class="w-12 h-12 rounded-full bg-wine-100 flex items-center justify-center text-wine-700 font-bold">
+      ${author.name.split(' ').map((n: string) => n[0]).join('')}
     </div>
-  </article>
-</BaseLayout>
+    <div>
+      <a href="/about/${author.slug}" class="font-semibold text-gray-900 hover:text-wine-600">${author.name}</a>
+      <p class="text-sm text-gray-600">${author.role} | ${author.credentials[0]}</p>
+    </div>
+  </div>
+
+  <p><strong>Quick Answer:</strong> ${generateQuickAnswer(keyword)}</p>
+
+  <h2>Understanding ${title}</h2>
+  <p>${generateIntro(keyword)}</p>
+
+  <h2>Our Top Picks</h2>
+  ${generateWineHTML(wines)}
+
+  <h2>Expert Tips</h2>
+  ${generateExpertTipsHTML(keyword)}
+
+  <h2>Frequently Asked Questions</h2>
+  ${generateFAQHTML(keyword)}
+
+  <!-- Author Bio Footer -->
+  <div class="mt-12 p-6 bg-gray-50 rounded-lg border border-gray-200">
+    <h3 class="text-lg font-semibold mb-3">About the Author</h3>
+    <div class="flex items-start gap-4">
+      <div class="w-16 h-16 rounded-full bg-wine-100 flex items-center justify-center text-wine-700 font-bold text-xl flex-shrink-0">
+        ${author.name.split(' ').map((n: string) => n[0]).join('')}
+      </div>
+      <div>
+        <a href="/about/${author.slug}" class="font-semibold text-wine-600 hover:text-wine-800">${author.name}</a>
+        <p class="text-sm text-gray-600 mb-2">${author.role}</p>
+        <p class="text-sm text-gray-700">${author.shortBio}</p>
+      </div>
+    </div>
+  </div>
+</ArticleLayout>
 `;
 
   return content;
@@ -271,13 +437,25 @@ async function generateArticles() {
   let generated = 0;
   let failed = 0;
 
-  for (const kw of toGenerate) {
+  for (let i = 0; i < toGenerate.length; i++) {
+    const kw = toGenerate[i];
     try {
       console.log(`\n🔄 Generating: "${kw.keyword}" (${kw.search_volume}/mo)`);
 
       const slug = keywordToSlug(kw.keyword);
       const category = determineCategory(kw.keyword);
       const filePath = path.join(process.cwd(), 'src/pages', category, `${slug}.astro`);
+
+      // Generate image first (if Replicate is configured)
+      let hasImage = false;
+      if (replicate) {
+        hasImage = await generateArticleImage(slug, kw.keyword);
+        // Rate limit delay (10s between image generations)
+        if (hasImage && i < toGenerate.length - 1) {
+          console.log(`   ⏳ Waiting 10s for rate limit...`);
+          await new Promise(resolve => setTimeout(resolve, 10000));
+        }
+      }
 
       // Get wine recommendations
       const wines = await getWinesForKeyword(kw.keyword, 3);
@@ -286,8 +464,8 @@ async function generateArticles() {
       // Get author
       const author = getRandomAuthor();
 
-      // Generate content
-      const content = generateArticleContent(kw.keyword, wines, author);
+      // Generate content with image support
+      const content = generateArticleContent(kw.keyword, wines, author, slug, hasImage);
 
       // Write file
       fs.writeFileSync(filePath, content);

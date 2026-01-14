@@ -1,57 +1,77 @@
 ---
-import BaseLayout from '../../layouts/BaseLayout.astro';
+import ArticleLayout from '../../layouts/ArticleLayout.astro';
+import featuredImage from '../../assets/images/articles/thanksgiving-wine-pairing.png';
 
 const frontmatter = {
   title: "Thanksgiving Wine Pairing - Expert Guide",
   description: "Discover the best thanksgiving wine pairing. Expert recommendations, tasting notes, and tips from certified sommeliers.",
   pubDate: "2026-01-14",
-  author: "Michael Chen",
-  authorRole: "Wine Buyer & Contributor",
-  keywords: ["thanksgiving wine pairing", "thanksgiving", "wine", "pairing", "wine guide"]
+  author: "James Thornton",
+  authorRole: "Founder & Lead Wine Consultant",
+  authorSlug: "james-thornton",
+  readTime: "5 min",
+  keywords: ["thanksgiving wine pairing", "thanksgiving", "wine", "pairing", "wine guide"],
+  structured_data: {
+      "@context": "https://schema.org",
+      "@type": "Article",
+      "headline": "Thanksgiving Wine Pairing - Expert Guide",
+      "description": "Discover the best thanksgiving wine pairing. Expert recommendations, tasting notes, and tips from certified sommeliers.",
+      "author": {
+          "@type": "Person",
+          "name": "James Thornton",
+          "jobTitle": "Founder & Lead Wine Consultant"
+      },
+      "datePublished": "2026-01-14T17:51:50.702Z",
+      "dateModified": "2026-01-14T17:51:50.702Z"
+  }
 };
 ---
 
-<BaseLayout title={frontmatter.title} description={frontmatter.description}>
-  <article class="container py-8 max-w-4xl mx-auto">
-    <header class="mb-8">
-      <h1 class="text-4xl font-bold text-wine-800 mb-4">Thanksgiving Wine Pairing</h1>
-      <p class="text-gray-600">By Michael Chen, Wine Buyer & Contributor | Updated 2026-01-14</p>
-    </header>
+<ArticleLayout title={frontmatter.title} description={frontmatter.description} author={frontmatter.author} readTime={frontmatter.readTime} category="Wine Guide" schema={frontmatter.structured_data} featuredImage={featuredImage}>
+  <!-- Author Attribution -->
+  <div class="bg-gray-50 p-4 rounded-lg mb-6 flex items-center gap-4">
+    <div class="w-12 h-12 rounded-full bg-wine-100 flex items-center justify-center text-wine-700 font-bold">
+      JT
+    </div>
+    <div>
+      <a href="/about/james-thornton" class="font-semibold text-gray-900 hover:text-wine-600">James Thornton</a>
+      <p class="text-sm text-gray-600">Founder & Lead Wine Consultant | WSET Level 3 Award in Wines</p>
+    </div>
+  </div>
 
-    <div class="prose prose-wine max-w-none">
-      <p class="text-lg text-gray-700 mb-6">Finding the perfect thanksgiving wine pairing can transform your dining experience. Whether you're planning a special occasion or simply enjoying a quiet evening at home, the right wine pairing makes all the difference.</p>
+  <p><strong>Quick Answer:</strong> For the best thanksgiving wine pairing, look for wines with balanced acidity and complementary flavor profiles. Medium-bodied options often provide the most versatility.</p>
 
-      <h2 class="text-2xl font-bold text-wine-700 mt-8 mb-4">Quick Answer</h2>
-      <p class="text-gray-700">For the best thanksgiving wine pairing, look for wines with balanced acidity and complementary flavor profiles. Medium-bodied options often provide the most versatility.</p>
+  <h2>Understanding Thanksgiving Wine Pairing</h2>
+  <p>Finding the perfect thanksgiving wine pairing can transform your dining experience. Whether you're planning a special occasion or simply enjoying a quiet evening at home, the right wine pairing makes all the difference.</p>
 
-      <h2 class="text-2xl font-bold text-wine-700 mt-8 mb-4">Our Top Picks</h2>
-      
+  <h2>Our Top Picks</h2>
+  
       <div class="bg-gray-50 rounded-lg p-6 mb-4">
-        <h3 class="text-xl font-semibold text-wine-700 mb-2">1. 2019 Aubert Aubert Chardonnay Larry Hyde & Sons</h3>
-        <p class="text-gray-600 mb-2"><strong>Producer:</strong> Aubert</p>
-        <p class="text-gray-600 mb-2"><strong>Region:</strong> Napa / Sonoma, California</p>
-        <p class="text-gray-600 mb-2"><strong>Variety:</strong> Chardonnay</p>
-        <p class="text-gray-700 mt-3">Elegant with stone fruit, subtle minerality, and a long finish.</p>
+        <h3 class="text-xl font-semibold text-wine-700 mb-2">1. 2019 Adelsheim Vineyard Adelsheim Elizabeth's Reserve Pinot Noir</h3>
+        <p class="text-gray-600 mb-2"><strong>Producer:</strong> Adelsheim Vineyard</p>
+        <p class="text-gray-600 mb-2"><strong>Region:</strong> Chehalem Mountains, Oregon</p>
+        <p class="text-gray-600 mb-2"><strong>Variety:</strong> Pinot Noir</p>
+        <p class="text-gray-700 mt-3">Delicate red fruit aromas with hints of mushroom and forest floor.</p>
       </div>
 
       <div class="bg-gray-50 rounded-lg p-6 mb-4">
-        <h3 class="text-xl font-semibold text-wine-700 mb-2">2. 2019 Beaux Frères Beaux Frères The Beaux Frères Vineyard Pinot Noir</h3>
-        <p class="text-gray-600 mb-2"><strong>Producer:</strong> Beaux Frères</p>
-        <p class="text-gray-600 mb-2"><strong>Region:</strong> Ribbon Ridge, Oregon</p>
+        <h3 class="text-xl font-semibold text-wine-700 mb-2">2. 2015 Bedrock Wine Co. Bedrock Wine Co. Oakville Farmhouse</h3>
+        <p class="text-gray-600 mb-2"><strong>Producer:</strong> Bedrock Wine Co.</p>
+        <p class="text-gray-600 mb-2"><strong>Region:</strong> Napa Valley, California</p>
+        <p class="text-gray-600 mb-2"><strong>Variety:</strong> Red Blend</p>
+        <p class="text-gray-700 mt-3">Well-balanced with ripe fruit, integrated tannins, and a lingering finish.</p>
+      </div>
+
+      <div class="bg-gray-50 rounded-lg p-6 mb-4">
+        <h3 class="text-xl font-semibold text-wine-700 mb-2">3. 2019 Bethel Heights Vineyard Bethel Heights Casteel Reserve Pinot Noir</h3>
+        <p class="text-gray-600 mb-2"><strong>Producer:</strong> Bethel Heights Vineyard</p>
+        <p class="text-gray-600 mb-2"><strong>Region:</strong> Eola-Amity Hills, Oregon</p>
         <p class="text-gray-600 mb-2"><strong>Variety:</strong> Pinot Noir</p>
         <p class="text-gray-700 mt-3">Elegant with bright cherry and raspberry notes, silky tannins, and earthy undertones.</p>
       </div>
 
-      <div class="bg-gray-50 rounded-lg p-6 mb-4">
-        <h3 class="text-xl font-semibold text-wine-700 mb-2">3. 2018 Bedrock Wine Co. Bedrock Wine Co. Oakville Farmhouse</h3>
-        <p class="text-gray-600 mb-2"><strong>Producer:</strong> Bedrock Wine Co.</p>
-        <p class="text-gray-600 mb-2"><strong>Region:</strong> Napa Valley, California</p>
-        <p class="text-gray-600 mb-2"><strong>Variety:</strong> Red Blend</p>
-        <p class="text-gray-700 mt-3">Rich and expressive with dark fruit character and subtle oak influence.</p>
-      </div>
-
-      <h2 class="text-2xl font-bold text-wine-700 mt-8 mb-4">Expert Tips</h2>
-      
+  <h2>Expert Tips</h2>
+  
       <ol class="list-decimal list-inside space-y-3 text-gray-700">
         <li><strong>Temperature matters</strong> - Serve whites chilled (45-50°F) and reds slightly below room temperature (60-65°F)</li>
         <li><strong>Decanting helps</strong> - Give bold reds 30-60 minutes to open up</li>
@@ -60,8 +80,8 @@ const frontmatter = {
         <li><strong>Ask for help</strong> - Wine professionals love sharing their knowledge</li>
       </ol>
 
-      <h2 class="text-2xl font-bold text-wine-700 mt-8 mb-4">Frequently Asked Questions</h2>
-      
+  <h2>Frequently Asked Questions</h2>
+  
       <div class="space-y-6">
         <div>
           <h3 class="text-lg font-semibold text-wine-700 mb-2">What should I look for in thanksgiving wine pairing?</h3>
@@ -77,8 +97,18 @@ const frontmatter = {
         </div>
       </div>
 
-      <hr class="my-8 border-gray-300" />
-      <p class="text-gray-600 italic">Michael Chen is a Wine Buyer & Contributor with WSET Level 3 Award in Wines, Italian Wine Scholar (Wine Scholar Guild).</p>
+  <!-- Author Bio Footer -->
+  <div class="mt-12 p-6 bg-gray-50 rounded-lg border border-gray-200">
+    <h3 class="text-lg font-semibold mb-3">About the Author</h3>
+    <div class="flex items-start gap-4">
+      <div class="w-16 h-16 rounded-full bg-wine-100 flex items-center justify-center text-wine-700 font-bold text-xl flex-shrink-0">
+        JT
+      </div>
+      <div>
+        <a href="/about/james-thornton" class="font-semibold text-wine-600 hover:text-wine-800">James Thornton</a>
+        <p class="text-sm text-gray-600 mb-2">Founder & Lead Wine Consultant</p>
+        <p class="text-sm text-gray-700">Certified Sommelier and WSET Level 3 holder with 10+ years in wine education and consulting.</p>
+      </div>
     </div>
-  </article>
-</BaseLayout>
+  </div>
+</ArticleLayout>
