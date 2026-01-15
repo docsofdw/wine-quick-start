@@ -54,7 +54,9 @@ const frontmatter = {
 ---
 
 <ArticleLayout title={frontmatter.title} description={frontmatter.description} author={frontmatter.author} readTime={frontmatter.readTime} category="Wine Guide" schema={frontmatter.structured_data} featuredImage={featuredImage}>
-  <p><strong>Quick Answer:</strong> For orange wine review, look for wines with good balance, appropriate body, and food-friendly characteristics. Quality producers and proper storage ensure the best experience.</p>
+  <div slot="quick-answer">
+    <p><strong>Quick Answer:</strong> For orange wine review, look for wines with good balance, appropriate body, and food-friendly characteristics. Quality producers and proper storage ensure the best experience.</p>
+  </div>
 
   <h2>Understanding Orange wine review</h2>
 

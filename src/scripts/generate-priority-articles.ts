@@ -265,7 +265,9 @@ const frontmatter = {
     </div>
   </div>
 
-  <p><strong>Quick Answer:</strong> ${generateQuickAnswer(keyword)}</p>
+  <div slot="quick-answer">
+    <p><strong>Quick Answer:</strong> ${generateQuickAnswer(keyword)}</p>
+  </div>
 
   <h2>Understanding ${title}</h2>
   <p>${generateIntro(keyword)}</p>

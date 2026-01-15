@@ -891,7 +891,9 @@ const frontmatter = {
     </div>
   </div>
 
-  <p><strong>Quick Answer:</strong> ${this.generateQuickAnswer(page.keywords[0])}</p>
+  <div slot="quick-answer">
+    <p><strong>Quick Answer:</strong> ${this.generateQuickAnswer(page.keywords[0])}</p>
+  </div>
 
 ${this.formatContentForAstro(page.content)}
 
