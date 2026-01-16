@@ -304,7 +304,7 @@ function extractWineTerms(keyword: string): {
     }
   }
 
-  // Regions
+  // Regions - includes appellations that appear in wine names
   const regionMap: Record<string, string> = {
     'napa': 'Napa Valley',
     'sonoma': 'Sonoma',
@@ -323,7 +323,53 @@ function extractWineTerms(keyword: string): {
     'loire': 'Loire Valley',
     'mosel': 'Mosel',
     'mendoza': 'Mendoza',
+    // Italian appellations (these appear in wine names)
+    'barbaresco': 'Barbaresco',
+    'barolo': 'Barolo',
+    'brunello': 'Brunello',
+    'chianti': 'Chianti',
+    'amarone': 'Amarone',
+    'valpolicella': 'Valpolicella',
+    'langhe': 'Langhe',
+    // French appellations
+    'chablis': 'Chablis',
+    'sancerre': 'Sancerre',
+    'côtes du rhône': 'Côtes du Rhône',
+    'cotes du rhone': 'Côtes du Rhône',
+    'châteauneuf': 'Châteauneuf-du-Pape',
+    'chateauneuf': 'Châteauneuf-du-Pape',
+    'saint-émilion': 'Saint-Émilion',
+    'saint emilion': 'Saint-Émilion',
+    'pomerol': 'Pomerol',
+    'margaux': 'Margaux',
+    'pauillac': 'Pauillac',
+    // Spanish appellations
+    'ribera del duero': 'Ribera del Duero',
+    'priorat': 'Priorat',
   };
+
+  // Map appellations to their typical grape varieties (for better matching)
+  const appellationVarietyMap: Record<string, string> = {
+    'barbaresco': 'Nebbiolo',
+    'barolo': 'Nebbiolo',
+    'brunello': 'Sangiovese',
+    'chianti': 'Sangiovese',
+    'amarone': 'Corvina',
+    'valpolicella': 'Corvina',
+    'chablis': 'Chardonnay',
+    'sancerre': 'Sauvignon Blanc',
+    'champagne': 'Chardonnay', // Also Pinot Noir/Meunier
+    'châteauneuf-du-pape': 'Grenache',
+  };
+
+  // Check if keyword matches an appellation and add its variety
+  for (const [appellation, variety] of Object.entries(appellationVarietyMap)) {
+    if (lowerKeyword.includes(appellation)) {
+      if (!varieties.includes(variety)) {
+        varieties.push(variety);
+      }
+    }
+  }
 
   // Country to regions mapping
   const countryRegionMap: Record<string, string[]> = {
@@ -365,12 +411,69 @@ function extractWineTerms(keyword: string): {
   if (lowerKeyword.includes('cheap') || lowerKeyword.includes('budget') || lowerKeyword.includes('under')) styles.push('value');
   if (lowerKeyword.includes('premium') || lowerKeyword.includes('luxury')) styles.push('premium');
 
+  // Food pairing keywords → suggest appropriate wine varieties
+  const foodPairingMap: Record<string, string[]> = {
+    'steak': ['Cabernet Sauvignon', 'Malbec', 'Syrah'],
+    'beef': ['Cabernet Sauvignon', 'Malbec', 'Syrah'],
+    'lamb': ['Cabernet Sauvignon', 'Syrah', 'Tempranillo'],
+    'chicken': ['Chardonnay', 'Pinot Noir', 'Sauvignon Blanc'],
+    'turkey': ['Pinot Noir', 'Zinfandel', 'Chardonnay'],
+    'pork': ['Pinot Noir', 'Riesling', 'Zinfandel'],
+    'salmon': ['Pinot Noir', 'Chardonnay', 'Sauvignon Blanc'],
+    'fish': ['Sauvignon Blanc', 'Chardonnay', 'Pinot Grigio'],
+    'seafood': ['Sauvignon Blanc', 'Chardonnay', 'Champagne Blend'],
+    'pasta': ['Sangiovese', 'Barbera', 'Pinot Grigio'],
+    'pizza': ['Sangiovese', 'Barbera', 'Zinfandel'],
+    'cheese': ['Cabernet Sauvignon', 'Chardonnay', 'Sauvignon Blanc'],
+    'thanksgiving': ['Pinot Noir', 'Zinfandel', 'Chardonnay'],
+    'bbq': ['Zinfandel', 'Syrah', 'Malbec'],
+    'barbecue': ['Zinfandel', 'Syrah', 'Malbec'],
+  };
+
+  // Check for food pairing keywords and add corresponding varieties
+  for (const [food, pairingVarieties] of Object.entries(foodPairingMap)) {
+    if (lowerKeyword.includes(food)) {
+      for (const variety of pairingVarieties) {
+        if (!varieties.includes(variety)) {
+          varieties.push(variety);
+        }
+      }
+      break; // Use first match
+    }
+  }
+
   return { wineTypes, varieties, regions, styles };
+}
+
+/**
+ * Search wines by appellation name (e.g., "Barbaresco" in wine_name)
+ */
+async function getWinesByAppellation(
+  appellation: string,
+  limit: number = 5
+): Promise<Wine[]> {
+  const client = getWineCatalogClient();
+
+  const { data, error } = await client
+    .from('wine_catalog')
+    .select('*')
+    .ilike('wine_name', `%${appellation}%`)
+    .limit(limit);
+
+  if (error) {
+    console.error('Error fetching wines by appellation:', error);
+    return [];
+  }
+
+  return data || [];
 }
 
 /**
  * Get relevant wines for a given keyword/article topic
  * This is the main function to use for article generation
+ *
+ * IMPORTANT: Returns empty array if no matching wines found
+ * Never returns random/unrelated wines
  */
 export async function getWinesForKeyword(
   keyword: string,
@@ -379,15 +482,29 @@ export async function getWinesForKeyword(
   const terms = extractWineTerms(keyword);
   let wines: Wine[] = [];
 
-  // Priority 1: Search by variety (most specific)
-  if (terms.varieties.length > 0) {
+  // List of appellations that appear in wine names (not region field)
+  const appellations = ['barbaresco', 'barolo', 'brunello', 'chianti', 'amarone',
+    'valpolicella', 'chablis', 'sancerre', 'champagne', 'châteauneuf'];
+
+  // Priority 1: Search by appellation in wine_name (for Italian/French wines)
+  const lowerKeyword = keyword.toLowerCase();
+  for (const appellation of appellations) {
+    if (lowerKeyword.includes(appellation)) {
+      const appellationWines = await getWinesByAppellation(appellation, count);
+      wines.push(...appellationWines);
+      break; // Found appellation match, don't search others
+    }
+  }
+
+  // Priority 2: Search by variety (most specific for varietal articles)
+  if (wines.length < count && terms.varieties.length > 0) {
     for (const variety of terms.varieties) {
-      const varietyWines = await getWinesByVariety(variety, count);
+      const varietyWines = await getWinesByVariety(variety, count - wines.length);
       wines.push(...varietyWines);
     }
   }
 
-  // Priority 2: Search by region
+  // Priority 3: Search by region
   if (wines.length < count && terms.regions.length > 0) {
     for (const region of terms.regions) {
       const regionWines = await getWinesByRegion(region, count - wines.length);
@@ -395,26 +512,30 @@ export async function getWinesForKeyword(
     }
   }
 
-  // Priority 3: Search by wine type
-  if (wines.length < count && terms.wineTypes.length > 0) {
+  // Priority 4: Search by wine type (only if we have some matches already or specific type requested)
+  if (wines.length < count && wines.length > 0 && terms.wineTypes.length > 0) {
     for (const wineType of terms.wineTypes) {
       const typeWines = await getWinesByType(wineType, count - wines.length);
       wines.push(...typeWines);
     }
   }
 
-  // Priority 4: Full-text search with the keyword
+  // Priority 5: Full-text search with the keyword (but only add if relevant)
   if (wines.length < count) {
     const searchWinesResult = await searchWines(keyword, count - wines.length);
-    wines.push(...searchWinesResult);
+    // Only add search results if they seem relevant (have matching region/variety)
+    const relevantResults = searchWinesResult.filter(wine => {
+      const wineStr = `${wine.producer} ${wine.wine_name} ${wine.region} ${wine.variety}`.toLowerCase();
+      // Check if wine matches any of our search terms
+      return terms.varieties.some(v => wineStr.includes(v.toLowerCase())) ||
+             terms.regions.some(r => wineStr.includes(r.toLowerCase())) ||
+             appellations.some(a => lowerKeyword.includes(a) && wineStr.includes(a));
+    });
+    wines.push(...relevantResults);
   }
 
-  // Priority 5: Get random wines as fallback
-  if (wines.length < count) {
-    const wineType = terms.wineTypes[0] || undefined;
-    const randomWines = await getRandomWines(count - wines.length, wineType);
-    wines.push(...randomWines);
-  }
+  // NO RANDOM FALLBACK - We only return wines that actually match
+  // If we don't have matching wines, the article should not show wine picks
 
   // Remove duplicates and limit to count
   const uniqueWines = wines.filter((wine, index, self) =>

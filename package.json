@@ -16,17 +16,13 @@
     "fix:wine-pages": "tsx src/scripts/fix-wine-pages-table.ts",
     "test:daily": "tsx src/scripts/test-daily-automation.ts",
     "import:pages": "tsx src/scripts/import-existing-pages.ts",
-    "wine:daily": "tsx src/scripts/daily-wine-automation.ts",
-    "wine:keywords": "tsx src/scripts/keyword-research-pipeline.ts",
+    "articles:generate": "tsx src/scripts/generate-priority-articles.ts",
+    "articles:preview": "tsx src/scripts/preview-next-articles.ts",
+    "keywords:analyze": "tsx src/scripts/analyze-keywords.ts",
+    "keywords:insert": "tsx src/scripts/insert-researched-keywords.ts",
+    "keywords:research": "tsx src/scripts/keyword-research-pipeline.ts",
     "wine:status": "tsx src/scripts/check-wine-status.ts",
-    "wine:simple": "tsx src/scripts/simple-wine-workflow.ts",
-    "wine:force": "tsx src/scripts/force-wine-generation.ts",
-    "wine:workflow": "npm run wine:keywords && npm run wine:daily",
-    "wine:test": "tsx src/scripts/test-daily-automation.ts",
-    "wine:check": "tsx src/scripts/check-wine-status.ts",
-    "wine:validate-links": "npm run build && echo 'Index pages build successfully - dynamic content discovery working!'",
-    "seed:keywords": "tsx src/scripts/seed-keywords.ts",
-    "images:generate": "node scripts/generate-images.mjs"
+    "wine:validate-links": "npm run build && echo 'Index pages build successfully - dynamic content discovery working!'"
   },
   "dependencies": {
     "@astrojs/mdx": "^4.2.6",

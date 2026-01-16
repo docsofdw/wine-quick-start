@@ -1,0 +1,116 @@
+---
+import ArticleLayout from '../../layouts/ArticleLayout.astro';
+import featuredImage from '../../assets/images/articles/bordeaux-vs-burgundy.png';
+
+const frontmatter = {
+  title: "Bordeaux Vs Burgundy - Expert Guide",
+  description: "Discover the best bordeaux vs burgundy. Expert recommendations, tasting notes, and tips from certified sommeliers.",
+  pubDate: "2026-01-16",
+  author: "Elena Martinez",
+  authorRole: "Senior Wine Writer",
+  authorSlug: "elena-martinez",
+  readTime: "5 min",
+  keywords: ["bordeaux vs burgundy", "bordeaux", "vs", "burgundy", "wine guide"],
+  structured_data: {
+      "@context": "https://schema.org",
+      "@type": "Article",
+      "headline": "Bordeaux Vs Burgundy - Expert Guide",
+      "description": "Discover the best bordeaux vs burgundy. Expert recommendations, tasting notes, and tips from certified sommeliers.",
+      "author": {
+          "@type": "Person",
+          "name": "Elena Martinez",
+          "jobTitle": "Senior Wine Writer"
+      },
+      "datePublished": "2026-01-16T21:52:16.664Z",
+      "dateModified": "2026-01-16T21:52:16.664Z"
+  }
+};
+---
+
+<ArticleLayout title={frontmatter.title} description={frontmatter.description} author={frontmatter.author} readTime={frontmatter.readTime} category="Wine Guide" schema={frontmatter.structured_data} featuredImage={featuredImage}>
+  <!-- Author Attribution -->
+  <div class="bg-gray-50 p-4 rounded-lg mb-6 flex items-center gap-4">
+    <div class="w-12 h-12 rounded-full bg-wine-100 flex items-center justify-center text-wine-700 font-bold">
+      EM
+    </div>
+    <div>
+      <a href="/about/elena-martinez" class="font-semibold text-gray-900 hover:text-wine-600">Elena Martinez</a>
+      <p class="text-sm text-gray-600">Senior Wine Writer | WSET Level 2 Award in Wines</p>
+    </div>
+  </div>
+
+  <div slot="quick-answer">
+    <p><strong>Quick Answer:</strong> Start with classic examples from renowned regions, then explore based on your personal preferences. Don't be afraid to try something new!</p>
+  </div>
+
+  <h2>Understanding Bordeaux Vs Burgundy</h2>
+  <p>When it comes to bordeaux vs burgundy, quality matters more than price. Our team of sommeliers has tasted hundreds of options to bring you these expert recommendations.</p>
+
+  <h2>Our Top Picks</h2>
+  
+      <div class="bg-gray-50 rounded-lg p-6 mb-4">
+        <h3 class="text-xl font-semibold text-wine-700 mb-2">1. 2019 David Duband Bourgogne</h3>
+        <p class="text-gray-600 mb-2"><strong>Producer:</strong> David Duband</p>
+        <p class="text-gray-600 mb-2"><strong>Region:</strong> Burgundy, Unknown Region</p>
+        <p class="text-gray-600 mb-2"><strong>Variety:</strong> Pinot Noir</p>
+        <p class="text-gray-700 mt-3">Delicate red fruit aromas with hints of mushroom and forest floor.</p>
+      </div>
+
+      <div class="bg-gray-50 rounded-lg p-6 mb-4">
+        <h3 class="text-xl font-semibold text-wine-700 mb-2">2. 2018 Domaine Anne Gros Domaine Anne Gros Richebourg Grand Cru</h3>
+        <p class="text-gray-600 mb-2"><strong>Producer:</strong> Domaine Anne Gros</p>
+        <p class="text-gray-600 mb-2"><strong>Region:</strong> Côte de Nuits, Burgundy</p>
+        <p class="text-gray-600 mb-2"><strong>Variety:</strong> Pinot Noir</p>
+        <p class="text-gray-700 mt-3">Elegant with bright cherry and raspberry notes, silky tannins, and earthy undertones.</p>
+      </div>
+
+      <div class="bg-gray-50 rounded-lg p-6 mb-4">
+        <h3 class="text-xl font-semibold text-wine-700 mb-2">3. 2017 Domaine Armand Rousseau Domaine Armand Rousseau Chambertin</h3>
+        <p class="text-gray-600 mb-2"><strong>Producer:</strong> Domaine Armand Rousseau</p>
+        <p class="text-gray-600 mb-2"><strong>Region:</strong> Côte de Nuits, Burgundy</p>
+        <p class="text-gray-600 mb-2"><strong>Variety:</strong> Pinot Noir</p>
+        <p class="text-gray-700 mt-3">Light-bodied with vibrant acidity and a long, refined finish.</p>
+      </div>
+
+  <h2>Expert Tips</h2>
+  
+      <ol class="list-decimal list-inside space-y-3 text-gray-700">
+        <li><strong>Temperature matters</strong> - Serve whites chilled (45-50°F) and reds slightly below room temperature (60-65°F)</li>
+        <li><strong>Decanting helps</strong> - Give bold reds 30-60 minutes to open up</li>
+        <li><strong>Trust your palate</strong> - The best wine is the one you enjoy most</li>
+        <li><strong>Consider the occasion</strong> - Match wine intensity to food intensity</li>
+        <li><strong>Ask for help</strong> - Wine professionals love sharing their knowledge</li>
+      </ol>
+
+  <h2>Frequently Asked Questions</h2>
+  
+      <div class="space-y-6">
+        <div>
+          <h3 class="text-lg font-semibold text-wine-700 mb-2">What should I look for in bordeaux vs burgundy?</h3>
+          <p class="text-gray-700">Focus on balance, quality producers, and wines that match your taste preferences. Price isn't always an indicator of quality.</p>
+        </div>
+        <div>
+          <h3 class="text-lg font-semibold text-wine-700 mb-2">How much should I spend?</h3>
+          <p class="text-gray-700">Great options exist at every price point. For everyday enjoyment, $15-30 offers excellent value. For special occasions, explore the $40-80 range.</p>
+        </div>
+        <div>
+          <h3 class="text-lg font-semibold text-wine-700 mb-2">How do I store wine properly?</h3>
+          <p class="text-gray-700">Keep bottles on their side in a cool, dark place (55°F ideal). Avoid temperature fluctuations and direct sunlight.</p>
+        </div>
+      </div>
+
+  <!-- Author Bio Footer -->
+  <div class="mt-12 p-6 bg-gray-50 rounded-lg border border-gray-200">
+    <h3 class="text-lg font-semibold mb-3">About the Author</h3>
+    <div class="flex items-start gap-4">
+      <div class="w-16 h-16 rounded-full bg-wine-100 flex items-center justify-center text-wine-700 font-bold text-xl flex-shrink-0">
+        EM
+      </div>
+      <div>
+        <a href="/about/elena-martinez" class="font-semibold text-wine-600 hover:text-wine-800">Elena Martinez</a>
+        <p class="text-sm text-gray-600 mb-2">Senior Wine Writer</p>
+        <p class="text-sm text-gray-700">Wine writer and CSW holder specializing in making wine accessible to beginners.</p>
+      </div>
+    </div>
+  </div>
+</ArticleLayout>

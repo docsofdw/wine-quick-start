@@ -331,8 +331,10 @@ function generateExpertTips(keyword: string): string {
 }
 
 function generateWineHTML(wines: any[]): string {
+  // Note: Articles are only generated when wines.length > 0
+  // This check is kept as a safety net
   if (wines.length === 0) {
-    return '<p class="text-gray-700">Our team is currently curating the best selections for this category. Check back soon!</p>';
+    return '';
   }
   return wines.map((wine, i) => `
       <div class="bg-gray-50 rounded-lg p-6 mb-4">
@@ -438,6 +440,7 @@ async function generateArticles() {
   const toGenerate = keywordsNeedingArticles.slice(0, 10);
   let generated = 0;
   let failed = 0;
+  let skipped = 0;
 
   for (let i = 0; i < toGenerate.length; i++) {
     const kw = toGenerate[i];
@@ -448,7 +451,18 @@ async function generateArticles() {
       const category = determineCategory(kw.keyword);
       const filePath = path.join(process.cwd(), 'src/pages', category, `${slug}.astro`);
 
-      // Generate image first (if Replicate is configured)
+      // Check for matching wines FIRST - skip if none found
+      const wines = await getWinesForKeyword(kw.keyword, 3);
+
+      if (wines.length === 0) {
+        console.log(`   ⏭️  Skipping - no matching wines in catalog`);
+        skipped++;
+        continue;
+      }
+
+      console.log(`   Found ${wines.length} wine recommendations`);
+
+      // Generate image (only if we have wines to recommend)
       let hasImage = false;
       if (replicate) {
         hasImage = await generateArticleImage(slug, kw.keyword);
@@ -458,10 +472,6 @@ async function generateArticles() {
           await new Promise(resolve => setTimeout(resolve, 10000));
         }
       }
-
-      // Get wine recommendations
-      const wines = await getWinesForKeyword(kw.keyword, 3);
-      console.log(`   Found ${wines.length} wine recommendations`);
 
       // Get author
       const author = getRandomAuthor();
@@ -491,6 +501,7 @@ async function generateArticles() {
   console.log('📋 GENERATION SUMMARY');
   console.log('═══════════════════════════════════════');
   console.log(`✅ Generated: ${generated}`);
+  console.log(`⏭️  Skipped (no wines): ${skipped}`);
   console.log(`❌ Failed: ${failed}`);
   console.log(`📊 Total processed: ${toGenerate.length}`);
 
