@@ -22,7 +22,11 @@
     "keywords:insert": "tsx src/scripts/insert-researched-keywords.ts",
     "keywords:research": "tsx src/scripts/keyword-research-pipeline.ts",
     "wine:status": "tsx src/scripts/check-wine-status.ts",
-    "wine:validate-links": "npm run build && echo 'Index pages build successfully - dynamic content discovery working!'"
+    "wine:validate-links": "npm run build && echo 'Index pages build successfully - dynamic content discovery working!'",
+    "articles:stats": "tsx src/scripts/article-stats.ts",
+    "articles:enrich": "tsx src/scripts/enrich-articles.ts",
+    "articles:enrich:dry": "tsx src/scripts/enrich-articles.ts --dry-run",
+    "articles:enrich:all": "tsx src/scripts/enrich-articles.ts --limit=100"
   },
   "dependencies": {
     "@astrojs/mdx": "^4.2.6",
@@ -36,6 +40,7 @@
     "tailwindcss": "^3.4.4"
   },
   "devDependencies": {
+    "@anthropic-ai/sdk": "^0.52.0",
     "dotenv": "^16.3.1",
     "replicate": "^1.4.0",
     "tsx": "^4.20.3"
