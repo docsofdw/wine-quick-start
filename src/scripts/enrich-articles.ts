@@ -237,13 +237,18 @@ async function generateEnrichmentContent(context: ArticleContext): Promise<Map<s
 
 /**
  * Insert enrichment content into article
+ * Handles multiple article structures:
+ * - Standard articles with "Understanding", "Our Top Picks", "Expert Tips", "FAQs"
+ * - Pairing articles with "Why X Works Best", "Top 3 Wine Styles", "Pairing Tips"
+ * - Natural wine articles with different heading patterns
  */
 function enrichArticle(content: string, sections: Map<string, string>, keyword: string): string {
   let enrichedContent = content;
+  let contentInserted = false;
 
   // Find insertion points and add new sections
 
-  // 1. Add history/terroir after the intro paragraph (after first </p> following Understanding heading)
+  // 1. Add history/terroir after the intro paragraph
   const historyContent = sections.get('history') || '';
   const terroirContent = sections.get('terroir') || '';
   const tastingContent = sections.get('tastingProfile') || '';
@@ -251,47 +256,126 @@ function enrichArticle(content: string, sections: Map<string, string>, keyword: 
   if (historyContent || terroirContent || tastingContent) {
     const earlyContent = [historyContent, terroirContent, tastingContent].filter(c => c).join('\n\n');
 
-    // Insert after the Understanding section's paragraph
-    const understandingMatch = enrichedContent.match(/(<h2>Understanding[^<]*<\/h2>\s*<p>[^<]*<\/p>)/);
-    if (understandingMatch) {
-      enrichedContent = enrichedContent.replace(
-        understandingMatch[0],
-        understandingMatch[0] + '\n\n' + earlyContent
-      );
+    // Try multiple patterns for inserting early content
+    const earlyInsertPatterns = [
+      // Standard: after "Understanding" section
+      /(<h2>Understanding[^<]*<\/h2>\s*<p>[^<]*<\/p>)/,
+      // Pairing: after "Why X Works Best" section
+      /(<h2>Why [^<]*Works Best[^<]*<\/h2>\s*<p>[\s\S]*?<\/p>)/,
+      // Generic: after the first <h2>...</h2> and its following paragraph
+      /(<h2>[^<]+<\/h2>\s*<p>[\s\S]*?<\/p>)/,
+    ];
+
+    for (const pattern of earlyInsertPatterns) {
+      const match = enrichedContent.match(pattern);
+      if (match) {
+        enrichedContent = enrichedContent.replace(
+          match[0],
+          match[0] + '\n\n' + earlyContent
+        );
+        contentInserted = true;
+        break;
+      }
     }
   }
 
-  // 2. Add food pairing section before "Our Top Picks"
+  // 2. Add food pairing section before main content
   const foodPairingContent = sections.get('foodPairing') || '';
   if (foodPairingContent) {
-    enrichedContent = enrichedContent.replace(
+    // Try multiple insertion points
+    const foodPairingPatterns = [
       '<h2>Our Top Picks</h2>',
-      foodPairingContent + '\n\n<h2>Our Top Picks</h2>'
-    );
-  }
+      /<h2>Top \d+ Wine Styles/,
+      '<h2>Expert Recommendations</h2>',
+      '<h2>Tasting Notes',
+    ];
 
-  // 3. Add more recommendations after existing wine cards (before Expert Tips)
-  const moreRecsContent = sections.get('moreRecommendations') || '';
-  if (moreRecsContent) {
-    enrichedContent = enrichedContent.replace(
-      '<h2>Expert Tips</h2>',
-      '\n<h2>More Excellent Options</h2>\n' + moreRecsContent + '\n\n<h2>Expert Tips</h2>'
-    );
-  }
-
-  // 4. Replace generic expert tips with topic-specific ones
-  const expertTipsContent = sections.get('expertTips') || '';
-  if (expertTipsContent) {
-    const tipsRegex = /<h2>Expert Tips<\/h2>\s*<ol[^>]*>[\s\S]*?<\/ol>/;
-    if (tipsRegex.test(enrichedContent)) {
-      enrichedContent = enrichedContent.replace(
-        tipsRegex,
-        '<h2>Expert Tips</h2>\n' + expertTipsContent
-      );
+    let inserted = false;
+    for (const pattern of foodPairingPatterns) {
+      if (typeof pattern === 'string' ? enrichedContent.includes(pattern) : pattern.test(enrichedContent)) {
+        enrichedContent = enrichedContent.replace(
+          pattern,
+          foodPairingContent + '\n\n' + (typeof pattern === 'string' ? pattern : pattern.source.replace(/\\/g, ''))
+        );
+        inserted = true;
+        contentInserted = true;
+        break;
+      }
     }
   }
 
-  // 5. Replace generic FAQs with topic-specific ones
+  // 3. Add more recommendations before expert tips or near the end
+  const moreRecsContent = sections.get('moreRecommendations') || '';
+  if (moreRecsContent) {
+    const moreRecsPatterns = [
+      '<h2>Expert Tips</h2>',
+      '<h2>Pairing Tips',
+      '<h2>Serving Tips</h2>',
+      /<h2>Wines to Avoid/,
+      /<!-- Related Articles/,
+      /<!-- Author Bio/,
+    ];
+
+    let inserted = false;
+    for (const pattern of moreRecsPatterns) {
+      const patternStr = typeof pattern === 'string' ? pattern : pattern.source;
+      if (typeof pattern === 'string' ? enrichedContent.includes(pattern) : pattern.test(enrichedContent)) {
+        enrichedContent = enrichedContent.replace(
+          pattern,
+          '\n<h2>More Excellent Options</h2>\n' + moreRecsContent + '\n\n' + (typeof pattern === 'string' ? pattern : '')
+        );
+        inserted = true;
+        contentInserted = true;
+        break;
+      }
+    }
+  }
+
+  // 4. Replace or add expert tips
+  const expertTipsContent = sections.get('expertTips') || '';
+  if (expertTipsContent) {
+    // Try to replace existing expert tips
+    const tipsPatterns = [
+      /<h2>Expert Tips<\/h2>\s*<ol[^>]*>[\s\S]*?<\/ol>/,
+      /<h2>Pairing Tips from Our Sommeliers<\/h2>[\s\S]*?(?=<h2>|<!-- |<\/ArticleLayout>)/,
+    ];
+
+    let replaced = false;
+    for (const pattern of tipsPatterns) {
+      if (pattern.test(enrichedContent)) {
+        enrichedContent = enrichedContent.replace(
+          pattern,
+          '<h2>Expert Tips</h2>\n' + expertTipsContent + '\n\n'
+        );
+        replaced = true;
+        contentInserted = true;
+        break;
+      }
+    }
+
+    // If no existing tips section, add before end of article
+    if (!replaced) {
+      const insertBeforeEnd = [
+        /<!-- Related Articles/,
+        /<!-- Author Bio/,
+        /<div class="mt-10 pt-8 border-t/,
+        /<div class="mt-12 p-6 bg-gray-50/,
+      ];
+
+      for (const pattern of insertBeforeEnd) {
+        if (pattern.test(enrichedContent)) {
+          enrichedContent = enrichedContent.replace(
+            pattern,
+            '<h2>Expert Tips</h2>\n' + expertTipsContent + '\n\n$&'
+          );
+          contentInserted = true;
+          break;
+        }
+      }
+    }
+  }
+
+  // 5. Replace or add FAQs
   const faqContent = sections.get('faqs') || '';
   if (faqContent) {
     const faqRegex = /<h2>Frequently Asked Questions<\/h2>\s*<div class="space-y-6">[\s\S]*?<\/div>\s*(?=<!--|\s*<div class="mt-12)/;
@@ -300,37 +384,108 @@ function enrichArticle(content: string, sections: Map<string, string>, keyword: 
         faqRegex,
         '<h2>Frequently Asked Questions</h2>\n' + faqContent + '\n\n'
       );
+      contentInserted = true;
+    } else {
+      // Add FAQs before end sections
+      const insertBeforeEnd = [
+        /<!-- Related Articles/,
+        /<!-- Author Bio/,
+        /<div class="mt-10 pt-8 border-t/,
+        /<div class="mt-12 p-6 bg-gray-50/,
+      ];
+
+      for (const pattern of insertBeforeEnd) {
+        if (pattern.test(enrichedContent)) {
+          enrichedContent = enrichedContent.replace(
+            pattern,
+            '<h2>Frequently Asked Questions</h2>\n' + faqContent + '\n\n$&'
+          );
+          contentInserted = true;
+          break;
+        }
+      }
     }
   }
 
   // 6. Add aging section before FAQs
   const agingContent = sections.get('aging') || '';
   if (agingContent) {
-    enrichedContent = enrichedContent.replace(
-      '<h2>Frequently Asked Questions</h2>',
-      agingContent + '\n\n<h2>Frequently Asked Questions</h2>'
-    );
+    if (enrichedContent.includes('<h2>Frequently Asked Questions</h2>')) {
+      enrichedContent = enrichedContent.replace(
+        '<h2>Frequently Asked Questions</h2>',
+        agingContent + '\n\n<h2>Frequently Asked Questions</h2>'
+      );
+      contentInserted = true;
+    }
   }
 
   // 7. Add buying guide before aging/FAQs
   const buyingGuideContent = sections.get('buyingGuide') || '';
   if (buyingGuideContent) {
-    const insertBefore = agingContent
-      ? /<h2>Aging/
-      : /<h2>Frequently Asked Questions/;
-    enrichedContent = enrichedContent.replace(
-      insertBefore,
-      buyingGuideContent + '\n\n$&'
-    );
+    const insertPatterns = [
+      /<h2>Aging/,
+      /<h2>Frequently Asked Questions/,
+      /<!-- Related Articles/,
+      /<!-- Author Bio/,
+      /<div class="mt-10 pt-8 border-t/,
+    ];
+
+    for (const pattern of insertPatterns) {
+      if (pattern.test(enrichedContent)) {
+        enrichedContent = enrichedContent.replace(
+          pattern,
+          buyingGuideContent + '\n\n$&'
+        );
+        contentInserted = true;
+        break;
+      }
+    }
   }
 
   // 8. Add comparison section for vs articles
   const comparisonContent = sections.get('comparison') || '';
   if (comparisonContent) {
-    enrichedContent = enrichedContent.replace(
+    const comparisonPatterns = [
       '<h2>Our Top Picks</h2>',
-      comparisonContent + '\n\n<h2>Our Top Picks</h2>'
-    );
+      /<h2>Top \d+ Wine/,
+      '<h2>Expert Tips</h2>',
+    ];
+
+    for (const pattern of comparisonPatterns) {
+      if (typeof pattern === 'string' ? enrichedContent.includes(pattern) : pattern.test(enrichedContent)) {
+        enrichedContent = enrichedContent.replace(
+          pattern,
+          comparisonContent + '\n\n' + (typeof pattern === 'string' ? pattern : '')
+        );
+        contentInserted = true;
+        break;
+      }
+    }
+  }
+
+  // 9. FALLBACK: If no content was inserted, append all sections before </ArticleLayout>
+  if (!contentInserted && sections.size > 0) {
+    const allContent: string[] = [];
+
+    if (historyContent) allContent.push(historyContent);
+    if (terroirContent) allContent.push(terroirContent);
+    if (tastingContent) allContent.push(tastingContent);
+    if (foodPairingContent) allContent.push(foodPairingContent);
+    if (moreRecsContent) allContent.push('<h2>More Excellent Options</h2>\n' + moreRecsContent);
+    if (sections.get('buyingGuide')) allContent.push(sections.get('buyingGuide')!);
+    if (agingContent) allContent.push(agingContent);
+    if (expertTipsContent) allContent.push('<h2>Expert Tips</h2>\n' + expertTipsContent);
+    if (faqContent) allContent.push('<h2>Frequently Asked Questions</h2>\n' + faqContent);
+    if (comparisonContent) allContent.push(comparisonContent);
+
+    if (allContent.length > 0) {
+      const combinedContent = allContent.join('\n\n');
+      // Insert before </ArticleLayout>
+      enrichedContent = enrichedContent.replace(
+        '</ArticleLayout>',
+        '\n' + combinedContent + '\n\n</ArticleLayout>'
+      );
+    }
   }
 
   // Update the readTime based on new content length
