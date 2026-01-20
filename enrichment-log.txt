@@ -1,0 +1,988 @@
+🍷 Article Enrichment System
+
+Mode: LIVE
+Limit: 100 articles
+
+📄 Found 98 articles total
+
+(node:34703) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+📋 Articles to enrich:
+
+   learn/best-chardonnay
+      Current: ~317 words | Target: ~1317 words
+      Priority: 10
+
+   learn/best-pinot-noir
+      Current: ~318 words | Target: ~1318 words
+      Priority: 10
+
+   learn/best-cabernet-sauvignon
+      Current: ~329 words | Target: ~1329 words
+      Priority: 10
+
+   wine-pairings/wine-with-salmon
+      Current: ~330 words | Target: ~1530 words
+      Priority: 10
+
+   learn/napa-valley-wine-guide
+      Current: ~332 words | Target: ~2332 words
+      Priority: 10
+
+   learn/best-wine-for-thanksgiving
+      Current: ~335 words | Target: ~1335 words
+      Priority: 10
+
+   wine-pairings/best-wine-with-steak
+      Current: ~339 words | Target: ~1539 words
+      Priority: 10
+
+   learn/napa-valley-wine
+      Current: ~340 words | Target: ~2340 words
+      Priority: 10
+
+   wine-pairings/best-wine-with-chicken
+      Current: ~342 words | Target: ~1542 words
+      Priority: 10
+
+   wine-pairings/thanksgiving-wine-pairing
+      Current: ~342 words | Target: ~1542 words
+      Priority: 10
+
+   learn/best-champagne
+      Current: ~310 words | Target: ~1310 words
+      Priority: 9
+
+   learn/sonoma-wine
+      Current: ~312 words | Target: ~2312 words
+      Priority: 9
+
+   learn/best-wine-for-christmas-dinner
+      Current: ~317 words | Target: ~1317 words
+      Priority: 9
+
+   learn/best-sauvignon-blanc
+      Current: ~321 words | Target: ~1321 words
+      Priority: 9
+
+   wine-pairings/best-wine-with-seafood
+      Current: ~321 words | Target: ~1521 words
+      Priority: 9
+
+   buy/best-pinot-noir-under-20
+      Current: ~321 words | Target: ~1321 words
+      Priority: 9
+
+   learn/cabernet-sauvignon-vs-merlot
+      Current: ~323 words | Target: ~1723 words
+      Priority: 9
+
+   learn/california-wine
+      Current: ~323 words | Target: ~2323 words
+      Priority: 9
+
+   wine-pairings/chicken-wine-pairing
+      Current: ~323 words | Target: ~1523 words
+      Priority: 9
+
+   wine-pairings/salmon-wine-pairing
+      Current: ~323 words | Target: ~1523 words
+      Priority: 9
+
+   wine-pairings/chardonnay-food-pairing
+      Current: ~324 words | Target: ~1524 words
+      Priority: 9
+
+   learn/bordeaux-wine
+      Current: ~326 words | Target: ~2326 words
+      Priority: 9
+
+   learn/chardonnay-vs-sauvignon-blanc
+      Current: ~326 words | Target: ~1726 words
+      Priority: 9
+
+   wine-pairings/wine-with-beef
+      Current: ~328 words | Target: ~1528 words
+      Priority: 9
+
+   wine-pairings/steak-wine-pairing
+      Current: ~329 words | Target: ~1529 words
+      Priority: 9
+
+   buy/best-cabernet-sauvignon-under-20
+      Current: ~329 words | Target: ~1329 words
+      Priority: 9
+
+   learn/best-bordeaux-wines
+      Current: ~330 words | Target: ~1330 words
+      Priority: 9
+
+   wine-pairings/christmas-dinner-wine-pairing
+      Current: ~335 words | Target: ~1535 words
+      Priority: 9
+
+   learn/best-napa-valley-wines
+      Current: ~336 words | Target: ~1336 words
+      Priority: 9
+
+   wine-pairings/cabernet-sauvignon-food-pairing
+      Current: ~337 words | Target: ~1537 words
+      Priority: 9
+
+   wine-pairings/what-wine-goes-with-steak
+      Current: ~338 words | Target: ~1538 words
+      Priority: 9
+
+   wine-pairings/best-wine-with-salmon
+      Current: ~558 words | Target: ~1758 words
+      Priority: 9
+
+   learn/best-merlot
+      Current: ~307 words | Target: ~1307 words
+      Priority: 8
+
+   learn/syrah-vs-shiraz
+      Current: ~307 words | Target: ~1707 words
+      Priority: 8
+
+   learn/champagne-vs-prosecco
+      Current: ~309 words | Target: ~1709 words
+      Priority: 8
+
+   learn/champagne-wine
+      Current: ~310 words | Target: ~2310 words
+      Priority: 8
+
+   learn/barolo-wine
+      Current: ~312 words | Target: ~2312 words
+      Priority: 8
+
+   wine-pairings/best-wine-with-pizza
+      Current: ~314 words | Target: ~1514 words
+      Priority: 8
+
+   learn/burgundy-wine
+      Current: ~317 words | Target: ~2317 words
+      Priority: 8
+
+   learn/oregon-pinot-noir
+      Current: ~320 words | Target: ~2320 words
+      Priority: 8
+
+   learn/bordeaux-vs-burgundy
+      Current: ~323 words | Target: ~1723 words
+      Priority: 8
+
+   learn/sauvignon-blanc-vs-pinot-grigio
+      Current: ~323 words | Target: ~1723 words
+      Priority: 8
+
+   learn/white-burgundy
+      Current: ~324 words | Target: ~2324 words
+      Priority: 8
+
+   learn/best-zinfandel
+      Current: ~325 words | Target: ~1325 words
+      Priority: 8
+
+   learn/pinot-noir-vs-cabernet
+      Current: ~325 words | Target: ~1725 words
+      Priority: 8
+
+   learn/red-burgundy
+      Current: ~325 words | Target: ~2325 words
+      Priority: 8
+
+   wine-pairings/red-wine-food-pairing
+      Current: ~326 words | Target: ~1526 words
+      Priority: 8
+
+   learn/willamette-valley-wine
+      Current: ~327 words | Target: ~2327 words
+      Priority: 8
+
+   wine-pairings/sauvignon-blanc-food-pairing
+      Current: ~327 words | Target: ~1527 words
+      Priority: 8
+
+   wine-pairings/what-wine-goes-with-salmon
+      Current: ~327 words | Target: ~1527 words
+      Priority: 8
+
+   learn/best-burgundy-wines
+      Current: ~332 words | Target: ~1332 words
+      Priority: 8
+
+   learn/sonoma-vs-napa
+      Current: ~332 words | Target: ~1732 words
+      Priority: 8
+
+   wine-pairings/white-wine-food-pairing
+      Current: ~333 words | Target: ~1533 words
+      Priority: 8
+
+   wine-pairings/wine-with-bbq
+      Current: ~337 words | Target: ~1537 words
+      Priority: 8
+
+   wine-pairings/what-to-eat-with-cabernet-sauvignon
+      Current: ~339 words | Target: ~1539 words
+      Priority: 8
+
+   wine-pairings/what-to-eat-with-pinot-noir
+      Current: ~339 words | Target: ~1539 words
+      Priority: 8
+
+   learn/merlot-vs-cabernet-sauvignon
+      Current: ~340 words | Target: ~1740 words
+      Priority: 8
+
+   learn/best-barolo-wines
+      Current: ~2303 words | Target: ~3303 words
+      Priority: 8
+
+   wine-pairings/syrah
+      Current: ~243 words | Target: ~2043 words
+      Priority: 5
+
+   learn/natural-wine-review
+      Current: ~265 words | Target: ~2065 words
+      Priority: 5
+
+   learn/orange-wine-review
+      Current: ~265 words | Target: ~1265 words
+      Priority: 5
+
+   buy/price-orange-wine
+      Current: ~265 words | Target: ~2065 words
+      Priority: 5
+
+   learn/cheap-natural-wine
+      Current: ~272 words | Target: ~1272 words
+      Priority: 5
+
+   learn/cheap-orange-wine
+      Current: ~272 words | Target: ~1272 words
+      Priority: 5
+
+   buy/natural-wine-price
+      Current: ~272 words | Target: ~2072 words
+      Priority: 5
+
+   learn/orange-wine-under-20
+      Current: ~273 words | Target: ~1273 words
+      Priority: 5
+
+   learn/orange-wine-under-50
+      Current: ~273 words | Target: ~1273 words
+      Priority: 5
+
+   wine-pairings/sauvignon-blanc
+      Current: ~273 words | Target: ~2073 words
+      Priority: 5
+
+   learn/natural-wine-under-20
+      Current: ~280 words | Target: ~1280 words
+      Priority: 5
+
+   learn/natural-wine-under-50
+      Current: ~280 words | Target: ~1280 words
+      Priority: 5
+
+   learn/best-natural-wine-for-beginners
+      Current: ~281 words | Target: ~1281 words
+      Priority: 5
+
+   wine-pairings/malbec
+      Current: ~284 words | Target: ~2084 words
+      Priority: 5
+
+   wine-pairings/cabernet-sauvignon
+      Current: ~312 words | Target: ~2112 words
+      Priority: 5
+
+   wine-pairings/natural-wine
+      Current: ~318 words | Target: ~1318 words
+      Priority: 5
+
+   wine-pairings/rose-wine
+      Current: ~319 words | Target: ~2119 words
+      Priority: 5
+
+   wine-pairings/zinfandel
+      Current: ~324 words | Target: ~2124 words
+      Priority: 5
+
+   wine-pairings/riesling
+      Current: ~335 words | Target: ~2135 words
+      Priority: 5
+
+   wine-pairings/merlot
+      Current: ~338 words | Target: ~2138 words
+      Priority: 5
+
+   wine-pairings/pinot-noir
+      Current: ~342 words | Target: ~2142 words
+      Priority: 5
+
+   wine-pairings/wine-with-seafood
+      Current: ~342 words | Target: ~1542 words
+      Priority: 5
+
+   wine-pairings/wine-with-pasta
+      Current: ~344 words | Target: ~1544 words
+      Priority: 5
+
+   wine-pairings/wine-with-tacos
+      Current: ~344 words | Target: ~1544 words
+      Priority: 5
+
+   wine-pairings/prosecco
+      Current: ~346 words | Target: ~2146 words
+      Priority: 5
+
+   wine-pairings/wine-with-pork
+      Current: ~349 words | Target: ~1549 words
+      Priority: 5
+
+   wine-pairings/wine-with-fish
+      Current: ~350 words | Target: ~1550 words
+      Priority: 5
+
+   wine-pairings/wine-with-steak
+      Current: ~350 words | Target: ~1550 words
+      Priority: 5
+
+   wine-pairings/wine-with-pizza
+      Current: ~351 words | Target: ~1551 words
+      Priority: 5
+
+   wine-pairings/wine-with-chicken
+      Current: ~353 words | Target: ~1553 words
+      Priority: 5
+
+   wine-pairings/wine-with-lamb
+      Current: ~354 words | Target: ~1554 words
+      Priority: 5
+
+   wine-pairings/wine-with-sushi
+      Current: ~356 words | Target: ~1556 words
+      Priority: 5
+
+   wine-pairings/wine-with-turkey
+      Current: ~358 words | Target: ~1558 words
+      Priority: 5
+
+   wine-pairings/wine-with-cheese
+      Current: ~363 words | Target: ~1563 words
+      Priority: 5
+
+   wine-pairings/chardonnay
+      Current: ~410 words | Target: ~2210 words
+      Priority: 5
+
+   learn/bordeaux-wine-guide
+      Current: ~435 words | Target: ~2435 words
+      Priority: 5
+
+   wine-pairings/wine-pairing-mushroom-risotto
+      Current: ~436 words | Target: ~1636 words
+      Priority: 5
+
+   wine-pairings/wine-pairing
+      Current: ~461 words | Target: ~1661 words
+      Priority: 5
+
+   wine-pairings/pinot-noir-food-pairing
+      Current: ~684 words | Target: ~1884 words
+      Priority: 5
+
+   learn/natural-wine-recommendations
+      Current: ~699 words | Target: ~2499 words
+      Priority: 5
+
+
+🔄 Processing: learn/best-chardonnay
+   📝 Generating content (type: buying)...
+   ✅ Generated 5 sections
+   📝 Enriched: 317 → 2206 words (+1889)
+   ⏳ Waiting 5s before next article...
+
+🔄 Processing: learn/best-pinot-noir
+   📝 Generating content (type: buying)...
+   ✅ Generated 5 sections
+   📝 Enriched: 318 → 2341 words (+2023)
+   ⏳ Waiting 5s before next article...
+
+🔄 Processing: learn/best-cabernet-sauvignon
+   📝 Generating content (type: buying)...
+   ✅ Generated 5 sections
+   📝 Enriched: 329 → 2381 words (+2052)
+   ⏳ Waiting 5s before next article...
+
+🔄 Processing: wine-pairings/wine-with-salmon
+   📝 Generating content (type: pairing)...
+   ✅ Generated 4 sections
+   📝 Enriched: 330 → 2339 words (+2009)
+   ⏳ Waiting 5s before next article...
+
+🔄 Processing: learn/napa-valley-wine-guide
+   📝 Generating content (type: region)...
+   ✅ Generated 8 sections
+   📝 Enriched: 332 → 3316 words (+2984)
+   ⏳ Waiting 5s before next article...
+
+🔄 Processing: learn/best-wine-for-thanksgiving
+   📝 Generating content (type: buying)...
+   ✅ Generated 5 sections
+   📝 Enriched: 335 → 2463 words (+2128)
+   ⏳ Waiting 5s before next article...
+
+🔄 Processing: wine-pairings/best-wine-with-steak
+   📝 Generating content (type: pairing)...
+   ✅ Generated 4 sections
+   📝 Enriched: 339 → 2201 words (+1862)
+   ⏳ Waiting 5s before next article...
+
+🔄 Processing: learn/napa-valley-wine
+   📝 Generating content (type: region)...
+   ✅ Generated 8 sections
+   📝 Enriched: 340 → 3251 words (+2911)
+   ⏳ Waiting 5s before next article...
+
+🔄 Processing: wine-pairings/best-wine-with-chicken
+   📝 Generating content (type: pairing)...
+   ✅ Generated 4 sections
+   📝 Enriched: 342 → 2308 words (+1966)
+   ⏳ Waiting 5s before next article...
+
+🔄 Processing: wine-pairings/thanksgiving-wine-pairing
+   📝 Generating content (type: pairing)...
+   ✅ Generated 4 sections
+   📝 Enriched: 342 → 2192 words (+1850)
+   ⏳ Waiting 5s before next article...
+
+🔄 Processing: learn/best-champagne
+   📝 Generating content (type: buying)...
+   ✅ Generated 5 sections
+   📝 Enriched: 310 → 2254 words (+1944)
+   ⏳ Waiting 5s before next article...
+
+🔄 Processing: learn/sonoma-wine
+   📝 Generating content (type: region)...
+   ✅ Generated 8 sections
+   📝 Enriched: 312 → 3427 words (+3115)
+   ⏳ Waiting 5s before next article...
+
+🔄 Processing: learn/best-wine-for-christmas-dinner
+   📝 Generating content (type: buying)...
+   ✅ Generated 5 sections
+   📝 Enriched: 317 → 2464 words (+2147)
+   ⏳ Waiting 5s before next article...
+
+🔄 Processing: learn/best-sauvignon-blanc
+   📝 Generating content (type: buying)...
+   ✅ Generated 5 sections
+   📝 Enriched: 321 → 2430 words (+2109)
+   ⏳ Waiting 5s before next article...
+
+🔄 Processing: wine-pairings/best-wine-with-seafood
+   📝 Generating content (type: pairing)...
+   ✅ Generated 4 sections
+   📝 Enriched: 321 → 2212 words (+1891)
+   ⏳ Waiting 5s before next article...
+
+🔄 Processing: buy/best-pinot-noir-under-20
+   📝 Generating content (type: buying)...
+   ✅ Generated 5 sections
+   📝 Enriched: 321 → 2421 words (+2100)
+   ⏳ Waiting 5s before next article...
+
+🔄 Processing: learn/cabernet-sauvignon-vs-merlot
+   📝 Generating content (type: comparison)...
+   ✅ Generated 3 sections
+   📝 Enriched: 323 → 1672 words (+1349)
+   ⏳ Waiting 5s before next article...
+
+🔄 Processing: learn/california-wine
+   📝 Generating content (type: region)...
+   ✅ Generated 8 sections
+   📝 Enriched: 323 → 3380 words (+3057)
+   ⏳ Waiting 5s before next article...
+
+🔄 Processing: wine-pairings/chicken-wine-pairing
+   📝 Generating content (type: pairing)...
+   ✅ Generated 4 sections
+   📝 Enriched: 323 → 2279 words (+1956)
+   ⏳ Waiting 5s before next article...
+
+🔄 Processing: wine-pairings/salmon-wine-pairing
+   📝 Generating content (type: pairing)...
+   ✅ Generated 4 sections
+   📝 Enriched: 323 → 2245 words (+1922)
+   ⏳ Waiting 5s before next article...
+
+🔄 Processing: wine-pairings/chardonnay-food-pairing
+   📝 Generating content (type: pairing)...
+   ✅ Generated 4 sections
+   📝 Enriched: 324 → 2115 words (+1791)
+   ⏳ Waiting 5s before next article...
+
+🔄 Processing: learn/bordeaux-wine
+   📝 Generating content (type: region)...
+   ✅ Generated 8 sections
+   📝 Enriched: 326 → 3390 words (+3064)
+   ⏳ Waiting 5s before next article...
+
+🔄 Processing: learn/chardonnay-vs-sauvignon-blanc
+   📝 Generating content (type: comparison)...
+   ✅ Generated 3 sections
+   📝 Enriched: 326 → 1653 words (+1327)
+   ⏳ Waiting 5s before next article...
+
+🔄 Processing: wine-pairings/wine-with-beef
+   📝 Generating content (type: pairing)...
+   ✅ Generated 4 sections
+   📝 Enriched: 328 → 2130 words (+1802)
+   ⏳ Waiting 5s before next article...
+
+🔄 Processing: wine-pairings/steak-wine-pairing
+   📝 Generating content (type: pairing)...
+   ✅ Generated 4 sections
+   📝 Enriched: 329 → 2174 words (+1845)
+   ⏳ Waiting 5s before next article...
+
+🔄 Processing: buy/best-cabernet-sauvignon-under-20
+   📝 Generating content (type: buying)...
+   ✅ Generated 5 sections
+   📝 Enriched: 329 → 2552 words (+2223)
+   ⏳ Waiting 5s before next article...
+
+🔄 Processing: learn/best-bordeaux-wines
+   📝 Generating content (type: buying)...
+   ✅ Generated 5 sections
+   📝 Enriched: 330 → 2492 words (+2162)
+   ⏳ Waiting 5s before next article...
+
+🔄 Processing: wine-pairings/christmas-dinner-wine-pairing
+   📝 Generating content (type: pairing)...
+   ✅ Generated 4 sections
+   📝 Enriched: 335 → 2482 words (+2147)
+   ⏳ Waiting 5s before next article...
+
+🔄 Processing: learn/best-napa-valley-wines
+   📝 Generating content (type: buying)...
+   ✅ Generated 5 sections
+   📝 Enriched: 336 → 2506 words (+2170)
+   ⏳ Waiting 5s before next article...
+
+🔄 Processing: wine-pairings/cabernet-sauvignon-food-pairing
+   📝 Generating content (type: pairing)...
+   ✅ Generated 4 sections
+   📝 Enriched: 337 → 2142 words (+1805)
+   ⏳ Waiting 5s before next article...
+
+🔄 Processing: wine-pairings/what-wine-goes-with-steak
+   📝 Generating content (type: pairing)...
+   ✅ Generated 4 sections
+   📝 Enriched: 338 → 2282 words (+1944)
+   ⏳ Waiting 5s before next article...
+
+🔄 Processing: wine-pairings/best-wine-with-salmon
+   📝 Generating content (type: pairing)...
+   ✅ Generated 4 sections
+   📝 Enriched: 558 → 558 words (+0)
+   ⏳ Waiting 5s before next article...
+
+🔄 Processing: learn/best-merlot
+   📝 Generating content (type: buying)...
+   ✅ Generated 5 sections
+   📝 Enriched: 307 → 2310 words (+2003)
+   ⏳ Waiting 5s before next article...
+
+🔄 Processing: learn/syrah-vs-shiraz
+   📝 Generating content (type: comparison)...
+   ✅ Generated 3 sections
+   📝 Enriched: 307 → 1589 words (+1282)
+   ⏳ Waiting 5s before next article...
+
+🔄 Processing: learn/champagne-vs-prosecco
+   📝 Generating content (type: comparison)...
+   ✅ Generated 3 sections
+   📝 Enriched: 309 → 1706 words (+1397)
+   ⏳ Waiting 5s before next article...
+
+🔄 Processing: learn/champagne-wine
+   📝 Generating content (type: region)...
+   ✅ Generated 8 sections
+   📝 Enriched: 310 → 3446 words (+3136)
+   ⏳ Waiting 5s before next article...
+
+🔄 Processing: learn/barolo-wine
+   📝 Generating content (type: region)...
+   ✅ Generated 8 sections
+   📝 Enriched: 312 → 3377 words (+3065)
+   ⏳ Waiting 5s before next article...
+
+🔄 Processing: wine-pairings/best-wine-with-pizza
+   📝 Generating content (type: pairing)...
+   ✅ Generated 4 sections
+   📝 Enriched: 314 → 2197 words (+1883)
+   ⏳ Waiting 5s before next article...
+
+🔄 Processing: learn/burgundy-wine
+   📝 Generating content (type: region)...
+   ✅ Generated 8 sections
+   📝 Enriched: 317 → 3450 words (+3133)
+   ⏳ Waiting 5s before next article...
+
+🔄 Processing: learn/oregon-pinot-noir
+   📝 Generating content (type: region)...
+   ✅ Generated 8 sections
+   📝 Enriched: 320 → 3354 words (+3034)
+   ⏳ Waiting 5s before next article...
+
+🔄 Processing: learn/bordeaux-vs-burgundy
+   📝 Generating content (type: comparison)...
+   ✅ Generated 3 sections
+   📝 Enriched: 323 → 1715 words (+1392)
+   ⏳ Waiting 5s before next article...
+
+🔄 Processing: learn/sauvignon-blanc-vs-pinot-grigio
+   📝 Generating content (type: comparison)...
+   ✅ Generated 3 sections
+   📝 Enriched: 323 → 1781 words (+1458)
+   ⏳ Waiting 5s before next article...
+
+🔄 Processing: learn/white-burgundy
+   📝 Generating content (type: region)...
+   ✅ Generated 8 sections
+   📝 Enriched: 324 → 3422 words (+3098)
+   ⏳ Waiting 5s before next article...
+
+🔄 Processing: learn/best-zinfandel
+   📝 Generating content (type: buying)...
+   ✅ Generated 5 sections
+   📝 Enriched: 325 → 2318 words (+1993)
+   ⏳ Waiting 5s before next article...
+
+🔄 Processing: learn/pinot-noir-vs-cabernet
+   📝 Generating content (type: comparison)...
+   ✅ Generated 3 sections
+   📝 Enriched: 325 → 1875 words (+1550)
+   ⏳ Waiting 5s before next article...
+
+🔄 Processing: learn/red-burgundy
+   📝 Generating content (type: region)...
+   ✅ Generated 8 sections
+   📝 Enriched: 325 → 3464 words (+3139)
+   ⏳ Waiting 5s before next article...
+
+🔄 Processing: wine-pairings/red-wine-food-pairing
+   📝 Generating content (type: pairing)...
+   ✅ Generated 4 sections
+   📝 Enriched: 326 → 2175 words (+1849)
+   ⏳ Waiting 5s before next article...
+
+🔄 Processing: learn/willamette-valley-wine
+   📝 Generating content (type: region)...
+   ✅ Generated 8 sections
+   📝 Enriched: 327 → 3452 words (+3125)
+   ⏳ Waiting 5s before next article...
+
+🔄 Processing: wine-pairings/sauvignon-blanc-food-pairing
+   📝 Generating content (type: pairing)...
+   ✅ Generated 4 sections
+   📝 Enriched: 327 → 2204 words (+1877)
+   ⏳ Waiting 5s before next article...
+
+🔄 Processing: wine-pairings/what-wine-goes-with-salmon
+   📝 Generating content (type: pairing)...
+   ✅ Generated 4 sections
+   📝 Enriched: 327 → 2123 words (+1796)
+   ⏳ Waiting 5s before next article...
+
+🔄 Processing: learn/best-burgundy-wines
+   📝 Generating content (type: buying)...
+   ✅ Generated 5 sections
+   📝 Enriched: 332 → 2329 words (+1997)
+   ⏳ Waiting 5s before next article...
+
+🔄 Processing: learn/sonoma-vs-napa
+   📝 Generating content (type: comparison)...
+   ✅ Generated 3 sections
+   📝 Enriched: 332 → 1744 words (+1412)
+   ⏳ Waiting 5s before next article...
+
+🔄 Processing: wine-pairings/white-wine-food-pairing
+   📝 Generating content (type: pairing)...
+   ✅ Generated 4 sections
+   📝 Enriched: 333 → 2279 words (+1946)
+   ⏳ Waiting 5s before next article...
+
+🔄 Processing: wine-pairings/wine-with-bbq
+   📝 Generating content (type: pairing)...
+   ✅ Generated 4 sections
+   📝 Enriched: 337 → 2241 words (+1904)
+   ⏳ Waiting 5s before next article...
+
+🔄 Processing: wine-pairings/what-to-eat-with-cabernet-sauvignon
+   📝 Generating content (type: pairing)...
+   ✅ Generated 4 sections
+   📝 Enriched: 339 → 2097 words (+1758)
+   ⏳ Waiting 5s before next article...
+
+🔄 Processing: wine-pairings/what-to-eat-with-pinot-noir
+   📝 Generating content (type: pairing)...
+   ✅ Generated 4 sections
+   📝 Enriched: 339 → 2174 words (+1835)
+   ⏳ Waiting 5s before next article...
+
+🔄 Processing: learn/merlot-vs-cabernet-sauvignon
+   📝 Generating content (type: comparison)...
+   ✅ Generated 3 sections
+   📝 Enriched: 340 → 1783 words (+1443)
+   ⏳ Waiting 5s before next article...
+
+🔄 Processing: learn/best-barolo-wines
+   📝 Generating content (type: buying)...
+   ✅ Generated 5 sections
+   📝 Enriched: 2303 → 3438 words (+1135)
+   ⏳ Waiting 5s before next article...
+
+🔄 Processing: wine-pairings/syrah
+   📝 Generating content (type: varietal)...
+   ✅ Generated 8 sections
+   📝 Enriched: 243 → 1341 words (+1098)
+   ⏳ Waiting 5s before next article...
+
+🔄 Processing: learn/natural-wine-review
+   📝 Generating content (type: varietal)...
+   ✅ Generated 8 sections
+   📝 Enriched: 265 → 1303 words (+1038)
+   ⏳ Waiting 5s before next article...
+
+🔄 Processing: learn/orange-wine-review
+   📝 Generating content (type: buying)...
+   ✅ Generated 5 sections
+   📝 Enriched: 265 → 265 words (+0)
+   ⏳ Waiting 5s before next article...
+
+🔄 Processing: buy/price-orange-wine
+   📝 Generating content (type: varietal)...
+   ✅ Generated 8 sections
+   📝 Enriched: 265 → 1373 words (+1108)
+   ⏳ Waiting 5s before next article...
+
+🔄 Processing: learn/cheap-natural-wine
+   📝 Generating content (type: buying)...
+   ✅ Generated 5 sections
+   📝 Enriched: 272 → 272 words (+0)
+   ⏳ Waiting 5s before next article...
+
+🔄 Processing: learn/cheap-orange-wine
+   📝 Generating content (type: buying)...
+   ✅ Generated 5 sections
+   📝 Enriched: 272 → 272 words (+0)
+   ⏳ Waiting 5s before next article...
+
+🔄 Processing: buy/natural-wine-price
+   📝 Generating content (type: varietal)...
+   ✅ Generated 8 sections
+   📝 Enriched: 272 → 272 words (+0)
+   ⏳ Waiting 5s before next article...
+
+🔄 Processing: learn/orange-wine-under-20
+   📝 Generating content (type: buying)...
+   ✅ Generated 5 sections
+   📝 Enriched: 273 → 273 words (+0)
+   ⏳ Waiting 5s before next article...
+
+🔄 Processing: learn/orange-wine-under-50
+   📝 Generating content (type: buying)...
+   ✅ Generated 5 sections
+   📝 Enriched: 273 → 273 words (+0)
+   ⏳ Waiting 5s before next article...
+
+🔄 Processing: wine-pairings/sauvignon-blanc
+   📝 Generating content (type: varietal)...
+   ✅ Generated 8 sections
+   📝 Enriched: 273 → 1316 words (+1043)
+   ⏳ Waiting 5s before next article...
+
+🔄 Processing: learn/natural-wine-under-20
+   📝 Generating content (type: buying)...
+   ✅ Generated 5 sections
+   📝 Enriched: 280 → 280 words (+0)
+   ⏳ Waiting 5s before next article...
+
+🔄 Processing: learn/natural-wine-under-50
+   📝 Generating content (type: buying)...
+   ✅ Generated 5 sections
+   📝 Enriched: 280 → 280 words (+0)
+   ⏳ Waiting 5s before next article...
+
+🔄 Processing: learn/best-natural-wine-for-beginners
+   📝 Generating content (type: buying)...
+   ✅ Generated 5 sections
+   📝 Enriched: 281 → 281 words (+0)
+   ⏳ Waiting 5s before next article...
+
+🔄 Processing: wine-pairings/malbec
+   📝 Generating content (type: varietal)...
+   ✅ Generated 8 sections
+   📝 Enriched: 284 → 1341 words (+1057)
+   ⏳ Waiting 5s before next article...
+
+🔄 Processing: wine-pairings/cabernet-sauvignon
+   📝 Generating content (type: varietal)...
+   ✅ Generated 8 sections
+   📝 Enriched: 312 → 312 words (+0)
+   ⏳ Waiting 5s before next article...
+
+🔄 Processing: wine-pairings/natural-wine
+   📝 Generating content (type: buying)...
+   ✅ Generated 5 sections
+   📝 Enriched: 318 → 318 words (+0)
+   ⏳ Waiting 5s before next article...
+
+🔄 Processing: wine-pairings/rose-wine
+   📝 Generating content (type: varietal)...
+   ✅ Generated 8 sections
+   📝 Enriched: 319 → 1377 words (+1058)
+   ⏳ Waiting 5s before next article...
+
+🔄 Processing: wine-pairings/zinfandel
+   📝 Generating content (type: varietal)...
+   ✅ Generated 8 sections
+   📝 Enriched: 324 → 1359 words (+1035)
+   ⏳ Waiting 5s before next article...
+
+🔄 Processing: wine-pairings/riesling
+   📝 Generating content (type: varietal)...
+   ✅ Generated 8 sections
+   📝 Enriched: 335 → 1434 words (+1099)
+   ⏳ Waiting 5s before next article...
+
+🔄 Processing: wine-pairings/merlot
+   📝 Generating content (type: varietal)...
+   ✅ Generated 8 sections
+   📝 Enriched: 338 → 1373 words (+1035)
+   ⏳ Waiting 5s before next article...
+
+🔄 Processing: wine-pairings/pinot-noir
+   📝 Generating content (type: varietal)...
+   ✅ Generated 8 sections
+   📝 Enriched: 342 → 342 words (+0)
+   ⏳ Waiting 5s before next article...
+
+🔄 Processing: wine-pairings/wine-with-seafood
+   📝 Generating content (type: pairing)...
+   ✅ Generated 4 sections
+   📝 Enriched: 342 → 342 words (+0)
+   ⏳ Waiting 5s before next article...
+
+🔄 Processing: wine-pairings/wine-with-pasta
+   📝 Generating content (type: pairing)...
+   ✅ Generated 4 sections
+   📝 Enriched: 344 → 344 words (+0)
+   ⏳ Waiting 5s before next article...
+
+🔄 Processing: wine-pairings/wine-with-tacos
+   📝 Generating content (type: pairing)...
+   ✅ Generated 4 sections
+   📝 Enriched: 344 → 344 words (+0)
+   ⏳ Waiting 5s before next article...
+
+🔄 Processing: wine-pairings/prosecco
+   📝 Generating content (type: varietal)...
+   ✅ Generated 8 sections
+   📝 Enriched: 346 → 1379 words (+1033)
+   ⏳ Waiting 5s before next article...
+
+🔄 Processing: wine-pairings/wine-with-pork
+   📝 Generating content (type: pairing)...
+   ✅ Generated 4 sections
+   📝 Enriched: 349 → 349 words (+0)
+   ⏳ Waiting 5s before next article...
+
+🔄 Processing: wine-pairings/wine-with-fish
+   📝 Generating content (type: pairing)...
+   ✅ Generated 4 sections
+   📝 Enriched: 350 → 350 words (+0)
+   ⏳ Waiting 5s before next article...
+
+🔄 Processing: wine-pairings/wine-with-steak
+   📝 Generating content (type: pairing)...
+   ✅ Generated 4 sections
+   📝 Enriched: 350 → 350 words (+0)
+   ⏳ Waiting 5s before next article...
+
+🔄 Processing: wine-pairings/wine-with-pizza
+   📝 Generating content (type: pairing)...
+   ✅ Generated 4 sections
+   📝 Enriched: 351 → 351 words (+0)
+   ⏳ Waiting 5s before next article...
+
+🔄 Processing: wine-pairings/wine-with-chicken
+   📝 Generating content (type: pairing)...
+   ✅ Generated 4 sections
+   📝 Enriched: 353 → 353 words (+0)
+   ⏳ Waiting 5s before next article...
+
+🔄 Processing: wine-pairings/wine-with-lamb
+   📝 Generating content (type: pairing)...
+   ✅ Generated 4 sections
+   📝 Enriched: 354 → 354 words (+0)
+   ⏳ Waiting 5s before next article...
+
+🔄 Processing: wine-pairings/wine-with-sushi
+   📝 Generating content (type: pairing)...
+   ✅ Generated 4 sections
+   📝 Enriched: 356 → 356 words (+0)
+   ⏳ Waiting 5s before next article...
+
+🔄 Processing: wine-pairings/wine-with-turkey
+   📝 Generating content (type: pairing)...
+   ✅ Generated 4 sections
+   📝 Enriched: 358 → 358 words (+0)
+   ⏳ Waiting 5s before next article...
+
+🔄 Processing: wine-pairings/wine-with-cheese
+   📝 Generating content (type: pairing)...
+   ✅ Generated 4 sections
+   📝 Enriched: 363 → 363 words (+0)
+   ⏳ Waiting 5s before next article...
+
+🔄 Processing: wine-pairings/chardonnay
+   📝 Generating content (type: varietal)...
+   ✅ Generated 8 sections
+   📝 Enriched: 410 → 410 words (+0)
+   ⏳ Waiting 5s before next article...
+
+🔄 Processing: learn/bordeaux-wine-guide
+   📝 Generating content (type: region)...
+   ✅ Generated 8 sections
+   📝 Enriched: 435 → 435 words (+0)
+   ⏳ Waiting 5s before next article...
+
+🔄 Processing: wine-pairings/wine-pairing-mushroom-risotto
+   📝 Generating content (type: pairing)...
+   ✅ Generated 4 sections
+   📝 Enriched: 436 → 436 words (+0)
+   ⏳ Waiting 5s before next article...
+
+🔄 Processing: wine-pairings/wine-pairing
+   📝 Generating content (type: pairing)...
+   ✅ Generated 4 sections
+   📝 Enriched: 461 → 461 words (+0)
+   ⏳ Waiting 5s before next article...
+
+🔄 Processing: wine-pairings/pinot-noir-food-pairing
+   📝 Generating content (type: pairing)...
+   ✅ Generated 4 sections
+   📝 Enriched: 684 → 684 words (+0)
+   ⏳ Waiting 5s before next article...
+
+🔄 Processing: learn/natural-wine-recommendations
+   📝 Generating content (type: varietal)...
