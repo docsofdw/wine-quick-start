@@ -4,6 +4,7 @@ import BaseLayout from './BaseLayout.astro';
 import ImagePlaceholder from '../components/ui/ImagePlaceholder.astro';
 import Breadcrumbs from '../components/ui/Breadcrumbs.astro';
 import TableOfContents from '../components/ui/TableOfContents.astro';
+import ConsultationCTA from '../components/ui/ConsultationCTA.astro';
 import RelatedArticles from '../components/sections/RelatedArticles.astro';
 
 interface RelatedArticle {
@@ -111,6 +112,7 @@ const breadcrumbItems = [
         <aside class="hidden lg:block">
           <div class="sticky top-24">
             <TableOfContents />
+            <ConsultationCTA />
           </div>
         </aside>
       </div>

@@ -19,6 +19,12 @@ const schema = {
       "url": "https://winequickstart.com",
       "description": "Expert wine education and consulting services",
       "foundingDate": "2020",
+      "parentOrganization": {
+        "@type": "Organization",
+        "name": "Cellars of DW",
+        "description": "Boutique wine consultancy specializing in cellar building, private tastings, and corporate wine programs",
+        "email": "dw@cellarsofdw.com"
+      },
       "employee": featuredAuthors.map(author => getAuthorSchema(author))
     }
   ]
@@ -141,17 +147,52 @@ const schema = {
     </div>
   </section>
 
+  <!-- Cellars of DW Section -->
+  <section class="py-16 md:py-20 bg-gray-50">
+    <div class="max-w-3xl mx-auto px-4 sm:px-6">
+      <div class="text-center mb-8">
+        <p class="text-sm font-medium text-wine-600 uppercase tracking-wide mb-2">Behind the Scenes</p>
+        <h2 class="text-3xl font-bold text-gray-900">A Cellars of DW Project</h2>
+      </div>
+
+      <div class="bg-white rounded-2xl p-8 shadow-sm border border-gray-100">
+        <p class="text-gray-600 leading-relaxed mb-6">
+          Wine Quick Start is an educational initiative by <strong class="text-gray-900">Cellars of DW</strong>, a boutique wine consultancy dedicated to making fine wine accessible. What started as client education materials evolved into a comprehensive resource for wine enthusiasts everywhere.
+        </p>
+        <p class="text-gray-600 leading-relaxed mb-6">
+          Our consultancy works with private collectors, restaurants, and corporate clients on cellar building, wine program development, and curated tasting experiences. The expertise behind those services informs every article on this site.
+        </p>
+        <div class="flex flex-col sm:flex-row gap-4 items-center justify-center pt-4 border-t border-gray-100">
+          <div class="text-center sm:text-left">
+            <p class="text-sm text-gray-500">Interested in working with us?</p>
+            <a href="mailto:dw@cellarsofdw.com" class="text-wine-600 hover:text-wine-700 font-medium">
+              dw@cellarsofdw.com
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- CTA -->
   <section class="py-16 md:py-20 bg-wine-600">
     <div class="max-w-3xl mx-auto px-4 sm:px-6 text-center">
       <h2 class="text-2xl md:text-3xl font-bold text-white mb-4">Need personalized guidance?</h2>
-      <p class="text-wine-100 mb-8">Private consultations, event planning, and corporate tastings available.</p>
-      <a href="/contact" class="inline-flex items-center gap-2 bg-white text-wine-600 px-6 py-3 rounded-lg font-semibold hover:bg-wine-50 transition-colors">
-        Get in Touch
-        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
-        </svg>
-      </a>
+      <p class="text-wine-100 mb-8">Cellars of DW offers private consultations, cellar building, event wine selection, and corporate tastings.</p>
+      <div class="flex flex-col sm:flex-row gap-4 justify-center">
+        <a href="mailto:dw@cellarsofdw.com" class="inline-flex items-center justify-center gap-2 bg-white text-wine-600 px-6 py-3 rounded-lg font-semibold hover:bg-wine-50 transition-colors">
+          Email Us Directly
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+          </svg>
+        </a>
+        <a href="/contact" class="inline-flex items-center justify-center gap-2 bg-wine-500 text-white px-6 py-3 rounded-lg font-semibold hover:bg-wine-400 transition-colors border border-wine-400">
+          Contact Form
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+          </svg>
+        </a>
+      </div>
     </div>
   </section>
 </BaseLayout>
