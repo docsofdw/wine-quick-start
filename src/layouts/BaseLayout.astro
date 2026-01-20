@@ -1,6 +1,7 @@
 ---
 // Clean, Simple Base Layout - Consistent Style Guide
 import '../styles/global.css';
+import Analytics from '@vercel/analytics/astro';
 
 const {
   title = 'Wine Quick Start - Simple Wine Guidance',
@@ -280,5 +281,8 @@ const currentPath = Astro.url.pathname;
             });
         });
     </script>
+
+    <!-- Vercel Analytics -->
+    <Analytics />
 </body>
 </html>
