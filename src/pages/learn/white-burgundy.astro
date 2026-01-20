@@ -12,18 +12,70 @@ const frontmatter = {
   readTime: "18 min",
   keywords: ["white burgundy", "white", "burgundy", "wine guide"],
   structured_data: {
-      "@context": "https://schema.org",
-      "@type": "Article",
-      "headline": "White Burgundy - Expert Guide",
-      "description": "Discover the best white burgundy. Expert recommendations, tasting notes, and tips from certified sommeliers.",
-      "author": {
-          "@type": "Person",
-          "name": "Elena Martinez",
-          "jobTitle": "Senior Wine Writer"
-      },
-      "datePublished": "2026-01-20T03:33:03.952Z",
-      "dateModified": "2026-01-20T03:33:03.952Z"
-  }
+            "@context": "https://schema.org",
+            "@graph": [
+                  {
+                        "@type": "Organization",
+                        "@id": "https://winequickstart.com/#organization",
+                        "name": "Wine Quick Start",
+                        "url": "https://winequickstart.com",
+                        "description": "Expert wine guidance from certified sommeliers"
+                  },
+                  {
+                        "@type": "WebSite",
+                        "@id": "https://winequickstart.com/#website",
+                        "url": "https://winequickstart.com",
+                        "name": "Wine Quick Start",
+                        "publisher": {
+                              "@id": "https://winequickstart.com/#organization"
+                        }
+                  },
+                  {
+                        "@type": "BreadcrumbList",
+                        "itemListElement": [
+                              {
+                                    "@type": "ListItem",
+                                    "position": 1,
+                                    "name": "Home",
+                                    "item": "https://winequickstart.com"
+                              },
+                              {
+                                    "@type": "ListItem",
+                                    "position": 2,
+                                    "name": "Learn",
+                                    "item": "https://winequickstart.com/learn/"
+                              },
+                              {
+                                    "@type": "ListItem",
+                                    "position": 3,
+                                    "name": "White Burgundy - Expert Guide"
+                              }
+                        ]
+                  },
+                  {
+                        "@type": "Article",
+                        "headline": "White Burgundy - Expert Guide",
+                        "description": "Discover the best white burgundy. Expert recommendations, tasting notes, and tips from certified sommeliers.",
+                        "author": {
+                              "@type": "Person",
+                              "name": "Elena Martinez",
+                              "jobTitle": "Senior Wine Writer"
+                        },
+                        "publisher": {
+                              "@id": "https://winequickstart.com/#organization"
+                        },
+                        "datePublished": "2026-01-20",
+                        "dateModified": "2026-01-20",
+                        "mainEntityOfPage": {
+                              "@type": "WebPage",
+                              "@id": "https://winequickstart.com/learn/white-burgundy"
+                        },
+                        "isPartOf": {
+                              "@id": "https://winequickstart.com/#website"
+                        }
+                  }
+            ]
+      }
 };
 ---
 

@@ -12,18 +12,70 @@ const frontmatter = {
   readTime: "14 min",
   keywords: ["pinot noir vs cabernet", "pinot", "noir", "vs", "cabernet", "wine guide"],
   structured_data: {
-      "@context": "https://schema.org",
-      "@type": "Article",
-      "headline": "Pinot Noir Vs Cabernet - Expert Guide",
-      "description": "Discover the best pinot noir vs cabernet. Expert recommendations, tasting notes, and tips from certified sommeliers.",
-      "author": {
-          "@type": "Person",
-          "name": "Michael Chen",
-          "jobTitle": "Wine Buyer & Contributor"
-      },
-      "datePublished": "2026-01-20T03:50:19.194Z",
-      "dateModified": "2026-01-20T03:50:19.194Z"
-  }
+            "@context": "https://schema.org",
+            "@graph": [
+                  {
+                        "@type": "Organization",
+                        "@id": "https://winequickstart.com/#organization",
+                        "name": "Wine Quick Start",
+                        "url": "https://winequickstart.com",
+                        "description": "Expert wine guidance from certified sommeliers"
+                  },
+                  {
+                        "@type": "WebSite",
+                        "@id": "https://winequickstart.com/#website",
+                        "url": "https://winequickstart.com",
+                        "name": "Wine Quick Start",
+                        "publisher": {
+                              "@id": "https://winequickstart.com/#organization"
+                        }
+                  },
+                  {
+                        "@type": "BreadcrumbList",
+                        "itemListElement": [
+                              {
+                                    "@type": "ListItem",
+                                    "position": 1,
+                                    "name": "Home",
+                                    "item": "https://winequickstart.com"
+                              },
+                              {
+                                    "@type": "ListItem",
+                                    "position": 2,
+                                    "name": "Learn",
+                                    "item": "https://winequickstart.com/learn/"
+                              },
+                              {
+                                    "@type": "ListItem",
+                                    "position": 3,
+                                    "name": "Pinot Noir Vs Cabernet - Expert Guide"
+                              }
+                        ]
+                  },
+                  {
+                        "@type": "Article",
+                        "headline": "Pinot Noir Vs Cabernet - Expert Guide",
+                        "description": "Discover the best pinot noir vs cabernet. Expert recommendations, tasting notes, and tips from certified sommeliers.",
+                        "author": {
+                              "@type": "Person",
+                              "name": "Michael Chen",
+                              "jobTitle": "Wine Buyer & Contributor"
+                        },
+                        "publisher": {
+                              "@id": "https://winequickstart.com/#organization"
+                        },
+                        "datePublished": "2026-01-20",
+                        "dateModified": "2026-01-20",
+                        "mainEntityOfPage": {
+                              "@type": "WebPage",
+                              "@id": "https://winequickstart.com/learn/pinot-noir-vs-cabernet"
+                        },
+                        "isPartOf": {
+                              "@id": "https://winequickstart.com/#website"
+                        }
+                  }
+            ]
+      }
 };
 ---
 

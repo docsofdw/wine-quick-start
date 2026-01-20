@@ -14,50 +14,70 @@ const frontmatter = {
   expert_score: 9,
   article_format: "review",
   structured_data: {
-    "@context": "https://schema.org",
-    "@type": "Article",
-    "headline": "Reviewing Sauvignon blanc: What We Found",
-    "description": "Expert reviews of sauvignon blanc. Honest assessments to guide your next purchase.",
-    "author": {
-        "@type": "Person",
-        "name": "Elena Martinez",
-        "jobTitle": "Senior Wine Writer",
-        "description": "Wine writer and CSW holder specializing in making wine accessible to beginners.",
-        "url": "https://winequickstart.com/about/elena-martinez",
-        "image": "https://winequickstart.com/images/authors/elena-martinez.jpg",
-        "sameAs": [
-                "https://linkedin.com/in/elenamartinezwine",
-                "https://twitter.com/elenawrites"
-        ],
-        "knowsAbout": [
-                "Wine Writing",
-                "Spanish Wines",
-                "Argentine Wines",
-                "Beginner Education"
-        ],
-        "hasCredential": [
-                {
-                        "@type": "EducationalOccupationalCredential",
-                        "credentialCategory": "Professional Certification",
-                        "name": "WSET Level 2 Award in Wines"
-                },
-                {
-                        "@type": "EducationalOccupationalCredential",
-                        "credentialCategory": "Professional Certification",
-                        "name": "Certified Specialist of Wine (CSW)"
-                }
-        ]
-},
-    "publisher": {
-      "@type": "Organization",
-      "name": "Wine Quick Start",
-      "url": "https://winequickstart.com"
-    },
-    "datePublished": "2026-01-08T00:17:56.728Z",
-    "dateModified": "2026-01-08T00:17:56.728Z",
-    "keywords": "sauvignon blanc",
-    "articleSection": "Wine Guide"
-  },
+            "@context": "https://schema.org",
+            "@graph": [
+                  {
+                        "@type": "Organization",
+                        "@id": "https://winequickstart.com/#organization",
+                        "name": "Wine Quick Start",
+                        "url": "https://winequickstart.com",
+                        "description": "Expert wine guidance from certified sommeliers"
+                  },
+                  {
+                        "@type": "WebSite",
+                        "@id": "https://winequickstart.com/#website",
+                        "url": "https://winequickstart.com",
+                        "name": "Wine Quick Start",
+                        "publisher": {
+                              "@id": "https://winequickstart.com/#organization"
+                        }
+                  },
+                  {
+                        "@type": "BreadcrumbList",
+                        "itemListElement": [
+                              {
+                                    "@type": "ListItem",
+                                    "position": 1,
+                                    "name": "Home",
+                                    "item": "https://winequickstart.com"
+                              },
+                              {
+                                    "@type": "ListItem",
+                                    "position": 2,
+                                    "name": "Wine Pairings",
+                                    "item": "https://winequickstart.com/wine-pairings/"
+                              },
+                              {
+                                    "@type": "ListItem",
+                                    "position": 3,
+                                    "name": "Reviewing Sauvignon blanc: What We Found"
+                              }
+                        ]
+                  },
+                  {
+                        "@type": "Article",
+                        "headline": "Reviewing Sauvignon blanc: What We Found",
+                        "description": "Expert reviews of sauvignon blanc. Honest assessments to guide your next purchase.",
+                        "author": {
+                              "@type": "Person",
+                              "name": "Elena Martinez",
+                              "jobTitle": "Senior Wine Writer"
+                        },
+                        "publisher": {
+                              "@id": "https://winequickstart.com/#organization"
+                        },
+                        "datePublished": "2026-01-20",
+                        "dateModified": "2026-01-20",
+                        "mainEntityOfPage": {
+                              "@type": "WebPage",
+                              "@id": "https://winequickstart.com/wine-pairings/sauvignon-blanc"
+                        },
+                        "isPartOf": {
+                              "@id": "https://winequickstart.com/#website"
+                        }
+                  }
+            ]
+      },
   wines: []
 };
 ---

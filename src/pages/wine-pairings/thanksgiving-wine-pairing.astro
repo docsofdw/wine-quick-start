@@ -12,18 +12,70 @@ const frontmatter = {
   readTime: "32 min",
   keywords: ["thanksgiving wine pairing", "thanksgiving", "wine", "pairing", "wine guide"],
   structured_data: {
-      "@context": "https://schema.org",
-      "@type": "Article",
-      "headline": "Thanksgiving Wine Pairing - Expert Guide",
-      "description": "Discover the best thanksgiving wine pairing. Expert recommendations, tasting notes, and tips from certified sommeliers.",
-      "author": {
-          "@type": "Person",
-          "name": "James Thornton",
-          "jobTitle": "Founder & Lead Wine Consultant"
-      },
-      "datePublished": "2026-01-14T17:51:50.702Z",
-      "dateModified": "2026-01-14T17:51:50.702Z"
-  }
+            "@context": "https://schema.org",
+            "@graph": [
+                  {
+                        "@type": "Organization",
+                        "@id": "https://winequickstart.com/#organization",
+                        "name": "Wine Quick Start",
+                        "url": "https://winequickstart.com",
+                        "description": "Expert wine guidance from certified sommeliers"
+                  },
+                  {
+                        "@type": "WebSite",
+                        "@id": "https://winequickstart.com/#website",
+                        "url": "https://winequickstart.com",
+                        "name": "Wine Quick Start",
+                        "publisher": {
+                              "@id": "https://winequickstart.com/#organization"
+                        }
+                  },
+                  {
+                        "@type": "BreadcrumbList",
+                        "itemListElement": [
+                              {
+                                    "@type": "ListItem",
+                                    "position": 1,
+                                    "name": "Home",
+                                    "item": "https://winequickstart.com"
+                              },
+                              {
+                                    "@type": "ListItem",
+                                    "position": 2,
+                                    "name": "Wine Pairings",
+                                    "item": "https://winequickstart.com/wine-pairings/"
+                              },
+                              {
+                                    "@type": "ListItem",
+                                    "position": 3,
+                                    "name": "Thanksgiving Wine Pairing - Expert Guide"
+                              }
+                        ]
+                  },
+                  {
+                        "@type": "Article",
+                        "headline": "Thanksgiving Wine Pairing - Expert Guide",
+                        "description": "Discover the best thanksgiving wine pairing. Expert recommendations, tasting notes, and tips from certified sommeliers.",
+                        "author": {
+                              "@type": "Person",
+                              "name": "James Thornton",
+                              "jobTitle": "Founder & Lead Wine Consultant"
+                        },
+                        "publisher": {
+                              "@id": "https://winequickstart.com/#organization"
+                        },
+                        "datePublished": "2026-01-14",
+                        "dateModified": "2026-01-14",
+                        "mainEntityOfPage": {
+                              "@type": "WebPage",
+                              "@id": "https://winequickstart.com/wine-pairings/thanksgiving-wine-pairing"
+                        },
+                        "isPartOf": {
+                              "@id": "https://winequickstart.com/#website"
+                        }
+                  }
+            ]
+      }
 };
 ---
 

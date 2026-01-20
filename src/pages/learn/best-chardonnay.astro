@@ -12,18 +12,70 @@ const frontmatter = {
   readTime: "33 min",
   keywords: ["best chardonnay", "best", "chardonnay", "wine guide"],
   structured_data: {
-      "@context": "https://schema.org",
-      "@type": "Article",
-      "headline": "Best Chardonnay - Expert Guide",
-      "description": "Discover the best best chardonnay. Expert recommendations, tasting notes, and tips from certified sommeliers.",
-      "author": {
-          "@type": "Person",
-          "name": "Michael Chen",
-          "jobTitle": "Wine Buyer & Contributor"
-      },
-      "datePublished": "2026-01-15T23:24:41.421Z",
-      "dateModified": "2026-01-15T23:24:41.421Z"
-  }
+            "@context": "https://schema.org",
+            "@graph": [
+                  {
+                        "@type": "Organization",
+                        "@id": "https://winequickstart.com/#organization",
+                        "name": "Wine Quick Start",
+                        "url": "https://winequickstart.com",
+                        "description": "Expert wine guidance from certified sommeliers"
+                  },
+                  {
+                        "@type": "WebSite",
+                        "@id": "https://winequickstart.com/#website",
+                        "url": "https://winequickstart.com",
+                        "name": "Wine Quick Start",
+                        "publisher": {
+                              "@id": "https://winequickstart.com/#organization"
+                        }
+                  },
+                  {
+                        "@type": "BreadcrumbList",
+                        "itemListElement": [
+                              {
+                                    "@type": "ListItem",
+                                    "position": 1,
+                                    "name": "Home",
+                                    "item": "https://winequickstart.com"
+                              },
+                              {
+                                    "@type": "ListItem",
+                                    "position": 2,
+                                    "name": "Learn",
+                                    "item": "https://winequickstart.com/learn/"
+                              },
+                              {
+                                    "@type": "ListItem",
+                                    "position": 3,
+                                    "name": "Best Chardonnay - Expert Guide"
+                              }
+                        ]
+                  },
+                  {
+                        "@type": "Article",
+                        "headline": "Best Chardonnay - Expert Guide",
+                        "description": "Discover the best chardonnay. Expert recommendations, tasting notes, and tips from certified sommeliers.",
+                        "author": {
+                              "@type": "Person",
+                              "name": "Michael Chen",
+                              "jobTitle": "Wine Buyer & Contributor"
+                        },
+                        "publisher": {
+                              "@id": "https://winequickstart.com/#organization"
+                        },
+                        "datePublished": "2026-01-15",
+                        "dateModified": "2026-01-15",
+                        "mainEntityOfPage": {
+                              "@type": "WebPage",
+                              "@id": "https://winequickstart.com/learn/best-chardonnay"
+                        },
+                        "isPartOf": {
+                              "@id": "https://winequickstart.com/#website"
+                        }
+                  }
+            ]
+      }
 };
 ---
 

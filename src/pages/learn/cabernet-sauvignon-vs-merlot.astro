@@ -12,18 +12,70 @@ const frontmatter = {
   readTime: "16 min",
   keywords: ["cabernet sauvignon vs merlot", "cabernet", "sauvignon", "vs", "merlot", "wine guide"],
   structured_data: {
-      "@context": "https://schema.org",
-      "@type": "Article",
-      "headline": "Cabernet Sauvignon Vs Merlot - Expert Guide",
-      "description": "Discover the best cabernet sauvignon vs merlot. Expert recommendations, tasting notes, and tips from certified sommeliers.",
-      "author": {
-          "@type": "Person",
-          "name": "Elena Martinez",
-          "jobTitle": "Senior Wine Writer"
-      },
-      "datePublished": "2026-01-16T21:47:37.519Z",
-      "dateModified": "2026-01-16T21:47:37.519Z"
-  }
+            "@context": "https://schema.org",
+            "@graph": [
+                  {
+                        "@type": "Organization",
+                        "@id": "https://winequickstart.com/#organization",
+                        "name": "Wine Quick Start",
+                        "url": "https://winequickstart.com",
+                        "description": "Expert wine guidance from certified sommeliers"
+                  },
+                  {
+                        "@type": "WebSite",
+                        "@id": "https://winequickstart.com/#website",
+                        "url": "https://winequickstart.com",
+                        "name": "Wine Quick Start",
+                        "publisher": {
+                              "@id": "https://winequickstart.com/#organization"
+                        }
+                  },
+                  {
+                        "@type": "BreadcrumbList",
+                        "itemListElement": [
+                              {
+                                    "@type": "ListItem",
+                                    "position": 1,
+                                    "name": "Home",
+                                    "item": "https://winequickstart.com"
+                              },
+                              {
+                                    "@type": "ListItem",
+                                    "position": 2,
+                                    "name": "Learn",
+                                    "item": "https://winequickstart.com/learn/"
+                              },
+                              {
+                                    "@type": "ListItem",
+                                    "position": 3,
+                                    "name": "Cabernet Sauvignon Vs Merlot - Expert Guide"
+                              }
+                        ]
+                  },
+                  {
+                        "@type": "Article",
+                        "headline": "Cabernet Sauvignon Vs Merlot - Expert Guide",
+                        "description": "Discover the best cabernet sauvignon vs merlot. Expert recommendations, tasting notes, and tips from certified sommeliers.",
+                        "author": {
+                              "@type": "Person",
+                              "name": "Elena Martinez",
+                              "jobTitle": "Senior Wine Writer"
+                        },
+                        "publisher": {
+                              "@id": "https://winequickstart.com/#organization"
+                        },
+                        "datePublished": "2026-01-16",
+                        "dateModified": "2026-01-16",
+                        "mainEntityOfPage": {
+                              "@type": "WebPage",
+                              "@id": "https://winequickstart.com/learn/cabernet-sauvignon-vs-merlot"
+                        },
+                        "isPartOf": {
+                              "@id": "https://winequickstart.com/#website"
+                        }
+                  }
+            ]
+      }
 };
 ---
 

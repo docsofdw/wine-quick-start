@@ -14,56 +14,70 @@ const frontmatter = {
   expert_score: 9,
   article_format: "guide",
   structured_data: {
-    "@context": "https://schema.org",
-    "@type": "Article",
-    "headline": "Merlot: A Comprehensive Guide",
-    "description": "Master merlot with our comprehensive guide. Expert advice, top picks, and practical tips.",
-    "author": {
-        "@type": "Person",
-        "name": "James Thornton",
-        "jobTitle": "Founder & Lead Wine Consultant",
-        "description": "Certified Sommelier and WSET Level 3 holder with 10+ years in wine education and consulting.",
-        "url": "https://winequickstart.com/about/james-thornton",
-        "image": "https://winequickstart.com/images/authors/james-thornton.jpg",
-        "sameAs": [
-                "https://linkedin.com/in/jamesthornton",
-                "https://twitter.com/winequickstart",
-                "https://instagram.com/winequickstart"
-        ],
-        "knowsAbout": [
-                "Food & Wine Pairing",
-                "French Wines",
-                "California Wines",
-                "Wine Education"
-        ],
-        "hasCredential": [
-                {
-                        "@type": "EducationalOccupationalCredential",
-                        "credentialCategory": "Professional Certification",
-                        "name": "WSET Level 3 Award in Wines"
-                },
-                {
-                        "@type": "EducationalOccupationalCredential",
-                        "credentialCategory": "Professional Certification",
-                        "name": "Certified Sommelier (Court of Master Sommeliers)"
-                },
-                {
-                        "@type": "EducationalOccupationalCredential",
-                        "credentialCategory": "Professional Certification",
-                        "name": "French Wine Scholar (Wine Scholar Guild)"
-                }
-        ]
-},
-    "publisher": {
-      "@type": "Organization",
-      "name": "Wine Quick Start",
-      "url": "https://winequickstart.com"
-    },
-    "datePublished": "2026-01-08T00:17:20.940Z",
-    "dateModified": "2026-01-08T00:17:20.940Z",
-    "keywords": "merlot",
-    "articleSection": "Wine Guide"
-  },
+            "@context": "https://schema.org",
+            "@graph": [
+                  {
+                        "@type": "Organization",
+                        "@id": "https://winequickstart.com/#organization",
+                        "name": "Wine Quick Start",
+                        "url": "https://winequickstart.com",
+                        "description": "Expert wine guidance from certified sommeliers"
+                  },
+                  {
+                        "@type": "WebSite",
+                        "@id": "https://winequickstart.com/#website",
+                        "url": "https://winequickstart.com",
+                        "name": "Wine Quick Start",
+                        "publisher": {
+                              "@id": "https://winequickstart.com/#organization"
+                        }
+                  },
+                  {
+                        "@type": "BreadcrumbList",
+                        "itemListElement": [
+                              {
+                                    "@type": "ListItem",
+                                    "position": 1,
+                                    "name": "Home",
+                                    "item": "https://winequickstart.com"
+                              },
+                              {
+                                    "@type": "ListItem",
+                                    "position": 2,
+                                    "name": "Wine Pairings",
+                                    "item": "https://winequickstart.com/wine-pairings/"
+                              },
+                              {
+                                    "@type": "ListItem",
+                                    "position": 3,
+                                    "name": "Merlot: A Comprehensive Guide"
+                              }
+                        ]
+                  },
+                  {
+                        "@type": "Article",
+                        "headline": "Merlot: A Comprehensive Guide",
+                        "description": "Master merlot with our comprehensive guide. Expert advice, top picks, and practical tips.",
+                        "author": {
+                              "@type": "Person",
+                              "name": "James Thornton",
+                              "jobTitle": "Founder & Lead Wine Consultant"
+                        },
+                        "publisher": {
+                              "@id": "https://winequickstart.com/#organization"
+                        },
+                        "datePublished": "2026-01-20",
+                        "dateModified": "2026-01-20",
+                        "mainEntityOfPage": {
+                              "@type": "WebPage",
+                              "@id": "https://winequickstart.com/wine-pairings/merlot"
+                        },
+                        "isPartOf": {
+                              "@id": "https://winequickstart.com/#website"
+                        }
+                  }
+            ]
+      },
   wines: []
 };
 ---

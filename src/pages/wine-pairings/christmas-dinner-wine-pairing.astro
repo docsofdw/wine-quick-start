@@ -12,18 +12,70 @@ const frontmatter = {
   readTime: "21 min",
   keywords: ["christmas dinner wine pairing", "christmas", "dinner", "wine", "pairing", "wine guide"],
   structured_data: {
-      "@context": "https://schema.org",
-      "@type": "Article",
-      "headline": "Christmas Dinner Wine Pairing - Expert Guide",
-      "description": "Discover the best christmas dinner wine pairing. Expert recommendations, tasting notes, and tips from certified sommeliers.",
-      "author": {
-          "@type": "Person",
-          "name": "Elena Martinez",
-          "jobTitle": "Senior Wine Writer"
-      },
-      "datePublished": "2026-01-15T23:24:53.644Z",
-      "dateModified": "2026-01-15T23:24:53.644Z"
-  }
+            "@context": "https://schema.org",
+            "@graph": [
+                  {
+                        "@type": "Organization",
+                        "@id": "https://winequickstart.com/#organization",
+                        "name": "Wine Quick Start",
+                        "url": "https://winequickstart.com",
+                        "description": "Expert wine guidance from certified sommeliers"
+                  },
+                  {
+                        "@type": "WebSite",
+                        "@id": "https://winequickstart.com/#website",
+                        "url": "https://winequickstart.com",
+                        "name": "Wine Quick Start",
+                        "publisher": {
+                              "@id": "https://winequickstart.com/#organization"
+                        }
+                  },
+                  {
+                        "@type": "BreadcrumbList",
+                        "itemListElement": [
+                              {
+                                    "@type": "ListItem",
+                                    "position": 1,
+                                    "name": "Home",
+                                    "item": "https://winequickstart.com"
+                              },
+                              {
+                                    "@type": "ListItem",
+                                    "position": 2,
+                                    "name": "Wine Pairings",
+                                    "item": "https://winequickstart.com/wine-pairings/"
+                              },
+                              {
+                                    "@type": "ListItem",
+                                    "position": 3,
+                                    "name": "Christmas Dinner Wine Pairing - Expert Guide"
+                              }
+                        ]
+                  },
+                  {
+                        "@type": "Article",
+                        "headline": "Christmas Dinner Wine Pairing - Expert Guide",
+                        "description": "Discover the best christmas dinner wine pairing. Expert recommendations, tasting notes, and tips from certified sommeliers.",
+                        "author": {
+                              "@type": "Person",
+                              "name": "Elena Martinez",
+                              "jobTitle": "Senior Wine Writer"
+                        },
+                        "publisher": {
+                              "@id": "https://winequickstart.com/#organization"
+                        },
+                        "datePublished": "2026-01-15",
+                        "dateModified": "2026-01-15",
+                        "mainEntityOfPage": {
+                              "@type": "WebPage",
+                              "@id": "https://winequickstart.com/wine-pairings/christmas-dinner-wine-pairing"
+                        },
+                        "isPartOf": {
+                              "@id": "https://winequickstart.com/#website"
+                        }
+                  }
+            ]
+      }
 };
 ---
 

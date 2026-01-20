@@ -12,18 +12,70 @@ const frontmatter = {
   readTime: "23 min",
   keywords: ["best cabernet sauvignon under 20", "best", "cabernet", "sauvignon", "under", "20", "wine guide"],
   structured_data: {
-      "@context": "https://schema.org",
-      "@type": "Article",
-      "headline": "Best Cabernet Sauvignon Under 20 - Expert Guide",
-      "description": "Discover the best best cabernet sauvignon under 20. Expert recommendations, tasting notes, and tips from certified sommeliers.",
-      "author": {
-          "@type": "Person",
-          "name": "Michael Chen",
-          "jobTitle": "Wine Buyer & Contributor"
-      },
-      "datePublished": "2026-01-20T03:34:12.430Z",
-      "dateModified": "2026-01-20T03:34:12.430Z"
-  }
+            "@context": "https://schema.org",
+            "@graph": [
+                  {
+                        "@type": "Organization",
+                        "@id": "https://winequickstart.com/#organization",
+                        "name": "Wine Quick Start",
+                        "url": "https://winequickstart.com",
+                        "description": "Expert wine guidance from certified sommeliers"
+                  },
+                  {
+                        "@type": "WebSite",
+                        "@id": "https://winequickstart.com/#website",
+                        "url": "https://winequickstart.com",
+                        "name": "Wine Quick Start",
+                        "publisher": {
+                              "@id": "https://winequickstart.com/#organization"
+                        }
+                  },
+                  {
+                        "@type": "BreadcrumbList",
+                        "itemListElement": [
+                              {
+                                    "@type": "ListItem",
+                                    "position": 1,
+                                    "name": "Home",
+                                    "item": "https://winequickstart.com"
+                              },
+                              {
+                                    "@type": "ListItem",
+                                    "position": 2,
+                                    "name": "Buy",
+                                    "item": "https://winequickstart.com/buy/"
+                              },
+                              {
+                                    "@type": "ListItem",
+                                    "position": 3,
+                                    "name": "Best Cabernet Sauvignon Under 20 - Expert Guide"
+                              }
+                        ]
+                  },
+                  {
+                        "@type": "Article",
+                        "headline": "Best Cabernet Sauvignon Under 20 - Expert Guide",
+                        "description": "Discover the best cabernet sauvignon under 20. Expert recommendations, tasting notes, and tips from certified sommeliers.",
+                        "author": {
+                              "@type": "Person",
+                              "name": "Michael Chen",
+                              "jobTitle": "Wine Buyer & Contributor"
+                        },
+                        "publisher": {
+                              "@id": "https://winequickstart.com/#organization"
+                        },
+                        "datePublished": "2026-01-20",
+                        "dateModified": "2026-01-20",
+                        "mainEntityOfPage": {
+                              "@type": "WebPage",
+                              "@id": "https://winequickstart.com/buy/best-cabernet-sauvignon-under-20"
+                        },
+                        "isPartOf": {
+                              "@id": "https://winequickstart.com/#website"
+                        }
+                  }
+            ]
+      }
 };
 ---
 
