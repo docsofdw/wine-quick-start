@@ -1,60 +1,87 @@
-# Astro Starter Kit: Basics
+# Wine Quick Start
 
-## 🚧 Local Development
+SEO-optimized wine education site with automated content generation.
 
-<!-- Instructions for running the project locally -->
+**Live Site:** [winequickstart.com](https://winequickstart.com)
 
-## 🏗️ Build
+## Quick Start
 
-<!-- Instructions for building the project -->
+```bash
+# Install dependencies
+npm install
 
-## 🚀 Deploy
+# Start development server
+npm run dev
 
-<!-- Instructions for deploying the project -->
+# Generate new articles
+npx tsx src/scripts/generate-priority-articles.ts
 
-```sh
-npm create astro@latest -- --template basics
+# Enrich thin articles with deep content
+npx tsx src/scripts/enrich-articles.ts --thin-only --limit=10
+
+# Build for production
+npm run build
 ```
 
-[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/withastro/astro/tree/latest/examples/basics)
-[![Open with CodeSandbox](https://assets.codesandbox.io/github/button-edit-lime.svg)](https://codesandbox.io/p/sandbox/github/withastro/astro/tree/latest/examples/basics)
-[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/withastro/astro?devcontainer_path=.devcontainer/basics/devcontainer.json)
+## Features
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+- **Automated Content Generation** - AI-powered article creation with wine recommendations
+- **SEO Optimization** - Structured data, meta optimization, internal linking
+- **AI Images** - Replicate/Flux generates featured images
+- **Inventory-Aligned** - Articles target keywords matching wine catalog
+- **Duplicate Prevention** - Semantic matching prevents similar topic articles
 
-![just-the-basics](https://github.com/withastro/astro/assets/2244813/a0a5533c-a856-4198-8470-2d67b1d7c554)
+## Documentation
 
-## 🚀 Project Structure
+| Document | Description |
+|----------|-------------|
+| [SEO System](docs/SEO-SYSTEM.md) | Content generation & SEO pipeline |
+| [Scripts](docs/SCRIPTS.md) | All automation scripts reference |
+| [Architecture](docs/ARCHITECTURE.md) | Site structure & tech stack |
 
-Inside of your Astro project, you'll see the following folders and files:
+## Project Structure
 
-```text
-/
-├── public/
-│   └── favicon.svg
-├── src/
-│   ├── layouts/
-│   │   └── Layout.astro
-│   └── pages/
-│       └── index.astro
-└── package.json
+```
+src/
+├── pages/           # Article pages by category
+│   ├── learn/       # Wine education (varietals, regions)
+│   ├── wine-pairings/ # Food pairing guides
+│   └── buy/         # Price-point recommendations
+├── scripts/         # Automation scripts
+├── lib/             # Core functionality
+├── layouts/         # Page templates
+└── assets/images/   # AI-generated article images
 ```
 
-To learn more about the folder structure of an Astro project, refer to [our guide on project structure](https://docs.astro.build/en/basics/project-structure/).
+## Environment Variables
 
-## 🧞 Commands
+```env
+SUPABASE_URL=
+SUPABASE_ANON_KEY=
+WINE_CATALOG_URL=
+WINE_CATALOG_ANON_KEY=
+ANTHROPIC_API_KEY=
+REPLICATE_API_TOKEN=
+```
 
-All commands are run from the root of the project, from a terminal:
+## Daily Workflow
 
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
+```bash
+# 1. Generate articles (auto-skips duplicates)
+npx tsx src/scripts/generate-priority-articles.ts
 
-## 👀 Want to learn more?
+# 2. Enrich new articles
+npx tsx src/scripts/enrich-articles.ts --thin-only
 
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+# 3. Build & deploy
+npm run build && git push
+```
+
+## Tech Stack
+
+- **Astro** - Static + SSR framework
+- **Tailwind CSS** - Styling
+- **Supabase** - Database (keywords, tracking)
+- **Anthropic Claude** - Content enrichment
+- **Replicate** - AI image generation
+- **Vercel** - Hosting & deployment
