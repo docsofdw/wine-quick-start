@@ -140,10 +140,34 @@ async function generateArticleImage(slug: string, keyword: string): Promise<bool
   }
 }
 
-// Get existing page slugs
-function getExistingPages(): Set<string> {
+// Normalize a keyword/slug to its core topic for duplicate detection
+function normalizeToCoreTopic(text: string): string {
+  return text
+    .toLowerCase()
+    .replace(/\.(astro|mdx)$/, '')
+    // Remove common prefixes/suffixes that don't change the topic
+    .replace(/^(best-|top-|ultimate-|complete-|expert-)/g, '')
+    .replace(/(-guide|-recommendations|-basics|-explained|-101|-tips)$/g, '')
+    // Normalize pairing variations to a standard format
+    .replace(/^(wine-with-|best-wine-with-|what-wine-goes-with-|what-to-eat-with-)/, 'pairing-')
+    .replace(/(-wine-pairing|-food-pairing|-pairing)$/, '')
+    // Handle "X food pairing" -> "pairing-X"
+    .replace(/^([a-z-]+)-food-pairing$/, 'pairing-$1')
+    // Normalize wine guide variations
+    .replace(/^([a-z-]+)-wine-guide$/, '$1-wine')
+    .replace(/^([a-z-]+)-wine$/, '$1')
+    // Remove duplicate words
+    .replace(/(\b\w+\b)(?=.*\b\1\b)/g, '')
+    .replace(/--+/g, '-')
+    .replace(/^-|-$/g, '')
+    .trim();
+}
+
+// Get existing page slugs AND their normalized topics
+function getExistingPages(): { slugs: Set<string>; topics: Set<string> } {
   const pagesDir = path.join(process.cwd(), 'src/pages');
   const existingSlugs = new Set<string>();
+  const existingTopics = new Set<string>();
 
   const scanDir = (dir: string, prefix: string = '') => {
     if (!fs.existsSync(dir)) return;
@@ -160,6 +184,9 @@ function getExistingPages(): Set<string> {
         if (slug !== 'index') {
           existingSlugs.add(slug);
           existingSlugs.add(prefix + slug);
+          // Also track the normalized topic
+          const topic = normalizeToCoreTopic(slug);
+          existingTopics.add(topic);
         }
       }
     }
@@ -169,7 +196,13 @@ function getExistingPages(): Set<string> {
   scanDir(path.join(pagesDir, 'wine-pairings'));
   scanDir(path.join(pagesDir, 'buy'));
 
-  return existingSlugs;
+  return { slugs: existingSlugs, topics: existingTopics };
+}
+
+// Check if a keyword would create a duplicate article
+function isDuplicateTopic(keyword: string, existingTopics: Set<string>): boolean {
+  const newTopic = normalizeToCoreTopic(keywordToSlug(keyword));
+  return existingTopics.has(newTopic);
 }
 
 // Convert keyword to slug
@@ -394,9 +427,10 @@ function generateFAQHTML(keyword: string): string {
 async function generateArticles() {
   console.log('🍷 Generating Articles for Top Priority Keywords\n');
 
-  // Get existing pages
-  const existingPages = getExistingPages();
-  console.log(`📄 Found ${existingPages.size} existing article slugs\n`);
+  // Get existing pages and their normalized topics
+  const { slugs: existingSlugs, topics: existingTopics } = getExistingPages();
+  console.log(`📄 Found ${existingSlugs.size} existing article slugs`);
+  console.log(`🔍 Tracking ${existingTopics.size} unique topics for duplicate detection\n`);
 
   // Get top priority keywords that are active
   const { data: keywords, error } = await client
@@ -419,14 +453,24 @@ async function generateArticles() {
 
   console.log(`🎯 Found ${keywords.length} high-priority keywords (priority >= 8)\n`);
 
-  // Filter out keywords that already have articles
+  // Filter out keywords that already have articles OR would be semantic duplicates
   const keywordsNeedingArticles = keywords.filter(kw => {
     const slug = keywordToSlug(kw.keyword);
-    const hasArticle = existingPages.has(slug);
-    if (hasArticle) {
-      console.log(`  ⏭️  Skipping "${kw.keyword}" - article exists`);
+
+    // Check exact slug match
+    if (existingSlugs.has(slug)) {
+      console.log(`  ⏭️  Skipping "${kw.keyword}" - exact article exists`);
+      return false;
     }
-    return !hasArticle;
+
+    // Check semantic duplicate (same topic, different phrasing)
+    if (isDuplicateTopic(kw.keyword, existingTopics)) {
+      const topic = normalizeToCoreTopic(slug);
+      console.log(`  ⏭️  Skipping "${kw.keyword}" - similar topic "${topic}" already covered`);
+      return false;
+    }
+
+    return true;
   });
 
   console.log(`\n📝 ${keywordsNeedingArticles.length} keywords need articles\n`);
@@ -482,6 +526,9 @@ async function generateArticles() {
       // Write file
       fs.writeFileSync(filePath, content);
       console.log(`   ✅ Created: ${category}/${slug}.astro`);
+
+      // Add this topic to existingTopics to prevent duplicates in same run
+      existingTopics.add(normalizeToCoreTopic(slug));
 
       // Mark keyword as used
       await client

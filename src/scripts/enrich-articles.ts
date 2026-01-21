@@ -13,6 +13,8 @@
  *   --category=X      Only process articles in category (learn|wine-pairings|buy)
  *   --article=slug    Process a specific article by slug
  *   --priority=N      Only process articles with keyword priority >= N
+ *   --thin-only       Only process articles under 1500 words (newly created/thin)
+ *   --max-words=N     Only process articles under N words (default: unlimited)
  */
 
 import Anthropic from '@anthropic-ai/sdk';
@@ -69,6 +71,9 @@ const articleArg = args.find(a => a.startsWith('--article='));
 const specificArticle = articleArg ? articleArg.split('=')[1] : null;
 const priorityArg = args.find(a => a.startsWith('--priority='));
 const minPriority = priorityArg ? parseInt(priorityArg.split('=')[1]) : 0;
+const thinOnly = args.includes('--thin-only');
+const maxWordsArg = args.find(a => a.startsWith('--max-words='));
+const maxWords = maxWordsArg ? parseInt(maxWordsArg.split('=')[1]) : (thinOnly ? 1500 : Infinity);
 
 interface ArticleInfo {
   slug: string;
@@ -517,7 +522,11 @@ function enrichArticle(content: string, sections: Map<string, string>, keyword: 
 async function main() {
   console.log('🍷 Article Enrichment System\n');
   console.log(`Mode: ${isDryRun ? 'DRY RUN (no files will be modified)' : 'LIVE'}`);
-  console.log(`Limit: ${limit} articles\n`);
+  console.log(`Limit: ${limit} articles`);
+  if (thinOnly || maxWords < Infinity) {
+    console.log(`📏 Only processing articles under ${maxWords} words`);
+  }
+  console.log('');
 
   // Collect articles
   let articles = collectArticles();
@@ -526,17 +535,26 @@ async function main() {
   // Enrich with priorities
   articles = await enrichWithPriorities(articles);
 
+  // Filter by max word count (thin articles only)
+  if (maxWords < Infinity) {
+    const beforeFilter = articles.length;
+    articles = articles.filter(a => a.wordCount < maxWords);
+    console.log(`📏 ${articles.length} thin articles under ${maxWords} words (filtered ${beforeFilter - articles.length})\n`);
+  }
+
   // Filter by priority if specified
   if (minPriority > 0) {
     articles = articles.filter(a => (a.priority || 0) >= minPriority);
     console.log(`🎯 ${articles.length} articles with priority >= ${minPriority}\n`);
   }
 
-  // Sort by priority (highest first), then by word count (shortest first - most need enrichment)
+  // Sort by word count (shortest first - most need enrichment), then by priority
   articles.sort((a, b) => {
-    const priorityDiff = (b.priority || 5) - (a.priority || 5);
-    if (priorityDiff !== 0) return priorityDiff;
-    return a.wordCount - b.wordCount;
+    // Shortest articles first (need most enrichment)
+    const wordDiff = a.wordCount - b.wordCount;
+    if (wordDiff !== 0) return wordDiff;
+    // Then by priority (highest first)
+    return (b.priority || 5) - (a.priority || 5);
   });
 
   // Apply limit
