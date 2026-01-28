@@ -123,7 +123,7 @@ const schema = {
     <div class="container max-w-4xl">
       <h2 class="text-3xl font-bold mb-8 text-center text-gray-900">Other Ways to Reach Us</h2>
       
-      <div class="grid sm:grid-cols-2 gap-6">
+      <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
         <div class="wine-card text-center">
           <div class="text-3xl mb-4">📧</div>
           <h3 class="text-lg font-semibold mb-2 text-gray-900">Email</h3>
@@ -151,13 +151,25 @@ const schema = {
           </a>
         </div>
 
-        <div class="wine-card text-center border-wine-200 bg-wine-50/30">
+        <div class="wine-card text-center border-wine-300 bg-wine-50/50 sm:col-span-2">
           <div class="text-3xl mb-4">🍷</div>
-          <h3 class="text-lg font-semibold mb-2 text-gray-900">Wine Consultancy</h3>
-          <p class="text-gray-600 text-sm mb-2">Cellars of DW:</p>
-          <a href="mailto:dw@cellarsofdw.com" class="text-wine-600 hover:text-wine-700">
-            dw@cellarsofdw.com
-          </a>
+          <h3 class="text-lg font-semibold mb-2 text-gray-900">Wine Consulting Services</h3>
+          <p class="text-gray-600 text-sm mb-3">Cellar building, private tastings, corporate events, and personalized wine guidance.</p>
+          <div class="flex flex-col sm:flex-row gap-3 items-center justify-center">
+            <a href="https://cellarsofdw.com" target="_blank" rel="noopener" class="inline-flex items-center gap-2 text-wine-600 hover:text-wine-700 font-medium">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9" />
+              </svg>
+              cellarsofdw.com
+            </a>
+            <span class="hidden sm:inline text-gray-300">|</span>
+            <a href="mailto:dw@cellarsofdw.com" class="inline-flex items-center gap-2 text-wine-600 hover:text-wine-700 font-medium">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+              </svg>
+              dw@cellarsofdw.com
+            </a>
+          </div>
         </div>
       </div>
     </div>
