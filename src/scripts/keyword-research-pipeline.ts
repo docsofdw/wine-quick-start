@@ -1,81 +1,98 @@
 /**
- * Wine Keyword Research Pipeline
- * Uses Perplexity + DataForSEO + Firecrawl for comprehensive wine keyword research
+ * Wine Keyword Research Pipeline (FREE VERSION)
+ * Uses Google Autocomplete + intelligent expansion (no paid APIs!)
+ *
+ * Usage:
+ *   npx tsx src/scripts/keyword-research-pipeline.ts [options]
+ *
+ * Options:
+ *   --limit=N       Limit results saved to database (default: 100)
+ *   --dry-run       Preview without saving to database
+ *   --seeds=X,Y,Z   Add custom seed keywords
  */
 
 import { createClient } from '@supabase/supabase-js';
-import { getDataForSEOClient } from '../lib/dataforseo-client.js';
 import { config } from 'dotenv';
+import {
+  runFreeKeywordResearch,
+  getGoogleAutocompleteSuggestions,
+  expandWithModifiers,
+  processKeywords,
+  calculatePriority,
+  estimateSearchVolume,
+  estimateDifficulty,
+  determineIntent,
+  HIGH_VOLUME_WINE_SEEDS,
+  type KeywordWithMetrics,
+} from '../lib/free-keyword-tools.js';
 
-// Load from .env.local (where your Supabase credentials are)
+// Load from .env.local
 config({ path: '.env.local', override: true });
+
+// Parse CLI args
+const args = process.argv.slice(2);
+const isDryRun = args.includes('--dry-run');
+const limitArg = args.find(a => a.startsWith('--limit='));
+const limit = limitArg ? parseInt(limitArg.split('=')[1]) : 100;
+const seedsArg = args.find(a => a.startsWith('--seeds='));
+const customSeeds = seedsArg ? seedsArg.split('=')[1].split(',') : [];
 
 interface KeywordOpportunity {
   keyword: string;
-  searchVolume: number;
-  keywordDifficulty: number;
+  search_volume: number;
+  keyword_difficulty: number;
   cpc: number;
   competition: 'low' | 'medium' | 'high';
   intent: 'informational' | 'commercial' | 'navigational' | 'transactional';
   seasonality: 'stable' | 'seasonal' | 'trending';
-  relatedKeywords: string[];
-  competitorUrls: string[];
-  contentGaps: string[];
-  priority: number; // 1-10 scale
-}
-
-interface CompetitorAnalysis {
-  url: string;
-  title: string;
-  headings: string[];
-  wordCount: number;
-  backlinks: number;
-  domain_authority: number;
-  contentGaps: string[];
+  priority: number;
+  status: 'active' | 'used';
 }
 
 class WineKeywordResearch {
   private supabase;
-  
+
   constructor() {
     const supabaseUrl = process.env.SUPABASE_URL;
     const supabaseKey = process.env.SUPABASE_ANON_KEY;
-    
+
     if (!supabaseUrl || !supabaseKey) {
       throw new Error('SUPABASE_URL and SUPABASE_ANON_KEY must be set in .env.local');
     }
-    
+
     this.supabase = createClient(supabaseUrl, supabaseKey);
   }
 
   /**
-   * Main keyword research workflow
+   * Main keyword research workflow (FREE - no paid APIs)
    */
   async runKeywordResearch(): Promise<KeywordOpportunity[]> {
-    console.log('🔍 Starting wine keyword research pipeline...');
-    
+    console.log('🍷 Wine Keyword Research Pipeline (FREE VERSION)\n');
+    console.log('═══════════════════════════════════════════════\n');
+
     try {
-      // Step 1: Get trending wine topics from Perplexity
-      const trendingTopics = await this.getTrendingWineTopics();
-      
-      // Step 2: Expand keywords using seed terms
-      const expandedKeywords = await this.expandKeywords(trendingTopics);
-      
-      // Step 3: Get search volume and competition data
-      const keywordData = await this.getKeywordMetrics(expandedKeywords);
-      
-      // Step 4: Analyze top competitors for each keyword
-      const competitorAnalysis = await this.analyzeCompetitors(keywordData);
-      
-      // Step 5: Score and rank opportunities
-      const opportunities = await this.scoreOpportunities(keywordData, competitorAnalysis);
-      
-      // Step 6: Save to database
-      await this.saveOpportunities(opportunities);
-      
-      console.log(`✅ Found ${opportunities.length} wine keyword opportunities`);
-      return opportunities.slice(0, 50); // Return top 50
-      
+      // Step 1: Run free keyword research
+      const keywords = await runFreeKeywordResearch(customSeeds);
+
+      // Step 2: Convert to database format
+      const opportunities = this.convertToOpportunities(keywords);
+
+      // Step 3: Filter and sort
+      const filtered = opportunities
+        .filter(o => o.priority >= 5) // Only save priority 5+
+        .slice(0, limit);
+
+      console.log(`\n📊 Found ${filtered.length} high-priority opportunities\n`);
+
+      // Step 4: Save to database (unless dry run)
+      if (!isDryRun) {
+        await this.saveOpportunities(filtered);
+      } else {
+        console.log('🔍 DRY RUN - Not saving to database\n');
+      }
+
+      return filtered;
+
     } catch (error) {
       console.error('❌ Keyword research failed:', error);
       throw error;
@@ -83,285 +100,75 @@ class WineKeywordResearch {
   }
 
   /**
-   * Get trending wine topics using Perplexity
+   * Convert processed keywords to database format
    */
-  private async getTrendingWineTopics(): Promise<string[]> {
-    // In practice, this would use the Perplexity MCP
-    // Example prompts to use with Perplexity:
-    const perplexityPrompts = [
-      "What are the trending wine topics and searches in 2024?",
-      "Find emerging wine regions and varietals gaining popularity",
-      "Search for seasonal wine pairing trends this month",
-      "Discover new wine industry developments and consumer interests"
-    ];
-
-    // Mock data representing what Perplexity would return
-    return [
-      "natural wine",
-      "orange wine",
-      "biodynamic wine", 
-      "low alcohol wine",
-      "wine pairing seafood",
-      "burgundy 2022 vintage",
-      "sustainable wine",
-      "pet nat wine",
-      "wine storage temperature",
-      "wine investment 2024",
-      "natural wine bars",
-      "orange wine pairing",
-      "wine tasting techniques",
-      "wine and chocolate",
-      "summer wine cocktails"
-    ];
+  private convertToOpportunities(keywords: KeywordWithMetrics[]): KeywordOpportunity[] {
+    return keywords.map(kw => ({
+      keyword: kw.keyword,
+      search_volume: this.volumeToNumber(kw.estimatedVolume),
+      keyword_difficulty: this.difficultyToNumber(kw.estimatedDifficulty),
+      cpc: this.estimateCPC(kw.intent),
+      competition: this.difficultyToCompetition(kw.estimatedDifficulty),
+      intent: kw.intent,
+      seasonality: this.detectSeasonality(kw.keyword),
+      priority: kw.priority,
+      status: 'active' as const,
+    }));
   }
 
   /**
-   * Expand keywords using wine-specific modifiers
+   * Convert volume estimate to numeric value
    */
-  private async expandKeywords(seedTerms: string[]): Promise<string[]> {
-    const modifiers = [
-      // Intent modifiers
-      "best", "guide", "how to", "what is", "types of", "vs",
-      // Wine-specific modifiers  
-      "pairing", "tasting notes", "price", "buy", "recommendations",
-      "vintage", "region", "food pairing", "serving temperature",
-      // Commercial modifiers
-      "under $20", "under $50", "cheap", "expensive", "budget",
-      // Informational modifiers
-      "beginner", "expert", "review", "rating", "comparison"
-    ];
+  private volumeToNumber(volume: 'high' | 'medium' | 'low'): number {
+    const map = { high: 2000, medium: 500, low: 100 };
+    return map[volume] || 500;
+  }
 
-    const expanded: string[] = [];
-    
-    for (const seed of seedTerms) {
-      // Add base term
-      expanded.push(seed);
-      
-      // Add modified versions
-      for (const modifier of modifiers) {
-        expanded.push(`${modifier} ${seed}`);
-        expanded.push(`${seed} ${modifier}`);
-      }
-      
-      // Add question variations
-      expanded.push(`what is ${seed}`);
-      expanded.push(`how to choose ${seed}`);
-      expanded.push(`best ${seed} for beginners`);
+  /**
+   * Convert difficulty to numeric value
+   */
+  private difficultyToNumber(difficulty: 'easy' | 'medium' | 'hard'): number {
+    const map = { easy: 20, medium: 45, hard: 70 };
+    return map[difficulty] || 45;
+  }
+
+  /**
+   * Convert difficulty to competition level
+   */
+  private difficultyToCompetition(difficulty: 'easy' | 'medium' | 'hard'): 'low' | 'medium' | 'high' {
+    const map = { easy: 'low', medium: 'medium', hard: 'high' } as const;
+    return map[difficulty] || 'medium';
+  }
+
+  /**
+   * Estimate CPC based on intent
+   */
+  private estimateCPC(intent: string): number {
+    const map: Record<string, number> = {
+      transactional: 2.5,
+      commercial: 1.5,
+      informational: 0.5,
+      navigational: 0.3,
+    };
+    return map[intent] || 0.5;
+  }
+
+  /**
+   * Detect if keyword is seasonal
+   */
+  private detectSeasonality(keyword: string): 'stable' | 'seasonal' | 'trending' {
+    const kw = keyword.toLowerCase();
+
+    // Seasonal keywords
+    if (/thanksgiving|christmas|holiday|valentine|summer|winter|fall|spring|new year/.test(kw)) {
+      return 'seasonal';
     }
 
-    // Remove duplicates and filter
-    return Array.from(new Set(expanded))
-      .filter(kw => kw.length >= 10 && kw.length <= 100);
-  }
-
-  /**
-   * Get keyword metrics from DataForSEO
-   */
-  private async getKeywordMetrics(keywords: string[]): Promise<any[]> {
-    console.log(`🔍 Getting keyword metrics for ${keywords.length} keywords...`);
-    
-    try {
-      const client = getDataForSEOClient();
-      const keywordData = await client.getKeywordData(keywords);
-      
-      console.log(`✅ Retrieved data for ${keywordData.length} keywords`);
-      
-      return keywordData.map(kw => ({
-        keyword: kw.keyword,
-        search_volume: kw.search_volume,
-        keyword_difficulty: kw.keyword_difficulty,
-        cpc: kw.cpc,
-        competition: kw.competition > 0.7 ? 'high' : kw.competition > 0.4 ? 'medium' : 'low',
-        related_keywords: kw.related_keywords || this.generateRelatedKeywords(kw.keyword, 5),
-        serp_features: ['organic_results', 'people_also_ask', 'related_searches']
-      }));
-      
-    } catch (error) {
-      console.error('❌ DataForSEO keyword metrics failed:', error);
-      
-      // Fallback to mock data if API fails
-      console.log('📝 Using fallback mock data...');
-      const mockMetrics = keywords.slice(0, 50).map(keyword => ({
-        keyword,
-        search_volume: Math.floor(Math.random() * 5000) + 100,
-        keyword_difficulty: Math.floor(Math.random() * 70) + 10,
-        cpc: Math.random() * 3 + 0.5,
-        competition: Math.random() > 0.7 ? 'high' : Math.random() > 0.4 ? 'medium' : 'low',
-        related_keywords: this.generateRelatedKeywords(keyword, 5),
-        serp_features: ['featured_snippet', 'people_also_ask', 'related_searches']
-      }));
-
-      return mockMetrics;
+    // Trending keywords
+    if (/2024|2025|trending|new|latest/.test(kw)) {
+      return 'trending';
     }
-  }
 
-  /**
-   * Analyze competitors for each keyword
-   */
-  private async analyzeCompetitors(keywordData: any[]): Promise<Map<string, CompetitorAnalysis[]>> {
-    const competitorMap = new Map<string, CompetitorAnalysis[]>();
-    console.log(`🏆 Analyzing competitors for ${Math.min(10, keywordData.length)} keywords...`);
-    
-    for (const kw of keywordData.slice(0, 10)) { // Analyze top 10 keywords to save API calls
-      try {
-        const client = getDataForSEOClient();
-        const serpData = await client.getSerpResults(kw.keyword);
-        
-        const competitors: CompetitorAnalysis[] = serpData.results.slice(0, 5).map(result => ({
-          url: result.url,
-          title: result.title,
-          headings: this.generateCompetitorHeadings(kw.keyword), // Would use Firecrawl in practice
-          wordCount: Math.floor(Math.random() * 2000) + 1000,
-          backlinks: Math.floor(Math.random() * 500),
-          domain_authority: Math.floor(Math.random() * 40) + 40,
-          contentGaps: this.identifyContentGaps(kw.keyword)
-        }));
-        
-        competitorMap.set(kw.keyword, competitors);
-        console.log(`✅ Analyzed ${competitors.length} competitors for "${kw.keyword}"`);
-        
-        // Rate limiting
-        await new Promise(resolve => setTimeout(resolve, 1000));
-        
-      } catch (error) {
-        console.error(`❌ Failed to analyze competitors for "${kw.keyword}":`, error);
-        
-        // Fallback to mock data
-        const competitors: CompetitorAnalysis[] = [
-          {
-            url: `https://example-wine-site.com/${kw.keyword.replace(/\s+/g, '-')}`,
-            title: `The Complete Guide to ${kw.keyword}`,
-            headings: this.generateCompetitorHeadings(kw.keyword),
-            wordCount: Math.floor(Math.random() * 2000) + 1000,
-            backlinks: Math.floor(Math.random() * 500),
-            domain_authority: Math.floor(Math.random() * 40) + 40,
-            contentGaps: this.identifyContentGaps(kw.keyword)
-          }
-        ];
-        
-        competitorMap.set(kw.keyword, competitors);
-      }
-    }
-    
-    return competitorMap;
-  }
-
-  /**
-   * Generate related keywords
-   */
-  private generateRelatedKeywords(keyword: string, count: number): string[] {
-    const variations = [
-      `${keyword} guide`,
-      `${keyword} tips`, 
-      `best ${keyword}`,
-      `${keyword} for beginners`,
-      `${keyword} review`
-    ];
-    
-    return variations.slice(0, count);
-  }
-
-  /**
-   * Generate competitor headings analysis
-   */
-  private generateCompetitorHeadings(keyword: string): string[] {
-    return [
-      `What is ${keyword}?`,
-      `Best ${keyword} Options`,
-      `How to Choose ${keyword}`,
-      `Price Guide`,
-      `Expert Reviews`,
-      `Frequently Asked Questions`
-    ];
-  }
-
-  /**
-   * Identify content gaps in competitor analysis
-   */
-  private identifyContentGaps(keyword: string): string[] {
-    return [
-      `Interactive ${keyword} selector tool`,
-      `Price comparison table`,
-      `Video tasting notes`, 
-      `User-generated reviews`,
-      `Live pricing data`
-    ];
-  }
-
-  /**
-   * Score and rank keyword opportunities
-   */
-  private async scoreOpportunities(
-    keywordData: any[], 
-    competitorAnalysis: Map<string, CompetitorAnalysis[]>
-  ): Promise<KeywordOpportunity[]> {
-    
-    const opportunities: KeywordOpportunity[] = [];
-    
-    for (const kw of keywordData) {
-      const competitors = competitorAnalysis.get(kw.keyword) || [];
-      const avgCompetitorDA = competitors.reduce((sum, comp) => sum + comp.domain_authority, 0) / competitors.length || 50;
-      
-      // Calculate priority score (1-10)
-      let priority = 5; // Base score
-      
-      // Volume bonus
-      if (kw.search_volume > 1000) priority += 2;
-      else if (kw.search_volume > 500) priority += 1;
-      
-      // Difficulty penalty
-      if (kw.keyword_difficulty < 25) priority += 2;
-      else if (kw.keyword_difficulty > 50) priority -= 1;
-      
-      // Competition bonus
-      if (avgCompetitorDA < 60) priority += 1;
-      
-      // Wine-specific bonus
-      if (kw.keyword.includes('pairing') || kw.keyword.includes('wine')) priority += 1;
-      
-      // Commercial intent bonus
-      const hasCommercialIntent = /buy|best|cheap|price|under \$|review/.test(kw.keyword);
-      if (hasCommercialIntent) priority += 1;
-      
-      priority = Math.min(10, Math.max(1, priority));
-      
-      const opportunity: KeywordOpportunity = {
-        keyword: kw.keyword,
-        searchVolume: kw.search_volume,
-        keywordDifficulty: kw.keyword_difficulty,
-        cpc: kw.cpc,
-        competition: kw.competition,
-        intent: this.determineIntent(kw.keyword),
-        seasonality: this.determineSeasonality(kw.keyword),
-        relatedKeywords: kw.related_keywords,
-        competitorUrls: competitors.map(c => c.url),
-        contentGaps: competitors.flatMap(c => c.contentGaps),
-        priority
-      };
-      
-      opportunities.push(opportunity);
-    }
-    
-    // Sort by priority score
-    return opportunities.sort((a, b) => b.priority - a.priority);
-  }
-
-  /**
-   * Determine search intent
-   */
-  private determineIntent(keyword: string): KeywordOpportunity['intent'] {
-    if (/buy|price|cheap|under \$|shop/.test(keyword)) return 'transactional';
-    if (/best|vs|review|compare/.test(keyword)) return 'commercial';
-    if (/how to|what is|guide|tips/.test(keyword)) return 'informational';
-    return 'navigational';
-  }
-
-  /**
-   * Determine seasonality
-   */
-  private determineSeasonality(keyword: string): KeywordOpportunity['seasonality'] {
-    if (/summer|winter|holiday|christmas|valentine/.test(keyword)) return 'seasonal';
-    if (/trending|2024|new/.test(keyword)) return 'trending';
     return 'stable';
   }
 
@@ -369,50 +176,85 @@ class WineKeywordResearch {
    * Save opportunities to database
    */
   private async saveOpportunities(opportunities: KeywordOpportunity[]): Promise<void> {
+    console.log('💾 Saving to database...\n');
+
+    let saved = 0;
+    let skipped = 0;
+    let failed = 0;
+
     for (const opp of opportunities) {
-      const { error } = await this.supabase
-        .from('keyword_opportunities')
-        .upsert({
-          keyword: opp.keyword,
-          search_volume: opp.searchVolume,
-          keyword_difficulty: opp.keywordDifficulty,
-          cpc: opp.cpc,
-          competition: opp.competition,
-          intent: opp.intent,
-          seasonality: opp.seasonality,
-          related_keywords: opp.relatedKeywords,
-          competitor_urls: opp.competitorUrls,
-          content_gaps: opp.contentGaps,
-          priority: opp.priority,
-          created_at: new Date().toISOString(),
-          status: 'active'
-        });
-      
-      if (error) {
-        console.error(`Failed to save keyword ${opp.keyword}:`, error);
+      try {
+        // Check if keyword already exists
+        const { data: existing } = await this.supabase
+          .from('keyword_opportunities')
+          .select('keyword, status')
+          .eq('keyword', opp.keyword)
+          .single();
+
+        if (existing) {
+          // Update priority if existing is active
+          if (existing.status === 'active') {
+            await this.supabase
+              .from('keyword_opportunities')
+              .update({ priority: opp.priority })
+              .eq('keyword', opp.keyword);
+          }
+          skipped++;
+          continue;
+        }
+
+        // Insert new keyword
+        const { error } = await this.supabase
+          .from('keyword_opportunities')
+          .insert({
+            keyword: opp.keyword,
+            search_volume: opp.search_volume,
+            keyword_difficulty: opp.keyword_difficulty,
+            cpc: opp.cpc,
+            competition: opp.competition,
+            intent: opp.intent,
+            seasonality: opp.seasonality,
+            priority: opp.priority,
+            status: 'active',
+            created_at: new Date().toISOString(),
+          });
+
+        if (error) {
+          failed++;
+        } else {
+          saved++;
+        }
+      } catch (err) {
+        failed++;
       }
     }
-    
-    console.log(`💾 Saved ${opportunities.length} keyword opportunities`);
+
+    console.log('═══════════════════════════════════════════════');
+    console.log('📋 SAVE SUMMARY');
+    console.log('═══════════════════════════════════════════════');
+    console.log(`✅ New keywords saved: ${saved}`);
+    console.log(`⏭️  Already existed: ${skipped}`);
+    console.log(`❌ Failed: ${failed}`);
+    console.log(`📊 Total processed: ${opportunities.length}\n`);
   }
 
   /**
-   * Get top opportunities for content creation
+   * Get top opportunities from database
    */
-  async getTopOpportunities(limit: number = 10): Promise<KeywordOpportunity[]> {
+  async getTopOpportunities(count: number = 10): Promise<KeywordOpportunity[]> {
     const { data, error } = await this.supabase
       .from('keyword_opportunities')
       .select('*')
       .eq('status', 'active')
       .order('priority', { ascending: false })
       .order('search_volume', { ascending: false })
-      .limit(limit);
-    
+      .limit(count);
+
     if (error) {
       console.error('Failed to fetch opportunities:', error);
       return [];
     }
-    
+
     return data || [];
   }
 
@@ -425,6 +267,31 @@ class WineKeywordResearch {
       .update({ status: 'used', used_at: new Date().toISOString() })
       .eq('keyword', keyword);
   }
+
+  /**
+   * Quick research: just expand seeds without API calls
+   */
+  async quickResearch(): Promise<KeywordOpportunity[]> {
+    console.log('⚡ Quick keyword expansion (no API calls)...\n');
+
+    // Expand seeds with modifiers
+    const expanded = expandWithModifiers(HIGH_VOLUME_WINE_SEEDS);
+
+    // Process and score
+    const processed = processKeywords(expanded);
+
+    // Convert to database format
+    const opportunities = this.convertToOpportunities(processed);
+
+    // Save high-priority ones
+    const filtered = opportunities.filter(o => o.priority >= 6).slice(0, limit);
+
+    if (!isDryRun) {
+      await this.saveOpportunities(filtered);
+    }
+
+    return filtered;
+  }
 }
 
 export default WineKeywordResearch;
@@ -432,12 +299,21 @@ export default WineKeywordResearch;
 // Run if called directly
 if (import.meta.url === `file://${process.argv[1]}`) {
   const research = new WineKeywordResearch();
-  research.runKeywordResearch()
+
+  // Check for quick mode
+  const quickMode = args.includes('--quick');
+
+  const runner = quickMode ? research.quickResearch() : research.runKeywordResearch();
+
+  runner
     .then((opportunities) => {
-      console.log('\n🎯 Top 10 Wine Keyword Opportunities:');
-      opportunities.slice(0, 10).forEach((opp, i) => {
-        console.log(`${i + 1}. ${opp.keyword} (Vol: ${opp.searchVolume}, KD: ${opp.keywordDifficulty}, Priority: ${opp.priority})`);
+      console.log('\n🎯 Top 15 Keyword Opportunities:');
+      console.log('───────────────────────────────────────────────');
+      opportunities.slice(0, 15).forEach((opp, i) => {
+        console.log(`${String(i + 1).padStart(2)}. [P${opp.priority}] ${opp.keyword}`);
+        console.log(`    Vol: ~${opp.search_volume}/mo | Diff: ${opp.keyword_difficulty} | Intent: ${opp.intent}`);
       });
+      console.log('\n✅ Keyword research complete!\n');
       process.exit(0);
     })
     .catch((error) => {

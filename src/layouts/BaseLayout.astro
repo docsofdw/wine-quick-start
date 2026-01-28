@@ -110,9 +110,17 @@ const currentPath = Astro.url.pathname;
                        class={`px-4 py-2 rounded-md font-medium transition-all duration-200 focus-ring ${currentPath.startsWith('/learn') ? 'text-wine-700 bg-wine-50' : 'text-gray-700 hover:text-wine-700 hover:bg-wine-50'}`}>
                         Learn
                     </a>
-                    <a href="/buy/"
-                       class={`px-4 py-2 rounded-md font-medium transition-all duration-200 focus-ring ${currentPath.startsWith('/buy') ? 'text-wine-700 bg-wine-50' : 'text-gray-700 hover:text-wine-700 hover:bg-wine-50'}`}>
-                        Buy
+                    <a href="/shop/"
+                       class={`px-4 py-2 rounded-md font-medium transition-all duration-200 focus-ring ${currentPath.startsWith('/shop') ? 'text-wine-700 bg-wine-50' : 'text-gray-700 hover:text-wine-700 hover:bg-wine-50'}`}>
+                        Shop
+                    </a>
+                    <a href="/gifts/"
+                       class={`px-4 py-2 rounded-md font-medium transition-all duration-200 focus-ring ${currentPath.startsWith('/gifts') ? 'text-wine-700 bg-wine-50' : 'text-gray-700 hover:text-wine-700 hover:bg-wine-50'}`}>
+                        Gifts
+                    </a>
+                    <a href="/subscription/"
+                       class={`px-4 py-2 rounded-md font-medium transition-all duration-200 focus-ring ${currentPath.startsWith('/subscription') ? 'text-wine-700 bg-wine-50' : 'text-gray-700 hover:text-wine-700 hover:bg-wine-50'}`}>
+                        Subscribe
                     </a>
                     <a href="/about/"
                        class={`px-4 py-2 rounded-md font-medium transition-all duration-200 focus-ring ${currentPath.startsWith('/about') ? 'text-wine-700 bg-wine-50' : 'text-gray-700 hover:text-wine-700 hover:bg-wine-50'}`}>
@@ -154,8 +162,14 @@ const currentPath = Astro.url.pathname;
                         <a href="/learn/" class="flex items-center px-4 py-3 text-base font-medium text-gray-700 hover:bg-wine-50 hover:text-wine-700 rounded-lg transition-all duration-200">
                             Learn
                         </a>
-                        <a href="/buy/" class="flex items-center px-4 py-3 text-base font-medium text-gray-700 hover:bg-wine-50 hover:text-wine-700 rounded-lg transition-all duration-200">
-                            Buy Wine
+                        <a href="/shop/" class="flex items-center px-4 py-3 text-base font-medium text-gray-700 hover:bg-wine-50 hover:text-wine-700 rounded-lg transition-all duration-200">
+                            Shop Wine
+                        </a>
+                        <a href="/gifts/" class="flex items-center px-4 py-3 text-base font-medium text-gray-700 hover:bg-wine-50 hover:text-wine-700 rounded-lg transition-all duration-200">
+                            Wine Gifts
+                        </a>
+                        <a href="/subscription/" class="flex items-center px-4 py-3 text-base font-medium text-gray-700 hover:bg-wine-50 hover:text-wine-700 rounded-lg transition-all duration-200">
+                            Subscription
                         </a>
                         <a href="/about/" class="flex items-center px-4 py-3 text-base font-medium text-gray-700 hover:bg-wine-50 hover:text-wine-700 rounded-lg transition-all duration-200">
                             About
@@ -180,8 +194,8 @@ const currentPath = Astro.url.pathname;
     <!-- Footer -->
     <footer class="bg-gray-900 text-white py-12">
         <div class="max-w-6xl mx-auto px-4 sm:px-6">
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-8">
-                <div class="lg:col-span-1">
+            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-8 mb-8">
+                <div class="col-span-2 md:col-span-1 lg:col-span-1">
                     <div class="text-xl font-bold text-wine-400 mb-4">Wine Quick Start</div>
                     <p class="text-gray-400 text-sm leading-relaxed">Expert wine guidance from certified sommeliers. Find the perfect wine for any occasion.</p>
                 </div>
@@ -190,7 +204,15 @@ const currentPath = Astro.url.pathname;
                     <ul class="space-y-3 text-sm">
                         <li><a href="/wine-pairings/" class="text-gray-400 hover:text-wine-400 transition-colors">Wine Pairings</a></li>
                         <li><a href="/learn/" class="text-gray-400 hover:text-wine-400 transition-colors">Learn</a></li>
-                        <li><a href="/buy/" class="text-gray-400 hover:text-wine-400 transition-colors">Buy Wine</a></li>
+                        <li><a href="/buy/" class="text-gray-400 hover:text-wine-400 transition-colors">Buying Guide</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h5 class="font-semibold mb-4 text-white">Shop</h5>
+                    <ul class="space-y-3 text-sm">
+                        <li><a href="/shop/" class="text-gray-400 hover:text-wine-400 transition-colors">Browse Wines</a></li>
+                        <li><a href="/gifts/" class="text-gray-400 hover:text-wine-400 transition-colors">Wine Gifts</a></li>
+                        <li><a href="/subscription/" class="text-gray-400 hover:text-wine-400 transition-colors">Subscription</a></li>
                     </ul>
                 </div>
                 <div>

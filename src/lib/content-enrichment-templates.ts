@@ -3,6 +3,17 @@
  *
  * These prompts generate deep, factual wine content to expand thin articles
  * into comprehensive, SEO-rich guides.
+ *
+ * Includes:
+ * - History & Origins
+ * - Terroir & Production
+ * - Tasting Profiles
+ * - Food Pairings
+ * - Buying Guides
+ * - Expert Tips
+ * - FAQs (optimized for featured snippets)
+ * - People Also Ask targeting
+ * - HowTo steps for schema
  */
 
 export interface ArticleContext {
@@ -10,6 +21,16 @@ export interface ArticleContext {
   title: string;
   category: 'learn' | 'wine-pairings' | 'buy';
   existingWines?: string[];
+}
+
+export interface FAQItem {
+  question: string;
+  answer: string;
+}
+
+export interface HowToStep {
+  name: string;
+  text: string;
 }
 
 /**
@@ -411,4 +432,214 @@ export function estimateWordAddition(keyword: string): number {
   };
 
   return estimates[contentType] || 1200;
+}
+
+/**
+ * People Also Ask (PAA) prompt for featured snippet targeting
+ * These questions are designed to match Google's PAA boxes
+ */
+export function getPeopleAlsoAskPrompt(context: ArticleContext): string {
+  const { keyword } = context;
+  const contentType = getContentType(keyword);
+
+  const basePrompt = `Generate 6-8 "People Also Ask" style questions and concise answers for "${keyword}".
+
+CRITICAL REQUIREMENTS:
+1. Questions must be EXACTLY what appears in Google's PAA boxes for this topic
+2. Answers must be 40-60 words (optimal for featured snippets)
+3. Start each answer with a DIRECT statement, then explain
+4. Include the target keyword naturally in answers
+5. Focus on questions with clear, definitive answers
+
+Question types to include:
+- "What is the best..." questions
+- "How do I..." questions
+- "Is [X] good for..." questions
+- "What's the difference between..." questions
+- "How much does..." questions
+- "Can I..." questions`;
+
+  const contentSpecific: Record<string, string> = {
+    varietal: `
+For this varietal, include questions about:
+- Taste profile and characteristics
+- Best food pairings
+- Price expectations
+- How to serve/store
+- Comparison with similar wines`,
+
+    region: `
+For this wine region, include questions about:
+- What makes wines from this region special
+- Best producers/estates
+- When to drink (aging)
+- Price ranges
+- How to identify quality`,
+
+    pairing: `
+For this food pairing, include questions about:
+- Why this pairing works
+- Alternative wine options
+- What to avoid pairing
+- Serving temperature
+- Budget-friendly options`,
+
+    buying: `
+For this buying guide, include questions about:
+- Best value options
+- How to spot quality
+- Where to buy
+- Storage requirements
+- Is it worth the price`,
+
+    comparison: `
+For this comparison, include questions about:
+- Key differences
+- Which is better for [X]
+- Price comparison
+- Taste differences
+- When to choose each`,
+  };
+
+  return basePrompt + (contentSpecific[contentType] || '') + `
+
+Format response as JSON array:
+[
+  {"question": "What is the best wine for...?", "answer": "The best wine for... is X because Y. This works well due to Z."},
+  ...
+]`;
+}
+
+/**
+ * HowTo steps prompt for schema.org HowTo markup
+ * Generates step-by-step guides that qualify for HowTo rich results
+ */
+export function getHowToStepsPrompt(context: ArticleContext): string {
+  const { keyword } = context;
+  const contentType = getContentType(keyword);
+
+  let guide = '';
+
+  if (contentType === 'pairing') {
+    guide = `Create a step-by-step guide: "How to Pair Wine with ${keyword.replace(/pairing|wine|with/gi, '').trim()}"
+
+Steps should cover:
+1. Assess the main protein/dish
+2. Consider cooking method and sauces
+3. Match wine weight to food weight
+4. Consider flavor bridges
+5. Test and adjust`;
+  } else if (contentType === 'buying') {
+    guide = `Create a step-by-step guide: "How to Buy ${keyword.replace(/buy|buying|guide/gi, '').trim()}"
+
+Steps should cover:
+1. Set your budget range
+2. Research producers/regions
+3. Read the label correctly
+4. Check vintage appropriateness
+5. Verify storage/freshness`;
+  } else if (contentType === 'varietal' || contentType === 'region') {
+    guide = `Create a step-by-step guide: "How to Choose ${keyword}"
+
+Steps should cover:
+1. Identify your taste preferences
+2. Consider the occasion
+3. Set a budget
+4. Research quality producers
+5. Check reviews/ratings
+6. Verify proper storage`;
+  } else {
+    guide = `Create a step-by-step guide: "How to Select ${keyword}"
+
+Steps should cover:
+1. Define your needs
+2. Research options
+3. Compare quality levels
+4. Check prices
+5. Make your selection`;
+  }
+
+  return guide + `
+
+REQUIREMENTS:
+- 5-7 clear, actionable steps
+- Each step 20-40 words
+- Use imperative verbs (Check, Select, Consider)
+- Include specific, helpful details
+
+Format as JSON array:
+[
+  {"name": "Step Name", "text": "Detailed step instructions..."},
+  ...
+]`;
+}
+
+/**
+ * Quick Answer prompt for featured snippets
+ * Generates the perfect 40-60 word answer for position zero
+ */
+export function getQuickAnswerPrompt(context: ArticleContext): string {
+  const { keyword } = context;
+
+  return `Write a 40-60 word featured snippet answer for the query "${keyword}".
+
+REQUIREMENTS:
+1. Start with a direct answer in the first sentence
+2. Include the keyword naturally
+3. Add 1-2 supporting details
+4. End with a specific recommendation or tip
+5. Be authoritative but accessible
+
+The answer should be self-contained and directly answer what someone searching for "${keyword}" wants to know.
+
+Format: Plain text, no formatting, 40-60 words exactly.`;
+}
+
+/**
+ * Internal linking suggestions prompt
+ * Generates related topic suggestions for internal links
+ */
+export function getInternalLinkingSuggestionsPrompt(context: ArticleContext): string {
+  const { keyword, category } = context;
+
+  return `For an article about "${keyword}" in the ${category} category, suggest 5-8 related topics that should be internally linked.
+
+Consider:
+- Related wine varietals
+- Complementary food pairings
+- Similar regions
+- Price tier alternatives
+- Seasonal relevance
+
+Format as JSON array:
+[
+  {"topic": "Related Topic", "relevance": "Why this connects to ${keyword}", "anchorText": "suggested anchor text"},
+  ...
+]`;
+}
+
+/**
+ * Meta description variations prompt
+ * Generates multiple meta description options to A/B test
+ */
+export function getMetaDescriptionVariationsPrompt(context: ArticleContext): string {
+  const { keyword, category } = context;
+
+  return `Generate 3 meta description variations for an article about "${keyword}" (${category} category).
+
+REQUIREMENTS:
+- Each exactly 150-160 characters
+- Include the keyword naturally
+- Include a call-to-action or value proposition
+- Make each variation distinct:
+  1. Benefit-focused (what reader will learn/gain)
+  2. Authority-focused (expert/sommelier angle)
+  3. Action-focused (immediate value/tips)
+
+Format as JSON array:
+[
+  {"type": "benefit", "description": "..."},
+  {"type": "authority", "description": "..."},
+  {"type": "action", "description": "..."}
+]`;
 }

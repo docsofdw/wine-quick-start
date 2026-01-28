@@ -1,0 +1,613 @@
+{
+  "generatedAt": "2026-01-28T04:18:05.178Z",
+  "budget": {
+    "daily": 75,
+    "monthly": 2250
+  },
+  "estimates": {
+    "impressions": 380,
+    "clicks": 570,
+    "conversions": 17,
+    "cpa": 132,
+    "roas": 0.57
+  },
+  "adGroups": [
+    {
+      "name": "Wine Delivery",
+      "keywordCount": 48,
+      "topKeywords": [
+        {
+          "keyword": "red wine delivery",
+          "ppcScore": 100,
+          "suggestedBid": 4.68,
+          "landingPage": "/shop"
+        },
+        {
+          "keyword": "wine delivery near me",
+          "ppcScore": 100,
+          "suggestedBid": 4.68,
+          "landingPage": "/shop"
+        },
+        {
+          "keyword": "wine store near me",
+          "ppcScore": 100,
+          "suggestedBid": 3.6,
+          "landingPage": "/shop"
+        },
+        {
+          "keyword": "same day wine delivery",
+          "ppcScore": 100,
+          "suggestedBid": 4.68,
+          "landingPage": "/shop"
+        },
+        {
+          "keyword": "buy wine online for delivery",
+          "ppcScore": 100,
+          "suggestedBid": 4.68,
+          "landingPage": "/shop"
+        },
+        {
+          "keyword": "buy wine online near me",
+          "ppcScore": 100,
+          "suggestedBid": 4.68,
+          "landingPage": "/shop"
+        },
+        {
+          "keyword": "order wine online near me",
+          "ppcScore": 100,
+          "suggestedBid": 4.68,
+          "landingPage": "/shop"
+        },
+        {
+          "keyword": "order wine online near me delivery",
+          "ppcScore": 100,
+          "suggestedBid": 4.68,
+          "landingPage": "/shop"
+        },
+        {
+          "keyword": "wine shop online near me",
+          "ppcScore": 100,
+          "suggestedBid": 4.68,
+          "landingPage": "/shop"
+        },
+        {
+          "keyword": "buy red wine online near me",
+          "ppcScore": 100,
+          "suggestedBid": 4.68,
+          "landingPage": "/shop"
+        }
+      ],
+      "headlines": [
+        "Wine Delivered To You",
+        "Free Shipping Over $75",
+        "Fast Wine Delivery",
+        "Order Wine Online Today",
+        "Wine To Your Door",
+        "Shop 1000+ Wines Online"
+      ],
+      "descriptions": [
+        "Shop 1000+ wines online with fast, reliable delivery. Temperature-controlled shipping. Free over $75.",
+        "Order wine online and get it delivered to your door. Expert picks, competitive prices, fast shipping."
+      ]
+    },
+    {
+      "name": "Wine Subscriptions",
+      "keywordCount": 43,
+      "topKeywords": [
+        {
+          "keyword": "wine subscription",
+          "ppcScore": 100,
+          "suggestedBid": 6.48,
+          "landingPage": "/subscription"
+        },
+        {
+          "keyword": "monthly wine subscription",
+          "ppcScore": 100,
+          "suggestedBid": 6.48,
+          "landingPage": "/subscription"
+        },
+        {
+          "keyword": "wine subscription box",
+          "ppcScore": 100,
+          "suggestedBid": 6.48,
+          "landingPage": "/subscription"
+        },
+        {
+          "keyword": "best wine subscription",
+          "ppcScore": 100,
+          "suggestedBid": 6.48,
+          "landingPage": "/subscription"
+        },
+        {
+          "keyword": "cheap wine subscription",
+          "ppcScore": 100,
+          "suggestedBid": 5.18,
+          "landingPage": "/subscription"
+        },
+        {
+          "keyword": "wine delivery subscription",
+          "ppcScore": 100,
+          "suggestedBid": 8.42,
+          "landingPage": "/subscription"
+        },
+        {
+          "keyword": "best wine delivery subscription",
+          "ppcScore": 100,
+          "suggestedBid": 8.42,
+          "landingPage": "/subscription"
+        },
+        {
+          "keyword": "best wine delivery clubs",
+          "ppcScore": 100,
+          "suggestedBid": 8.42,
+          "landingPage": "/subscription"
+        },
+        {
+          "keyword": "wine subscription service",
+          "ppcScore": 100,
+          "suggestedBid": 6.48,
+          "landingPage": "/subscription"
+        },
+        {
+          "keyword": "wine subscription reddit",
+          "ppcScore": 100,
+          "suggestedBid": 6.48,
+          "landingPage": "/subscription"
+        }
+      ],
+      "headlines": [
+        "Wine Club From $49/mo",
+        "Monthly Wine Subscription",
+        "Discover New Wines Monthly",
+        "Cancel Anytime Wine Club",
+        "Sommelier Curated Wines",
+        "Wine Subscription Box"
+      ],
+      "descriptions": [
+        "Get hand-picked wines delivered monthly. Taste new regions, learn from experts. Cancel anytime. Start at $49/month.",
+        "Join our wine club and discover sommelier-selected bottles each month. Flexible plans, no commitment required."
+      ]
+    },
+    {
+      "name": "Wine Gifts",
+      "keywordCount": 50,
+      "topKeywords": [
+        {
+          "keyword": "wine gift basket",
+          "ppcScore": 100,
+          "suggestedBid": 5.4,
+          "landingPage": "/gifts"
+        },
+        {
+          "keyword": "wine gift box",
+          "ppcScore": 100,
+          "suggestedBid": 5.4,
+          "landingPage": "/gifts"
+        },
+        {
+          "keyword": "wine delivery gift",
+          "ppcScore": 100,
+          "suggestedBid": 7.02,
+          "landingPage": "/gifts"
+        },
+        {
+          "keyword": "wine delivery gift basket",
+          "ppcScore": 100,
+          "suggestedBid": 7.02,
+          "landingPage": "/gifts"
+        },
+        {
+          "keyword": "wine subscription gift",
+          "ppcScore": 100,
+          "suggestedBid": 9.72,
+          "landingPage": "/gifts"
+        },
+        {
+          "keyword": "wine subscription box gift",
+          "ppcScore": 100,
+          "suggestedBid": 9.72,
+          "landingPage": "/gifts"
+        },
+        {
+          "keyword": "wine subscription gift card",
+          "ppcScore": 100,
+          "suggestedBid": 9.72,
+          "landingPage": "/gifts"
+        },
+        {
+          "keyword": "wine subscription gift reddit",
+          "ppcScore": 100,
+          "suggestedBid": 9.72,
+          "landingPage": "/gifts"
+        },
+        {
+          "keyword": "wine subscription gift best",
+          "ppcScore": 100,
+          "suggestedBid": 9.72,
+          "landingPage": "/gifts"
+        },
+        {
+          "keyword": "wine gift baskets",
+          "ppcScore": 100,
+          "suggestedBid": 5.4,
+          "landingPage": "/gifts"
+        }
+      ],
+      "headlines": [
+        "Perfect Wine Gifts",
+        "Wine Gift Boxes From $29",
+        "Curated Wine Gifts",
+        "Sommelier-Selected Gifts",
+        "Wine Gifts They'll Love",
+        "Gift Wine Like A Pro"
+      ],
+      "descriptions": [
+        "Beautifully packaged wine gifts curated by sommeliers. Perfect for any occasion. Free gift wrapping available.",
+        "Make gift-giving easy with our expert-selected wine gift boxes. Prices from $29. Ships nationwide."
+      ]
+    },
+    {
+      "name": "Sparkling Wine",
+      "keywordCount": 1,
+      "topKeywords": [
+        {
+          "keyword": "prosecco buy",
+          "ppcScore": 95,
+          "suggestedBid": 4.68,
+          "landingPage": "/buy/sparkling-wine"
+        }
+      ],
+      "headlines": [
+        "Quality Wines Online",
+        "Sommelier Selections",
+        "Shop Wine Today",
+        "Expert Wine Picks",
+        "Discover Great Wine",
+        "Wine Made Simple"
+      ],
+      "descriptions": [
+        "Quality wines selected by certified sommeliers. Expert picks at every price point. Free shipping over $75.",
+        "Discover your new favorite wine. Curated selections, expert guidance, fast delivery. Shop now."
+      ]
+    },
+    {
+      "name": "General Wine",
+      "keywordCount": 20,
+      "topKeywords": [
+        {
+          "keyword": "buy wine online",
+          "ppcScore": 100,
+          "suggestedBid": 4.68,
+          "landingPage": "/"
+        },
+        {
+          "keyword": "buy wine locally",
+          "ppcScore": 100,
+          "suggestedBid": 4.68,
+          "landingPage": "/"
+        },
+        {
+          "keyword": "buy wine online reviews",
+          "ppcScore": 100,
+          "suggestedBid": 4.68,
+          "landingPage": "/"
+        },
+        {
+          "keyword": "buy wine online reddit",
+          "ppcScore": 100,
+          "suggestedBid": 4.68,
+          "landingPage": "/"
+        },
+        {
+          "keyword": "buy wine online michigan",
+          "ppcScore": 100,
+          "suggestedBid": 4.68,
+          "landingPage": "/"
+        },
+        {
+          "keyword": "buy wine online pennsylvania",
+          "ppcScore": 100,
+          "suggestedBid": 4.68,
+          "landingPage": "/"
+        },
+        {
+          "keyword": "buy wine online melbourne",
+          "ppcScore": 100,
+          "suggestedBid": 4.68,
+          "landingPage": "/"
+        },
+        {
+          "keyword": "buy best wine online",
+          "ppcScore": 100,
+          "suggestedBid": 4.68,
+          "landingPage": "/"
+        },
+        {
+          "keyword": "best place buy wine online",
+          "ppcScore": 100,
+          "suggestedBid": 4.68,
+          "landingPage": "/"
+        },
+        {
+          "keyword": "best place to buy wine online uk",
+          "ppcScore": 100,
+          "suggestedBid": 4.68,
+          "landingPage": "/"
+        }
+      ],
+      "headlines": [
+        "Quality Wines Online",
+        "Sommelier Selections",
+        "Shop Wine Today",
+        "Expert Wine Picks",
+        "Discover Great Wine",
+        "Wine Made Simple"
+      ],
+      "descriptions": [
+        "Quality wines selected by certified sommeliers. Expert picks at every price point. Free shipping over $75.",
+        "Discover your new favorite wine. Curated selections, expert guidance, fast delivery. Shop now."
+      ]
+    },
+    {
+      "name": "Wine Varietals",
+      "keywordCount": 2,
+      "topKeywords": [
+        {
+          "keyword": "cabernet sauvignon buy",
+          "ppcScore": 100,
+          "suggestedBid": 4.68,
+          "landingPage": "/learn"
+        },
+        {
+          "keyword": "pinot noir online",
+          "ppcScore": 80,
+          "suggestedBid": 4.68,
+          "landingPage": "/learn"
+        }
+      ],
+      "headlines": [
+        "Quality Wines Online",
+        "Sommelier Selections",
+        "Shop Wine Today",
+        "Expert Wine Picks",
+        "Discover Great Wine",
+        "Wine Made Simple"
+      ],
+      "descriptions": [
+        "Quality wines selected by certified sommeliers. Expert picks at every price point. Free shipping over $75.",
+        "Discover your new favorite wine. Curated selections, expert guidance, fast delivery. Shop now."
+      ]
+    },
+    {
+      "name": "Budget Wine",
+      "keywordCount": 43,
+      "topKeywords": [
+        {
+          "keyword": "affordable wine delivery",
+          "ppcScore": 100,
+          "suggestedBid": 3.74,
+          "landingPage": "/buy/best-wines-under-20"
+        },
+        {
+          "keyword": "buy wine online cheap",
+          "ppcScore": 100,
+          "suggestedBid": 3.74,
+          "landingPage": "/buy/best-wines-under-20"
+        },
+        {
+          "keyword": "best place to buy wine online uk cheap",
+          "ppcScore": 100,
+          "suggestedBid": 3.74,
+          "landingPage": "/buy/best-wines-under-20"
+        },
+        {
+          "keyword": "order wine online cheap",
+          "ppcScore": 100,
+          "suggestedBid": 3.74,
+          "landingPage": "/buy/best-wines-under-20"
+        },
+        {
+          "keyword": "buy wine online discount code",
+          "ppcScore": 100,
+          "suggestedBid": 4.68,
+          "landingPage": "/buy/best-wines-under-20"
+        },
+        {
+          "keyword": "buy wine online discount",
+          "ppcScore": 100,
+          "suggestedBid": 4.68,
+          "landingPage": "/buy/best-wines-under-20"
+        },
+        {
+          "keyword": "buy wine online thailand cheap",
+          "ppcScore": 100,
+          "suggestedBid": 3.74,
+          "landingPage": "/buy/best-wines-under-20"
+        },
+        {
+          "keyword": "buy wine online uk cheap",
+          "ppcScore": 100,
+          "suggestedBid": 3.74,
+          "landingPage": "/buy/best-wines-under-20"
+        },
+        {
+          "keyword": "buy case of wine online cheap",
+          "ppcScore": 100,
+          "suggestedBid": 3.74,
+          "landingPage": "/buy/best-wines-under-20"
+        },
+        {
+          "keyword": "buy cheap wine online nz",
+          "ppcScore": 100,
+          "suggestedBid": 3.74,
+          "landingPage": "/buy/best-wines-under-20"
+        }
+      ],
+      "headlines": [
+        "Great Wine Under $20",
+        "Quality Wine, Fair Prices",
+        "Sommelier Picks Under $30",
+        "$15 Wines That Taste $50",
+        "Best Value Wines Online",
+        "Cheap Wine, No Compromise"
+      ],
+      "descriptions": [
+        "Great wine doesn't have to cost a fortune. Our sommeliers pick the best bottles under $20. Shop now.",
+        "Discover wines that taste twice their price. Expert selections at budget-friendly prices. Free shipping $75+."
+      ]
+    },
+    {
+      "name": "Wine for Occasions",
+      "keywordCount": 23,
+      "topKeywords": [
+        {
+          "keyword": "can you buy wine on thanksgiving",
+          "ppcScore": 100,
+          "suggestedBid": 4.68,
+          "landingPage": "/wine-pairings/wine-for-thanksgiving"
+        },
+        {
+          "keyword": "where to buy wine on thanksgiving",
+          "ppcScore": 100,
+          "suggestedBid": 4.68,
+          "landingPage": "/wine-pairings/wine-for-thanksgiving"
+        },
+        {
+          "keyword": "wine for dinner party",
+          "ppcScore": 80,
+          "suggestedBid": 2.7,
+          "landingPage": "/buy"
+        },
+        {
+          "keyword": "wine for thanksgiving",
+          "ppcScore": 80,
+          "suggestedBid": 2.7,
+          "landingPage": "/wine-pairings/wine-for-thanksgiving"
+        },
+        {
+          "keyword": "wine for thanksgiving dinner",
+          "ppcScore": 80,
+          "suggestedBid": 2.7,
+          "landingPage": "/wine-pairings/wine-for-thanksgiving"
+        },
+        {
+          "keyword": "wine for thanksgiving turkey",
+          "ppcScore": 80,
+          "suggestedBid": 2.7,
+          "landingPage": "/wine-pairings/wine-for-thanksgiving"
+        },
+        {
+          "keyword": "wine for thanksgiving turkey dinner",
+          "ppcScore": 80,
+          "suggestedBid": 2.7,
+          "landingPage": "/wine-pairings/wine-for-thanksgiving"
+        },
+        {
+          "keyword": "wine for thanksgiving meal",
+          "ppcScore": 80,
+          "suggestedBid": 2.7,
+          "landingPage": "/wine-pairings/wine-for-thanksgiving"
+        },
+        {
+          "keyword": "wine for thanksgiving reddit",
+          "ppcScore": 80,
+          "suggestedBid": 2.7,
+          "landingPage": "/wine-pairings/wine-for-thanksgiving"
+        },
+        {
+          "keyword": "wine for thanksgiving 2025",
+          "ppcScore": 80,
+          "suggestedBid": 2.7,
+          "landingPage": "/wine-pairings/wine-for-thanksgiving"
+        }
+      ],
+      "headlines": [
+        "Wine For Every Occasion",
+        "Thanksgiving Wine Picks",
+        "Wedding Wine Selection",
+        "Dinner Party Wines",
+        "Date Night Bottles",
+        "Celebrate With Wine"
+      ],
+      "descriptions": [
+        "Quality wines selected by certified sommeliers. Expert picks at every price point. Free shipping over $75.",
+        "Discover your new favorite wine. Curated selections, expert guidance, fast delivery. Shop now."
+      ]
+    },
+    {
+      "name": "White Wine",
+      "keywordCount": 1,
+      "topKeywords": [
+        {
+          "keyword": "white wine online",
+          "ppcScore": 80,
+          "suggestedBid": 4.68,
+          "landingPage": "/buy/white-wine"
+        }
+      ],
+      "headlines": [
+        "Quality Wines Online",
+        "Sommelier Selections",
+        "Shop Wine Today",
+        "Expert Wine Picks",
+        "Discover Great Wine",
+        "Wine Made Simple"
+      ],
+      "descriptions": [
+        "Quality wines selected by certified sommeliers. Expert picks at every price point. Free shipping over $75.",
+        "Discover your new favorite wine. Curated selections, expert guidance, fast delivery. Shop now."
+      ]
+    }
+  ],
+  "negativeKeywords": [
+    "what is wine",
+    "wine history",
+    "how is wine made",
+    "wine wikipedia",
+    "wine definition",
+    "wine meaning",
+    "wine facts",
+    "wine information",
+    "how to make wine",
+    "homemade wine",
+    "wine recipe",
+    "make wine at home",
+    "wine making kit",
+    "wine making supplies",
+    "homebrew wine",
+    "wine jobs",
+    "sommelier jobs",
+    "wine careers",
+    "winery jobs",
+    "wine industry jobs",
+    "wine sales jobs",
+    "wine course",
+    "wine certification",
+    "sommelier training",
+    "wset",
+    "wine school",
+    "wine degree",
+    "wine classes near me",
+    "wine review",
+    "wine ratings",
+    "wine scores",
+    "wine critics",
+    "wine colored",
+    "wine color",
+    "wine stain",
+    "wine hangover",
+    "wine headache",
+    "wine allergy",
+    "wine calories",
+    "wine alcohol content",
+    "wine vs beer health",
+    "vivino",
+    "wine.com",
+    "total wine",
+    "drizly",
+    "naked wines",
+    "free wine",
+    "wine samples free",
+    "free wine tasting"
+  ]
+}

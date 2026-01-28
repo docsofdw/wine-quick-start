@@ -127,10 +127,10 @@ const schema = {
           <div class="w-14 h-14 bg-wine-50 rounded-xl flex items-center justify-center mb-6 group-hover:bg-wine-100 transition-colors">
             <SmartBuyingIcon class="w-8 h-8 text-wine-600" />
           </div>
-          <h3 class="text-2xl font-semibold mb-3 text-gray-900">Smart Buying</h3>
-          <p class="text-gray-600 mb-6 flex-grow">Where to find great wines at the best prices, with expert recommendations.</p>
-          <a href="/buy/" class="text-wine-600 font-medium hover:text-wine-700 transition link-underline inline-block">
-            Shop Smarter
+          <h3 class="text-2xl font-semibold mb-3 text-gray-900">Shop Wine</h3>
+          <p class="text-gray-600 mb-6 flex-grow">Sommelier-curated wines at every price point, plus gifts and subscriptions.</p>
+          <a href="/shop/" class="text-wine-600 font-medium hover:text-wine-700 transition link-underline inline-block">
+            Browse Wines
           </a>
         </div>
       </div>
@@ -139,6 +139,47 @@ const schema = {
 
   <!-- Featured Showcase Section -->
   <FeaturedShowcase />
+
+  <!-- Shop & Subscribe Promo -->
+  <section class="section-padding bg-wine-50">
+    <div class="container">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <!-- Subscription Promo -->
+        <a href="/subscription/" class="group relative bg-gradient-to-br from-wine-900 via-wine-800 to-wine-900 rounded-2xl p-8 lg:p-10 text-white overflow-hidden hover:shadow-xl transition-shadow">
+          <div class="absolute inset-0 opacity-20">
+            <div class="absolute top-0 right-0 w-64 h-64 bg-wine-500 rounded-full blur-3xl"></div>
+          </div>
+          <div class="relative z-10">
+            <span class="text-wine-300 text-sm font-medium tracking-wider uppercase">Monthly Subscription</span>
+            <h3 class="font-serif text-3xl font-bold mt-2 mb-3 group-hover:text-wine-200 transition">Discover Wine. Delivered.</h3>
+            <p class="text-wine-100 mb-6">Sommelier-curated bottles matched to your taste. Starting at $49/month.</p>
+            <span class="inline-flex items-center gap-2 text-white font-medium group-hover:gap-3 transition-all">
+              Start Your Journey
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+              </svg>
+            </span>
+          </div>
+        </a>
+
+        <!-- Gift Promo -->
+        <a href="/gifts/" class="group relative bg-white rounded-2xl p-8 lg:p-10 border border-gray-200 overflow-hidden hover:border-wine-200 hover:shadow-xl transition-all">
+          <div class="absolute top-4 right-4 text-5xl opacity-20 group-hover:opacity-30 transition">🎁</div>
+          <div class="relative z-10">
+            <span class="text-wine-600 text-sm font-medium tracking-wider uppercase">Wine Gifts</span>
+            <h3 class="font-serif text-3xl font-bold text-gray-900 mt-2 mb-3 group-hover:text-wine-700 transition">Give Something Special</h3>
+            <p class="text-gray-600 mb-6">Beautifully packaged wines for any occasion. Personal notes included.</p>
+            <span class="inline-flex items-center gap-2 text-wine-600 font-medium group-hover:gap-3 transition-all">
+              Shop Gifts
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+              </svg>
+            </span>
+          </div>
+        </a>
+      </div>
+    </div>
+  </section>
 
   <!-- Featured Articles -->
   <section class="section-padding">

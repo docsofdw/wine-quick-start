@@ -1,0 +1,282 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const schema = {
+  "@context": "https://schema.org",
+  "@type": "Product",
+  "name": "Wine Subscription",
+  "description": "Monthly sommelier-curated wines delivered to your door. Discover exceptional bottles matched to your taste.",
+  "url": "https://winequickstart.com/subscription"
+};
+
+const plans = [
+  {
+    name: "Explorer",
+    bottles: 2,
+    price: 49,
+    description: "Perfect for curious beginners",
+    features: [
+      "2 bottles monthly",
+      "Tasting notes included",
+      "Flexible delivery",
+      "Skip or pause anytime"
+    ],
+    accent: false
+  },
+  {
+    name: "Enthusiast",
+    bottles: 4,
+    price: 89,
+    description: "Our most popular choice",
+    features: [
+      "4 bottles monthly",
+      "Tasting notes + food pairings",
+      "Priority selection",
+      "Free shipping",
+      "Member-only wines"
+    ],
+    accent: true
+  },
+  {
+    name: "Connoisseur",
+    bottles: 6,
+    price: 149,
+    description: "For the serious collector",
+    features: [
+      "6 premium bottles monthly",
+      "Full tasting guide",
+      "Quarterly sommelier call",
+      "Free shipping",
+      "Early access to rare wines",
+      "Cellar tracking"
+    ],
+    accent: false
+  }
+];
+
+const benefits = [
+  {
+    icon: "🎯",
+    title: "Personalized Selection",
+    description: "Every bottle matched to your taste preferences"
+  },
+  {
+    icon: "💎",
+    title: "Exclusive Access",
+    description: "Wines you won't find in typical stores"
+  },
+  {
+    icon: "📚",
+    title: "Learn as You Sip",
+    description: "Detailed notes make every bottle educational"
+  },
+  {
+    icon: "🔄",
+    title: "Total Flexibility",
+    description: "Skip, pause, or cancel with one click"
+  }
+];
+---
+
+<BaseLayout
+  title="Wine Subscription | Wine Quick Start"
+  description="Monthly sommelier-curated wines delivered to your door. Discover exceptional bottles matched to your taste, with full flexibility to skip or cancel."
+  schema={schema}
+>
+  <!-- Hero -->
+  <section class="relative bg-gradient-to-b from-gray-900 via-wine-900 to-wine-800 text-white overflow-hidden">
+    <div class="absolute inset-0">
+      <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(165,33,69,0.3),transparent_70%)]"></div>
+    </div>
+    <div class="container relative z-10 py-20 lg:py-28">
+      <div class="max-w-3xl mx-auto text-center">
+        <span class="inline-block text-wine-300 text-sm font-medium tracking-wider uppercase mb-4">Wine Subscription</span>
+        <h1 class="font-serif text-5xl md:text-6xl font-bold mb-6 leading-tight">
+          Discover Wine.<br />Delivered Monthly.
+        </h1>
+        <p class="text-xl text-wine-100 mb-8 leading-relaxed max-w-2xl mx-auto">
+          Sommelier-curated bottles matched to your taste. No commitment, cancel anytime.
+        </p>
+        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+          <a href="#plans" class="btn-primary">
+            View Plans
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+            </svg>
+          </a>
+          <a href="/quiz/" class="btn-secondary border-white/30 text-white hover:bg-white/10">
+            Take Taste Quiz
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Benefits -->
+  <section class="py-16 bg-white border-b border-gray-100">
+    <div class="container">
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
+        {benefits.map((benefit) => (
+          <div class="text-center">
+            <span class="text-3xl mb-3 block">{benefit.icon}</span>
+            <h3 class="font-semibold text-gray-900 mb-1">{benefit.title}</h3>
+            <p class="text-gray-600 text-sm">{benefit.description}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Plans -->
+  <section class="section-padding bg-gray-50" id="plans">
+    <div class="container">
+      <div class="text-center mb-12">
+        <h2 class="font-serif text-4xl font-bold text-gray-900 mb-4">Choose Your Plan</h2>
+        <p class="text-xl text-gray-600 max-w-2xl mx-auto">All plans include free shipping and our satisfaction guarantee</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+        {plans.map((plan) => (
+          <div class={`relative bg-white rounded-2xl overflow-hidden transition-all duration-300 hover:shadow-xl ${plan.accent ? 'ring-2 ring-wine-500 shadow-lg scale-105' : 'border border-gray-200'}`}>
+            {plan.accent && (
+              <div class="bg-wine-600 text-white text-center py-2 text-sm font-medium">
+                Most Popular
+              </div>
+            )}
+            <div class="p-8">
+              <div class="text-center mb-6">
+                <h3 class="text-2xl font-bold text-gray-900 mb-1">{plan.name}</h3>
+                <p class="text-gray-500 text-sm mb-4">{plan.description}</p>
+                <div class="flex items-baseline justify-center gap-1">
+                  <span class="text-5xl font-bold text-wine-600">${plan.price}</span>
+                  <span class="text-gray-500">/mo</span>
+                </div>
+                <p class="text-sm text-gray-500 mt-2">{plan.bottles} bottles per month</p>
+              </div>
+
+              <ul class="space-y-3 mb-8">
+                {plan.features.map((feature) => (
+                  <li class="flex items-start gap-3 text-sm text-gray-700">
+                    <svg class="w-5 h-5 text-wine-500 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                    </svg>
+                    {feature}
+                  </li>
+                ))}
+              </ul>
+
+              <button class={`w-full py-3.5 rounded-lg font-semibold transition ${plan.accent ? 'bg-wine-600 text-white hover:bg-wine-700' : 'bg-gray-100 text-gray-900 hover:bg-gray-200'}`}>
+                Get Started
+              </button>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <p class="text-center text-gray-500 text-sm mt-8">
+        All plans are billed monthly. Cancel anytime with no fees.
+      </p>
+    </div>
+  </section>
+
+  <!-- How It Works -->
+  <section class="section-padding">
+    <div class="container">
+      <div class="text-center mb-12">
+        <h2 class="font-serif text-4xl font-bold text-gray-900 mb-4">How It Works</h2>
+      </div>
+
+      <div class="max-w-4xl mx-auto">
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+          <div class="text-center">
+            <div class="w-12 h-12 bg-wine-100 rounded-full flex items-center justify-center mx-auto mb-4 text-wine-600 font-bold">1</div>
+            <h3 class="font-semibold text-gray-900 mb-2">Take the Quiz</h3>
+            <p class="text-gray-600 text-sm">Tell us your taste preferences in 2 minutes</p>
+          </div>
+          <div class="text-center">
+            <div class="w-12 h-12 bg-wine-100 rounded-full flex items-center justify-center mx-auto mb-4 text-wine-600 font-bold">2</div>
+            <h3 class="font-semibold text-gray-900 mb-2">We Curate</h3>
+            <p class="text-gray-600 text-sm">Our sommeliers hand-pick wines for you</p>
+          </div>
+          <div class="text-center">
+            <div class="w-12 h-12 bg-wine-100 rounded-full flex items-center justify-center mx-auto mb-4 text-wine-600 font-bold">3</div>
+            <h3 class="font-semibold text-gray-900 mb-2">Receive & Enjoy</h3>
+            <p class="text-gray-600 text-sm">Monthly delivery right to your door</p>
+          </div>
+          <div class="text-center">
+            <div class="w-12 h-12 bg-wine-100 rounded-full flex items-center justify-center mx-auto mb-4 text-wine-600 font-bold">4</div>
+            <h3 class="font-semibold text-gray-900 mb-2">Rate & Refine</h3>
+            <p class="text-gray-600 text-sm">Your feedback makes each box better</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="section-padding bg-gray-50">
+    <div class="container">
+      <div class="max-w-3xl mx-auto">
+        <h2 class="font-serif text-4xl font-bold text-gray-900 mb-12 text-center">Questions?</h2>
+
+        <div class="space-y-4">
+          <details class="bg-white rounded-xl p-6 group">
+            <summary class="flex justify-between items-center cursor-pointer font-semibold text-gray-900">
+              Can I skip a month or cancel anytime?
+              <svg class="w-5 h-5 text-gray-500 group-open:rotate-180 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+              </svg>
+            </summary>
+            <p class="mt-4 text-gray-600">Absolutely. Skip any month with one click, and cancel anytime with no fees or commitments. We make it easy.</p>
+          </details>
+
+          <details class="bg-white rounded-xl p-6 group">
+            <summary class="flex justify-between items-center cursor-pointer font-semibold text-gray-900">
+              How do you choose my wines?
+              <svg class="w-5 h-5 text-gray-500 group-open:rotate-180 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+              </svg>
+            </summary>
+            <p class="mt-4 text-gray-600">After you complete our taste quiz, our certified sommeliers match your preferences with our curated selection. The more you rate, the better we know your taste.</p>
+          </details>
+
+          <details class="bg-white rounded-xl p-6 group">
+            <summary class="flex justify-between items-center cursor-pointer font-semibold text-gray-900">
+              What if I don't like a wine?
+              <svg class="w-5 h-5 text-gray-500 group-open:rotate-180 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+              </svg>
+            </summary>
+            <p class="mt-4 text-gray-600">We stand behind every bottle. If you don't love a wine, let us know and we'll credit your account or send a replacement.</p>
+          </details>
+
+          <details class="bg-white rounded-xl p-6 group">
+            <summary class="flex justify-between items-center cursor-pointer font-semibold text-gray-900">
+              Where do you ship?
+              <svg class="w-5 h-5 text-gray-500 group-open:rotate-180 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+              </svg>
+            </summary>
+            <p class="mt-4 text-gray-600">We currently ship to most US states where direct wine shipping is permitted. Enter your zip code at checkout to confirm availability.</p>
+          </details>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Final CTA -->
+  <section class="section-padding bg-wine-900 text-white">
+    <div class="container">
+      <div class="max-w-3xl mx-auto text-center">
+        <h2 class="font-serif text-4xl font-bold mb-4">Ready to Discover?</h2>
+        <p class="text-xl text-wine-200 mb-8">Join thousands of wine lovers getting sommelier picks delivered monthly.</p>
+        <a href="/quiz/" class="btn-primary bg-white text-wine-900 hover:bg-wine-50">
+          Start Your Journey
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+          </svg>
+        </a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
