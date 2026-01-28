@@ -3,49 +3,44 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 
 const schema = {
   "@context": "https://schema.org",
-  "@type": "Product",
-  "name": "Wine Gifts",
-  "description": "Beautifully curated wine gifts for every occasion. Sommelier-selected bottles with elegant presentation.",
-  "url": "https://winequickstart.com/gifts"
+  "@type": "Service",
+  "name": "Wine Gift Consulting",
+  "description": "Expert help selecting the perfect wine gift. Corporate gifting, special occasions, and personalized recommendations from certified sommeliers.",
+  "url": "https://winequickstart.com/gifts",
+  "provider": {
+    "@type": "Organization",
+    "name": "Cellars of DW"
+  }
 };
 
-const giftOptions = [
-  {
-    name: "Single Bottle Gift",
-    price: "From $35",
-    description: "One exceptional bottle, elegantly wrapped",
-    features: ["Gift box included", "Personal note card", "Tasting notes"],
-    popular: false
-  },
-  {
-    name: "Duo Collection",
-    price: "From $75",
-    description: "Perfectly paired red and white",
-    features: ["Wooden gift box", "Personal note card", "Pairing guide", "Free shipping"],
-    popular: true
-  },
-  {
-    name: "Celebration Case",
-    price: "From $180",
-    description: "Six bottles for memorable occasions",
-    features: ["Premium case", "Personal note card", "Full tasting guide", "Free shipping", "Sommelier call"],
-    popular: false
-  }
+const occasions = [
+  { name: "Corporate Gifts", emoji: "💼", description: "Impress clients and reward teams" },
+  { name: "Weddings", emoji: "💒", description: "Celebrate the big day" },
+  { name: "Birthdays", emoji: "🎂", description: "A gift they'll remember" },
+  { name: "Thank You", emoji: "🙏", description: "Show real appreciation" },
+  { name: "Holidays", emoji: "🎄", description: "Seasonal gifting made easy" },
+  { name: "Housewarming", emoji: "🏠", description: "Welcome them home" }
 ];
 
-const occasions = [
-  { name: "Birthday", emoji: "🎂" },
-  { name: "Anniversary", emoji: "💕" },
-  { name: "Thank You", emoji: "🙏" },
-  { name: "Congratulations", emoji: "🎉" },
-  { name: "Housewarming", emoji: "🏠" },
-  { name: "Corporate", emoji: "💼" }
+const whyUs = [
+  {
+    title: "We Know Wine",
+    description: "Certified sommeliers who taste thousands of bottles. We know what's actually good."
+  },
+  {
+    title: "We Know People",
+    description: "Tell us about the recipient and we'll match the wine to their personality and taste."
+  },
+  {
+    title: "No Upselling",
+    description: "We recommend based on value, not margin. The best $30 bottle beats a mediocre $100 one."
+  }
 ];
 ---
 
 <BaseLayout
-  title="Wine Gifts | Wine Quick Start"
-  description="Beautifully curated wine gifts for every occasion. Sommelier-selected bottles with elegant presentation and personal touches."
+  title="Wine Gift Help | Find the Perfect Bottle | Wine Quick Start"
+  description="Need help picking a wine gift? Our sommeliers help you find the perfect bottle for any occasion — corporate gifts, weddings, birthdays, and more."
   schema={schema}
 >
   <!-- Hero -->
@@ -56,17 +51,17 @@ const occasions = [
     </div>
     <div class="container relative z-10 py-20 lg:py-28">
       <div class="max-w-3xl mx-auto text-center">
-        <span class="inline-block text-wine-300 text-sm font-medium tracking-wider uppercase mb-4">Wine Gifts</span>
+        <span class="inline-block text-wine-300 text-sm font-medium tracking-wider uppercase mb-4">Wine Gift Consulting</span>
         <h1 class="font-serif text-5xl md:text-6xl font-bold mb-6 leading-tight">
-          Give the Gift of<br />Exceptional Wine
+          Give a Gift<br />They'll Actually Love
         </h1>
         <p class="text-xl text-wine-100 mb-8 leading-relaxed max-w-2xl mx-auto">
-          Beautifully presented, sommelier-selected wines that make every occasion unforgettable.
+          Stop guessing. Our sommeliers help you pick the perfect wine for any person, any occasion, any budget.
         </p>
-        <a href="#options" class="btn-primary">
-          Explore Gift Options
+        <a href="/contact/" class="btn-primary">
+          Get Gift Recommendations
           <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
           </svg>
         </a>
       </div>
@@ -76,133 +71,122 @@ const occasions = [
   <!-- Occasions -->
   <section class="py-12 bg-wine-50 border-b border-wine-100">
     <div class="container">
+      <p class="text-center text-gray-600 mb-6">We help with gifts for every occasion</p>
       <div class="flex flex-wrap justify-center gap-4">
         {occasions.map((occ) => (
-          <a href={`/gifts/${occ.name.toLowerCase()}/`} class="flex items-center gap-2 px-5 py-2.5 bg-white rounded-full border border-wine-100 hover:border-wine-300 hover:shadow-sm transition-all">
+          <div class="flex items-center gap-2 px-5 py-2.5 bg-white rounded-full border border-wine-100">
             <span class="text-lg">{occ.emoji}</span>
             <span class="text-sm font-medium text-gray-700">{occ.name}</span>
-          </a>
-        ))}
-      </div>
-    </div>
-  </section>
-
-  <!-- Gift Options -->
-  <section class="section-padding" id="options">
-    <div class="container">
-      <div class="text-center mb-12">
-        <h2 class="font-serif text-4xl font-bold text-gray-900 mb-4">Choose Your Gift</h2>
-        <p class="text-xl text-gray-600 max-w-2xl mx-auto">Every gift includes complimentary elegant packaging</p>
-      </div>
-
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
-        {giftOptions.map((gift) => (
-          <div class={`relative bg-white rounded-2xl p-8 border-2 transition-all duration-300 hover:shadow-lg ${gift.popular ? 'border-wine-500 shadow-md' : 'border-gray-100 hover:border-wine-200'}`}>
-            {gift.popular && (
-              <div class="absolute -top-4 left-1/2 -translate-x-1/2">
-                <span class="bg-wine-600 text-white text-xs font-bold px-4 py-1.5 rounded-full">Most Popular</span>
-              </div>
-            )}
-            <div class="text-center mb-6">
-              <h3 class="text-xl font-bold text-gray-900 mb-2">{gift.name}</h3>
-              <p class="text-3xl font-bold text-wine-600 mb-2">{gift.price}</p>
-              <p class="text-gray-600 text-sm">{gift.description}</p>
-            </div>
-            <ul class="space-y-3 mb-8">
-              {gift.features.map((feature) => (
-                <li class="flex items-center gap-3 text-sm text-gray-700">
-                  <svg class="w-5 h-5 text-wine-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-                  </svg>
-                  {feature}
-                </li>
-              ))}
-            </ul>
-            <button class={`w-full py-3 rounded-lg font-medium transition ${gift.popular ? 'bg-wine-600 text-white hover:bg-wine-700' : 'bg-wine-50 text-wine-700 hover:bg-wine-100'}`}>
-              Select This Gift
-            </button>
           </div>
         ))}
       </div>
     </div>
   </section>
 
-  <!-- How It Works -->
+  <!-- The Problem -->
+  <section class="section-padding">
+    <div class="container">
+      <div class="max-w-3xl mx-auto text-center mb-12">
+        <h2 class="font-serif text-4xl font-bold text-gray-900 mb-4">Wine Gifts Are Hard</h2>
+        <p class="text-xl text-gray-600">
+          You want to impress, but you're staring at a wall of bottles with no idea what's good. Too cheap looks bad. Too expensive feels wasteful. And what if they hate it?
+        </p>
+      </div>
+
+      <div class="max-w-4xl mx-auto">
+        <div class="bg-gradient-to-r from-wine-600 to-wine-700 rounded-2xl p-8 lg:p-12 text-white">
+          <h3 class="font-serif text-2xl font-bold mb-4 text-center">Here's What We Do</h3>
+          <p class="text-wine-100 text-center text-lg mb-8">
+            Tell us about the recipient — their taste, the occasion, your budget. We'll give you 2-3 specific recommendations you can buy anywhere, plus exactly what to say when you give it to them.
+          </p>
+          <div class="flex justify-center">
+            <a href="/contact/" class="btn-primary bg-white text-wine-700 hover:bg-wine-50">
+              Get Started Free
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Why Us -->
   <section class="section-padding bg-gray-50">
     <div class="container">
       <div class="text-center mb-12">
-        <h2 class="font-serif text-4xl font-bold text-gray-900 mb-4">How It Works</h2>
-        <p class="text-xl text-gray-600 max-w-2xl mx-auto">Sending the perfect wine gift in three simple steps</p>
+        <h2 class="font-serif text-4xl font-bold text-gray-900 mb-4">Why Ask Us?</h2>
       </div>
 
       <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto">
-        <div class="text-center">
-          <div class="w-16 h-16 bg-wine-100 rounded-full flex items-center justify-center mx-auto mb-4">
-            <span class="text-2xl font-bold text-wine-600">1</span>
+        {whyUs.map((item) => (
+          <div class="text-center">
+            <h3 class="text-xl font-semibold text-gray-900 mb-2">{item.title}</h3>
+            <p class="text-gray-600">{item.description}</p>
           </div>
-          <h3 class="text-lg font-semibold text-gray-900 mb-2">Choose Your Wine</h3>
-          <p class="text-gray-600 text-sm">Pick from our curated selections or let our sommeliers choose for you.</p>
-        </div>
-        <div class="text-center">
-          <div class="w-16 h-16 bg-wine-100 rounded-full flex items-center justify-center mx-auto mb-4">
-            <span class="text-2xl font-bold text-wine-600">2</span>
-          </div>
-          <h3 class="text-lg font-semibold text-gray-900 mb-2">Personalize It</h3>
-          <p class="text-gray-600 text-sm">Add a personal message and select your preferred gift presentation.</p>
-        </div>
-        <div class="text-center">
-          <div class="w-16 h-16 bg-wine-100 rounded-full flex items-center justify-center mx-auto mb-4">
-            <span class="text-2xl font-bold text-wine-600">3</span>
-          </div>
-          <h3 class="text-lg font-semibold text-gray-900 mb-2">We Deliver</h3>
-          <p class="text-gray-600 text-sm">Your gift arrives beautifully packaged, ready to impress.</p>
-        </div>
+        ))}
       </div>
     </div>
   </section>
 
-  <!-- Corporate -->
-  <section class="section-padding bg-wine-900 text-white">
+  <!-- Corporate Section -->
+  <section class="section-padding">
     <div class="container">
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center max-w-5xl mx-auto">
         <div>
-          <span class="text-wine-300 text-sm font-medium tracking-wider uppercase">For Business</span>
-          <h2 class="font-serif text-4xl font-bold mt-2 mb-4">Corporate Wine Gifts</h2>
-          <p class="text-wine-200 text-lg mb-6">Impress clients and reward teams with expertly curated wine gifts. Volume discounts, branded packaging, and dedicated account support available.</p>
+          <span class="text-wine-600 text-sm font-medium tracking-wider uppercase">For Business</span>
+          <h2 class="font-serif text-4xl font-bold text-gray-900 mt-2 mb-4">Corporate Wine Consulting</h2>
+          <p class="text-gray-600 text-lg mb-6">
+            Need to send gifts to clients, reward your team, or stock the office for events? We handle the strategy so you look good without the stress.
+          </p>
           <ul class="space-y-3 mb-8">
-            <li class="flex items-center gap-3 text-wine-100">
-              <svg class="w-5 h-5 text-wine-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <li class="flex items-center gap-3 text-gray-700">
+              <svg class="w-5 h-5 text-wine-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
               </svg>
-              Bulk ordering discounts
+              Bulk gift recommendations
             </li>
-            <li class="flex items-center gap-3 text-wine-100">
-              <svg class="w-5 h-5 text-wine-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <li class="flex items-center gap-3 text-gray-700">
+              <svg class="w-5 h-5 text-wine-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
               </svg>
-              Custom branded packaging
+              Event wine selection
             </li>
-            <li class="flex items-center gap-3 text-wine-100">
-              <svg class="w-5 h-5 text-wine-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <li class="flex items-center gap-3 text-gray-700">
+              <svg class="w-5 h-5 text-wine-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
               </svg>
-              Dedicated account manager
+              Ongoing advisory retainer
             </li>
           </ul>
-          <a href="/contact/" class="btn-primary bg-white text-wine-900 hover:bg-wine-50">
-            Contact Us
+          <a href="/contact/" class="btn-primary">
+            Discuss Your Needs
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
             </svg>
           </a>
         </div>
         <div class="hidden lg:block">
-          <div class="bg-wine-800/50 rounded-2xl p-8 border border-wine-700">
-            <div class="text-6xl text-center mb-4">🍷</div>
-            <p class="text-wine-200 text-center italic">"The wine gifts were a hit with our clients. Professional, elegant, and memorable."</p>
-            <p class="text-wine-400 text-sm text-center mt-4">— Corporate Client</p>
+          <div class="bg-wine-50 rounded-2xl p-8 border border-wine-100">
+            <div class="text-6xl text-center mb-4">💼</div>
+            <p class="text-gray-700 text-center italic">"They handled our entire holiday client gifting. 50 personalized recommendations, zero stress on our end."</p>
+            <p class="text-gray-500 text-sm text-center mt-4">— Marketing Director</p>
           </div>
         </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="section-padding bg-wine-900 text-white">
+    <div class="container">
+      <div class="max-w-3xl mx-auto text-center">
+        <h2 class="font-serif text-4xl font-bold mb-4">Need a Wine Gift?</h2>
+        <p class="text-xl text-wine-200 mb-8">Tell us about the person and occasion. We'll send you the perfect recommendations — free, no strings attached.</p>
+        <a href="/contact/" class="btn-primary bg-white text-wine-900 hover:bg-wine-50">
+          Get Recommendations
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+          </svg>
+        </a>
       </div>
     </div>
   </section>

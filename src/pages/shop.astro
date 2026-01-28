@@ -3,67 +3,61 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 
 const schema = {
   "@context": "https://schema.org",
-  "@type": "Store",
-  "name": "Wine Quick Start Shop",
-  "description": "Curated wine selections handpicked by certified sommeliers. Quality bottles at every price point.",
-  "url": "https://winequickstart.com/shop"
+  "@type": "Service",
+  "name": "Wine Selection Consulting",
+  "description": "Get personalized wine recommendations from certified sommeliers. Expert guidance for building your collection, stocking your cellar, or finding the perfect bottle.",
+  "url": "https://winequickstart.com/shop",
+  "provider": {
+    "@type": "Organization",
+    "name": "Cellars of DW"
+  }
 };
 
-const categories = [
+const services = [
   {
-    name: "Under $20",
-    description: "Exceptional value wines that over-deliver",
-    icon: "💎",
-    link: "/shop/under-20/"
+    icon: "🍷",
+    title: "Personal Shopping",
+    description: "Tell us your taste, budget, and occasion. We'll curate a personalized list of recommendations."
   },
   {
-    name: "By Region",
-    description: "Explore wines from world-renowned regions",
-    icon: "🗺️",
-    link: "/shop/regions/"
+    icon: "🏠",
+    title: "Cellar Building",
+    description: "Starting a wine collection? Get expert guidance on what to buy and how to store it."
   },
   {
-    name: "By Occasion",
-    description: "The perfect bottle for every moment",
-    icon: "🥂",
-    link: "/shop/occasions/"
+    icon: "🎉",
+    title: "Event Planning",
+    description: "Hosting a dinner party or event? We'll help you select the perfect wines for your menu."
   },
   {
-    name: "Sommelier Picks",
-    description: "Our experts' current favorites",
-    icon: "⭐",
-    link: "/shop/picks/"
+    icon: "💼",
+    title: "Corporate Accounts",
+    description: "Impress clients with expertly chosen wines. Ongoing advisory for businesses."
   }
 ];
 
-const featuredWines = [
+const process = [
   {
-    name: "Château Gloria Saint-Julien",
-    region: "Bordeaux, France",
-    price: "$45",
-    rating: "93 pts",
-    type: "Red"
+    step: "1",
+    title: "Tell Us What You Need",
+    description: "Fill out a quick form about your preferences, budget, and what you're looking for."
   },
   {
-    name: "Cloudy Bay Sauvignon Blanc",
-    region: "Marlborough, NZ",
-    price: "$28",
-    rating: "91 pts",
-    type: "White"
+    step: "2",
+    title: "Get Expert Recommendations",
+    description: "Our sommeliers curate a personalized selection based on your specific needs."
   },
   {
-    name: "Schramsberg Brut Rosé",
-    region: "Napa Valley, USA",
-    price: "$42",
-    rating: "92 pts",
-    type: "Sparkling"
+    step: "3",
+    title: "Buy With Confidence",
+    description: "Purchase from your preferred retailer knowing you're getting exactly what you need."
   }
 ];
 ---
 
 <BaseLayout
-  title="Shop Wine | Wine Quick Start"
-  description="Curated wine selections handpicked by certified sommeliers. Quality bottles at every price point, from everyday sippers to special occasion splurges."
+  title="Wine Selection Help | Expert Recommendations | Wine Quick Start"
+  description="Get personalized wine recommendations from certified sommeliers. Expert guidance for any occasion, budget, or taste preference. Free consultation available."
   schema={schema}
 >
   <!-- Hero -->
@@ -73,118 +67,93 @@ const featuredWines = [
     </div>
     <div class="container relative z-10 py-20 lg:py-28">
       <div class="max-w-3xl">
-        <span class="inline-block text-wine-300 text-sm font-medium tracking-wider uppercase mb-4">Shop Wines</span>
+        <span class="inline-block text-wine-300 text-sm font-medium tracking-wider uppercase mb-4">Wine Selection Help</span>
         <h1 class="font-serif text-5xl md:text-6xl font-bold mb-6 leading-tight">
-          Sommelier-Curated Wines
+          Not Sure What to Buy?
         </h1>
         <p class="text-xl text-wine-100 mb-8 leading-relaxed max-w-2xl">
-          Every bottle handpicked by certified sommeliers. No filler wines, no inflated prices — just exceptional quality at every price point.
+          Skip the guesswork. Get personalized wine recommendations from certified sommeliers who actually know what they're talking about.
         </p>
         <div class="flex flex-wrap gap-4">
-          <a href="#categories" class="btn-primary">
-            Browse Collection
+          <a href="/contact/" class="btn-primary">
+            Get Free Recommendations
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
             </svg>
           </a>
-          <a href="/gifts/" class="btn-secondary border-white/30 text-white hover:bg-white/10">
-            Send as Gift
+          <a href="#how-it-works" class="inline-flex items-center gap-2 px-6 py-3 bg-white/10 border border-white/40 text-white rounded-lg font-medium hover:bg-white/20 transition">
+            How It Works
           </a>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- Value Props -->
-  <section class="py-12 bg-wine-50 border-b border-wine-100">
+  <!-- Problem/Solution -->
+  <section class="py-16 bg-wine-50">
     <div class="container">
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
-        <div class="flex flex-col items-center">
-          <div class="w-12 h-12 rounded-full bg-wine-100 flex items-center justify-center mb-3">
-            <svg class="w-6 h-6 text-wine-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-            </svg>
-          </div>
-          <h3 class="font-semibold text-gray-900">Expert Vetted</h3>
-          <p class="text-gray-600 text-sm">Every wine personally tasted</p>
-        </div>
-        <div class="flex flex-col items-center">
-          <div class="w-12 h-12 rounded-full bg-wine-100 flex items-center justify-center mb-3">
-            <svg class="w-6 h-6 text-wine-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-            </svg>
-          </div>
-          <h3 class="font-semibold text-gray-900">Fair Pricing</h3>
-          <p class="text-gray-600 text-sm">No markup games</p>
-        </div>
-        <div class="flex flex-col items-center">
-          <div class="w-12 h-12 rounded-full bg-wine-100 flex items-center justify-center mb-3">
-            <svg class="w-6 h-6 text-wine-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
-            </svg>
-          </div>
-          <h3 class="font-semibold text-gray-900">Safe Shipping</h3>
-          <p class="text-gray-600 text-sm">Temperature controlled</p>
-        </div>
+      <div class="max-w-3xl mx-auto text-center">
+        <h2 class="font-serif text-3xl font-bold text-gray-900 mb-4">Wine Shopping Shouldn't Be Overwhelming</h2>
+        <p class="text-lg text-gray-600">
+          Thousands of bottles. Confusing labels. Endless options. We cut through the noise and tell you exactly what to buy for your specific situation — no sales pitch, no commission, just honest expert advice.
+        </p>
       </div>
     </div>
   </section>
 
-  <!-- Categories -->
-  <section class="section-padding" id="categories">
+  <!-- Services -->
+  <section class="section-padding">
     <div class="container">
       <div class="text-center mb-12">
-        <h2 class="font-serif text-4xl font-bold text-gray-900 mb-4">Shop by Category</h2>
-        <p class="text-xl text-gray-600 max-w-2xl mx-auto">Find exactly what you're looking for</p>
+        <h2 class="font-serif text-4xl font-bold text-gray-900 mb-4">How We Can Help</h2>
+        <p class="text-xl text-gray-600 max-w-2xl mx-auto">Expert guidance for every wine buying situation</p>
       </div>
 
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        {categories.map((cat) => (
-          <a href={cat.link} class="wine-card group hover:border-wine-200 transition-all duration-300">
-            <span class="text-4xl mb-4 block">{cat.icon}</span>
-            <h3 class="text-xl font-semibold text-gray-900 mb-2 group-hover:text-wine-600 transition">{cat.name}</h3>
-            <p class="text-gray-600 text-sm">{cat.description}</p>
-          </a>
+        {services.map((service) => (
+          <div class="bg-white rounded-2xl p-6 border border-gray-100 hover:border-wine-200 hover:shadow-lg transition-all duration-300">
+            <span class="text-4xl mb-4 block">{service.icon}</span>
+            <h3 class="text-xl font-semibold text-gray-900 mb-2">{service.title}</h3>
+            <p class="text-gray-600 text-sm">{service.description}</p>
+          </div>
         ))}
       </div>
     </div>
   </section>
 
-  <!-- Featured Wines -->
-  <section class="section-padding bg-gray-50">
+  <!-- How It Works -->
+  <section class="section-padding bg-gray-50" id="how-it-works">
     <div class="container">
       <div class="text-center mb-12">
-        <span class="text-wine-600 text-sm font-medium tracking-wider uppercase">This Week</span>
-        <h2 class="font-serif text-4xl font-bold text-gray-900 mt-2 mb-4">Featured Selections</h2>
-        <p class="text-xl text-gray-600 max-w-2xl mx-auto">Our sommeliers' current recommendations</p>
+        <h2 class="font-serif text-4xl font-bold text-gray-900 mb-4">How It Works</h2>
+        <p class="text-xl text-gray-600 max-w-2xl mx-auto">Get expert recommendations in three simple steps</p>
       </div>
 
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-        {featuredWines.map((wine) => (
-          <div class="bg-white rounded-2xl p-6 shadow-sm hover:shadow-md transition-shadow">
-            <div class="flex justify-between items-start mb-4">
-              <span class="text-xs font-medium px-3 py-1 rounded-full bg-wine-50 text-wine-600">{wine.type}</span>
-              <span class="text-xs font-medium text-gray-500">{wine.rating}</span>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto">
+        {process.map((item) => (
+          <div class="text-center">
+            <div class="w-16 h-16 bg-wine-600 text-white rounded-full flex items-center justify-center mx-auto mb-4">
+              <span class="text-2xl font-bold">{item.step}</span>
             </div>
-            <h3 class="text-lg font-semibold text-gray-900 mb-1">{wine.name}</h3>
-            <p class="text-sm text-gray-500 mb-4">{wine.region}</p>
-            <div class="flex justify-between items-center pt-4 border-t border-gray-100">
-              <span class="text-2xl font-bold text-wine-600">{wine.price}</span>
-              <button class="text-sm font-medium text-wine-600 hover:text-wine-700 transition">
-                View Details →
-              </button>
-            </div>
+            <h3 class="text-lg font-semibold text-gray-900 mb-2">{item.title}</h3>
+            <p class="text-gray-600 text-sm">{item.description}</p>
           </div>
         ))}
       </div>
+    </div>
+  </section>
 
-      <div class="text-center mt-12">
-        <a href="/shop/all/" class="btn-primary">
-          View All Wines
-          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
-          </svg>
-        </a>
+  <!-- Social Proof -->
+  <section class="section-padding">
+    <div class="container">
+      <div class="max-w-3xl mx-auto">
+        <div class="bg-wine-50 rounded-2xl p-8 lg:p-12 text-center">
+          <div class="text-5xl mb-4">🍷</div>
+          <blockquote class="font-serif text-2xl text-gray-900 mb-4 italic">
+            "Finally, someone who actually listens to what I want instead of pushing expensive bottles. The recommendations were spot-on."
+          </blockquote>
+          <p class="text-gray-600">— Happy Client</p>
+        </div>
       </div>
     </div>
   </section>
@@ -193,14 +162,15 @@ const featuredWines = [
   <section class="section-padding bg-wine-900 text-white">
     <div class="container">
       <div class="max-w-3xl mx-auto text-center">
-        <h2 class="font-serif text-4xl font-bold mb-4">Not Sure Where to Start?</h2>
-        <p class="text-xl text-wine-200 mb-8">Take our quick quiz and get personalized wine recommendations based on your taste preferences.</p>
-        <a href="/quiz/" class="btn-primary bg-white text-wine-900 hover:bg-wine-50">
-          Take the Quiz
+        <h2 class="font-serif text-4xl font-bold mb-4">Ready for Better Wine?</h2>
+        <p class="text-xl text-wine-200 mb-8">Tell us what you're looking for and get personalized recommendations from our team.</p>
+        <a href="/contact/" class="btn-primary bg-white text-wine-900 hover:bg-wine-50">
+          Get Your Free Consultation
           <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
           </svg>
         </a>
+        <p class="text-wine-300 text-sm mt-4">No obligation. No spam. Just good wine advice.</p>
       </div>
     </div>
   </section>
