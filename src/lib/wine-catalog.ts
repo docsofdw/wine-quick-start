@@ -4,23 +4,32 @@ import type { SupabaseClient } from '@supabase/supabase-js';
 // Wine Catalog Database Client
 // Connects to external Supabase project containing real wine data
 
-// Support both Astro (import.meta.env) and Node.js scripts (process.env)
-const wineCatalogUrl = (typeof process !== 'undefined' && process.env?.WINE_CATALOG_URL)
-  || (import.meta.env?.WINE_CATALOG_URL as string);
-const wineCatalogAnonKey = (typeof process !== 'undefined' && process.env?.WINE_CATALOG_ANON_KEY)
-  || (import.meta.env?.WINE_CATALOG_ANON_KEY as string);
-
 let wineCatalogClient: SupabaseClient | null = null;
 
-function getWineCatalogClient(): SupabaseClient {
-  if (!wineCatalogUrl || !wineCatalogAnonKey) {
+/**
+ * Get wine catalog environment variables
+ * Lazy-loaded to support dotenv in scripts
+ */
+function getWineCatalogEnv(): { url: string; key: string } {
+  // Support both Astro (import.meta.env) and Node.js scripts (process.env)
+  const url = (typeof process !== 'undefined' && process.env?.WINE_CATALOG_URL)
+    || (import.meta.env?.WINE_CATALOG_URL as string);
+  const key = (typeof process !== 'undefined' && process.env?.WINE_CATALOG_ANON_KEY)
+    || (import.meta.env?.WINE_CATALOG_ANON_KEY as string);
+
+  if (!url || !key) {
     throw new Error(
       'Wine Catalog environment variables are missing. Please set WINE_CATALOG_URL and WINE_CATALOG_ANON_KEY in your environment.'
     );
   }
 
+  return { url, key };
+}
+
+function getWineCatalogClient(): SupabaseClient {
   if (!wineCatalogClient) {
-    wineCatalogClient = createClient(wineCatalogUrl, wineCatalogAnonKey);
+    const { url, key } = getWineCatalogEnv();
+    wineCatalogClient = createClient(url, key);
   }
 
   return wineCatalogClient;
@@ -258,21 +267,41 @@ function extractWineTerms(keyword: string): {
   varieties: string[];
   regions: string[];
   styles: string[];
+  explicitWineType: boolean; // Flag to indicate if wine type was explicitly mentioned
 } {
   const lowerKeyword = keyword.toLowerCase();
 
-  const wineTypes = [];
-  const varieties = [];
-  const regions = [];
-  const styles = [];
+  const wineTypes: string[] = [];
+  const varieties: string[] = [];
+  const regions: string[] = [];
+  const styles: string[] = [];
+  let explicitWineType = false;
 
-  // Wine types
-  if (lowerKeyword.includes('red')) wineTypes.push('red');
-  if (lowerKeyword.includes('white')) wineTypes.push('white');
-  if (lowerKeyword.includes('rosé') || lowerKeyword.includes('rose')) wineTypes.push('rosé');
-  if (lowerKeyword.includes('sparkling') || lowerKeyword.includes('champagne')) wineTypes.push('sparkling');
-  if (lowerKeyword.includes('orange')) wineTypes.push('orange');
-  if (lowerKeyword.includes('dessert') || lowerKeyword.includes('sweet')) wineTypes.push('dessert');
+  // Wine types - check for explicit mentions
+  if (lowerKeyword.includes('red wine') || (lowerKeyword.includes('red') && lowerKeyword.includes('wine'))) {
+    wineTypes.push('red');
+    explicitWineType = true;
+  }
+  if (lowerKeyword.includes('white wine') || (lowerKeyword.includes('white') && lowerKeyword.includes('wine'))) {
+    wineTypes.push('white');
+    explicitWineType = true;
+  }
+  if (lowerKeyword.includes('rosé') || lowerKeyword.includes('rose wine') || (lowerKeyword.includes('rose') && lowerKeyword.includes('wine'))) {
+    wineTypes.push('rosé');
+    explicitWineType = true;
+  }
+  if (lowerKeyword.includes('sparkling') || lowerKeyword.includes('champagne')) {
+    wineTypes.push('sparkling');
+    explicitWineType = true;
+  }
+  if (lowerKeyword.includes('orange wine') || (lowerKeyword.includes('orange') && lowerKeyword.includes('wine'))) {
+    wineTypes.push('orange');
+    explicitWineType = true;
+  }
+  if (lowerKeyword.includes('dessert') || lowerKeyword.includes('sweet wine')) {
+    wineTypes.push('dessert');
+    explicitWineType = true;
+  }
 
   // Common varieties
   const varietyMap: Record<string, string> = {
@@ -412,6 +441,7 @@ function extractWineTerms(keyword: string): {
   if (lowerKeyword.includes('premium') || lowerKeyword.includes('luxury')) styles.push('premium');
 
   // Food pairing keywords → suggest appropriate wine varieties
+  // ONLY use these if no explicit wine type was mentioned
   const foodPairingMap: Record<string, string[]> = {
     'steak': ['Cabernet Sauvignon', 'Malbec', 'Syrah'],
     'beef': ['Cabernet Sauvignon', 'Malbec', 'Syrah'],
@@ -430,19 +460,22 @@ function extractWineTerms(keyword: string): {
     'barbecue': ['Zinfandel', 'Syrah', 'Malbec'],
   };
 
-  // Check for food pairing keywords and add corresponding varieties
-  for (const [food, pairingVarieties] of Object.entries(foodPairingMap)) {
-    if (lowerKeyword.includes(food)) {
-      for (const variety of pairingVarieties) {
-        if (!varieties.includes(variety)) {
-          varieties.push(variety);
+  // Only check for food pairing keywords if NO explicit wine type was mentioned
+  // This prevents "rosé wine with chicken" from suggesting Chardonnay instead of rosé
+  if (!explicitWineType) {
+    for (const [food, pairingVarieties] of Object.entries(foodPairingMap)) {
+      if (lowerKeyword.includes(food)) {
+        for (const variety of pairingVarieties) {
+          if (!varieties.includes(variety)) {
+            varieties.push(variety);
+          }
         }
+        break; // Use first match
       }
-      break; // Use first match
     }
   }
 
-  return { wineTypes, varieties, regions, styles };
+  return { wineTypes, varieties, regions, styles, explicitWineType };
 }
 
 /**
@@ -486,13 +519,26 @@ export async function getWinesForKeyword(
   const appellations = ['barbaresco', 'barolo', 'brunello', 'chianti', 'amarone',
     'valpolicella', 'chablis', 'sancerre', 'champagne', 'châteauneuf'];
 
-  // Priority 1: Search by appellation in wine_name (for Italian/French wines)
   const lowerKeyword = keyword.toLowerCase();
-  for (const appellation of appellations) {
-    if (lowerKeyword.includes(appellation)) {
-      const appellationWines = await getWinesByAppellation(appellation, count);
-      wines.push(...appellationWines);
-      break; // Found appellation match, don't search others
+
+  // Priority 0 (NEW): If explicit wine type is mentioned (e.g., "rosé wine with chicken"),
+  // prioritize the wine type FIRST before anything else
+  if (terms.explicitWineType && terms.wineTypes.length > 0) {
+    for (const wineType of terms.wineTypes) {
+      const typeWines = await getWinesByType(wineType, count - wines.length);
+      wines.push(...typeWines);
+      if (wines.length >= count) break;
+    }
+  }
+
+  // Priority 1: Search by appellation in wine_name (for Italian/French wines)
+  if (wines.length < count) {
+    for (const appellation of appellations) {
+      if (lowerKeyword.includes(appellation)) {
+        const appellationWines = await getWinesByAppellation(appellation, count - wines.length);
+        wines.push(...appellationWines);
+        break; // Found appellation match, don't search others
+      }
     }
   }
 
@@ -512,8 +558,8 @@ export async function getWinesForKeyword(
     }
   }
 
-  // Priority 4: Search by wine type (only if we have some matches already or specific type requested)
-  if (wines.length < count && wines.length > 0 && terms.wineTypes.length > 0) {
+  // Priority 4: Search by wine type (for non-explicit cases where we have partial matches)
+  if (wines.length < count && wines.length > 0 && terms.wineTypes.length > 0 && !terms.explicitWineType) {
     for (const wineType of terms.wineTypes) {
       const typeWines = await getWinesByType(wineType, count - wines.length);
       wines.push(...typeWines);
@@ -529,6 +575,7 @@ export async function getWinesForKeyword(
       // Check if wine matches any of our search terms
       return terms.varieties.some(v => wineStr.includes(v.toLowerCase())) ||
              terms.regions.some(r => wineStr.includes(r.toLowerCase())) ||
+             terms.wineTypes.some(t => wineStr.includes(t.toLowerCase())) ||
              appellations.some(a => lowerKeyword.includes(a) && wineStr.includes(a));
     });
     wines.push(...relevantResults);
@@ -666,6 +713,95 @@ function generateTastingNotes(wine: Wine, keyword: string): string {
 
   // Default fallback
   return 'Well-crafted with balanced fruit, structure, and a satisfying finish.';
+}
+
+/**
+ * Get additional wines for article enrichment, excluding already-mentioned wines
+ * This is the main function to use for enrichment (vs getWinesForKeyword for generation)
+ *
+ * @param keyword - The article topic/keyword
+ * @param existingWines - Names of wines already in the article to exclude
+ * @param count - Number of wines to return (default: 5)
+ * @returns Array of wine recommendations, excluding duplicates
+ */
+export async function getAdditionalWinesForArticle(
+  keyword: string,
+  existingWines: string[],
+  count: number = 5
+): Promise<WineRecommendation[]> {
+  // Get more wines than needed to filter out duplicates
+  const wines = await getWinesForKeyword(keyword, count + existingWines.length + 5);
+
+  if (wines.length === 0) {
+    return [];
+  }
+
+  // Normalize existing wine names for comparison
+  const existingNormalized = existingWines.map(w =>
+    w.toLowerCase().replace(/[^a-z0-9]/g, '')
+  );
+
+  // Filter out wines that are already in the article
+  const newWines = wines.filter(wine => {
+    const wineNormalized = wine.name.toLowerCase().replace(/[^a-z0-9]/g, '');
+    const producerNormalized = wine.producer.toLowerCase().replace(/[^a-z0-9]/g, '');
+
+    // Check if this wine or producer is already mentioned
+    return !existingNormalized.some(existing =>
+      wineNormalized.includes(existing) ||
+      existing.includes(wineNormalized) ||
+      existing.includes(producerNormalized)
+    );
+  });
+
+  return newWines.slice(0, count);
+}
+
+/**
+ * Check if a specific wine exists in the catalog
+ * Used for validation purposes
+ *
+ * @param wineName - The wine name to search for
+ * @returns true if wine exists in catalog, false otherwise
+ */
+export async function wineExistsInCatalog(wineName: string): Promise<boolean> {
+  const results = await searchWines(wineName, 1);
+  if (results.length === 0) {
+    return false;
+  }
+
+  // Check if the result is a close match
+  const resultName = `${results[0].producer} ${results[0].wine_name}`.toLowerCase();
+  const searchName = wineName.toLowerCase();
+
+  // Fuzzy match - at least the producer or wine name should match
+  return resultName.includes(searchName.split(' ')[0]) ||
+         searchName.includes(results[0].producer.toLowerCase()) ||
+         searchName.includes(results[0].wine_name.toLowerCase());
+}
+
+/**
+ * Validate multiple wines against the catalog
+ *
+ * @param wineNames - Array of wine names to validate
+ * @returns Object with valid and invalid wine lists
+ */
+export async function validateWinesInCatalog(
+  wineNames: string[]
+): Promise<{ valid: string[]; invalid: string[] }> {
+  const valid: string[] = [];
+  const invalid: string[] = [];
+
+  for (const name of wineNames) {
+    const exists = await wineExistsInCatalog(name);
+    if (exists) {
+      valid.push(name);
+    } else {
+      invalid.push(name);
+    }
+  }
+
+  return { valid, invalid };
 }
 
 /**

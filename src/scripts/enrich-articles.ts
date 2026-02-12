@@ -33,11 +33,14 @@ import {
   getComparisonPrompt,
   getFAQPrompt,
   getExpertTipsPrompt,
-  getExtendedRecommendationsPrompt,
   getAgingPrompt,
   estimateWordAddition,
   type ArticleContext,
 } from '../lib/content-enrichment-templates.js';
+import {
+  getAdditionalWinesForArticle,
+  type WineRecommendation,
+} from '../lib/wine-catalog.js';
 
 config({ path: '.env.local', override: true });
 
@@ -74,6 +77,7 @@ const minPriority = priorityArg ? parseInt(priorityArg.split('=')[1]) : 0;
 const thinOnly = args.includes('--thin-only');
 const maxWordsArg = args.find(a => a.startsWith('--max-words='));
 const maxWords = maxWordsArg ? parseInt(maxWordsArg.split('=')[1]) : (thinOnly ? 1500 : Infinity);
+const skipWineSection = args.includes('--skip-wine-section');
 
 interface ArticleInfo {
   slug: string;
@@ -174,9 +178,38 @@ async function enrichWithPriorities(articles: ArticleInfo[]): Promise<ArticleInf
 }
 
 /**
- * Generate enrichment content using Claude
+ * Generate wine recommendation HTML cards from real catalog wines
  */
-async function generateEnrichmentContent(context: ArticleContext): Promise<Map<string, string>> {
+function generateWineRecommendationCards(wines: WineRecommendation[]): string {
+  if (wines.length === 0) {
+    return '';
+  }
+
+  const cards = wines.map(wine => {
+    const priceEstimate = wine.wine_type === 'sparkling' ? '$40-80' :
+                         wine.variety?.toLowerCase().includes('pinot noir') ? '$30-60' :
+                         wine.variety?.toLowerCase().includes('cabernet') ? '$35-75' :
+                         '$25-50';
+
+    return `  <div class="bg-gray-50 rounded-lg p-5 border border-gray-100">
+    <h3 class="text-lg font-semibold text-wine-700 mb-1">${wine.name}</h3>
+    <p class="text-sm text-gray-600 mb-2">${wine.region} | ~${priceEstimate}</p>
+    <p class="text-gray-700 text-sm">${wine.notes}</p>
+    <p class="text-xs text-wine-600 mt-2"><strong>Variety:</strong> ${wine.variety || wine.wine_type}</p>
+  </div>`;
+  }).join('\n');
+
+  return `<div class="grid md:grid-cols-2 gap-4 my-6">\n${cards}\n</div>`;
+}
+
+/**
+ * Generate enrichment content using Claude
+ * Now uses REAL wines from catalog instead of AI-generated recommendations
+ */
+async function generateEnrichmentContent(
+  context: ArticleContext,
+  useRealWines: boolean = true
+): Promise<Map<string, string>> {
   const contentType = getContentType(context.keyword);
   const sections = new Map<string, string>();
 
@@ -189,19 +222,17 @@ async function generateEnrichmentContent(context: ArticleContext): Promise<Map<s
   prompts.push({ name: 'expertTips', prompt: getExpertTipsPrompt(context) });
   prompts.push({ name: 'faqs', prompt: getFAQPrompt(context) });
 
-  // Content-type specific sections
+  // Content-type specific sections (NO AI wine recommendations)
   if (contentType === 'region' || contentType === 'varietal') {
     prompts.push({ name: 'history', prompt: getHistoryPrompt(context) });
     prompts.push({ name: 'terroir', prompt: getTerroirPrompt(context) });
     prompts.push({ name: 'tastingProfile', prompt: getTastingProfilePrompt(context) });
     prompts.push({ name: 'foodPairing', prompt: getFoodPairingPrompt(context) });
     prompts.push({ name: 'aging', prompt: getAgingPrompt(context) });
-    prompts.push({ name: 'moreRecommendations', prompt: getExtendedRecommendationsPrompt(context) });
   }
 
   if (contentType === 'pairing') {
     prompts.push({ name: 'foodPairing', prompt: getFoodPairingPrompt(context) });
-    prompts.push({ name: 'moreRecommendations', prompt: getExtendedRecommendationsPrompt(context) });
   }
 
   if (contentType === 'comparison') {
@@ -211,11 +242,10 @@ async function generateEnrichmentContent(context: ArticleContext): Promise<Map<s
 
   if (contentType === 'buying') {
     prompts.push({ name: 'buyingGuide', prompt: getBuyingGuidePrompt(context) });
-    prompts.push({ name: 'moreRecommendations', prompt: getExtendedRecommendationsPrompt(context) });
     prompts.push({ name: 'aging', prompt: getAgingPrompt(context) });
   }
 
-  // Generate each section
+  // Generate AI content sections (NOT wine recommendations)
   for (const { name, prompt } of prompts) {
     if (!prompt) continue;
 
@@ -234,6 +264,34 @@ async function generateEnrichmentContent(context: ArticleContext): Promise<Map<s
       await new Promise(resolve => setTimeout(resolve, 1000));
     } catch (err: any) {
       console.error(`   ⚠️  Failed to generate ${name}: ${err.message}`);
+    }
+  }
+
+  // Generate wine recommendations from REAL catalog data (not AI)
+  // Only add if we should include wine section and content type supports it
+  if (useRealWines && !skipWineSection) {
+    const needsWineRecs = ['region', 'varietal', 'pairing', 'buying'].includes(contentType);
+
+    if (needsWineRecs) {
+      try {
+        console.log(`   🍷 Fetching real wines from catalog...`);
+        const wines = await getAdditionalWinesForArticle(
+          context.keyword,
+          context.existingWines || [],
+          6 // Get 6 wines for enrichment
+        );
+
+        if (wines.length >= 3) {
+          const wineCardsHtml = generateWineRecommendationCards(wines);
+          sections.set('moreRecommendations', wineCardsHtml);
+          console.log(`   ✅ Found ${wines.length} matching wines in catalog`);
+        } else {
+          console.log(`   ⚠️  Only ${wines.length} wines found - skipping wine section (need 3+)`);
+        }
+      } catch (err: any) {
+        console.error(`   ⚠️  Failed to fetch wines from catalog: ${err.message}`);
+        console.log(`   ⚠️  Skipping wine recommendations section`);
+      }
     }
   }
 

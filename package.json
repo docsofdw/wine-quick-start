@@ -35,7 +35,18 @@
     "ppc:analyze": "tsx src/scripts/ppc-keyword-analysis.ts",
     "ppc:export": "tsx src/scripts/ppc-keyword-analysis.ts --export",
     "ppc:audit": "tsx src/scripts/ppc-readiness-audit.ts",
-    "keywords:import-planner": "tsx src/scripts/import-keyword-planner.ts"
+    "keywords:import-planner": "tsx src/scripts/import-keyword-planner.ts",
+    "qa:score": "tsx src/scripts/qa-score-article.ts --all",
+    "qa:score:json": "tsx src/scripts/qa-score-article.ts --all --json",
+    "qa:validate-wines": "tsx src/scripts/qa-score-article.ts --all --validate-wines",
+    "pipeline": "tsx src/scripts/autonomous-pipeline.ts",
+    "pipeline:dry": "tsx src/scripts/autonomous-pipeline.ts --dry-run --verbose",
+    "pipeline:generate": "tsx src/scripts/autonomous-pipeline.ts --skip-enrich",
+    "pipeline:enrich": "tsx src/scripts/autonomous-pipeline.ts --skip-generate",
+    "pipeline:validate": "tsx src/scripts/autonomous-pipeline.ts --skip-generate --validate-wines",
+    "catalog:health": "tsx src/scripts/validate-all-wines.ts",
+    "catalog:validate": "tsx src/scripts/validate-all-wines.ts --verbose",
+    "catalog:fix": "tsx src/scripts/validate-all-wines.ts --fix"
   },
   "dependencies": {
     "@astrojs/mdx": "^4.2.6",

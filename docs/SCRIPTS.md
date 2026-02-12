@@ -2,6 +2,88 @@
 
 All scripts are in `src/scripts/` and run with `npx tsx`.
 
+## Autonomous Content Pipeline
+
+The pipeline automates article generation, enrichment, and quality assurance with wine catalog integration.
+
+### autonomous-pipeline.ts
+Main orchestration script that runs the full content pipeline.
+
+```bash
+# Full pipeline run
+npm run pipeline
+
+# Dry run (preview without changes)
+npm run pipeline:dry
+
+# Generate only (skip enrichment)
+npm run pipeline:generate
+
+# Enrich only (skip generation)
+npm run pipeline:enrich
+
+# With wine validation
+npm run pipeline:validate
+```
+
+**Options:**
+| Flag | Description |
+|------|-------------|
+| `--dry-run` | Preview only, no file changes |
+| `--generate=N` | Generate N articles (default: 2) |
+| `--enrich-limit=N` | Enrich up to N articles (default: 3) |
+| `--skip-generate` | Skip article generation |
+| `--skip-enrich` | Skip enrichment step |
+| `--validate-wines` | Validate wines against catalog |
+| `--notify` | Send Slack notification |
+| `--verbose` | Show detailed output |
+
+**Pipeline Steps:**
+1. **Generation** - Creates articles from priority keywords
+2. **Scoring** - Scores all articles for quality (0-100)
+3. **Enrichment** - Expands low-scoring articles with more content
+4. **Wine Validation** - Verifies wine recommendations exist in catalog
+5. **Final Scoring** - Re-scores and categorizes for publishing
+
+**Quality Thresholds:**
+- 80%+ → Auto-publish ready
+- 50-79% → Needs enrichment/review
+- <50% → Rejected
+
+---
+
+### qa-score-article.ts
+Scores articles on multiple quality dimensions.
+
+```bash
+# Score all articles
+npm run qa:score
+
+# Score with wine validation
+npm run qa:validate-wines
+
+# Output as JSON
+npm run qa:score:json
+
+# Score specific article
+npx tsx src/scripts/qa-score-article.ts --article=barolo-wine
+
+# Score by category
+npx tsx src/scripts/qa-score-article.ts --category=learn
+```
+
+**Scoring Dimensions:**
+| Dimension | Weight | What It Measures |
+|-----------|--------|------------------|
+| Word Count | 20% | Target: 1500-3000 words |
+| Structure | 20% | H2s, quick answer, FAQs |
+| SEO | 20% | Meta, schema, internal links |
+| Content Quality | 20% | Wine count, no placeholders |
+| Technical | 10% | Valid Astro syntax |
+| Wine Validity | 10% | Wines exist in catalog (when enabled) |
+
+---
+
 ## Content Generation
 
 ### generate-priority-articles.ts
@@ -14,8 +96,9 @@ npx tsx src/scripts/generate-priority-articles.ts
 **Features:**
 - Fetches keywords with priority >= 8 from Supabase
 - Checks for semantic duplicates (prevents similar topics)
+- **Checks wine catalog for matching wines** (skips if none found)
 - Generates AI images via Replicate
-- Creates .astro files with wine recommendations
+- Creates .astro files with wine recommendations from catalog
 - Marks keywords as "used" after generation
 
 **Output:** Up to 10 articles per run
@@ -37,6 +120,9 @@ npx tsx src/scripts/enrich-articles.ts --dry-run --limit=5
 
 # Filter by category
 npx tsx src/scripts/enrich-articles.ts --category=wine-pairings --limit=5
+
+# Skip wine recommendation section
+npx tsx src/scripts/enrich-articles.ts --skip-wine-section
 ```
 
 **Options:**
@@ -48,6 +134,9 @@ npx tsx src/scripts/enrich-articles.ts --category=wine-pairings --limit=5
 | `--max-words=N` | Custom word count threshold |
 | `--category=X` | Filter by learn/wine-pairings/buy |
 | `--article=slug` | Process specific article |
+| `--skip-wine-section` | Don't add wine recommendations |
+
+**Wine Integration:** Enrichment now uses REAL wines from the catalog, not AI-generated recommendations. If fewer than 3 matching wines exist, the wine section is skipped.
 
 ---
 
@@ -148,12 +237,77 @@ Bulk insert keywords from research.
 npx tsx src/scripts/insert-researched-keywords.ts
 ```
 
+## Wine Catalog
+
+### validate-all-wines.ts
+Scans all articles and validates wine recommendations against the catalog.
+
+```bash
+# Check catalog health
+npm run catalog:health
+
+# Verbose validation with details
+npm run catalog:validate
+
+# Fix articles with invalid wines (removes wine sections)
+npm run catalog:fix
+
+# Output as JSON
+npx tsx src/scripts/validate-all-wines.ts --json > wine-report.json
+```
+
+**Options:**
+| Flag | Description |
+|------|-------------|
+| `--json` | Output as JSON |
+| `--fix` | Remove wine sections with invalid wines |
+| `--category=X` | Only validate specific category |
+| `--verbose` | Show detailed output |
+
+---
+
+### test-wine-catalog.ts
+Tests wine catalog connection and displays sample data.
+
+```bash
+npx tsx src/scripts/test-wine-catalog.ts
+```
+
+**Output:**
+- Connection status
+- Total wine count
+- Sample wines
+- Variety distribution
+- Region distribution
+
 ## NPM Scripts
 
+### Pipeline Commands
+```bash
+npm run pipeline              # Full pipeline run
+npm run pipeline:dry          # Preview without changes
+npm run pipeline:generate     # Generate only
+npm run pipeline:enrich       # Enrich only
+npm run pipeline:validate     # Validate wines only
+```
+
+### QA Commands
+```bash
+npm run qa:score              # Score all articles
+npm run qa:score:json         # Score as JSON
+npm run qa:validate-wines     # Score with wine validation
+```
+
+### Wine Catalog Commands
+```bash
+npm run catalog:health        # Quick connection test
+npm run catalog:validate      # Full validation report
+npm run catalog:fix           # Fix invalid wine sections
+```
+
+### Development Commands
 ```bash
 npm run dev          # Start dev server
 npm run build        # Production build
 npm run preview      # Preview production build
-npm run wine:daily   # Generate daily content batch
-npm run seed:keywords # Seed keywords to database
 ```

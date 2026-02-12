@@ -92,7 +92,67 @@ Tracks generated article metadata.
 | keywords | TEXT[] | Target keywords |
 | h2_structure | TEXT[] | Section headings |
 
-## Content Flow
+## Autonomous Content Pipeline
+
+The content pipeline runs automatically via GitHub Actions (Mon/Thu 6am UTC) or manually.
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│                 AUTONOMOUS CONTENT PIPELINE                  │
+├─────────────────────────────────────────────────────────────┤
+│                                                              │
+│  1. KEYWORD SELECTION                                        │
+│     ├── Fetch priority >= 7 keywords from Supabase          │
+│     ├── Check for semantic duplicates                        │
+│     └── PRE-CHECK: Verify wines exist in catalog ────────┐  │
+│                                                           │  │
+│  2. ARTICLE GENERATION                                    │  │
+│     ├── Generate AI image (Replicate)                     │  │
+│     ├── Fetch REAL wines from catalog ◄──────────────────┘  │
+│     ├── Create .astro file with wine cards                   │
+│     └── Mark keyword as "used"                               │
+│                                                              │
+│  3. QA SCORING (0-100)                                       │
+│     ├── Word count (20%)                                     │
+│     ├── Structure (20%)                                      │
+│     ├── SEO elements (20%)                                   │
+│     ├── Content quality (20%)                                │
+│     ├── Technical validity (10%)                             │
+│     └── Wine validity (10%) ─── Checks catalog               │
+│                                                              │
+│  4. ENRICHMENT (if score < 80%)                              │
+│     ├── Generate sections via Claude API                     │
+│     ├── Add REAL wines from catalog (not AI picks)          │
+│     └── POST-CHECK: Validate all wines exist                 │
+│                                                              │
+│  5. FINAL DECISION                                           │
+│     ├── 80%+ → Published (PR created)                        │
+│     ├── 50-79% → Needs review                                │
+│     └── <50% → Rejected/archived                             │
+│                                                              │
+└─────────────────────────────────────────────────────────────┘
+```
+
+### Quality Gates
+
+| Gate | When | Pass Condition | Fail Action |
+|------|------|----------------|-------------|
+| Duplicate Check | Pre-gen | Topic not used | Skip keyword |
+| Wine Coverage | Pre-gen | Wines exist in catalog | Skip wine section |
+| Initial Score | Post-gen | Score >= 50 | Archive article |
+| Wine Validity | Post-enrich | All wines in catalog | Flag for review |
+| Final Score | Pre-publish | Score >= 80 | Hold in PR |
+
+### GitHub Actions Schedule
+
+| Schedule | Job | Purpose |
+|----------|-----|---------|
+| Mon/Thu 6am UTC | content-pipeline | Generate & enrich articles |
+| Daily 2am UTC | catalog-health | Verify wine catalog connection |
+
+## Legacy Content Flow
+
+For manual operations outside the pipeline:
 
 ```
 1. Keyword Research
@@ -108,6 +168,7 @@ Tracks generated article metadata.
 3. Content Enrichment
    ├── Identify thin articles (< 1500 words)
    ├── Generate sections via Claude API
+   ├── Fetch REAL wines from catalog
    ├── Insert into article structure
    └── Update read time
 
@@ -140,18 +201,78 @@ Tracks generated article metadata.
 | `/api/cron/daily` | Vercel cron for daily generation |
 | `/api/newsletter` | Email subscription handler |
 
+## Wine Catalog Integration
+
+The wine catalog is a separate Supabase database containing real wine data from partners.
+
+### Why Real Wines?
+
+- **Authenticity** - Readers can actually find and buy recommended wines
+- **Quality Control** - No AI-hallucinated wine names or producers
+- **SEO Benefit** - Real wines = real search traffic
+- **Partner Integration** - Links to actual retailers
+
+### Wine Matching Flow
+
+```
+Keyword: "best pinot noir"
+        │
+        ▼
+┌─────────────────┐
+│ Extract Terms   │ → varieties: ["Pinot Noir"]
+│                 │ → regions: ["Burgundy", "Oregon"]
+└────────┬────────┘
+         │
+         ▼
+┌─────────────────┐
+│ Search Catalog  │ → Priority: variety > region > type
+└────────┬────────┘
+         │
+         ▼
+┌─────────────────┐
+│ Filter Results  │ → Remove duplicates
+│                 │ → Exclude existing article wines
+└────────┬────────┘
+         │
+         ▼
+┌─────────────────┐
+│ Generate Cards  │ → Name, region, tasting notes
+└─────────────────┘
+```
+
+### No Matching Wines?
+
+If no wines match the keyword topic:
+- **Generation**: Skip wine recommendation section (article still created)
+- **Enrichment**: Skip wine enrichment (other content still added)
+- **Validation**: Score 100% (no wines = nothing to validate)
+
+### Key Functions
+
+| Function | Purpose |
+|----------|---------|
+| `getWinesForKeyword()` | Get wines for article generation |
+| `getAdditionalWinesForArticle()` | Get wines for enrichment (excludes existing) |
+| `validateWinesInCatalog()` | Validate wine names exist |
+| `wineExistsInCatalog()` | Check single wine |
+
 ## Environment Variables
 
 ```env
-# Required
+# Required - Main database
 SUPABASE_URL=
 SUPABASE_ANON_KEY=
+
+# Required - Wine catalog database
 WINE_CATALOG_URL=
 WINE_CATALOG_ANON_KEY=
 
 # Content Generation
 ANTHROPIC_API_KEY=
 REPLICATE_API_TOKEN=
+
+# Notifications (optional)
+SLACK_WEBHOOK_URL=
 
 # Optional (keyword research)
 DATAFORSEO_LOGIN=

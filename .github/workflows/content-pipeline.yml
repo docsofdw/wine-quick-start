@@ -1,0 +1,270 @@
+name: Autonomous Content Pipeline
+
+on:
+  # Run twice a week: Monday and Thursday at 6am UTC
+  schedule:
+    - cron: '0 6 * * 1,4'
+    # Daily catalog health check at 2am UTC
+    - cron: '0 2 * * *'
+
+  # Allow manual trigger
+  workflow_dispatch:
+    inputs:
+      generate_count:
+        description: 'Number of articles to generate'
+        required: false
+        default: '2'
+      enrich_limit:
+        description: 'Max articles to enrich'
+        required: false
+        default: '3'
+      dry_run:
+        description: 'Dry run mode (no changes)'
+        required: false
+        type: boolean
+        default: false
+      skip_generate:
+        description: 'Skip generation step'
+        required: false
+        type: boolean
+        default: false
+      validate_wines:
+        description: 'Validate wines against catalog'
+        required: false
+        type: boolean
+        default: true
+
+env:
+  NODE_VERSION: '22'
+
+jobs:
+  # Daily catalog health check (runs at 2am UTC)
+  catalog-health:
+    runs-on: ubuntu-latest
+    if: github.event.schedule == '0 2 * * *'
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Create .env.local
+        run: |
+          echo "WINE_CATALOG_URL=${{ secrets.WINE_CATALOG_URL }}" >> .env.local
+          echo "WINE_CATALOG_ANON_KEY=${{ secrets.WINE_CATALOG_ANON_KEY }}" >> .env.local
+
+      - name: Test Wine Catalog Connection
+        id: catalog-test
+        run: |
+          npx tsx -e "
+            import { testWineCatalogConnection } from './src/lib/wine-catalog.js';
+            const result = await testWineCatalogConnection();
+            if (!result.success) {
+              console.error('Wine catalog connection failed:', result.error);
+              process.exit(1);
+            }
+            console.log('Wine catalog healthy:', result.count, 'wines');
+          "
+
+      - name: Alert on failure
+        if: failure() && env.SLACK_WEBHOOK_URL
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+        run: |
+          curl -X POST $SLACK_WEBHOOK_URL \
+            -H 'Content-Type: application/json' \
+            -d '{
+              "text": "⚠️ Wine Catalog Health Check Failed",
+              "blocks": [
+                {
+                  "type": "header",
+                  "text": {"type": "plain_text", "text": "⚠️ Wine Catalog Connection Issue"}
+                },
+                {
+                  "type": "section",
+                  "text": {"type": "mrkdwn", "text": "The daily wine catalog health check failed. Content pipeline may be affected.\n\nPlease check the catalog connection and credentials."}
+                }
+              ]
+            }'
+
+  content-pipeline:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    # Don't run content pipeline during health check schedule
+    if: github.event.schedule != '0 2 * * *'
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Create .env.local
+        run: |
+          echo "SUPABASE_URL=${{ secrets.SUPABASE_URL }}" >> .env.local
+          echo "SUPABASE_ANON_KEY=${{ secrets.SUPABASE_ANON_KEY }}" >> .env.local
+          echo "ANTHROPIC_API_KEY=${{ secrets.ANTHROPIC_API_KEY }}" >> .env.local
+          echo "REPLICATE_API_TOKEN=${{ secrets.REPLICATE_API_TOKEN }}" >> .env.local
+          echo "SLACK_WEBHOOK_URL=${{ secrets.SLACK_WEBHOOK_URL }}" >> .env.local
+          echo "WINE_CATALOG_URL=${{ secrets.WINE_CATALOG_URL }}" >> .env.local
+          echo "WINE_CATALOG_ANON_KEY=${{ secrets.WINE_CATALOG_ANON_KEY }}" >> .env.local
+
+      - name: Run Content Pipeline
+        id: pipeline
+        run: |
+          # Build command with options
+          CMD="npx tsx src/scripts/autonomous-pipeline.ts"
+
+          # Add options based on inputs
+          if [ "${{ github.event.inputs.dry_run }}" == "true" ]; then
+            CMD="$CMD --dry-run"
+          fi
+
+          if [ "${{ github.event.inputs.skip_generate }}" == "true" ]; then
+            CMD="$CMD --skip-generate"
+          fi
+
+          if [ -n "${{ github.event.inputs.generate_count }}" ]; then
+            CMD="$CMD --generate=${{ github.event.inputs.generate_count }}"
+          else
+            CMD="$CMD --generate=2"
+          fi
+
+          if [ -n "${{ github.event.inputs.enrich_limit }}" ]; then
+            CMD="$CMD --enrich-limit=${{ github.event.inputs.enrich_limit }}"
+          else
+            CMD="$CMD --enrich-limit=3"
+          fi
+
+          # Wine validation (default: true)
+          if [ "${{ github.event.inputs.validate_wines }}" != "false" ]; then
+            CMD="$CMD --validate-wines"
+          fi
+
+          # Always notify and be verbose in CI
+          CMD="$CMD --notify --verbose"
+
+          echo "Running: $CMD"
+          $CMD
+
+      - name: Check for changes
+        id: changes
+        run: |
+          git add -A
+          if git diff --staged --quiet; then
+            echo "has_changes=false" >> $GITHUB_OUTPUT
+          else
+            echo "has_changes=true" >> $GITHUB_OUTPUT
+            echo "Changes detected:"
+            git diff --staged --stat
+          fi
+
+      - name: Create Pull Request
+        if: steps.changes.outputs.has_changes == 'true' && github.event.inputs.dry_run != 'true'
+        uses: peter-evans/create-pull-request@v6
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: 'content: Auto-generate and enrich articles'
+          title: '🍷 New Wine Articles - ${{ github.run_number }}'
+          body: |
+            ## Automated Content Pipeline
+
+            This PR was automatically generated by the content pipeline.
+
+            ### What's Included
+            - New articles generated from priority keywords
+            - Existing articles enriched with additional content
+            - All articles passed QA scoring (80%+ threshold)
+            - Wine recommendations validated against real catalog
+
+            ### Wine Validation
+            All wine recommendations in this PR have been verified to exist in our wine catalog database. This ensures readers can actually find and purchase the wines we recommend.
+
+            ### Review Checklist
+            - [ ] Spot check 1-2 articles for quality
+            - [ ] Verify wine recommendations look reasonable
+            - [ ] Check that wine prices/regions are accurate
+            - [ ] Verify no broken images or links
+            - [ ] Check SEO metadata looks correct
+
+            ---
+            🤖 Generated by [Autonomous Content Pipeline](.github/workflows/content-pipeline.yml)
+          branch: content/auto-${{ github.run_number }}
+          delete-branch: true
+          labels: |
+            content
+            automated
+
+      - name: Upload pipeline logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: pipeline-logs
+          path: pipeline-logs/
+          retention-days: 30
+          if-no-files-found: ignore
+
+  # Weekly quality report (runs on Sundays)
+  weekly-report:
+    runs-on: ubuntu-latest
+    if: github.event.schedule == '0 6 * * 0'  # Only on scheduled Sunday runs
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Generate Quality Report
+        run: |
+          npx tsx src/scripts/qa-score-article.ts --all --json > quality-report.json
+
+      - name: Send Weekly Summary
+        if: ${{ secrets.SLACK_WEBHOOK_URL }}
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+        run: |
+          # Parse report and send to Slack
+          TOTAL=$(jq '.summary.total' quality-report.json)
+          PASSED=$(jq '.summary.passed' quality-report.json)
+          AVG=$(jq '.summary.avgScore' quality-report.json)
+
+          curl -X POST $SLACK_WEBHOOK_URL \
+            -H 'Content-Type: application/json' \
+            -d "{
+              \"text\": \"📊 Weekly Wine Content Report\",
+              \"blocks\": [
+                {
+                  \"type\": \"header\",
+                  \"text\": {\"type\": \"plain_text\", \"text\": \"📊 Weekly Wine Content Report\"}
+                },
+                {
+                  \"type\": \"section\",
+                  \"text\": {\"type\": \"mrkdwn\", \"text\": \"*Total Articles:* $TOTAL\\n*Passing QA:* $PASSED\\n*Average Score:* $AVG%\"}
+                }
+              ]
+            }"
