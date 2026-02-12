@@ -280,6 +280,73 @@ npx tsx src/scripts/test-wine-catalog.ts
 - Variety distribution
 - Region distribution
 
+## Telegram Notifications
+
+### telegram-notify.ts
+Sends article notifications to Telegram with images and inline action buttons.
+
+```bash
+# Send notification for specific article (with image if available)
+npm run telegram:notify -- --article=best-pinot-noir
+
+# Send pipeline summary (new articles, scores, etc.)
+npm run telegram:test
+
+# Send weekly digest (total articles, word counts, categories)
+npm run telegram:digest
+```
+
+**Options:**
+| Flag | Description |
+|------|-------------|
+| `--article=slug` | Send notification for specific article |
+| `--summary` | Send pipeline summary |
+| `--digest` | Send weekly content digest |
+| `--log=path` | Use specific log file for summary |
+
+**Notification includes:**
+- Featured image (if available)
+- Title, keyword, category
+- QA score, word count, wine count
+- Keep/Delete inline buttons
+- Direct link to article
+
+---
+
+### telegram-get-chat-id.ts
+Helper script to get your Telegram chat ID during setup.
+
+```bash
+npm run telegram:setup
+```
+
+**Usage:**
+1. Create bot with @BotFather on Telegram
+2. Send any message to your bot
+3. Run this script to get your chat ID
+4. Add chat ID to `.env.local`
+
+---
+
+### telegram-webhook.ts (API endpoint)
+Handles button callbacks from Telegram inline keyboards.
+
+**Location:** `src/pages/api/telegram-webhook.ts`
+
+**Supported Actions:**
+| Callback | Action |
+|----------|--------|
+| `keep:slug` | Mark article as kept (updates message) |
+| `delete:slug` | Delete article via GitHub API |
+| `view_all` | Link to all articles |
+
+**Setup webhook:**
+```bash
+curl "https://api.telegram.org/bot<TOKEN>/setWebhook?url=https://winesquickstart.com/api/telegram-webhook"
+```
+
+---
+
 ## NPM Scripts
 
 ### Pipeline Commands
@@ -303,6 +370,14 @@ npm run qa:validate-wines     # Score with wine validation
 npm run catalog:health        # Quick connection test
 npm run catalog:validate      # Full validation report
 npm run catalog:fix           # Fix invalid wine sections
+```
+
+### Telegram Commands
+```bash
+npm run telegram:setup        # Get your chat ID
+npm run telegram:test         # Send pipeline summary
+npm run telegram:digest       # Send weekly digest
+npm run telegram:notify -- --article=slug  # Notify specific article
 ```
 
 ### Development Commands
