@@ -125,6 +125,9 @@ jobs:
           echo "SLACK_WEBHOOK_URL=${{ secrets.SLACK_WEBHOOK_URL }}" >> .env.local
           echo "WINE_CATALOG_URL=${{ secrets.WINE_CATALOG_URL }}" >> .env.local
           echo "WINE_CATALOG_ANON_KEY=${{ secrets.WINE_CATALOG_ANON_KEY }}" >> .env.local
+          echo "TELEGRAM_BOT_TOKEN=${{ secrets.TELEGRAM_BOT_TOKEN }}" >> .env.local
+          echo "TELEGRAM_CHAT_ID=${{ secrets.TELEGRAM_CHAT_ID }}" >> .env.local
+          echo "SITE_URL=https://winequickstart.com" >> .env.local
 
       - name: Run Content Pipeline
         id: pipeline
@@ -211,6 +214,11 @@ jobs:
           labels: |
             content
             automated
+
+      - name: Send Telegram Notification
+        if: steps.changes.outputs.has_changes == 'true' && github.event.inputs.dry_run != 'true'
+        run: |
+          npx tsx src/scripts/telegram-notify.ts --summary
 
       - name: Upload pipeline logs
         if: always()

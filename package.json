@@ -46,7 +46,10 @@
     "pipeline:validate": "tsx src/scripts/autonomous-pipeline.ts --skip-generate --validate-wines",
     "catalog:health": "tsx src/scripts/validate-all-wines.ts",
     "catalog:validate": "tsx src/scripts/validate-all-wines.ts --verbose",
-    "catalog:fix": "tsx src/scripts/validate-all-wines.ts --fix"
+    "catalog:fix": "tsx src/scripts/validate-all-wines.ts --fix",
+    "telegram:setup": "tsx src/scripts/telegram-get-chat-id.ts",
+    "telegram:test": "tsx src/scripts/telegram-notify.ts --summary",
+    "telegram:notify": "tsx src/scripts/telegram-notify.ts"
   },
   "dependencies": {
     "@astrojs/mdx": "^4.2.6",
