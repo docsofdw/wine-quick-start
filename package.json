@@ -49,7 +49,8 @@
     "catalog:fix": "tsx src/scripts/validate-all-wines.ts --fix",
     "telegram:setup": "tsx src/scripts/telegram-get-chat-id.ts",
     "telegram:test": "tsx src/scripts/telegram-notify.ts --summary",
-    "telegram:notify": "tsx src/scripts/telegram-notify.ts"
+    "telegram:notify": "tsx src/scripts/telegram-notify.ts",
+    "telegram:digest": "tsx src/scripts/telegram-notify.ts --digest"
   },
   "dependencies": {
     "@astrojs/mdx": "^4.2.6",

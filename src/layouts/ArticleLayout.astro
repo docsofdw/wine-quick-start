@@ -42,6 +42,9 @@ const {
   relatedArticles = []
 } = Astro.props;
 
+// Get OG image URL from featured image
+const ogImage = featuredImage?.src;
+
 // Build breadcrumb items
 const breadcrumbItems = [
   { label: 'Home', href: '/' },
@@ -50,7 +53,7 @@ const breadcrumbItems = [
 ];
 ---
 
-<BaseLayout {title} {description} {schema}>
+<BaseLayout {title} {description} {schema} {ogImage}>
   <article class="py-8 md:py-12 lg:py-16">
     <div class="max-w-4xl mx-auto px-4 sm:px-6">
       <!-- Breadcrumbs -->

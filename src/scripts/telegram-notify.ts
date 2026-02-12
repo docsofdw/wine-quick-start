@@ -1,11 +1,12 @@
 /**
  * Telegram Notification Script
  *
- * Sends article notifications to Telegram with inline action buttons.
+ * Sends article notifications to Telegram with images and inline action buttons.
  *
  * Usage:
  *   npx tsx src/scripts/telegram-notify.ts --article=slug
  *   npx tsx src/scripts/telegram-notify.ts --summary  (pipeline summary)
+ *   npx tsx src/scripts/telegram-notify.ts --digest   (weekly digest)
  *
  * Environment:
  *   TELEGRAM_BOT_TOKEN - Bot token from @BotFather
@@ -26,6 +27,7 @@ const SITE_URL = process.env.SITE_URL || 'https://winesquickstart.com';
 const args = process.argv.slice(2);
 const articleSlug = args.find(a => a.startsWith('--article='))?.split('=')[1];
 const sendSummary = args.includes('--summary');
+const sendDigest = args.includes('--digest');
 const pipelineLogFile = args.find(a => a.startsWith('--log='))?.split('=')[1];
 
 interface ArticleInfo {
@@ -36,6 +38,9 @@ interface ArticleInfo {
   wordCount: number;
   score?: number;
   filePath: string;
+  wineCount: number;
+  hasImage: boolean;
+  imagePath?: string;
 }
 
 interface PipelineResult {
@@ -52,11 +57,58 @@ interface PipelineResult {
 }
 
 /**
- * Send a message to Telegram
+ * Send a photo with caption to Telegram
+ */
+async function sendTelegramPhoto(
+  photoPath: string,
+  caption: string,
+  inlineKeyboard?: { text: string; callback_data?: string; url?: string }[][]
+): Promise<boolean> {
+  if (!TELEGRAM_BOT_TOKEN || !TELEGRAM_CHAT_ID) {
+    console.error('Missing TELEGRAM_BOT_TOKEN or TELEGRAM_CHAT_ID');
+    return false;
+  }
+
+  const url = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendPhoto`;
+
+  // Read the image file
+  const imageBuffer = fs.readFileSync(photoPath);
+  const formData = new FormData();
+  formData.append('chat_id', TELEGRAM_CHAT_ID);
+  formData.append('photo', new Blob([imageBuffer]), path.basename(photoPath));
+  formData.append('caption', caption);
+  formData.append('parse_mode', 'HTML');
+
+  if (inlineKeyboard) {
+    formData.append('reply_markup', JSON.stringify({ inline_keyboard: inlineKeyboard }));
+  }
+
+  try {
+    const response = await fetch(url, {
+      method: 'POST',
+      body: formData,
+    });
+
+    const result = await response.json();
+
+    if (!result.ok) {
+      console.error('Telegram API error:', result.description);
+      return false;
+    }
+
+    return true;
+  } catch (err: any) {
+    console.error('Failed to send Telegram photo:', err.message);
+    return false;
+  }
+}
+
+/**
+ * Send a message to Telegram (text only fallback)
  */
 async function sendTelegramMessage(
   text: string,
-  inlineKeyboard?: { text: string; callback_data: string }[][]
+  inlineKeyboard?: { text: string; callback_data?: string; url?: string }[][]
 ): Promise<boolean> {
   if (!TELEGRAM_BOT_TOKEN || !TELEGRAM_CHAT_ID) {
     console.error('Missing TELEGRAM_BOT_TOKEN or TELEGRAM_CHAT_ID');
@@ -129,6 +181,15 @@ function getArticleInfo(slug: string): ArticleInfo | null {
         .trim();
       const wordCount = textContent.split(' ').filter(w => w.length > 0).length;
 
+      // Count wine recommendations (look for wine card divs or h3 with prices)
+      const wineMatches = content.match(/class="[^"]*wine[^"]*rounded-lg[^"]*"/g) || [];
+      const priceMatches = content.match(/\$\d+/g) || [];
+      const wineCount = Math.max(wineMatches.length, Math.floor(priceMatches.length / 2));
+
+      // Check for featured image
+      const imagePath = path.join(process.cwd(), 'src/assets/images/articles', `${slug}.png`);
+      const hasImage = fs.existsSync(imagePath);
+
       return {
         slug,
         category,
@@ -136,6 +197,9 @@ function getArticleInfo(slug: string): ArticleInfo | null {
         keywords,
         wordCount,
         filePath,
+        wineCount,
+        hasImage,
+        imagePath: hasImage ? imagePath : undefined,
       };
     }
   }
@@ -144,7 +208,32 @@ function getArticleInfo(slug: string): ArticleInfo | null {
 }
 
 /**
- * Send notification for a single article
+ * Get QA score for an article
+ */
+async function getArticleScore(slug: string): Promise<number | null> {
+  // Try to find score in recent pipeline logs
+  const logsDir = path.join(process.cwd(), 'pipeline-logs');
+  if (fs.existsSync(logsDir)) {
+    const logs = fs.readdirSync(logsDir)
+      .filter(f => f.endsWith('.json'))
+      .sort()
+      .reverse();
+
+    for (const logFile of logs.slice(0, 5)) {
+      try {
+        const data = JSON.parse(fs.readFileSync(path.join(logsDir, logFile), 'utf-8'));
+        const published = data.published?.find((p: any) => p.slug === slug);
+        if (published?.score) return published.score;
+      } catch (e) {
+        // Skip invalid logs
+      }
+    }
+  }
+  return null;
+}
+
+/**
+ * Send notification for a single article with image
  */
 async function notifyArticle(slug: string, score?: number): Promise<void> {
   const article = getArticleInfo(slug);
@@ -154,33 +243,51 @@ async function notifyArticle(slug: string, score?: number): Promise<void> {
     return;
   }
 
+  // Get score if not provided
+  const finalScore = score ?? await getArticleScore(slug);
+
   const articleUrl = `${SITE_URL}/${article.category}/${article.slug}`;
-  const keywordsStr = article.keywords.slice(0, 5).join(', ') || 'N/A';
-  const scoreStr = score ? `${score}%` : 'N/A';
+  const primaryKeyword = article.keywords[0] || slug.replace(/-/g, ' ');
+  const scoreStr = finalScore ? `${finalScore}%` : 'N/A';
+  const wineStr = article.wineCount > 0 ? `${article.wineCount} wines` : 'No wines';
 
-  const message = `
-<b>New Article Published</b>
+  // Build caption
+  const caption = `
+🍷 <b>New Article Published</b>
 
-<b>Title:</b> ${escapeHtml(article.title)}
-<b>Category:</b> ${article.category}
-<b>Keywords:</b> ${escapeHtml(keywordsStr)}
-<b>Words:</b> ${article.wordCount.toLocaleString()}
-<b>Score:</b> ${scoreStr}
+<b>${escapeHtml(article.title)}</b>
 
-<a href="${articleUrl}">View Article</a>
+📝 <b>Keyword:</b> ${escapeHtml(primaryKeyword)}
+📁 <b>Category:</b> ${article.category}
+📊 <b>QA Score:</b> ${scoreStr}
+📖 <b>Words:</b> ${article.wordCount.toLocaleString()}
+🍾 <b>Wines:</b> ${wineStr}
+
+🔗 ${articleUrl}
 `.trim();
 
   const keyboard = [
     [
-      { text: '👍 Keep', callback_data: `keep:${slug}` },
+      { text: '✅ Keep', callback_data: `keep:${slug}` },
       { text: '🗑 Delete', callback_data: `delete:${slug}` },
     ],
     [
-      { text: '🔗 Open Article', callback_data: `open:${articleUrl}` },
+      { text: '🔗 View Article', url: articleUrl },
     ],
   ];
 
-  const sent = await sendTelegramMessage(message, keyboard);
+  let sent = false;
+
+  // Try to send with image first
+  if (article.imagePath && article.hasImage) {
+    sent = await sendTelegramPhoto(article.imagePath, caption, keyboard);
+  }
+
+  // Fallback to text message
+  if (!sent) {
+    sent = await sendTelegramMessage(caption, keyboard);
+  }
+
   console.log(sent ? `✅ Notified: ${slug}` : `❌ Failed: ${slug}`);
 }
 
@@ -258,8 +365,7 @@ ${emoji} <b>Content Pipeline Complete</b> ${status}
 
   const keyboard = [
     [
-      { text: '📋 View All Articles', callback_data: 'view_all' },
-      { text: '🔄 Run Pipeline', callback_data: 'run_pipeline' },
+      { text: '📋 View All Articles', url: `${SITE_URL}/learn/` },
     ],
   ];
 
@@ -273,9 +379,73 @@ ${emoji} <b>Content Pipeline Complete</b> ${status}
       const published = result.published.find(p => p.slug === article.slug);
       await notifyArticle(article.slug, published?.score);
       // Rate limit
-      await new Promise(r => setTimeout(r, 500));
+      await new Promise(r => setTimeout(r, 1000));
     }
   }
+}
+
+/**
+ * Send weekly digest with article stats
+ */
+async function sendWeeklyDigest(): Promise<void> {
+  const categories = ['learn', 'wine-pairings', 'buy'];
+  const pagesDir = path.join(process.cwd(), 'src/pages');
+
+  let totalArticles = 0;
+  let totalWords = 0;
+  let articlesWithImages = 0;
+  const categoryStats: { [key: string]: number } = {};
+
+  // Count articles in each category
+  for (const category of categories) {
+    const categoryDir = path.join(pagesDir, category);
+    if (fs.existsSync(categoryDir)) {
+      const files = fs.readdirSync(categoryDir).filter(f => f.endsWith('.astro') && f !== 'index.astro');
+      categoryStats[category] = files.length;
+      totalArticles += files.length;
+
+      // Sample a few articles for word count
+      for (const file of files.slice(0, 10)) {
+        const slug = file.replace('.astro', '');
+        const info = getArticleInfo(slug);
+        if (info) {
+          totalWords += info.wordCount;
+          if (info.hasImage) articlesWithImages++;
+        }
+      }
+    }
+  }
+
+  const avgWords = totalArticles > 0 ? Math.round(totalWords / Math.min(totalArticles, 30)) : 0;
+  const imagePercent = totalArticles > 0 ? Math.round((articlesWithImages / Math.min(totalArticles, 30)) * 100) : 0;
+
+  const message = `
+📊 <b>Weekly Content Digest</b>
+
+<b>Total Articles:</b> ${totalArticles}
+<b>Avg Word Count:</b> ~${avgWords.toLocaleString()}
+<b>With Images:</b> ~${imagePercent}%
+
+<b>By Category:</b>
+• Learn: ${categoryStats['learn'] || 0} articles
+• Wine Pairings: ${categoryStats['wine-pairings'] || 0} articles
+• Buy Guides: ${categoryStats['buy'] || 0} articles
+
+<b>Pipeline Schedule:</b>
+Mon & Thu @ 6am UTC
+
+🔗 <a href="${SITE_URL}">Visit Site</a>
+`.trim();
+
+  const keyboard = [
+    [
+      { text: '📖 Learn', url: `${SITE_URL}/learn/` },
+      { text: '🍽 Pairings', url: `${SITE_URL}/wine-pairings/` },
+    ],
+  ];
+
+  const sent = await sendTelegramMessage(message, keyboard);
+  console.log(sent ? '✅ Weekly digest sent' : '❌ Failed to send digest');
 }
 
 /**
@@ -313,10 +483,13 @@ async function main() {
     await notifyArticle(articleSlug);
   } else if (sendSummary) {
     await notifyPipelineSummary(pipelineLogFile);
+  } else if (sendDigest) {
+    await sendWeeklyDigest();
   } else {
     console.log('Usage:');
     console.log('  npx tsx src/scripts/telegram-notify.ts --article=slug');
     console.log('  npx tsx src/scripts/telegram-notify.ts --summary');
+    console.log('  npx tsx src/scripts/telegram-notify.ts --digest');
     console.log('  npx tsx src/scripts/telegram-notify.ts --summary --log=path/to/log.json');
   }
 }

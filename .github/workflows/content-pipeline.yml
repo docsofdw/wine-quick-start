@@ -6,6 +6,8 @@ on:
     - cron: '0 6 * * 1,4'
     # Daily catalog health check at 2am UTC
     - cron: '0 2 * * *'
+    # Weekly digest on Sundays at 10am UTC
+    - cron: '0 10 * * 0'
 
   # Allow manual trigger
   workflow_dispatch:
@@ -229,10 +231,10 @@ jobs:
           retention-days: 30
           if-no-files-found: ignore
 
-  # Weekly quality report (runs on Sundays)
-  weekly-report:
+  # Weekly digest (runs on Sundays at 10am UTC)
+  weekly-digest:
     runs-on: ubuntu-latest
-    if: github.event.schedule == '0 6 * * 0'  # Only on scheduled Sunday runs
+    if: github.event.schedule == '0 10 * * 0'
 
     steps:
       - name: Checkout
@@ -247,32 +249,11 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Generate Quality Report
+      - name: Create .env.local
         run: |
-          npx tsx src/scripts/qa-score-article.ts --all --json > quality-report.json
+          echo "TELEGRAM_BOT_TOKEN=${{ secrets.TELEGRAM_BOT_TOKEN }}" >> .env.local
+          echo "TELEGRAM_CHAT_ID=${{ secrets.TELEGRAM_CHAT_ID }}" >> .env.local
+          echo "SITE_URL=https://winesquickstart.com" >> .env.local
 
-      - name: Send Weekly Summary
-        if: ${{ secrets.SLACK_WEBHOOK_URL }}
-        env:
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
-        run: |
-          # Parse report and send to Slack
-          TOTAL=$(jq '.summary.total' quality-report.json)
-          PASSED=$(jq '.summary.passed' quality-report.json)
-          AVG=$(jq '.summary.avgScore' quality-report.json)
-
-          curl -X POST $SLACK_WEBHOOK_URL \
-            -H 'Content-Type: application/json' \
-            -d "{
-              \"text\": \"📊 Weekly Wine Content Report\",
-              \"blocks\": [
-                {
-                  \"type\": \"header\",
-                  \"text\": {\"type\": \"plain_text\", \"text\": \"📊 Weekly Wine Content Report\"}
-                },
-                {
-                  \"type\": \"section\",
-                  \"text\": {\"type\": \"mrkdwn\", \"text\": \"*Total Articles:* $TOTAL\\n*Passing QA:* $PASSED\\n*Average Score:* $AVG%\"}
-                }
-              ]
-            }"
+      - name: Send Telegram Weekly Digest
+        run: npx tsx src/scripts/telegram-notify.ts --digest
