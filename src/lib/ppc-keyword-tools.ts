@@ -574,7 +574,7 @@ export function exportToGoogleAdsFormat(campaign: PPCCampaignStructure): string 
                               kw.matchType === 'phrase' ? `"${kw.keyword}"` :
                               kw.keyword;
       lines.push(
-        `${campaign.campaignName},${adGroup.name},${matchTypeSymbol},${kw.matchType},${kw.suggestedBid},https://winequickstart.com${kw.landingPage}`
+        `${campaign.campaignName},${adGroup.name},${matchTypeSymbol},${kw.matchType},${kw.suggestedBid},https://winesquickstart.com${kw.landingPage}`
       );
     }
   }

@@ -20,7 +20,7 @@ import path from 'path';
 
 const TELEGRAM_BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN;
 const TELEGRAM_CHAT_ID = process.env.TELEGRAM_CHAT_ID;
-const SITE_URL = process.env.SITE_URL || 'https://winequickstart.com';
+const SITE_URL = process.env.SITE_URL || 'https://winesquickstart.com';
 
 // Parse CLI args
 const args = process.argv.slice(2);

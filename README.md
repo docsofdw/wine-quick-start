@@ -2,7 +2,7 @@
 
 SEO-optimized wine education site that funnels traffic to **[Cellars of DW](https://cellarsofdw.com)** wine consulting services.
 
-**Live Site:** [winequickstart.com](https://winequickstart.com)
+**Live Site:** [winesquickstart.com](https://winesquickstart.com)
 
 ## Purpose
 

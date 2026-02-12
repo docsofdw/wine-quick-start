@@ -10,7 +10,7 @@ import * as fs from 'fs';
 import * as path from 'path';
 
 const PAGES_DIR = path.join(process.cwd(), 'src/pages');
-const SITE_URL = 'https://winequickstart.com';
+const SITE_URL = 'https://winesquickstart.com';
 
 interface SEOAudit {
   file: string;

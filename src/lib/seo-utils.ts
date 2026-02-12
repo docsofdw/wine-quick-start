@@ -119,14 +119,14 @@ export function generateArticleSchema(meta: ArticleMeta, url: string): object {
       "@type": "Person",
       "name": meta.author.name,
       "jobTitle": meta.author.role,
-      "url": `https://winequickstart.com/about/${meta.author.slug}`,
+      "url": `https://winesquickstart.com/about/${meta.author.slug}`,
     },
     "publisher": {
       "@type": "Organization",
       "name": "Wine Quick Start",
       "logo": {
         "@type": "ImageObject",
-        "url": "https://winequickstart.com/logo.png",
+        "url": "https://winesquickstart.com/logo.png",
       }
     },
     "datePublished": meta.pubDate,
@@ -203,13 +203,13 @@ export function generateBreadcrumbSchema(
         "@type": "ListItem",
         "position": 1,
         "name": "Home",
-        "item": "https://winequickstart.com",
+        "item": "https://winesquickstart.com",
       },
       {
         "@type": "ListItem",
         "position": 2,
         "name": categoryNames[category] || category,
-        "item": `https://winequickstart.com/${category}`,
+        "item": `https://winesquickstart.com/${category}`,
       },
       {
         "@type": "ListItem",
@@ -341,7 +341,7 @@ export function generateSEOTitle(keyword: string, category: string): string {
  * Generate canonical URL
  */
 export function generateCanonicalUrl(category: string, slug: string): string {
-  return `https://winequickstart.com/${category}/${slug}`;
+  return `https://winesquickstart.com/${category}/${slug}`;
 }
 
 /**

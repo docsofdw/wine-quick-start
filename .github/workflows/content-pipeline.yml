@@ -127,7 +127,7 @@ jobs:
           echo "WINE_CATALOG_ANON_KEY=${{ secrets.WINE_CATALOG_ANON_KEY }}" >> .env.local
           echo "TELEGRAM_BOT_TOKEN=${{ secrets.TELEGRAM_BOT_TOKEN }}" >> .env.local
           echo "TELEGRAM_CHAT_ID=${{ secrets.TELEGRAM_CHAT_ID }}" >> .env.local
-          echo "SITE_URL=https://winequickstart.com" >> .env.local
+          echo "SITE_URL=https://winesquickstart.com" >> .env.local
 
       - name: Run Content Pipeline
         id: pipeline

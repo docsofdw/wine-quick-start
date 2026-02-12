@@ -8,12 +8,12 @@ import vercel from '@astrojs/vercel';
 
 // https://astro.build/config
 export default defineConfig({
-  site: 'https://winequickstart.com',
+  site: 'https://winesquickstart.com',
   integrations: [
     tailwind(),
     mdx(),
     sitemap({
-      customPages: ['https://winequickstart.com/wine-pairings']
+      customPages: ['https://winesquickstart.com/wine-pairings']
     })
   ],
   output: 'server',

@@ -149,8 +149,8 @@ export function getAuthorSchema(author: Author): object {
     "name": author.name,
     "jobTitle": author.role,
     "description": author.shortBio,
-    "url": `https://winequickstart.com/about/${author.slug}`,
-    "image": `https://winequickstart.com${author.image}`,
+    "url": `https://winesquickstart.com/about/${author.slug}`,
+    "image": `https://winesquickstart.com${author.image}`,
     "sameAs": Object.values(author.socials).filter(Boolean),
     "knowsAbout": author.expertise,
     "hasCredential": author.credentials.map(cred => ({

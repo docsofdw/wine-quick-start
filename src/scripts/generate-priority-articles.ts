@@ -334,19 +334,19 @@ function generateArticleContent(
         "@type": "Article",
         "headline": title,
         "description": description,
-        "image": imageData.success ? `https://winequickstart.com/images/articles/${slug}.png` : undefined,
+        "image": imageData.success ? `https://winesquickstart.com/images/articles/${slug}.png` : undefined,
         "author": {
           "@type": "Person",
           "name": author.name,
           "jobTitle": author.role,
-          "url": `https://winequickstart.com/about/${author.slug}`,
+          "url": `https://winesquickstart.com/about/${author.slug}`,
         },
         "publisher": {
           "@type": "Organization",
           "name": "Wine Quick Start",
           "logo": {
             "@type": "ImageObject",
-            "url": "https://winequickstart.com/logo.png",
+            "url": "https://winesquickstart.com/logo.png",
           }
         },
         "datePublished": new Date().toISOString(),
@@ -357,8 +357,8 @@ function generateArticleContent(
       {
         "@type": "BreadcrumbList",
         "itemListElement": [
-          { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://winequickstart.com" },
-          { "@type": "ListItem", "position": 2, "name": category === 'learn' ? 'Wine Guides' : category === 'wine-pairings' ? 'Wine Pairings' : 'Buying Guides', "item": `https://winequickstart.com/${category}` },
+          { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://winesquickstart.com" },
+          { "@type": "ListItem", "position": 2, "name": category === 'learn' ? 'Wine Guides' : category === 'wine-pairings' ? 'Wine Pairings' : 'Buying Guides', "item": `https://winesquickstart.com/${category}` },
           { "@type": "ListItem", "position": 3, "name": title, "item": canonicalUrl },
         ]
       },

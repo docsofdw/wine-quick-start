@@ -226,7 +226,7 @@ async function handleCallback(query: TelegramUpdate['callback_query']): Promise<
 
     case 'view_all': {
       await answerCallback(id, '📋 Opening site...');
-      await sendMessage(chatId, '🔗 <a href="https://winequickstart.com/learn">View All Articles</a>');
+      await sendMessage(chatId, '🔗 <a href="https://winesquickstart.com/learn">View All Articles</a>');
       break;
     }
 
@@ -271,7 +271,7 @@ async function handleMessage(message: TelegramUpdate['message']): Promise<void> 
   } else if (text === '/recent') {
     await sendMessage(
       chatId,
-      '📚 <a href="https://winequickstart.com/learn">View Recent Articles</a>'
+      '📚 <a href="https://winesquickstart.com/learn">View Recent Articles</a>'
     );
   }
 }
