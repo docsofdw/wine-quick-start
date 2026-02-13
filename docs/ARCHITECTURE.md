@@ -94,7 +94,7 @@ Tracks generated article metadata.
 
 ## Autonomous Content Pipeline
 
-The content pipeline runs automatically via GitHub Actions (Mon/Thu 6am UTC) or manually.
+The content pipeline runs automatically via GitHub Actions (Mon/Thu 2pm UTC) or manually.
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
@@ -120,14 +120,14 @@ The content pipeline runs automatically via GitHub Actions (Mon/Thu 6am UTC) or 
 │     ├── Technical validity (10%)                             │
 │     └── Wine validity (10%) ─── Checks catalog               │
 │                                                              │
-│  4. ENRICHMENT (if score < 80%)                              │
+│  4. ENRICHMENT (if score < 85%)                              │
 │     ├── Generate sections via Claude API                     │
 │     ├── Add REAL wines from catalog (not AI picks)          │
 │     └── POST-CHECK: Validate all wines exist                 │
 │                                                              │
 │  5. FINAL DECISION                                           │
-│     ├── 80%+ → Published (PR created)                        │
-│     ├── 50-79% → Needs review                                │
+│     ├── 85%+ → Published (PR created)                        │
+│     ├── 50-84% → Needs review                                │
 │     └── <50% → Rejected/archived                             │
 │                                                              │
 └─────────────────────────────────────────────────────────────┘
@@ -141,14 +141,15 @@ The content pipeline runs automatically via GitHub Actions (Mon/Thu 6am UTC) or 
 | Wine Coverage | Pre-gen | Wines exist in catalog | Skip wine section |
 | Initial Score | Post-gen | Score >= 50 | Archive article |
 | Wine Validity | Post-enrich | All wines in catalog | Flag for review |
-| Final Score | Pre-publish | Score >= 80 | Hold in PR |
+| Final Score | Pre-publish | Score >= 85 | Hold in PR |
 
 ### GitHub Actions Schedule
 
 | Schedule | Job | Purpose |
 |----------|-----|---------|
-| Mon/Thu 6am UTC | content-pipeline | Generate & enrich articles |
+| Mon/Thu 2pm UTC | content-pipeline | Generate & enrich articles |
 | Daily 2am UTC | catalog-health | Verify wine catalog connection |
+| Sun 10am UTC | weekly-digest | Send Telegram digest |
 
 ## Legacy Content Flow
 
@@ -198,7 +199,7 @@ For manual operations outside the pipeline:
 
 | Endpoint | Purpose |
 |----------|---------|
-| `/api/cron/daily` | Vercel cron for daily generation |
+| GitHub Actions (`.github/workflows/content-pipeline.yml`) | Scheduled content automation (cron owner) |
 | `/api/newsletter` | Email subscription handler |
 
 ## Wine Catalog Integration

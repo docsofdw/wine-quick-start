@@ -4,6 +4,10 @@ permissions:
   contents: write
   pull-requests: write
 
+concurrency:
+  group: autonomous-content-pipeline
+  cancel-in-progress: false
+
 on:
   # Run twice a week: Monday and Thursday at 8am CST (2pm UTC)
   schedule:
@@ -104,8 +108,8 @@ jobs:
   content-pipeline:
     runs-on: ubuntu-latest
     timeout-minutes: 30
-    # Don't run content pipeline during health check schedule
-    if: github.event.schedule != '0 2 * * *'
+    # Run only on Mon/Thu schedule, or manual dispatch
+    if: github.event_name == 'workflow_dispatch' || github.event.schedule == '0 14 * * 1,4'
 
     steps:
       - name: Checkout repository
@@ -214,7 +218,7 @@ jobs:
             ### What's Included
             - New articles generated from priority keywords
             - Existing articles enriched with additional content
-            - All articles passed QA scoring (80%+ threshold)
+            - All articles passed QA scoring (85%+ threshold)
             - Wine recommendations validated against real catalog
 
             ### Wine Validation

@@ -359,7 +359,7 @@ function scoreStructure(content: string): { score: number; issues: string[]; h2C
   const hasQuickAnswer = content.includes('slot="quick-answer"') || content.includes('Quick Answer');
   const hasExpertTips = content.includes('Expert Tips');
   const hasFAQs = content.includes('Frequently Asked Questions') || content.includes('FAQ');
-  const hasAuthorBio = content.includes('About the Author') || content.includes('author');
+  const hasAuthorBio = hasAuthorAttribution(content);
 
   if (!hasQuickAnswer) {
     issues.push('Missing quick answer section');
@@ -379,6 +379,17 @@ function scoreStructure(content: string): { score: number; issues: string[]; h2C
   }
 
   return { score: Math.max(0, score), issues, h2Count };
+}
+
+/**
+ * Detect author attribution blocks without relying on generic "author" text.
+ */
+function hasAuthorAttribution(content: string): boolean {
+  return (
+    content.includes('About the Author') ||
+    /href=["']\/about\/[^"']+["']/.test(content) ||
+    /authorSlug:\s*["'][^"']+["']/.test(content)
+  );
 }
 
 /**
@@ -869,7 +880,7 @@ export async function scoreArticle(
   const hasQuickAnswer = content.includes('slot="quick-answer"') || content.includes('Quick Answer');
   const hasExpertTips = content.includes('Expert Tips');
   const hasFAQ = content.includes('Frequently Asked Questions') || content.includes('FAQ');
-  const hasAuthorBio = content.includes('About the Author') || content.includes('author');
+  const hasAuthorBio = hasAuthorAttribution(content);
 
   return {
     slug,
@@ -943,15 +954,21 @@ export async function scoreAllArticles(
   category?: string,
   doWineValidation: boolean = false
 ): Promise<QAScore[]> {
-  const results: QAScore[] = [];
+  const filePaths = collectArticleFilePaths(category ? [category] : undefined);
+  return scoreArticleFiles(filePaths, doWineValidation);
+}
+
+/**
+ * Collect article file paths for scoring.
+ */
+export function collectArticleFilePaths(categories?: string[]): string[] {
   const pagesDir = path.join(process.cwd(), 'src/pages');
-  const categories = category ? [category] : ['learn', 'wine-pairings', 'buy'];
+  const selectedCategories = categories && categories.length > 0
+    ? categories
+    : ['learn', 'wine-pairings', 'buy'];
+  const filePaths: string[] = [];
 
-  // First pass: collect all slugs for topic diversity checking
-  const allSlugs: string[] = [];
-  const filePaths: { path: string; cat: string }[] = [];
-
-  for (const cat of categories) {
+  for (const cat of selectedCategories) {
     const categoryDir = path.join(pagesDir, cat);
     if (!fs.existsSync(categoryDir)) continue;
 
@@ -960,14 +977,32 @@ export async function scoreAllArticles(
       if (!file.endsWith('.astro') || file === 'index.astro' || file.startsWith('[')) {
         continue;
       }
-      const slug = file.replace('.astro', '');
-      allSlugs.push(slug);
-      filePaths.push({ path: path.join(categoryDir, file), cat });
+      filePaths.push(path.join(categoryDir, file));
     }
   }
 
-  // Second pass: score all articles with access to all slugs
-  for (const { path: filePath } of filePaths) {
+  return filePaths;
+}
+
+/**
+ * Score a specific list of article files.
+ * Topic diversity is still computed against all article slugs.
+ */
+export async function scoreArticleFiles(
+  filePaths: string[],
+  doWineValidation: boolean = false
+): Promise<QAScore[]> {
+  const results: QAScore[] = [];
+  const allFilePaths = collectArticleFilePaths();
+
+  // Collect all slugs for topic diversity checking
+  const allSlugs: string[] = [];
+  for (const filePath of allFilePaths) {
+    allSlugs.push(path.basename(filePath, '.astro'));
+  }
+
+  // Score requested articles with access to all slugs
+  for (const filePath of filePaths) {
     try {
       const score = await scoreArticle(filePath, doWineValidation, allSlugs);
       results.push(score);

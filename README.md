@@ -41,6 +41,14 @@ npm run build
 - **Lead Generation Funnels** - Service pages designed to capture consulting leads
 - **Duplicate Prevention** - Semantic matching prevents similar topic articles
 
+## Automation Source Of Truth
+
+Content automation is scheduled in GitHub Actions (`.github/workflows/content-pipeline.yml`):
+
+- Mon/Thu 2pm UTC: content pipeline
+- Daily 2am UTC: catalog health check
+- Sun 10am UTC: weekly digest
+
 ## Documentation
 
 | Document | Description |

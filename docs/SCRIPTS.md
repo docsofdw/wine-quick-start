@@ -34,6 +34,7 @@ npm run pipeline:validate
 | `--enrich-limit=N` | Enrich up to N articles (default: 3) |
 | `--skip-generate` | Skip article generation |
 | `--skip-enrich` | Skip enrichment step |
+| `--full-scan` | Score all articles (default: incremental on generated set) |
 | `--validate-wines` | Validate wines against catalog |
 | `--notify` | Send Slack notification |
 | `--verbose` | Show detailed output |
@@ -46,8 +47,8 @@ npm run pipeline:validate
 5. **Final Scoring** - Re-scores and categorizes for publishing
 
 **Quality Thresholds:**
-- 80%+ → Auto-publish ready
-- 50-79% → Needs enrichment/review
+- 85%+ → Auto-publish ready
+- 50-84% → Needs enrichment/review
 - <50% → Rejected
 
 ---
@@ -91,6 +92,9 @@ Generates new articles from high-priority keywords.
 
 ```bash
 npx tsx src/scripts/generate-priority-articles.ts
+
+# Generate exactly one keyword
+npx tsx src/scripts/generate-priority-articles.ts --keyword="best pinot noir"
 ```
 
 **Features:**
@@ -100,6 +104,7 @@ npx tsx src/scripts/generate-priority-articles.ts
 - Generates AI images via Replicate
 - Creates .astro files with wine recommendations from catalog
 - Marks keywords as "used" after generation
+- Supports deterministic single-keyword mode (`--keyword=...`)
 
 **Output:** Up to 10 articles per run
 

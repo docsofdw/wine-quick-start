@@ -10,7 +10,7 @@ The content pipeline automates article generation, enrichment, and quality assur
 ├─────────────────────────────────────────────────────────────┤
 │                                                              │
 │   GitHub Actions          autonomous-pipeline.ts             │
-│   (Mon/Thu 6am)     ────►  ├── generate-priority-articles   │
+│   (Mon/Thu 2pm UTC) ────►  ├── generate-priority-articles   │
 │                            ├── qa-score-article              │
 │                            ├── enrich-articles               │
 │                            └── validate-all-wines            │
@@ -86,11 +86,11 @@ Every article is scored 0-100 on multiple dimensions:
 
 ### Step 4: Enrichment
 
-Articles scoring below 80% are automatically enriched:
+Articles scoring below 85% are automatically enriched:
 
 ```typescript
 const needsEnrichment = allScores
-  .filter(s => s.totalScore < 80 && s.totalScore >= 50)
+  .filter(s => s.totalScore < 85 && s.totalScore >= 50)
   .sort((a, b) => a.totalScore - b.totalScore)
   .slice(0, enrichLimit);
 ```
@@ -122,8 +122,8 @@ if (validation.invalid.length > 0) {
 
 | Score | Status | Action |
 |-------|--------|--------|
-| 80%+ | Publish | Included in PR |
-| 50-79% | Review | Flagged for manual review |
+| 85%+ | Publish | Included in PR |
+| 50-84% | Review | Flagged for manual review |
 | <50% | Reject | Optionally archived |
 
 ## Quality Gates
@@ -138,7 +138,7 @@ Selection       Generation         Article            Article
 │  Check  │    │ Coverage │     │ Validity  │     │  Score   │
 └────┬───┘    └────┬─────┘     └─────┬─────┘     └────┬─────┘
      │              │                 │                 │
-   PASS?          PASS?             PASS?            >= 80%?
+   PASS?          PASS?             PASS?            >= 85%?
      │              │                 │                 │
    ┌─┴─┐          ┌─┴─┐             ┌─┴─┐            ┌─┴─┐
    │YES│          │YES│             │YES│            │YES│
@@ -237,14 +237,14 @@ By Category:
 • Buy Guides: 7 articles
 
 Pipeline Schedule:
-Mon & Thu @ 6am UTC
+Mon & Thu @ 2pm UTC
 ```
 
 ### Schedule
 
 | Notification | Schedule (UTC) | Hong Kong (UTC+8) |
 |--------------|----------------|-------------------|
-| New Articles | Mon/Thu 6am | Mon/Thu 2pm |
+| New Articles | Mon/Thu 2pm | Mon/Thu 10pm |
 | Weekly Digest | Sun 10am | Sun 6pm |
 
 ### Setup
@@ -344,7 +344,7 @@ npm run telegram:setup
 
 | Cron | Job | Purpose |
 |------|-----|---------|
-| `0 6 * * 1,4` | content-pipeline | Generate & enrich (Mon/Thu 6am UTC) |
+| `0 14 * * 1,4` | content-pipeline | Generate & enrich (Mon/Thu 2pm UTC) |
 | `0 2 * * *` | catalog-health | Daily catalog connection check |
 | `0 10 * * 0` | weekly-digest | Send Telegram digest (Sun 10am UTC) |
 

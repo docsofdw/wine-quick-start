@@ -73,6 +73,15 @@ const whiteVarieties = ['chardonnay', 'sauvignon blanc', 'riesling', 'pinot grig
 const roseVarieties = ['rose', 'rosé', 'rosato'];
 const sparklingVarieties = ['champagne', 'prosecco', 'cava', 'cremant', 'sparkling', 'brut', 'blanc de blancs', 'blanc de noirs'];
 
+function getVarietiesForWineType(wineType: string): string[] {
+  const lowerType = wineType.toLowerCase();
+  if (lowerType === 'red') return redVarieties.slice(0, 5);
+  if (lowerType === 'white') return whiteVarieties.slice(0, 5);
+  if (lowerType === 'rosé' || lowerType === 'rose') return roseVarieties;
+  if (lowerType === 'sparkling') return sparklingVarieties.slice(0, 3);
+  return [];
+}
+
 /**
  * Infer wine type from variety
  */
@@ -99,13 +108,7 @@ export async function getWinesByType(
   const client = getWineCatalogClient();
 
   // Map wine type to varieties to search for
-  let varietiesToSearch: string[] = [];
-  const lowerType = wineType.toLowerCase();
-
-  if (lowerType === 'red') varietiesToSearch = redVarieties.slice(0, 5);
-  else if (lowerType === 'white') varietiesToSearch = whiteVarieties.slice(0, 5);
-  else if (lowerType === 'rosé' || lowerType === 'rose') varietiesToSearch = roseVarieties;
-  else if (lowerType === 'sparkling') varietiesToSearch = sparklingVarieties.slice(0, 3);
+  const varietiesToSearch = getVarietiesForWineType(wineType);
 
   if (varietiesToSearch.length === 0) {
     // Fallback to random wines
@@ -235,7 +238,11 @@ export async function getRandomWines(
     .select('*');
 
   if (wineType) {
-    query = query.ilike('wine_type', `%${wineType}%`);
+    const varietiesToSearch = getVarietiesForWineType(wineType);
+    if (varietiesToSearch.length > 0) {
+      const orConditions = varietiesToSearch.map(v => `variety.ilike.%${v}%`).join(',');
+      query = query.or(orConditions);
+    }
   }
 
   // Get more wines than needed, then shuffle
@@ -789,11 +796,32 @@ export async function wineExistsInCatalog(wineName: string): Promise<boolean> {
 export async function validateWinesInCatalog(
   wineNames: string[]
 ): Promise<{ valid: string[]; invalid: string[] }> {
+  if (wineNames.length === 0) {
+    return { valid: [], invalid: [] };
+  }
+
+  // De-duplicate input to reduce duplicate lookups while preserving final output order
+  const uniqueNames = Array.from(new Set(wineNames));
+  const lookupResults = new Map<string, boolean>();
+  const concurrency = 8;
+  let nextIndex = 0;
+
+  const workers = Array.from({ length: Math.min(concurrency, uniqueNames.length) }, async () => {
+    while (nextIndex < uniqueNames.length) {
+      const index = nextIndex++;
+      const name = uniqueNames[index];
+      const exists = await wineExistsInCatalog(name);
+      lookupResults.set(name, exists);
+    }
+  });
+
+  await Promise.all(workers);
+
   const valid: string[] = [];
   const invalid: string[] = [];
 
-  for (const name of wineNames) {
-    const exists = await wineExistsInCatalog(name);
+  for (const name of uniqueNames) {
+    const exists = lookupResults.get(name) === true;
     if (exists) {
       valid.push(name);
     } else {

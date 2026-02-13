@@ -13,6 +13,8 @@
  *   --limit=N       Generate N articles (default: 10)
  *   --dry-run       Preview without writing files
  *   --min-priority=N  Only keywords with priority >= N (default: 8)
+ *   --keyword="..." Generate exactly one keyword
+ *   --no-mark-used  Do not update keyword status (for orchestrators)
  */
 
 import { createClient } from '@supabase/supabase-js';
@@ -48,6 +50,9 @@ const limitArg = args.find(a => a.startsWith('--limit='));
 const limit = limitArg ? parseInt(limitArg.split('=')[1]) : 10;
 const priorityArg = args.find(a => a.startsWith('--min-priority='));
 const minPriority = priorityArg ? parseInt(priorityArg.split('=')[1]) : 8;
+const keywordArg = args.find(a => a.startsWith('--keyword='));
+const specificKeyword = keywordArg ? keywordArg.split('=').slice(1).join('=').trim() : null;
+const noMarkUsed = args.includes('--no-mark-used');
 
 // Supabase setup
 const supabaseUrl = process.env.SUPABASE_URL;
@@ -472,21 +477,40 @@ async function generateArticles() {
   console.log(`Mode: ${isDryRun ? 'DRY RUN' : 'LIVE'}`);
   console.log(`Limit: ${limit} articles`);
   console.log(`Min Priority: ${minPriority}\n`);
+  if (specificKeyword) {
+    console.log(`Keyword mode: "${specificKeyword}"\n`);
+  }
 
   // Get existing pages
   const { slugs: existingSlugs, topics: existingTopics } = getExistingPages();
   console.log(`📄 Found ${existingSlugs.size} existing articles`);
   console.log(`🔍 Tracking ${existingTopics.size} unique topics\n`);
 
-  // Get high-priority keywords
-  const { data: keywords, error } = await client
-    .from('keyword_opportunities')
-    .select('*')
-    .eq('status', 'active')
-    .gte('priority', minPriority)
-    .order('priority', { ascending: false })
-    .order('search_volume', { ascending: false })
-    .limit(50);
+  let keywords: any[] | null = null;
+  let error: any = null;
+
+  if (specificKeyword) {
+    // Deterministic mode: fetch exactly one requested keyword
+    const response = await client
+      .from('keyword_opportunities')
+      .select('*')
+      .eq('keyword', specificKeyword)
+      .limit(1);
+    keywords = response.data;
+    error = response.error;
+  } else {
+    // Default mode: fetch by priority
+    const response = await client
+      .from('keyword_opportunities')
+      .select('*')
+      .eq('status', 'active')
+      .gte('priority', minPriority)
+      .order('priority', { ascending: false })
+      .order('search_volume', { ascending: false })
+      .limit(50);
+    keywords = response.data;
+    error = response.error;
+  }
 
   if (error) {
     console.error('Error fetching keywords:', error);
@@ -498,7 +522,11 @@ async function generateArticles() {
     return;
   }
 
-  console.log(`🎯 Found ${keywords.length} keywords with priority >= ${minPriority}\n`);
+  if (specificKeyword) {
+    console.log(`🎯 Found requested keyword\n`);
+  } else {
+    console.log(`🎯 Found ${keywords.length} keywords with priority >= ${minPriority}\n`);
+  }
 
   // Filter duplicates
   const keywordsNeedingArticles = keywords.filter(kw => {
@@ -590,11 +618,13 @@ async function generateArticles() {
       // Track topic to prevent duplicates in same run
       existingTopics.add(normalizeToCoreTopic(slug));
 
-      // Mark keyword as used
-      await client
-        .from('keyword_opportunities')
-        .update({ status: 'used', used_at: new Date().toISOString() })
-        .eq('keyword', kw.keyword);
+      // Mark keyword as used (can be disabled for orchestrators)
+      if (!noMarkUsed) {
+        await client
+          .from('keyword_opportunities')
+          .update({ status: 'used', used_at: new Date().toISOString() })
+          .eq('keyword', kw.keyword);
+      }
 
       generated++;
 

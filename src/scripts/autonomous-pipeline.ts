@@ -21,6 +21,7 @@
  *   --enrich-limit=N    Max articles to enrich (default: 3)
  *   --skip-generate     Skip generation, only enrich existing
  *   --skip-enrich       Skip enrichment step
+ *   --full-scan         Score all articles (default: incremental)
  *   --notify            Send Slack/email notification
  *   --verbose           Show detailed output
  */
@@ -30,8 +31,14 @@ import { createClient } from '@supabase/supabase-js';
 import { config } from 'dotenv';
 import fs from 'fs';
 import path from 'path';
-import { scoreArticle, scoreAllArticles, getScoreSummary, type QAScore } from './qa-score-article.js';
-import { getWinesForKeyword, validateWinesInCatalog } from '../lib/wine-catalog.js';
+import {
+  scoreArticle,
+  scoreArticleFiles,
+  collectArticleFilePaths,
+  getScoreSummary,
+  type QAScore,
+} from './qa-score-article.js';
+import { getWinesForKeyword } from '../lib/wine-catalog.js';
 
 config({ path: '.env.local', override: true });
 
@@ -47,10 +54,10 @@ const skipEnrich = args.includes('--skip-enrich');
 const sendNotification = args.includes('--notify');
 const verbose = args.includes('--verbose');
 const doValidateWines = args.includes('--validate-wines');
+const fullScan = args.includes('--full-scan');
 
 // Quality thresholds
 const AUTO_PUBLISH_THRESHOLD = 85;  // Raised from 80 for higher quality
-const NEEDS_ENRICHMENT_THRESHOLD = 70;
 const REJECT_THRESHOLD = 50;
 
 // Initialize clients
@@ -167,6 +174,7 @@ async function generateArticle(keyword: any, result: PipelineResult): Promise<st
   } else if (kw.includes('buy') || kw.includes('price') || kw.includes('under $') || kw.includes('budget')) {
     category = 'buy';
   }
+  const expectedFilePath = path.join(process.cwd(), 'src/pages', category, `${slug}.astro`);
 
   if (isDryRun) {
     log(`[DRY RUN] Would generate: ${category}/${slug}`, 'info');
@@ -178,21 +186,28 @@ async function generateArticle(keyword: any, result: PipelineResult): Promise<st
     // Import and run the generation logic
     const { spawn } = await import('child_process');
 
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
       const proc = spawn('npx', [
         'tsx',
         'src/scripts/generate-priority-articles.ts',
         '--limit=1',
-        `--min-priority=${keyword.priority || 7}`,
+        `--keyword=${keyword.keyword}`,
+        '--no-mark-used',
       ], {
         cwd: process.cwd(),
         stdio: verbose ? 'inherit' : 'pipe',
       });
 
       proc.on('close', (code) => {
-        if (code === 0) {
+        const fileExists = fs.existsSync(expectedFilePath);
+        if (code === 0 && fileExists) {
           result.generated.push({ slug, category, keyword: keyword.keyword });
           resolve(slug);
+        } else if (code === 0 && !fileExists) {
+          result.errors.push(
+            `Generation reported success but expected file missing for "${keyword.keyword}" (${category}/${slug}.astro)`
+          );
+          resolve(null);
         } else {
           result.errors.push(`Generation failed for ${keyword.keyword}`);
           resolve(null);
@@ -271,16 +286,31 @@ async function enrichArticle(score: QAScore, result: PipelineResult): Promise<nu
 /**
  * Mark a keyword as used in the database
  */
-async function markKeywordUsed(keyword: string): Promise<void> {
-  if (!supabase || isDryRun) return;
+async function markKeywordUsed(keyword: string): Promise<boolean> {
+  if (!supabase || isDryRun) return true;
 
   try {
-    await supabase
+    const { data, error } = await supabase
       .from('keyword_opportunities')
       .update({ status: 'used', used_at: new Date().toISOString() })
-      .eq('keyword', keyword);
+      .eq('status', 'active')
+      .eq('keyword', keyword)
+      .select('keyword');
+
+    if (error) {
+      debug(`Failed to mark keyword as used: ${error.message}`);
+      return false;
+    }
+
+    if (!data || data.length === 0) {
+      debug(`Keyword "${keyword}" was not active at update time`);
+      return false;
+    }
+
+    return true;
   } catch (err: any) {
     debug(`Failed to mark keyword as used: ${err.message}`);
+    return false;
   }
 }
 
@@ -424,6 +454,7 @@ async function runPipeline(): Promise<PipelineResult> {
   console.log(`Generate: ${skipGenerate ? 'SKIP' : generateCount + ' articles'}`);
   console.log(`Enrich: ${skipEnrich ? 'SKIP' : 'up to ' + enrichLimit + ' articles'}`);
   console.log(`Wine Validation: ${doValidateWines ? 'ENABLED' : 'DISABLED'}`);
+  console.log(`Scoring Scope: ${fullScan ? 'FULL SCAN' : 'INCREMENTAL'}`);
   console.log('═'.repeat(60) + '\n');
 
   // Step 1: Generate new articles
@@ -461,8 +492,20 @@ async function runPipeline(): Promise<PipelineResult> {
 
         const slug = await generateArticle(keyword, result);
         if (slug) {
-          await markKeywordUsed(keyword.keyword);
+          debug(`Generated mapping: "${keyword.keyword}" -> ${slug}`);
+          const markedUsed = await markKeywordUsed(keyword.keyword);
+          if (!markedUsed) {
+            result.errors.push(`Could not mark keyword as used: "${keyword.keyword}"`);
+          }
           generated++;
+        } else {
+          result.skipped.push({
+            slug: keyword.keyword
+              .toLowerCase()
+              .replace(/[^a-z0-9]+/g, '-')
+              .replace(/^-|-$/g, ''),
+            reason: `Generation failed for keyword "${keyword.keyword}"`,
+          });
         }
 
         // Rate limit between generations
@@ -529,10 +572,29 @@ async function runPipeline(): Promise<PipelineResult> {
     log('STEP 1: Skipping generation', 'info');
   }
 
-  // Step 2: Score all recent articles
+  // Determine scoring scope for this run
+  let scoringFilePaths: string[] = [];
+  const shouldUseFullScan = fullScan || isDryRun || skipGenerate || result.generated.length === 0;
+  if (shouldUseFullScan) {
+    scoringFilePaths = collectArticleFilePaths();
+    debug(`Using full-scan scoring scope (${scoringFilePaths.length} files)`);
+  } else {
+    scoringFilePaths = result.generated
+      .map(a => path.join(process.cwd(), 'src/pages', a.category, `${a.slug}.astro`))
+      .filter(p => fs.existsSync(p));
+    debug(`Using incremental scoring scope (${scoringFilePaths.length} files)`);
+
+    // Safety fallback if generated files are unexpectedly missing
+    if (scoringFilePaths.length === 0) {
+      scoringFilePaths = collectArticleFilePaths();
+      debug(`Incremental scope empty, fell back to full scan (${scoringFilePaths.length} files)`);
+    }
+  }
+
+  // Step 2: Score target articles
   log('\nSTEP 2: Scoring articles...', 'info');
 
-  const allScores = await scoreAllArticles();
+  const allScores = await scoreArticleFiles(scoringFilePaths);
   const scoreSummary = getScoreSummary(allScores);
 
   log(`Scored ${allScores.length} articles (avg: ${scoreSummary.avgScore}%)`, 'info');
@@ -584,7 +646,7 @@ async function runPipeline(): Promise<PipelineResult> {
   // Step 4: Re-score and categorize
   log('\nSTEP 4: Final scoring and publishing decisions...', 'info');
 
-  const finalScores = await scoreAllArticles(undefined, doValidateWines);
+  const finalScores = await scoreArticleFiles(scoringFilePaths, doValidateWines);
 
   for (const score of finalScores) {
     // Check for invalid wines
