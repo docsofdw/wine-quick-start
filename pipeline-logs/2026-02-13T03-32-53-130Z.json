@@ -1,0 +1,329 @@
+{
+  "timestamp": "2026-02-13T03:32:53.130Z",
+  "generated": [],
+  "enriched": [
+    {
+      "slug": "merlot",
+      "beforeScore": 76
+    },
+    {
+      "slug": "prosecco",
+      "beforeScore": 76
+    },
+    {
+      "slug": "rose-wine",
+      "beforeScore": 76
+    }
+  ],
+  "published": [
+    {
+      "slug": "barolo-wine",
+      "score": 90
+    },
+    {
+      "slug": "best-barolo-wines",
+      "score": 92
+    },
+    {
+      "slug": "best-bordeaux-wines",
+      "score": 90
+    },
+    {
+      "slug": "best-burgundy-wines",
+      "score": 92
+    },
+    {
+      "slug": "best-cabernet-sauvignon",
+      "score": 90
+    },
+    {
+      "slug": "best-champagne",
+      "score": 90
+    },
+    {
+      "slug": "best-chardonnay",
+      "score": 90
+    },
+    {
+      "slug": "best-grenache",
+      "score": 94
+    },
+    {
+      "slug": "best-merlot",
+      "score": 92
+    },
+    {
+      "slug": "best-napa-valley-wines",
+      "score": 90
+    },
+    {
+      "slug": "best-pinot-noir",
+      "score": 90
+    },
+    {
+      "slug": "best-sauvignon-blanc",
+      "score": 90
+    },
+    {
+      "slug": "best-wine-for-christmas-dinner",
+      "score": 90
+    },
+    {
+      "slug": "best-wine-for-thanksgiving",
+      "score": 90
+    },
+    {
+      "slug": "best-zinfandel",
+      "score": 90
+    },
+    {
+      "slug": "bordeaux-vs-burgundy",
+      "score": 94
+    },
+    {
+      "slug": "bordeaux-wine",
+      "score": 90
+    },
+    {
+      "slug": "burgundy-wine",
+      "score": 92
+    },
+    {
+      "slug": "cabernet-sauvignon-vs-merlot",
+      "score": 92
+    },
+    {
+      "slug": "california-wine",
+      "score": 90
+    },
+    {
+      "slug": "champagne-vs-prosecco",
+      "score": 94
+    },
+    {
+      "slug": "champagne-wine",
+      "score": 92
+    },
+    {
+      "slug": "chardonnay-vs-sauvignon-blanc",
+      "score": 92
+    },
+    {
+      "slug": "grower-champagne",
+      "score": 92
+    },
+    {
+      "slug": "kosta-browne-pinot-noir",
+      "score": 92
+    },
+    {
+      "slug": "merlot-vs-cabernet-sauvignon",
+      "score": 94
+    },
+    {
+      "slug": "napa-valley-wine-guide",
+      "score": 90
+    },
+    {
+      "slug": "napa-valley-wine",
+      "score": 90
+    },
+    {
+      "slug": "old-vine-zinfandel",
+      "score": 92
+    },
+    {
+      "slug": "oregon-pinot-noir",
+      "score": 90
+    },
+    {
+      "slug": "pinot-noir-vs-cabernet",
+      "score": 94
+    },
+    {
+      "slug": "red-burgundy",
+      "score": 92
+    },
+    {
+      "slug": "sauvignon-blanc-vs-pinot-grigio",
+      "score": 94
+    },
+    {
+      "slug": "sonoma-vs-napa",
+      "score": 94
+    },
+    {
+      "slug": "sonoma-wine",
+      "score": 90
+    },
+    {
+      "slug": "syrah-vs-shiraz",
+      "score": 94
+    },
+    {
+      "slug": "white-burgundy",
+      "score": 92
+    },
+    {
+      "slug": "willamette-valley-wine",
+      "score": 92
+    },
+    {
+      "slug": "wine-vs-burgundy-color",
+      "score": 96
+    },
+    {
+      "slug": "best-wine-with-chicken",
+      "score": 90
+    },
+    {
+      "slug": "best-wine-with-pizza",
+      "score": 90
+    },
+    {
+      "slug": "best-wine-with-salmon",
+      "score": 83
+    },
+    {
+      "slug": "best-wine-with-seafood",
+      "score": 90
+    },
+    {
+      "slug": "best-wine-with-steak",
+      "score": 90
+    },
+    {
+      "slug": "cabernet-sauvignon-food-pairing",
+      "score": 90
+    },
+    {
+      "slug": "chardonnay-food-pairing",
+      "score": 90
+    },
+    {
+      "slug": "chicken-wine-pairing",
+      "score": 90
+    },
+    {
+      "slug": "christmas-dinner-wine-pairing",
+      "score": 90
+    },
+    {
+      "slug": "lamb-wine-pairing",
+      "score": 94
+    },
+    {
+      "slug": "malbec",
+      "score": 83
+    },
+    {
+      "slug": "merlot",
+      "score": 85
+    },
+    {
+      "slug": "prosecco",
+      "score": 85
+    },
+    {
+      "slug": "red-wine-food-pairing",
+      "score": 90
+    },
+    {
+      "slug": "rose-wine-with-chicken-on-label",
+      "score": 96
+    },
+    {
+      "slug": "rose-wine-with-chicken",
+      "score": 96
+    },
+    {
+      "slug": "rose-wine",
+      "score": 85
+    },
+    {
+      "slug": "salmon-wine-pairing",
+      "score": 90
+    },
+    {
+      "slug": "sauvignon-blanc-food-pairing",
+      "score": 90
+    },
+    {
+      "slug": "steak-wine-pairing",
+      "score": 90
+    },
+    {
+      "slug": "thanksgiving-wine-pairing",
+      "score": 90
+    },
+    {
+      "slug": "what-to-eat-with-cabernet-sauvignon",
+      "score": 92
+    },
+    {
+      "slug": "what-to-eat-with-pinot-noir",
+      "score": 90
+    },
+    {
+      "slug": "what-wine-goes-with-salmon",
+      "score": 90
+    },
+    {
+      "slug": "what-wine-goes-with-steak",
+      "score": 90
+    },
+    {
+      "slug": "white-wine-food-pairing",
+      "score": 90
+    },
+    {
+      "slug": "wine-with-bbq",
+      "score": 90
+    },
+    {
+      "slug": "wine-with-beef",
+      "score": 90
+    },
+    {
+      "slug": "wine-with-turkey",
+      "score": 94
+    },
+    {
+      "slug": "best-cabernet-sauvignon-under-20",
+      "score": 90
+    },
+    {
+      "slug": "best-cabernet-sauvignon-under-50",
+      "score": 94
+    },
+    {
+      "slug": "best-chardonnay-under-20",
+      "score": 94
+    },
+    {
+      "slug": "best-pinot-noir-under-20",
+      "score": 90
+    },
+    {
+      "slug": "best-sauvignon-blanc-under-20",
+      "score": 94
+    },
+    {
+      "slug": "natural-wine-price",
+      "score": 85
+    }
+  ],
+  "rejected": [],
+  "skipped": [],
+  "flaggedWines": [],
+  "errors": [],
+  "summary": {
+    "totalProcessed": 79,
+    "newArticles": 0,
+    "enrichedArticles": 3,
+    "publishedArticles": 74,
+    "rejectedArticles": 0,
+    "flaggedWineArticles": 0,
+    "avgScore": 90
+  }
+}
