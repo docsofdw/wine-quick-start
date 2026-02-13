@@ -58,15 +58,82 @@ export interface QAScore {
     hasImage: boolean;
     hasSchema: boolean;
     hasMeta: boolean;
+    hasMetaDescription: boolean;
+    hasCanonicalUrl: boolean;
+    hasQuickAnswer: boolean;
+    hasExpertTips: boolean;
+    hasFAQ: boolean;
+    hasAuthorBio: boolean;
+    internalLinkCount: number;
     readTimeMinutes: number;
+    aiPhraseCount: number;    // Number of AI phrases detected
     validWines?: number;      // Only when --validate-wines
     invalidWines?: string[];  // Only when --validate-wines
+    metaDescription?: string; // For uniqueness checking
   };
 }
 
 // Thresholds
-const PASS_THRESHOLD = 80;
+const PASS_THRESHOLD = 85;  // Raised from 80 to ensure higher quality
 const FAIL_THRESHOLD = 60;
+
+// Common AI-generated phrases to detect and penalize
+const AI_PHRASES = [
+  // Overused transitions
+  'delve into',
+  'dive into',
+  'embark on',
+  'let\'s explore',
+  'in this comprehensive guide',
+  'in this article, we will',
+  'without further ado',
+
+  // Filler phrases
+  'it\'s important to note',
+  'it\'s worth noting',
+  'it goes without saying',
+  'needless to say',
+  'at the end of the day',
+  'when it comes to',
+  'in terms of',
+  'as a matter of fact',
+
+  // AI favorites
+  'tapestry',
+  'myriad',
+  'plethora',
+  'multifaceted',
+  'nuanced',
+  'robust',
+  'leverage',
+  'elevate your',
+  'unlock the',
+  'game-changer',
+
+  // Generic conclusions
+  'in conclusion',
+  'to sum up',
+  'all in all',
+  'whether you\'re a beginner or',
+  'whether you\'re a seasoned',
+  'no matter your experience level',
+  'there\'s something for everyone',
+
+  // Hollow superlatives
+  'truly remarkable',
+  'absolutely essential',
+  'simply put',
+  'the perfect choice',
+  'the ideal solution',
+  'look no further',
+
+  // Overused wine clichés (beyond normal wine writing)
+  'pairs beautifully with',
+  'a symphony of flavors',
+  'dance on your palate',
+  'a journey through',
+  'transport you to',
+];
 
 /**
  * Score word count (target: 1500-3000 words)
@@ -144,15 +211,32 @@ function scoreStructure(content: string): { score: number; issues: string[]; h2C
 /**
  * Score SEO elements
  */
-function scoreSEO(content: string): { score: number; issues: string[]; hasSchema: boolean; hasMeta: boolean } {
+function scoreSEO(content: string): {
+  score: number;
+  issues: string[];
+  hasSchema: boolean;
+  hasMeta: boolean;
+  hasCanonical: boolean;
+  internalLinkCount: number;
+  metaDescription: string | null;
+} {
   const issues: string[] = [];
   let score = 100;
 
-  // Check meta description
-  const hasMetaDesc = /description:\s*["'][^"']{50,160}["']/.test(content);
-  if (!hasMetaDesc) {
-    issues.push('Missing or invalid meta description (50-160 chars)');
+  // Extract and check meta description
+  const metaMatch = content.match(/description:\s*["']([^"']{1,200})["']/);
+  const metaDescription = metaMatch ? metaMatch[1] : null;
+  const hasMetaDesc = metaDescription !== null && metaDescription.length >= 50 && metaDescription.length <= 160;
+
+  if (!metaDescription) {
+    issues.push('Missing meta description');
     score -= 20;
+  } else if (metaDescription.length < 50) {
+    issues.push(`Meta description too short: ${metaDescription.length} chars (min: 50)`);
+    score -= 15;
+  } else if (metaDescription.length > 160) {
+    issues.push(`Meta description too long: ${metaDescription.length} chars (max: 160)`);
+    score -= 10;
   }
 
   // Check title
@@ -186,18 +270,63 @@ function scoreSEO(content: string): { score: number; issues: string[]; hasSchema
   // Check for internal links (looking for relative links)
   const internalLinkPattern = /href=["']\/[^"']+["']/g;
   const internalLinks = content.match(internalLinkPattern) || [];
-  if (internalLinks.length < 2) {
-    issues.push(`Few internal links: ${internalLinks.length} (target: 3+)`);
+  const internalLinkCount = internalLinks.length;
+  if (internalLinkCount < 2) {
+    issues.push(`Few internal links: ${internalLinkCount} (target: 3+)`);
     score -= 10;
   }
 
-  return { score: Math.max(0, score), issues, hasSchema, hasMeta: hasMetaDesc };
+  return {
+    score: Math.max(0, score),
+    issues,
+    hasSchema,
+    hasMeta: hasMetaDesc,
+    hasCanonical,
+    internalLinkCount,
+    metaDescription,
+  };
+}
+
+/**
+ * Detect AI-generated content patterns
+ */
+function detectAIContent(content: string): { score: number; issues: string[]; aiPhraseCount: number; detectedPhrases: string[] } {
+  const issues: string[] = [];
+  const detectedPhrases: string[] = [];
+  const lowerContent = content.toLowerCase();
+
+  // Check for AI phrases
+  for (const phrase of AI_PHRASES) {
+    if (lowerContent.includes(phrase.toLowerCase())) {
+      detectedPhrases.push(phrase);
+    }
+  }
+
+  const aiPhraseCount = detectedPhrases.length;
+
+  // Scoring based on AI phrase count
+  let score = 100;
+  if (aiPhraseCount >= 8) {
+    issues.push(`High AI content detected: ${aiPhraseCount} AI phrases found`);
+    score = 30;
+  } else if (aiPhraseCount >= 5) {
+    issues.push(`Moderate AI content: ${aiPhraseCount} AI phrases (${detectedPhrases.slice(0, 3).join(', ')}...)`);
+    score = 50;
+  } else if (aiPhraseCount >= 3) {
+    issues.push(`Some AI phrases detected: ${detectedPhrases.join(', ')}`);
+    score = 70;
+  } else if (aiPhraseCount >= 1) {
+    issues.push(`Minor AI phrases: ${detectedPhrases.join(', ')}`);
+    score = 85;
+  }
+
+  return { score, issues, aiPhraseCount, detectedPhrases };
 }
 
 /**
  * Score content quality
  */
-function scoreContentQuality(content: string): { score: number; issues: string[]; wineCount: number } {
+function scoreContentQuality(content: string): { score: number; issues: string[]; wineCount: number; aiPhraseCount: number } {
   const issues: string[] = [];
   let score = 100;
 
@@ -242,7 +371,16 @@ function scoreContentQuality(content: string): { score: number; issues: string[]
     score -= 15;
   }
 
-  return { score: Math.max(0, score), issues, wineCount };
+  // AI content detection
+  const aiResult = detectAIContent(content);
+  issues.push(...aiResult.issues);
+
+  // Combine scores (content quality weighted with AI detection)
+  // AI detection can reduce score by up to 40 points
+  const aiPenalty = Math.round((100 - aiResult.score) * 0.4);
+  score = Math.max(0, score - aiPenalty);
+
+  return { score: Math.max(0, score), issues, wineCount, aiPhraseCount: aiResult.aiPhraseCount };
 }
 
 /**
@@ -538,6 +676,12 @@ export async function scoreArticle(
     ...wineValidityResult.issues,
   ];
 
+  // Check for key sections (for metrics)
+  const hasQuickAnswer = content.includes('slot="quick-answer"') || content.includes('Quick Answer');
+  const hasExpertTips = content.includes('Expert Tips');
+  const hasFAQ = content.includes('Frequently Asked Questions') || content.includes('FAQ');
+  const hasAuthorBio = content.includes('About the Author') || content.includes('author');
+
   return {
     slug,
     category,
@@ -553,11 +697,50 @@ export async function scoreArticle(
       hasImage,
       hasSchema: seoResult.hasSchema,
       hasMeta: seoResult.hasMeta,
+      hasMetaDescription: seoResult.hasMeta,
+      hasCanonicalUrl: seoResult.hasCanonical,
+      hasQuickAnswer,
+      hasExpertTips,
+      hasFAQ,
+      hasAuthorBio,
+      internalLinkCount: seoResult.internalLinkCount,
       readTimeMinutes,
+      aiPhraseCount: contentResult.aiPhraseCount,
       validWines: wineValidityResult.validWines,
       invalidWines: wineValidityResult.invalidWines.length > 0 ? wineValidityResult.invalidWines : undefined,
+      metaDescription: seoResult.metaDescription || undefined,
     },
   };
+}
+
+/**
+ * Check for duplicate meta descriptions across articles
+ * Returns a map of meta description -> list of slugs that use it
+ */
+function findDuplicateMetaDescriptions(results: QAScore[]): Map<string, string[]> {
+  const metaMap = new Map<string, string[]>();
+
+  for (const result of results) {
+    const meta = result.metrics.metaDescription;
+    if (meta) {
+      // Normalize: lowercase and trim for comparison
+      const normalized = meta.toLowerCase().trim();
+      if (!metaMap.has(normalized)) {
+        metaMap.set(normalized, []);
+      }
+      metaMap.get(normalized)!.push(result.slug);
+    }
+  }
+
+  // Filter to only duplicates (more than 1 article)
+  const duplicates = new Map<string, string[]>();
+  for (const [meta, slugs] of metaMap.entries()) {
+    if (slugs.length > 1) {
+      duplicates.set(meta, slugs);
+    }
+  }
+
+  return duplicates;
 }
 
 /**
@@ -589,6 +772,25 @@ export async function scoreAllArticles(
         results.push(score);
       } catch (err: any) {
         console.error(`Error scoring ${file}: ${err.message}`);
+      }
+    }
+  }
+
+  // Check for duplicate meta descriptions
+  const duplicates = findDuplicateMetaDescriptions(results);
+  if (duplicates.size > 0) {
+    for (const result of results) {
+      const meta = result.metrics.metaDescription?.toLowerCase().trim();
+      if (meta && duplicates.has(meta)) {
+        const otherSlugs = duplicates.get(meta)!.filter(s => s !== result.slug);
+        if (otherSlugs.length > 0) {
+          result.issues.push(`Duplicate meta description (also used by: ${otherSlugs.join(', ')})`);
+          // Penalize SEO score for duplicate meta
+          result.scores.seo = Math.max(0, result.scores.seo - 15);
+          // Recalculate total score
+          result.totalScore = calculateTotalScore(result.scores, doWineValidation);
+          result.status = determineStatus(result.totalScore);
+        }
       }
     }
   }

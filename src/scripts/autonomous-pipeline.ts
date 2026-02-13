@@ -49,7 +49,7 @@ const verbose = args.includes('--verbose');
 const doValidateWines = args.includes('--validate-wines');
 
 // Quality thresholds
-const AUTO_PUBLISH_THRESHOLD = 80;
+const AUTO_PUBLISH_THRESHOLD = 85;  // Raised from 80 for higher quality
 const NEEDS_ENRICHMENT_THRESHOLD = 70;
 const REJECT_THRESHOLD = 50;
 
