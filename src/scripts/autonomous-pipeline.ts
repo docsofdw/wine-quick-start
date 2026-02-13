@@ -237,11 +237,11 @@ async function enrichArticle(score: QAScore, result: PipelineResult): Promise<nu
         stdio: verbose ? 'inherit' : 'pipe',
       });
 
-      proc.on('close', (code) => {
+      proc.on('close', async (code) => {
         if (code === 0) {
           // Re-score after enrichment
           try {
-            const newScore = scoreArticle(score.filePath);
+            const newScore = await scoreArticle(score.filePath);
             result.enriched.push({
               slug: score.slug,
               beforeScore,
