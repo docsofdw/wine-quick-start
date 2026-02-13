@@ -21,6 +21,7 @@ pnpm-debug.log*
 .env.test
 *.env
 .env.*
+!.env.example
 
 # API keys and secrets - NEVER COMMIT THESE
 *api*key*
