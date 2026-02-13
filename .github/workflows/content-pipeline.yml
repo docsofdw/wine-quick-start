@@ -185,6 +185,20 @@ jobs:
             git diff --staged --stat
           fi
 
+      - name: Send Telegram Notification
+        if: steps.changes.outputs.has_changes == 'true' && github.event.inputs.dry_run != 'true'
+        run: |
+          npx tsx src/scripts/telegram-notify.ts --summary
+
+      - name: Upload pipeline logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: pipeline-logs
+          path: pipeline-logs/
+          retention-days: 30
+          if-no-files-found: ignore
+
       - name: Create Pull Request
         if: steps.changes.outputs.has_changes == 'true' && github.event.inputs.dry_run != 'true'
         uses: peter-evans/create-pull-request@v6
@@ -220,20 +234,6 @@ jobs:
           labels: |
             content
             automated
-
-      - name: Send Telegram Notification
-        if: steps.changes.outputs.has_changes == 'true' && github.event.inputs.dry_run != 'true'
-        run: |
-          npx tsx src/scripts/telegram-notify.ts --summary
-
-      - name: Upload pipeline logs
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: pipeline-logs
-          path: pipeline-logs/
-          retention-days: 30
-          if-no-files-found: ignore
 
   # Weekly digest (runs on Sundays at 10am UTC)
   weekly-digest:
