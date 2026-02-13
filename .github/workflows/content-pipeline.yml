@@ -1,5 +1,9 @@
 name: Autonomous Content Pipeline
 
+permissions:
+  contents: write
+  pull-requests: write
+
 on:
   # Run twice a week: Monday and Thursday at 6am UTC
   schedule:
