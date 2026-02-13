@@ -5,9 +5,9 @@ permissions:
   pull-requests: write
 
 on:
-  # Run twice a week: Monday and Thursday at 6am UTC
+  # Run twice a week: Monday and Thursday at 8am CST (2pm UTC)
   schedule:
-    - cron: '0 6 * * 1,4'
+    - cron: '0 14 * * 1,4'
     # Daily catalog health check at 2am UTC
     - cron: '0 2 * * *'
     # Weekly digest on Sundays at 10am UTC
