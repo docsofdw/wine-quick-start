@@ -46,6 +46,8 @@ export interface QAScore {
     seo: number;              // 0-100
     contentQuality: number;   // 0-100
     technicalValidity: number; // 0-100
+    readability: number;      // 0-100 (Flesch-based)
+    topicDiversity: number;   // 0-100 (penalizes similar topics)
     wineValidity: number;     // 0-100 (only when --validate-wines)
   };
   totalScore: number;         // Weighted average 0-100
@@ -67,11 +69,16 @@ export interface QAScore {
     internalLinkCount: number;
     readTimeMinutes: number;
     aiPhraseCount: number;    // Number of AI phrases detected
+    readabilityScore: number; // Flesch Reading Ease (0-100)
+    readabilityGrade: string; // Grade level description
     validWines?: number;      // Only when --validate-wines
     invalidWines?: string[];  // Only when --validate-wines
     metaDescription?: string; // For uniqueness checking
   };
 }
+
+// Recent topics cache for diversity checking (populated during scoreAllArticles)
+let recentTopicsCache: Map<string, string[]> = new Map();
 
 // Thresholds
 const PASS_THRESHOLD = 85;  // Raised from 80 to ensure higher quality
@@ -134,6 +141,172 @@ const AI_PHRASES = [
   'a journey through',
   'transport you to',
 ];
+
+/**
+ * Count syllables in a word (approximation)
+ */
+function countSyllables(word: string): number {
+  word = word.toLowerCase().replace(/[^a-z]/g, '');
+  if (word.length <= 3) return 1;
+
+  // Count vowel groups
+  const vowels = word.match(/[aeiouy]+/g);
+  let count = vowels ? vowels.length : 1;
+
+  // Subtract silent e
+  if (word.endsWith('e') && !word.endsWith('le')) {
+    count--;
+  }
+
+  // Handle common suffixes
+  if (word.endsWith('es') || word.endsWith('ed')) {
+    count--;
+  }
+
+  return Math.max(1, count);
+}
+
+/**
+ * Calculate Flesch Reading Ease score
+ * 90-100: Very easy (5th grade)
+ * 80-89: Easy (6th grade)
+ * 70-79: Fairly easy (7th grade)
+ * 60-69: Standard (8th-9th grade) - IDEAL for wine content
+ * 50-59: Fairly difficult (10th-12th grade) - OK for wine content
+ * 30-49: Difficult (college level)
+ * 0-29: Very confusing
+ */
+function calculateReadability(text: string): { score: number; grade: string } {
+  // Clean text
+  const cleanText = text
+    .replace(/---[\s\S]*?---/, '') // Remove frontmatter
+    .replace(/<[^>]+>/g, ' ')      // Remove HTML tags
+    .replace(/\{[^}]+\}/g, ' ')    // Remove template expressions
+    .replace(/\s+/g, ' ')
+    .trim();
+
+  // Count sentences (periods, question marks, exclamation points)
+  const sentences = cleanText.split(/[.!?]+/).filter(s => s.trim().length > 0);
+  const sentenceCount = Math.max(1, sentences.length);
+
+  // Count words
+  const words = cleanText.split(/\s+/).filter(w => w.length > 0);
+  const wordCount = Math.max(1, words.length);
+
+  // Count syllables
+  let syllableCount = 0;
+  for (const word of words) {
+    syllableCount += countSyllables(word);
+  }
+
+  // Flesch Reading Ease formula
+  const avgWordsPerSentence = wordCount / sentenceCount;
+  const avgSyllablesPerWord = syllableCount / wordCount;
+  const score = Math.round(206.835 - (1.015 * avgWordsPerSentence) - (84.6 * avgSyllablesPerWord));
+
+  // Clamp to 0-100
+  const clampedScore = Math.max(0, Math.min(100, score));
+
+  // Determine grade
+  let grade: string;
+  if (clampedScore >= 90) grade = 'Very Easy (5th grade)';
+  else if (clampedScore >= 80) grade = 'Easy (6th grade)';
+  else if (clampedScore >= 70) grade = 'Fairly Easy (7th grade)';
+  else if (clampedScore >= 60) grade = 'Standard (8th-9th grade)';
+  else if (clampedScore >= 50) grade = 'Fairly Difficult (10th-12th grade)';
+  else if (clampedScore >= 30) grade = 'Difficult (College)';
+  else grade = 'Very Confusing (Graduate)';
+
+  return { score: clampedScore, grade };
+}
+
+/**
+ * Score readability (target: 50-70 for wine content)
+ * Too simple (80+) = dumbed down
+ * Too complex (<40) = inaccessible
+ */
+function scoreReadability(content: string): { score: number; issues: string[]; readabilityScore: number; readabilityGrade: string } {
+  const issues: string[] = [];
+  const { score: readabilityScore, grade: readabilityGrade } = calculateReadability(content);
+
+  let qualityScore = 100;
+
+  if (readabilityScore >= 80) {
+    issues.push(`Content too simple: Flesch score ${readabilityScore} (${readabilityGrade})`);
+    qualityScore = 70; // Too dumbed down
+  } else if (readabilityScore >= 70) {
+    // Slightly simple but acceptable
+    qualityScore = 90;
+  } else if (readabilityScore >= 50) {
+    // Ideal range for wine content
+    qualityScore = 100;
+  } else if (readabilityScore >= 40) {
+    issues.push(`Content slightly complex: Flesch score ${readabilityScore} (${readabilityGrade})`);
+    qualityScore = 85;
+  } else if (readabilityScore >= 30) {
+    issues.push(`Content too complex: Flesch score ${readabilityScore} (${readabilityGrade})`);
+    qualityScore = 60;
+  } else {
+    issues.push(`Content very difficult to read: Flesch score ${readabilityScore} (${readabilityGrade})`);
+    qualityScore = 40;
+  }
+
+  return { score: qualityScore, issues, readabilityScore, readabilityGrade };
+}
+
+/**
+ * Extract core topic from slug for diversity checking
+ */
+function extractCoreTopic(slug: string): string {
+  return slug
+    .toLowerCase()
+    .replace(/^(best-|top-|ultimate-|complete-|expert-)/g, '')
+    .replace(/(-guide|-recommendations|-basics|-explained|-101|-tips)$/g, '')
+    .replace(/(-wine|-pairing|-food)$/g, '')
+    .replace(/--+/g, '-')
+    .replace(/^-|-$/g, '');
+}
+
+/**
+ * Check topic diversity - penalize if similar topic was recently created
+ */
+function checkTopicDiversity(slug: string, category: string, allSlugs: string[]): { score: number; issues: string[]; similarTopics: string[] } {
+  const issues: string[] = [];
+  const similarTopics: string[] = [];
+  const coreTopic = extractCoreTopic(slug);
+
+  // Find similar topics
+  for (const otherSlug of allSlugs) {
+    if (otherSlug === slug) continue;
+    const otherCore = extractCoreTopic(otherSlug);
+
+    // Check for exact match or substring match
+    if (coreTopic === otherCore) {
+      similarTopics.push(otherSlug);
+    } else if (coreTopic.includes(otherCore) || otherCore.includes(coreTopic)) {
+      // Partial match - check if significant overlap
+      const shorter = coreTopic.length < otherCore.length ? coreTopic : otherCore;
+      const longer = coreTopic.length >= otherCore.length ? coreTopic : otherCore;
+      if (shorter.length >= 4 && longer.includes(shorter)) {
+        similarTopics.push(otherSlug);
+      }
+    }
+  }
+
+  let score = 100;
+  if (similarTopics.length >= 3) {
+    issues.push(`Topic oversaturated: ${similarTopics.length} similar articles (${similarTopics.slice(0, 3).join(', ')})`);
+    score = 60;
+  } else if (similarTopics.length >= 2) {
+    issues.push(`Topic has duplicates: ${similarTopics.join(', ')}`);
+    score = 75;
+  } else if (similarTopics.length === 1) {
+    issues.push(`Similar topic exists: ${similarTopics[0]}`);
+    score = 90;
+  }
+
+  return { score, issues, similarTopics };
+}
 
 /**
  * Score word count (target: 1500-3000 words)
@@ -573,11 +746,13 @@ function calculateTotalScore(scores: QAScore['scores'], includeWineValidity: boo
   if (includeWineValidity) {
     // Weights when wine validation is enabled
     const weights = {
-      wordCount: 0.20,
-      structure: 0.20,
-      seo: 0.20,
+      wordCount: 0.15,
+      structure: 0.15,
+      seo: 0.15,
       contentQuality: 0.20,
-      technicalValidity: 0.10,
+      technicalValidity: 0.05,
+      readability: 0.10,
+      topicDiversity: 0.10,
       wineValidity: 0.10,
     };
 
@@ -587,16 +762,20 @@ function calculateTotalScore(scores: QAScore['scores'], includeWineValidity: boo
       scores.seo * weights.seo +
       scores.contentQuality * weights.contentQuality +
       scores.technicalValidity * weights.technicalValidity +
+      scores.readability * weights.readability +
+      scores.topicDiversity * weights.topicDiversity +
       scores.wineValidity * weights.wineValidity
     );
   } else {
-    // Original weights when wine validation is disabled
+    // Weights when wine validation is disabled
     const weights = {
-      wordCount: 0.25,
-      structure: 0.20,
-      seo: 0.20,
+      wordCount: 0.20,
+      structure: 0.15,
+      seo: 0.15,
       contentQuality: 0.25,
-      technicalValidity: 0.10,
+      technicalValidity: 0.05,
+      readability: 0.10,
+      topicDiversity: 0.10,
     };
 
     return Math.round(
@@ -604,7 +783,9 @@ function calculateTotalScore(scores: QAScore['scores'], includeWineValidity: boo
       scores.structure * weights.structure +
       scores.seo * weights.seo +
       scores.contentQuality * weights.contentQuality +
-      scores.technicalValidity * weights.technicalValidity
+      scores.technicalValidity * weights.technicalValidity +
+      scores.readability * weights.readability +
+      scores.topicDiversity * weights.topicDiversity
     );
   }
 }
@@ -622,10 +803,12 @@ function determineStatus(totalScore: number): 'pass' | 'review' | 'fail' {
  * Score a single article
  * @param filePath - Path to the article file
  * @param doWineValidation - Whether to validate wines against catalog (async)
+ * @param allSlugs - All article slugs for topic diversity checking
  */
 export async function scoreArticle(
   filePath: string,
-  doWineValidation: boolean = false
+  doWineValidation: boolean = false,
+  allSlugs: string[] = []
 ): Promise<QAScore> {
   const content = fs.readFileSync(filePath, 'utf-8');
   const slug = path.basename(filePath, '.astro');
@@ -649,6 +832,8 @@ export async function scoreArticle(
   const seoResult = scoreSEO(content);
   const contentResult = scoreContentQuality(content);
   const technicalResult = scoreTechnicalValidity(content, filePath);
+  const readabilityResult = scoreReadability(content);
+  const diversityResult = checkTopicDiversity(slug, category, allSlugs);
 
   // Wine validation (async)
   const wineValidityResult = await scoreWineValidity(content, doWineValidation);
@@ -660,6 +845,8 @@ export async function scoreArticle(
     seo: seoResult.score,
     contentQuality: contentResult.score,
     technicalValidity: technicalResult.score,
+    readability: readabilityResult.score,
+    topicDiversity: diversityResult.score,
     wineValidity: wineValidityResult.score,
   };
 
@@ -673,6 +860,8 @@ export async function scoreArticle(
     ...seoResult.issues,
     ...contentResult.issues,
     ...technicalResult.issues,
+    ...readabilityResult.issues,
+    ...diversityResult.issues,
     ...wineValidityResult.issues,
   ];
 
@@ -706,6 +895,8 @@ export async function scoreArticle(
       internalLinkCount: seoResult.internalLinkCount,
       readTimeMinutes,
       aiPhraseCount: contentResult.aiPhraseCount,
+      readabilityScore: readabilityResult.readabilityScore,
+      readabilityGrade: readabilityResult.readabilityGrade,
       validWines: wineValidityResult.validWines,
       invalidWines: wineValidityResult.invalidWines.length > 0 ? wineValidityResult.invalidWines : undefined,
       metaDescription: seoResult.metaDescription || undefined,
@@ -756,6 +947,10 @@ export async function scoreAllArticles(
   const pagesDir = path.join(process.cwd(), 'src/pages');
   const categories = category ? [category] : ['learn', 'wine-pairings', 'buy'];
 
+  // First pass: collect all slugs for topic diversity checking
+  const allSlugs: string[] = [];
+  const filePaths: { path: string; cat: string }[] = [];
+
   for (const cat of categories) {
     const categoryDir = path.join(pagesDir, cat);
     if (!fs.existsSync(categoryDir)) continue;
@@ -765,14 +960,19 @@ export async function scoreAllArticles(
       if (!file.endsWith('.astro') || file === 'index.astro' || file.startsWith('[')) {
         continue;
       }
+      const slug = file.replace('.astro', '');
+      allSlugs.push(slug);
+      filePaths.push({ path: path.join(categoryDir, file), cat });
+    }
+  }
 
-      const filePath = path.join(categoryDir, file);
-      try {
-        const score = await scoreArticle(filePath, doWineValidation);
-        results.push(score);
-      } catch (err: any) {
-        console.error(`Error scoring ${file}: ${err.message}`);
-      }
+  // Second pass: score all articles with access to all slugs
+  for (const { path: filePath } of filePaths) {
+    try {
+      const score = await scoreArticle(filePath, doWineValidation, allSlugs);
+      results.push(score);
+    } catch (err: any) {
+      console.error(`Error scoring ${path.basename(filePath)}: ${err.message}`);
     }
   }
 
