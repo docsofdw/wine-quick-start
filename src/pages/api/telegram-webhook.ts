@@ -9,8 +9,6 @@
  */
 
 import type { APIRoute } from 'astro';
-import fs from 'fs';
-import path from 'path';
 
 const TELEGRAM_BOT_TOKEN = import.meta.env.TELEGRAM_BOT_TOKEN;
 const TELEGRAM_WEBHOOK_SECRET = import.meta.env.TELEGRAM_WEBHOOK_SECRET;
