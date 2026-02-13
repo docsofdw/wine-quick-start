@@ -355,6 +355,19 @@ ${emoji} <b>Content Pipeline Complete</b> ${status}
     }
   }
 
+  // Add enriched article details
+  if (result.enriched.length > 0) {
+    message += '\n\n<b>Enriched Articles:</b>';
+    for (const article of result.enriched.slice(0, 5)) {
+      const improvement = article.afterScore - article.beforeScore;
+      const arrow = improvement > 0 ? '↑' : improvement < 0 ? '↓' : '→';
+      message += `\n• ${article.slug} (${article.beforeScore}% ${arrow} ${article.afterScore}%)`;
+    }
+    if (result.enriched.length > 5) {
+      message += `\n  ... and ${result.enriched.length - 5} more`;
+    }
+  }
+
   // Add rejected articles warning
   if (result.rejected.length > 0) {
     message += '\n\n<b>⚠️ Rejected:</b>';
