@@ -473,6 +473,57 @@ async function runPipeline(): Promise<PipelineResult> {
       }
 
       log(`Generated ${result.generated.length} new articles`, 'success');
+
+      // Auto-enrich newly generated articles to boost word count
+      if (result.generated.length > 0 && !skipEnrich) {
+        log('\nSTEP 1b: Auto-enriching new articles...', 'info');
+
+        for (const article of result.generated) {
+          try {
+            log(`Auto-enriching: ${article.slug}`, 'info');
+
+            // Find the file path for this article
+            const filePath = path.join(process.cwd(), 'src/pages', article.category, `${article.slug}.astro`);
+
+            if (fs.existsSync(filePath)) {
+              // Create a minimal score object for enrichArticle
+              const tempScore: QAScore = {
+                slug: article.slug,
+                filePath,
+                category: article.category,
+                totalScore: 70, // Placeholder - will be properly scored in Step 2
+                status: 'review' as const,
+                issues: [],
+                metrics: {
+                  wordCount: 0,
+                  readTimeMinutes: 0,
+                  hasImage: false,
+                  h2Count: 0,
+                  hasQuickAnswer: false,
+                  hasExpertTips: false,
+                  hasFAQ: false,
+                  hasAuthorBio: false,
+                  wineCount: 0,
+                  hasMetaDescription: false,
+                  hasCanonicalUrl: false,
+                  hasSchema: false,
+                  internalLinkCount: 0,
+                },
+              };
+
+              await enrichArticle(tempScore, result);
+
+              // Rate limit between enrichments
+              debug('Waiting 5s before next enrichment...');
+              await new Promise(r => setTimeout(r, 5000));
+            }
+          } catch (err: any) {
+            log(`Failed to auto-enrich ${article.slug}: ${err.message}`, 'error');
+          }
+        }
+
+        log(`Auto-enriched ${result.generated.length} new articles`, 'success');
+      }
     }
   } else {
     log('STEP 1: Skipping generation', 'info');
