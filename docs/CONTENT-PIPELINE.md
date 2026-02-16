@@ -179,6 +179,12 @@ const terms = extractWineTerms("best pinot noir under $30");
 const wines = await getWinesForKeyword(keyword, 5);
 ```
 
+**Matching/Validation Notes (2026-02 updates):**
+- `wineExistsInCatalog()` now checks a cached normalized catalog-name index first for exact/near-exact display-name matches.
+- Fallback search avoids unsafe PostgREST `.or(...)` query construction and uses safe per-field `ilike` lookups.
+- Validation scripts scope extraction to recommendation sections only (`Our Top Picks`, `More Excellent Options`, and known legacy aliases).
+- Unsupported wine types do not fall back to random recommendations.
+
 ### No Matching Wines?
 
 When the catalog has no matching wines:
@@ -188,6 +194,7 @@ When the catalog has no matching wines:
 | Generation | Skip wine section, create educational article |
 | Enrichment | Skip wine recommendations, add other content |
 | Validation | Score 100% (no wines to validate) |
+| Remediation/Refresh | Removes stale legacy recommendation blocks if they exist |
 
 ## Telegram Notifications
 

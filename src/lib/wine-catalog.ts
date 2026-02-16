@@ -5,6 +5,7 @@ import type { SupabaseClient } from '@supabase/supabase-js';
 // Connects to external Supabase project containing real wine data
 
 let wineCatalogClient: SupabaseClient | null = null;
+let catalogNameIndexPromise: Promise<CatalogNameIndex> | null = null;
 
 /**
  * Get wine catalog environment variables
@@ -63,6 +64,10 @@ export interface WineRecommendation {
   notes: string;
 }
 
+interface CatalogNameIndex {
+  exactNames: Set<string>;
+}
+
 // ---------------------------------------------------------------------------
 // Wine Fetching Functions
 // ---------------------------------------------------------------------------
@@ -79,6 +84,8 @@ function getVarietiesForWineType(wineType: string): string[] {
   if (lowerType === 'white') return whiteVarieties.slice(0, 5);
   if (lowerType === 'rosé' || lowerType === 'rose') return roseVarieties;
   if (lowerType === 'sparkling') return sparklingVarieties.slice(0, 3);
+  if (lowerType === 'orange') return ['orange', 'skin contact', 'pinot grigio', 'ribolla', 'malvasia'];
+  if (lowerType === 'dessert') return ['sauternes', 'tokaji', 'ice wine', 'late harvest', 'port'];
   return [];
 }
 
@@ -111,8 +118,8 @@ export async function getWinesByType(
   const varietiesToSearch = getVarietiesForWineType(wineType);
 
   if (varietiesToSearch.length === 0) {
-    // Fallback to random wines
-    return getRandomWines(limit);
+    // Do not inject random wines for unknown wine types.
+    return [];
   }
 
   // Build OR query for varieties
@@ -209,19 +216,46 @@ export async function searchWines(
 
 async function fallbackSearch(query: string, limit: number): Promise<Wine[]> {
   const client = getWineCatalogClient();
+  const cleaned = query
+    .replace(/["'(),]/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
 
-  const { data, error } = await client
-    .from('wine_catalog')
-    .select('*')
-    .or(`producer.ilike.%${query}%,wine_name.ilike.%${query}%,variety.ilike.%${query}%,region.ilike.%${query}%`)
-    .limit(limit);
-
-  if (error) {
-    console.error('Error in fallback search:', error);
+  if (!cleaned) {
     return [];
   }
 
-  return data || [];
+  const pattern = `%${cleaned}%`;
+  const fields: Array<'producer' | 'wine_name' | 'variety' | 'region'> = [
+    'producer',
+    'wine_name',
+    'variety',
+    'region',
+  ];
+
+  const byId = new Map<string, Wine>();
+
+  for (const field of fields) {
+    const { data, error } = await client
+      .from('wine_catalog')
+      .select('*')
+      .ilike(field, pattern)
+      .limit(limit);
+
+    if (error) {
+      console.error(`Error in fallback search for ${field}:`, error);
+      continue;
+    }
+
+    for (const wine of data || []) {
+      byId.set(wine.id, wine);
+      if (byId.size >= limit) break;
+    }
+
+    if (byId.size >= limit) break;
+  }
+
+  return Array.from(byId.values()).slice(0, limit);
 }
 
 /**
@@ -298,6 +332,10 @@ function extractWineTerms(keyword: string): {
     explicitWineType = true;
   }
   if (lowerKeyword.includes('sparkling') || lowerKeyword.includes('champagne')) {
+    wineTypes.push('sparkling');
+    explicitWineType = true;
+  }
+  if (lowerKeyword.includes('prosecco') || lowerKeyword.includes('cava') || lowerKeyword.includes('crémant') || lowerKeyword.includes('cremant')) {
     wineTypes.push('sparkling');
     explicitWineType = true;
   }
@@ -604,9 +642,7 @@ export async function getWinesForKeyword(
  * Transform a Wine record into a WineRecommendation with generated tasting notes
  */
 function transformToRecommendation(wine: Wine, keyword: string): WineRecommendation {
-  const fullName = wine.vintage
-    ? `${wine.vintage} ${wine.producer} ${wine.wine_name}`
-    : `${wine.producer} ${wine.wine_name}`;
+  const fullName = buildDisplayWineName(wine);
 
   const region = wine.subregion
     ? `${wine.subregion}, ${wine.region || 'Unknown Region'}`
@@ -627,6 +663,94 @@ function transformToRecommendation(wine: Wine, keyword: string): WineRecommendat
     wine_type: wineType,
     notes,
   };
+}
+
+function normalizeText(value: string): string {
+  return value
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .toLowerCase()
+    .replace(/[^a-z0-9\s]/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+function buildDisplayWineNameFromParts(
+  producerRaw: string | null | undefined,
+  wineNameRaw: string | null | undefined,
+  vintage: number | null | undefined
+): string {
+  const producer = producerRaw?.trim() || '';
+  const wineName = wineNameRaw?.trim() || '';
+  const producerNorm = normalizeText(producer);
+  const wineNameNorm = normalizeText(wineName);
+
+  // Avoid duplicated producer names in final display (e.g., "Abeja Abeja Cabernet").
+  const producerTokens = producerNorm.split(' ').filter(Boolean);
+  const producerStem = producerTokens.slice(0, Math.min(2, producerTokens.length)).join(' ');
+  const includesProducer = producerNorm.length > 0 && (
+    wineNameNorm.includes(producerNorm) ||
+    (producerStem.length > 0 && wineNameNorm.includes(producerStem))
+  );
+
+  const base = includesProducer ? wineName : `${producer} ${wineName}`.trim();
+  return vintage ? `${vintage} ${base}`.trim() : base;
+}
+
+function buildDisplayWineName(wine: Wine): string {
+  return buildDisplayWineNameFromParts(wine.producer, wine.wine_name, wine.vintage);
+}
+
+async function buildCatalogNameIndex(): Promise<CatalogNameIndex> {
+  const client = getWineCatalogClient();
+  const exactNames = new Set<string>();
+  const batchSize = 1000;
+  let from = 0;
+
+  while (true) {
+    const { data, error } = await client
+      .from('wine_catalog')
+      .select('producer, wine_name, vintage')
+      .range(from, from + batchSize - 1);
+
+    if (error) {
+      console.error('Error building catalog name index:', error);
+      break;
+    }
+
+    if (!data || data.length === 0) {
+      break;
+    }
+
+    for (const row of data as Array<{ producer: string; wine_name: string; vintage: number | null }>) {
+      const display = buildDisplayWineNameFromParts(row.producer, row.wine_name, row.vintage);
+      const producerAndWine = `${row.producer || ''} ${row.wine_name || ''}`.trim();
+      const wineOnly = `${row.wine_name || ''}`.trim();
+
+      const normalizedDisplay = normalizeText(display);
+      const normalizedProducerAndWine = normalizeText(producerAndWine);
+      const normalizedWineOnly = normalizeText(wineOnly);
+
+      if (normalizedDisplay) exactNames.add(normalizedDisplay);
+      if (normalizedProducerAndWine) exactNames.add(normalizedProducerAndWine);
+      if (normalizedWineOnly) exactNames.add(normalizedWineOnly);
+    }
+
+    if (data.length < batchSize) {
+      break;
+    }
+
+    from += batchSize;
+  }
+
+  return { exactNames };
+}
+
+async function getCatalogNameIndex(): Promise<CatalogNameIndex> {
+  if (!catalogNameIndexPromise) {
+    catalogNameIndexPromise = buildCatalogNameIndex();
+  }
+  return catalogNameIndexPromise;
 }
 
 /**
@@ -772,19 +896,58 @@ export async function getAdditionalWinesForArticle(
  * @returns true if wine exists in catalog, false otherwise
  */
 export async function wineExistsInCatalog(wineName: string): Promise<boolean> {
-  const results = await searchWines(wineName, 1);
-  if (results.length === 0) {
-    return false;
+  const normalized = normalizeText(wineName);
+  const withoutVintage = normalized.replace(/^\d{4}\s+/, '').trim();
+  const nameIndex = await getCatalogNameIndex();
+  if (normalized && nameIndex.exactNames.has(normalized)) {
+    return true;
+  }
+  if (withoutVintage && nameIndex.exactNames.has(withoutVintage)) {
+    return true;
   }
 
-  // Check if the result is a close match
-  const resultName = `${results[0].producer} ${results[0].wine_name}`.toLowerCase();
-  const searchName = wineName.toLowerCase();
+  const candidates = Array.from(new Set([wineName, withoutVintage].filter(Boolean)));
 
-  // Fuzzy match - at least the producer or wine name should match
-  return resultName.includes(searchName.split(' ')[0]) ||
-         searchName.includes(results[0].producer.toLowerCase()) ||
-         searchName.includes(results[0].wine_name.toLowerCase());
+  const stopwords = new Set([
+    'wine', 'wines', 'winery', 'vineyards', 'vineyard', 'estate', 'cellars', 'cellar',
+    'domaine', 'chateau', 'de', 'du', 'la', 'le', 'les', 'the', 'and', 'co',
+  ]);
+
+  function tokenize(value: string): string[] {
+    return normalizeText(value)
+      .split(' ')
+      .filter(t => t.length > 2 && !stopwords.has(t));
+  }
+
+  const queryTokens = tokenize(withoutVintage || wineName);
+  if (queryTokens.length === 0) return false;
+
+  for (const candidate of candidates) {
+    const results = await searchWines(candidate, 8);
+    if (results.length === 0) continue;
+
+    for (const result of results) {
+      const resultCombined = `${result.producer} ${result.wine_name}`;
+      const resultTokens = tokenize(resultCombined);
+      if (resultTokens.length === 0) continue;
+
+      const overlap = queryTokens.filter(t => resultTokens.includes(t)).length;
+      const overlapRatio = overlap / Math.max(1, queryTokens.length);
+
+      // Accept strong lexical overlap; tuned to handle long wine names with vintages.
+      if (overlap >= 2 && overlapRatio >= 0.45) {
+        return true;
+      }
+
+      // Producer-only fallback for short names (e.g., "Opus One")
+      const producerToken = tokenize(result.producer)[0];
+      if (producerToken && queryTokens.includes(producerToken) && overlap >= 1 && queryTokens.length <= 3) {
+        return true;
+      }
+    }
+  }
+
+  return false;
 }
 
 /**

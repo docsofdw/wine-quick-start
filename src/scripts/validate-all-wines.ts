@@ -70,7 +70,7 @@ function isValidWineName(name: string): boolean {
   if (questionStarts.some(q => lowerName.startsWith(q))) return false;
 
   // Contains words that suggest it's not a wine name
-  const invalidPhrases = ['how to', 'best way', 'good for', 'pair with', 'serve with', 'try first', 'how long'];
+  const invalidPhrases = ['how to', 'best way', 'good for', 'pair with', 'serve with', 'try first', 'how long', 'about the author', 'related articles', 'continue reading'];
   if (invalidPhrases.some(phrase => lowerName.includes(phrase))) return false;
 
   return true;
@@ -80,12 +80,17 @@ function isValidWineName(name: string): boolean {
  * Extract wine names from article content
  */
 function extractWineNames(content: string): string[] {
+  const recommendationSections = collectRecommendationSections(content);
+  const searchSpace = recommendationSections.length > 0
+    ? recommendationSections.join('\n')
+    : content;
+
   const wineNames: string[] = [];
 
   // Pattern 1: <h3>N. Wine Name</h3>
   const h3Pattern = /<h3[^>]*>[\d]+\.\s*([^<]+)<\/h3>/g;
   let match;
-  while ((match = h3Pattern.exec(content)) !== null) {
+  while ((match = h3Pattern.exec(searchSpace)) !== null) {
     const name = match[1].trim();
     if (isValidWineName(name)) {
       wineNames.push(name);
@@ -94,7 +99,7 @@ function extractWineNames(content: string): string[] {
 
   // Pattern 2: Wine cards with class="text-lg font-semibold"
   const cardPattern = /<h3[^>]*class="[^"]*text-lg font-semibold[^"]*"[^>]*>([^<]+)<\/h3>/g;
-  while ((match = cardPattern.exec(content)) !== null) {
+  while ((match = cardPattern.exec(searchSpace)) !== null) {
     const name = match[1].trim();
     if (!wineNames.includes(name) && !name.match(/^\d+\./) && isValidWineName(name)) {
       wineNames.push(name);
@@ -104,13 +109,39 @@ function extractWineNames(content: string): string[] {
   return wineNames;
 }
 
+function collectRecommendationSections(content: string): string[] {
+  const sections: string[] = [];
+  const headings = [
+    'Our Top Picks',
+    'Our Top Rosé Picks for Chicken',
+    'More Excellent Options',
+    'More Excellent Rosé Options',
+    'Expert Wine Recommendations',
+    'Expert Recommendations',
+    'Top Picks',
+  ];
+
+  for (const heading of headings) {
+    const pattern = new RegExp(
+      `<h2>${heading}<\\/h2>[\\s\\S]*?(?=<h2>|<!-- Author Bio Footer -->|<\\/ArticleLayout>)`,
+      'g'
+    );
+    const matches = content.match(pattern);
+    if (matches && matches.length > 0) {
+      sections.push(...matches);
+    }
+  }
+
+  return sections;
+}
+
 /**
  * Remove wine recommendation sections from article
  */
 function removeWineSection(content: string): string {
   // Remove "More Excellent Options" section
   let updated = content.replace(
-    /<h2>More Excellent Options<\/h2>\s*<div class="grid[^"]*"[^>]*>[\s\S]*?<\/div>\s*(?=<h2|<!--)/g,
+    /<h2>More Excellent[^<]*Options<\/h2>\s*<div class="grid[^"]*"[^>]*>[\s\S]*?<\/div>\s*(?=<h2|<!--)/g,
     ''
   );
 

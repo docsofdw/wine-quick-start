@@ -241,12 +241,19 @@ Keyword: "best pinot noir"
 └─────────────────┘
 ```
 
+**Implementation details (current):**
+- Catalog validation uses `wineExistsInCatalog()` with a cached normalized name index for exact display-name matching before fallback logic.
+- Fallback search uses safe per-field `ilike` queries (avoids brittle `.or(...)` parser edge cases with quotes/commas).
+- Unsupported wine types do not inject random recommendations.
+- Validation extracts wines from recommendation sections only, including legacy heading aliases.
+
 ### No Matching Wines?
 
 If no wines match the keyword topic:
 - **Generation**: Skip wine recommendation section (article still created)
 - **Enrichment**: Skip wine enrichment (other content still added)
 - **Validation**: Score 100% (no wines = nothing to validate)
+- **Refresh/Remediation**: Removes stale recommendation sections when no catalog-backed wines exist
 
 ### Key Functions
 

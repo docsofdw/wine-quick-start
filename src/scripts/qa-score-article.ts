@@ -665,7 +665,7 @@ function isValidWineName(name: string): boolean {
   if (questionStarts.some(q => lowerName.startsWith(q))) return false;
 
   // Contains words that suggest it's not a wine name
-  const invalidPhrases = ['how to', 'best way', 'good for', 'pair with', 'serve with', 'try first', 'how long'];
+  const invalidPhrases = ['how to', 'best way', 'good for', 'pair with', 'serve with', 'try first', 'how long', 'about the author', 'related articles', 'continue reading'];
   if (invalidPhrases.some(phrase => lowerName.includes(phrase))) return false;
 
   return true;

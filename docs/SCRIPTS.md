@@ -145,6 +145,75 @@ npx tsx src/scripts/enrich-articles.ts --skip-wine-section
 
 ---
 
+### remediate-legacy-articles.ts
+Normalizes formatting issues in existing articles (duplicate sections, malformed utility classes, markdown artifacts).
+
+```bash
+# Preview changes only
+npm run articles:remediate:dry
+
+# Apply remediation
+npm run articles:remediate
+
+# Apply for one category
+npx tsx src/scripts/remediate-legacy-articles.ts --write --category=learn
+```
+
+**Fixes:**
+- Deduplicates repeated `More Excellent Options` sections
+- Fixes malformed classes (e.g., `font-semibel` -> `font-semibold`)
+- Removes broken markdown heading paragraphs (`<p>## ...</p>`)
+- Removes empty `Continue Reading` blocks
+- Converts markdown bold markers (`**text**`) to `<strong>text</strong>`
+
+---
+
+### refresh-article-wines.ts
+Replaces existing wine recommendation sections with catalog-backed wine data.
+
+```bash
+# Preview for learn category
+npm run articles:wines:refresh:dry -- --category=learn
+
+# Apply for learn category
+npm run articles:wines:refresh -- --category=learn
+
+# Apply one article
+npx tsx src/scripts/refresh-article-wines.ts --write --slug=barolo-wine
+```
+
+**Behavior:**
+- Refreshes `Our Top Picks` with 3 catalog-matched wines
+- Rebuilds `More Excellent Options` from additional catalog matches
+- Removes old duplicated `More Excellent Options` blocks before inserting one canonical section
+- Supports legacy heading aliases and normalizes them to `Our Top Picks` / `More Excellent Options`
+  - Example aliases: `Expert Recommendations`, `Expert Wine Recommendations`, `Our Top Rosé Picks for Chicken`
+- If no catalog matches are found for a page, stale recommendation sections are removed to avoid invalid legacy picks
+
+---
+
+### validate-all-wines.ts
+Validates article recommendation wines against the wine catalog.
+
+```bash
+# Validate all categories
+npx tsx src/scripts/validate-all-wines.ts
+
+# Validate one category with JSON output
+npx tsx src/scripts/validate-all-wines.ts --category=wine-pairings --json
+
+# Verbose output
+npx tsx src/scripts/validate-all-wines.ts --category=learn --verbose
+```
+
+**Behavior:**
+- Extracts wine names only from recommendation sections (not full article body headings)
+- Supports legacy recommendation heading aliases used in older content
+- Uses strict catalog validation via `wineExistsInCatalog()` / `validateWinesInCatalog()`
+- `--fix` can remove recommendation sections from flagged files
+
+---
+
 ### seed-keywords.ts
 Seeds curated keywords to database.
 
