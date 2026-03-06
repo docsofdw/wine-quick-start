@@ -121,6 +121,7 @@ async function getKeywordsNeedingArticles(limit: number): Promise<any[]> {
   }
 
   try {
+    const fetchLimit = Math.max(limit * 20, 50);
     const { data: keywords, error } = await supabase
       .from('keyword_opportunities')
       .select('*')
@@ -128,7 +129,7 @@ async function getKeywordsNeedingArticles(limit: number): Promise<any[]> {
       .gte('priority', 7)
       .order('priority', { ascending: false })
       .order('search_volume', { ascending: false })
-      .limit(limit * 2); // Get extras in case some are duplicates
+      .limit(fetchLimit); // Pull a wider candidate pool because many keywords fail wine matching
 
     if (error) throw error;
     return keywords || [];
