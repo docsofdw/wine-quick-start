@@ -76,12 +76,14 @@ jobs:
         run: |
           npx tsx -e "
             import { testWineCatalogConnection } from './src/lib/wine-catalog.js';
-            const result = await testWineCatalogConnection();
-            if (!result.success) {
-              console.error('Wine catalog connection failed:', result.error);
-              process.exit(1);
-            }
-            console.log('Wine catalog healthy:', result.count, 'wines');
+            (async () => {
+              const result = await testWineCatalogConnection();
+              if (!result.success) {
+                console.error('Wine catalog connection failed:', result.error);
+                process.exit(1);
+              }
+              console.log('Wine catalog healthy:', result.count, 'wines');
+            })();
           "
 
       - name: Alert on failure
@@ -205,6 +207,7 @@ jobs:
 
       - name: Create Pull Request
         if: steps.changes.outputs.has_changes == 'true' && github.event.inputs.dry_run != 'true'
+        id: create_pr
         uses: peter-evans/create-pull-request@v6
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
@@ -238,6 +241,13 @@ jobs:
           labels: |
             content
             automated
+
+      - name: Auto-merge Pull Request
+        if: steps.create_pr.outputs.pull-request-number != '' && github.event_name == 'schedule'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh pr merge "${{ steps.create_pr.outputs.pull-request-number }}" --squash --delete-branch
 
   # Weekly digest (runs on Sundays at 10am UTC)
   weekly-digest:

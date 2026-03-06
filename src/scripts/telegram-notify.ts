@@ -339,7 +339,7 @@ ${emoji} <b>Content Pipeline Complete</b> ${status}
 
 <b>New Articles:</b> ${result.summary.newArticles}
 <b>Enriched:</b> ${result.summary.enrichedArticles}
-<b>Ready to Publish:</b> ${result.summary.publishedArticles}
+<b>Publish-Ready:</b> ${result.summary.publishedArticles}
 <b>Avg Score:</b> ${result.summary.avgScore}%
 `.trim();
 
@@ -445,7 +445,7 @@ async function sendWeeklyDigest(): Promise<void> {
 • Buy Guides: ${categoryStats['buy'] || 0} articles
 
 <b>Pipeline Schedule:</b>
-Mon & Thu @ 6am UTC
+Mon & Thu @ 2pm UTC
 
 🔗 <a href="${SITE_URL}">Visit Site</a>
 `.trim();

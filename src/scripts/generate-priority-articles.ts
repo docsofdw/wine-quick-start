@@ -503,7 +503,7 @@ async function generateArticles() {
     const response = await client
       .from('keyword_opportunities')
       .select('*')
-      .eq('status', 'active')
+      .or('status.is.null,status.eq.active')
       .gte('priority', minPriority)
       .order('priority', { ascending: false })
       .order('search_volume', { ascending: false })
@@ -518,7 +518,7 @@ async function generateArticles() {
   }
 
   if (!keywords || keywords.length === 0) {
-    console.log('No active high-priority keywords found');
+    console.log('No eligible high-priority keywords found');
     return;
   }
 

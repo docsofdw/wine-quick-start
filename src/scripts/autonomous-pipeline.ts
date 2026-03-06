@@ -124,7 +124,7 @@ async function getKeywordsNeedingArticles(limit: number): Promise<any[]> {
     const { data: keywords, error } = await supabase
       .from('keyword_opportunities')
       .select('*')
-      .eq('status', 'active')
+      .or('status.is.null,status.eq.active')
       .gte('priority', 7)
       .order('priority', { ascending: false })
       .order('search_volume', { ascending: false })
