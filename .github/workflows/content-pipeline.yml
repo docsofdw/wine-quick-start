@@ -12,6 +12,8 @@ on:
   # Run twice a week: Monday and Thursday at 8am CST (2pm UTC)
   schedule:
     - cron: '0 14 * * 1,4'
+    # Weekly refresh lane on Tuesdays at 14:00 UTC
+    - cron: '0 14 * * 2'
     # Daily catalog health check at 2am UTC
     - cron: '0 2 * * *'
     # Weekly digest on Sundays at 10am UTC
@@ -130,7 +132,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 30
     # Run only on Mon/Thu schedule, or manual dispatch
-    if: (github.event_name == 'workflow_dispatch' && github.event.inputs.run_catalog_health != 'true') || github.event.schedule == '0 14 * * 1,4'
+    if: (github.event_name == 'workflow_dispatch' && github.event.inputs.run_catalog_health != 'true') || github.event.schedule == '0 14 * * 1,4' || github.event.schedule == '0 14 * * 2'
 
     steps:
       - name: Checkout repository
@@ -177,6 +179,10 @@ jobs:
 
           if [ "${{ github.event.inputs.refresh_only }}" == "true" ]; then
             CMD="$CMD --refresh-only --skip-generate"
+          fi
+
+          if [ "${{ github.event_name }}" == "schedule" ] && [ "${{ github.event.schedule }}" == "0 14 * * 2" ]; then
+            CMD="$CMD --refresh-only --skip-generate --refresh-limit=4"
           fi
 
           if [ -n "${{ github.event.inputs.generate_count }}" ]; then

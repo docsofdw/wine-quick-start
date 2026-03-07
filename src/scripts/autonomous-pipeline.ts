@@ -96,6 +96,7 @@ interface PipelineResult {
   rejected: { slug: string; score: number; reason: string }[];
   skipped: { slug: string; reason: string }[];
   flaggedWines: { slug: string; invalidWines: string[] }[];  // NEW: Articles with invalid wines
+  remediatedWines: { slug: string; fixed: boolean; reason?: string }[];
   refreshTargets: { slug: string; category: string; reasons: string[]; priorityScore: number }[];
   errors: string[];
   runRecordId?: number | null;
@@ -114,7 +115,7 @@ interface PipelineArticleOutcomeRecord {
   slug: string;
   keyword: string | null;
   category: string | null;
-  outcome: 'generated' | 'skipped' | 'publish_ready' | 'rejected' | 'enriched' | 'flagged_wines';
+  outcome: 'generated' | 'skipped' | 'publish_ready' | 'rejected' | 'enriched' | 'flagged_wines' | 'wine_remediated';
   reason?: string | null;
   qaScore?: number | null;
   metadata?: Record<string, unknown> | null;
@@ -329,6 +330,19 @@ function buildArticleOutcomeRecords(result: PipelineResult): PipelineArticleOutc
     });
   }
 
+  for (const article of result.remediatedWines) {
+    records.push({
+      slug: article.slug,
+      keyword: null,
+      category: null,
+      outcome: 'wine_remediated',
+      reason: article.reason || null,
+      metadata: {
+        fixed: article.fixed,
+      },
+    });
+  }
+
   return records;
 }
 
@@ -366,6 +380,39 @@ async function insertArticleOutcomeRecords(runRecordId: number | null, result: P
 
     debug(`Failed to insert article outcome records: ${error.message}`);
   }
+}
+
+async function remediateFlaggedWineArticle(
+  slug: string,
+  category: string,
+  result: PipelineResult
+): Promise<boolean> {
+  const code = await runSubprocessWithTimeout(
+    [
+      'tsx',
+      'src/scripts/refresh-article-wines.ts',
+      '--write',
+      `--category=${category}`,
+      `--slug=${slug}`,
+      '--limit=1',
+    ],
+    enrichTimeoutMs,
+    'enrichment',
+    `wine-remediation:${category}/${slug}`,
+    result
+  );
+
+  if (code === 0) {
+    result.remediatedWines.push({ slug, fixed: true });
+    return true;
+  }
+
+  result.remediatedWines.push({
+    slug,
+    fixed: false,
+    reason: code === null ? 'Timed out during remediation' : 'Remediation script failed',
+  });
+  return false;
 }
 
 /**
@@ -681,6 +728,7 @@ async function runPipeline(): Promise<PipelineResult> {
     rejected: [],
     skipped: [],
     flaggedWines: [],
+    remediatedWines: [],
     refreshTargets: [],
     errors: [],
     runRecordId: null,
@@ -959,6 +1007,17 @@ async function runPipeline(): Promise<PipelineResult> {
       priorityScore: candidate.score,
     }));
 
+  if (!isDryRun && doValidateWines && result.flaggedWines.length > 0) {
+    log('\nSTEP 5: Remediating invalid wine recommendation sections...', 'info');
+    for (const flagged of result.flaggedWines) {
+      const score = finalScores.find(entry => entry.slug === flagged.slug);
+      if (!score) continue;
+      log(`Refreshing wine recommendations: ${score.category}/${flagged.slug}`, 'info');
+      await remediateFlaggedWineArticle(flagged.slug, score.category, result);
+      await new Promise(r => setTimeout(r, 2000));
+    }
+  }
+
   // Log results
   if (!isDryRun) {
     logResults(result);
@@ -1021,6 +1080,13 @@ function printSummary(result: PipelineResult) {
       const delta = e.afterScore - e.beforeScore;
       const arrow = delta > 0 ? '↑' : delta < 0 ? '↓' : '→';
       console.log(`   ${e.slug}: ${e.beforeScore}% ${arrow} ${e.afterScore}% (${delta > 0 ? '+' : ''}${delta})`);
+    }
+  }
+
+  if (result.remediatedWines.length > 0) {
+    console.log(`\n🍷 WINE REMEDIATION:`);
+    for (const remediation of result.remediatedWines) {
+      console.log(`   ${remediation.slug}: ${remediation.fixed ? 'recommendation sections refreshed' : remediation.reason || 'not fixed'}`);
     }
   }
 
