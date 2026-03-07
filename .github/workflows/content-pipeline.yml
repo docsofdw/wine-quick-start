@@ -201,11 +201,6 @@ jobs:
             git diff --staged --stat
           fi
 
-      - name: Send Telegram Notification
-        if: steps.changes.outputs.has_changes == 'true' && github.event.inputs.dry_run != 'true'
-        run: |
-          npx tsx src/scripts/telegram-notify.ts --summary
-
       - name: Upload pipeline logs
         if: always()
         uses: actions/upload-artifact@v4
@@ -258,6 +253,20 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           gh pr merge "${{ steps.create_pr.outputs.pull-request-number }}" --squash --delete-branch
+
+      - name: Send Telegram PR Notification
+        if: steps.create_pr.outputs.pull-request-number != '' && github.event_name == 'workflow_dispatch' && github.event.inputs.dry_run != 'true'
+        env:
+          GITHUB_REPOSITORY: ${{ github.repository }}
+        run: |
+          npx tsx src/scripts/telegram-notify.ts --summary --status=pr_created --pr-number=${{ steps.create_pr.outputs.pull-request-number }}
+
+      - name: Send Telegram Merge Notification
+        if: steps.create_pr.outputs.pull-request-number != '' && github.event_name == 'schedule'
+        env:
+          GITHUB_REPOSITORY: ${{ github.repository }}
+        run: |
+          npx tsx src/scripts/telegram-notify.ts --summary --status=merged_to_main --pr-number=${{ steps.create_pr.outputs.pull-request-number }}
 
   # Weekly digest (runs on Sundays at 10am UTC)
   weekly-digest:

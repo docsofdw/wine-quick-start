@@ -25,7 +25,7 @@ import path from 'path';
 config({ path: '.env.local', override: true });
 
 // Import enhanced utilities
-const { getWinesForKeyword } = await import('../lib/wine-catalog.js');
+const { getWinesForKeyword, getRandomWines, getWinesByType, getWinesByRegion } = await import('../lib/wine-catalog.js');
 import { getRandomAuthor, getAuthorSchema } from '../data/authors.js';
 import {
   generateArticleImage,
@@ -158,6 +158,96 @@ function determineCategory(keyword: string): 'learn' | 'wine-pairings' | 'buy' {
   return 'learn';
 }
 
+function inferFallbackWineType(keyword: string): string | null {
+  const lowerKw = keyword.toLowerCase();
+
+  if (lowerKw.includes('sparkling') || lowerKw.includes('champagne') || lowerKw.includes('prosecco') || lowerKw.includes('cava')) return 'sparkling';
+  if (lowerKw.includes('rose') || lowerKw.includes('rosé')) return 'rosé';
+  if (lowerKw.includes('white') || lowerKw.includes('chardonnay') || lowerKw.includes('sauvignon blanc') || lowerKw.includes('riesling') || lowerKw.includes('pinot grigio')) return 'white';
+  if (lowerKw.includes('orange')) return 'orange';
+  if (lowerKw.includes('dessert') || lowerKw.includes('port') || lowerKw.includes('sherry') || lowerKw.includes('sweet')) return 'dessert';
+  if (lowerKw.includes('red') || lowerKw.includes('cabernet') || lowerKw.includes('merlot') || lowerKw.includes('pinot noir') || lowerKw.includes('syrah') || lowerKw.includes('malbec') || lowerKw.includes('zinfandel')) return 'red';
+
+  return null;
+}
+
+function inferFallbackRegion(keyword: string): string | null {
+  const lowerKw = keyword.toLowerCase();
+  const regions = [
+    'napa', 'sonoma', 'burgundy', 'bordeaux', 'champagne', 'piedmont', 'rioja',
+    'tuscany', 'oregon', 'washington', 'california', 'portugal', 'mosel',
+  ];
+
+  return regions.find(region => lowerKw.includes(region)) || null;
+}
+
+function mapCatalogWineToRecommendation(wine: any, keyword: string): any {
+  const displayName = `${wine.vintage ? `${wine.vintage} ` : ''}${wine.producer} ${wine.wine_name}`.trim();
+  const variety = wine.variety || 'Blend';
+  const region = wine.region || wine.subregion || 'Unknown region';
+  const lowerVariety = String(variety).toLowerCase();
+  let wineType = 'red';
+  if (lowerVariety.includes('sparkling') || lowerVariety.includes('champagne') || lowerVariety.includes('prosecco')) wineType = 'sparkling';
+  else if (lowerVariety.includes('rose') || lowerVariety.includes('rosé')) wineType = 'rosé';
+  else if (lowerVariety.includes('chardonnay') || lowerVariety.includes('sauvignon') || lowerVariety.includes('riesling') || lowerVariety.includes('pinot grigio') || lowerVariety.includes('pinot gris')) wineType = 'white';
+
+  return {
+    name: displayName,
+    producer: wine.producer,
+    region,
+    vintage: wine.vintage,
+    variety,
+    wine_type: wineType,
+    notes: `A useful bottle to explore while researching ${keyword}, with regional and varietal cues that help ground the topic in real wines.`,
+  };
+}
+
+async function getFallbackRecommendations(
+  keyword: string,
+  category: 'learn' | 'wine-pairings' | 'buy'
+): Promise<any[]> {
+  if (category === 'buy') {
+    return [];
+  }
+
+  const region = inferFallbackRegion(keyword);
+  if (region) {
+    const regionalWines = await getWinesByRegion(region, 3);
+    if (regionalWines.length > 0) {
+      return regionalWines.map((wine: any) => mapCatalogWineToRecommendation(wine, keyword));
+    }
+  }
+
+  const wineType = inferFallbackWineType(keyword);
+  if (wineType) {
+    const typeWines = await getWinesByType(wineType, 3);
+    if (typeWines.length > 0) {
+      return typeWines.map((wine: any) => mapCatalogWineToRecommendation(wine, keyword));
+    }
+  }
+
+  const randomWines = await getRandomWines(3, wineType || undefined);
+  return randomWines.map((wine: any) => mapCatalogWineToRecommendation(wine, keyword));
+}
+
+function canGenerateWithoutBottlePicks(keyword: string, category: 'learn' | 'wine-pairings' | 'buy'): boolean {
+  if (category !== 'learn') {
+    return false;
+  }
+
+  const lowerKw = keyword.toLowerCase();
+  return lowerKw.includes('vs') ||
+    lowerKw.includes('beginner') ||
+    lowerKw.includes('how to') ||
+    lowerKw.includes('how ') ||
+    lowerKw.includes('what is') ||
+    lowerKw.includes('guide') ||
+    lowerKw.includes('serve') ||
+    lowerKw.includes('store') ||
+    lowerKw.includes('calories') ||
+    lowerKw.includes('natural wine');
+}
+
 // ============================================================================
 // Content Generation
 // ============================================================================
@@ -259,6 +349,14 @@ function generateWineHTML(wines: any[]): string {
       </div>`).join('\n');
 }
 
+function generateEducationalExplorationHTML(keyword: string): string {
+  return `
+      <div class="space-y-4 text-gray-700">
+        <p>For a topic like <strong>${keyword}</strong>, start with benchmark producers and compare styles side by side. The goal is to understand the core differences in body, acidity, fruit profile, and serving context before chasing specific labels.</p>
+        <p>Use this guide as a framework, then taste across two or three contrasting bottles to calibrate your palate. That will give you faster signal than reading generic tasting notes in isolation.</p>
+      </div>`;
+}
+
 function generateExpertTipsHTML(keyword: string): string {
   const kw = keyword.toLowerCase();
 
@@ -319,7 +417,8 @@ function generateArticleContent(
   author: any,
   slug: string,
   category: 'learn' | 'wine-pairings' | 'buy',
-  imageData: { success: boolean; altText: string; caption: string }
+  imageData: { success: boolean; altText: string; caption: string },
+  recommendationMode: 'direct' | 'fallback' | 'educational'
 ): string {
   const intent = determineIntent(keyword);
   const title = generateSEOTitle(keyword, category);
@@ -400,6 +499,14 @@ function generateArticleContent(
   }
 
   const keywordParts = keyword.split(' ').filter(w => w.length > 2);
+  const picksHeading = recommendationMode === 'direct'
+    ? 'Our Top Picks'
+    : recommendationMode === 'fallback'
+      ? 'Real Bottles To Explore'
+      : 'How To Explore This Topic';
+  const picksContent = wines.length > 0
+    ? generateWineHTML(wines)
+    : generateEducationalExplorationHTML(keyword);
 
   const content = `---
 ${imports.join('\n')}
@@ -438,8 +545,8 @@ const frontmatter = {
   <h2>Understanding ${keyword.split(' ').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ')}</h2>
   <p>${generateIntro(keyword, intent)}</p>
 
-  <h2>Our Top Picks</h2>
-  ${generateWineHTML(wines)}
+  <h2>${picksHeading}</h2>
+  ${picksContent}
 
   <h2>Expert Tips</h2>
   ${generateExpertTipsHTML(keyword)}
@@ -553,12 +660,14 @@ async function generateArticles() {
   }
 
   // Generate articles
-  const toGenerate = keywordsNeedingArticles.slice(0, limit);
+  const toGenerate = keywordsNeedingArticles;
   let generated = 0;
   let failed = 0;
   let skipped = 0;
 
   for (let i = 0; i < toGenerate.length; i++) {
+    if (generated >= limit) break;
+
     const kw = toGenerate[i];
 
     console.log(`\n🔄 [${i + 1}/${toGenerate.length}] "${kw.keyword}"`);
@@ -570,15 +679,25 @@ async function generateArticles() {
       const filePath = path.join(process.cwd(), 'src/pages', category, `${slug}.astro`);
 
       // Check for matching wines
-      const wines = await getWinesForKeyword(kw.keyword, 3);
+      let wines = await getWinesForKeyword(kw.keyword, 3);
+      let recommendationMode: 'direct' | 'fallback' | 'educational' = 'direct';
 
       if (wines.length === 0) {
-        console.log(`   ⏭️  Skipping - no matching wines in catalog`);
-        skipped++;
-        continue;
+        wines = await getFallbackRecommendations(kw.keyword, category);
+        if (wines.length > 0) {
+          recommendationMode = 'fallback';
+          console.log(`   🍷 Using ${wines.length} fallback catalog wines for broader topic coverage`);
+        } else if (canGenerateWithoutBottlePicks(kw.keyword, category)) {
+          recommendationMode = 'educational';
+          console.log(`   📝 No direct catalog matches - proceeding with educational guide format`);
+        } else {
+          console.log(`   ⏭️  Skipping - no matching wines in catalog`);
+          skipped++;
+          continue;
+        }
+      } else {
+        console.log(`   🍷 Found ${wines.length} wine recommendations`);
       }
-
-      console.log(`   🍷 Found ${wines.length} wine recommendations`);
 
       if (isDryRun) {
         console.log(`   📋 Would create: ${category}/${slug}.astro`);
@@ -608,7 +727,8 @@ async function generateArticles() {
         author,
         slug,
         category,
-        imageData
+        imageData,
+        recommendationMode
       );
 
       // Write file

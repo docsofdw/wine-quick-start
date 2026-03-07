@@ -373,7 +373,7 @@ async function sendNotificationSummary(result: PipelineResult): Promise<void> {
         fields: [
           { type: 'mrkdwn', text: `*New Articles:*\n${summary.newArticles}` },
           { type: 'mrkdwn', text: `*Enriched:*\n${summary.enrichedArticles}` },
-          { type: 'mrkdwn', text: `*Published:*\n${summary.publishedArticles}` },
+          { type: 'mrkdwn', text: `*Publish-Ready:*\n${summary.publishedArticles}` },
           { type: 'mrkdwn', text: `*Rejected:*\n${summary.rejectedArticles}` },
         ],
       },
@@ -477,15 +477,10 @@ async function runPipeline(): Promise<PipelineResult> {
             debug(`Checking wine catalog for "${keyword.keyword}"...`);
             const wines = await getWinesForKeyword(keyword.keyword, 3);
             if (wines.length === 0) {
-              const slug = keyword.keyword
-                .toLowerCase()
-                .replace(/[^a-z0-9]+/g, '-')
-                .replace(/^-|-$/g, '');
-              result.skipped.push({ slug, reason: 'No matching wines in catalog' });
-              log(`Skipping "${keyword.keyword}" - no matching wines in catalog`, 'warn');
-              continue;
+              debug(`No direct wine matches for "${keyword.keyword}" - generator fallback logic will decide whether to proceed`);
+            } else {
+              debug(`Found ${wines.length} matching wines for "${keyword.keyword}"`);
             }
-            debug(`Found ${wines.length} matching wines for "${keyword.keyword}"`);
           } catch (err: any) {
             debug(`Wine check failed: ${err.message} - proceeding anyway`);
           }
@@ -714,12 +709,12 @@ function printSummary(result: PipelineResult) {
   console.log(`\n📊 Results:`);
   console.log(`   New articles generated: ${result.summary.newArticles}`);
   console.log(`   Articles enriched:      ${result.summary.enrichedArticles}`);
-  console.log(`   Ready to publish:       ${result.summary.publishedArticles}`);
+  console.log(`   Publish-ready:          ${result.summary.publishedArticles}`);
   console.log(`   Rejected (low quality): ${result.summary.rejectedArticles}`);
   console.log(`   Average quality score:  ${result.summary.avgScore}%`);
 
   if (result.published.length > 0) {
-    console.log(`\n✅ PUBLISHED (${AUTO_PUBLISH_THRESHOLD}%+ score):`);
+    console.log(`\n✅ PUBLISH-READY (${AUTO_PUBLISH_THRESHOLD}%+ score):`);
     for (const p of result.published.slice(0, 10)) {
       console.log(`   ${p.slug} (${p.score}%)`);
     }

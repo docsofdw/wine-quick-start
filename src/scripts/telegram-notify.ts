@@ -29,6 +29,9 @@ const articleSlug = args.find(a => a.startsWith('--article='))?.split('=')[1];
 const sendSummary = args.includes('--summary');
 const sendDigest = args.includes('--digest');
 const pipelineLogFile = args.find(a => a.startsWith('--log='))?.split('=')[1];
+const pipelineStatus = args.find(a => a.startsWith('--status='))?.split('=')[1] || 'publish_ready';
+const prNumber = args.find(a => a.startsWith('--pr-number='))?.split('=')[1];
+const githubRepository = process.env.GITHUB_REPOSITORY;
 
 interface ArticleInfo {
   slug: string;
@@ -247,13 +250,21 @@ async function notifyArticle(slug: string, score?: number): Promise<void> {
   const finalScore = score ?? await getArticleScore(slug);
 
   const articleUrl = `${SITE_URL}/${article.category}/${article.slug}`;
+  const prUrl = prNumber && githubRepository ? `https://github.com/${githubRepository}/pull/${prNumber}` : null;
   const primaryKeyword = article.keywords[0] || slug.replace(/-/g, ' ');
   const scoreStr = finalScore ? `${finalScore}%` : 'N/A';
   const wineStr = article.wineCount > 0 ? `${article.wineCount} wines` : 'No wines';
+  const isLive = pipelineStatus === 'merged_to_main';
+  const headline = isLive ? 'New Article Published' : 'New Article Ready In PR';
+  const destinationLine = isLive
+    ? `🔗 ${articleUrl}`
+    : prUrl
+      ? `🔀 ${prUrl}`
+      : '🔀 Waiting for merge to main';
 
   // Build caption
   const caption = `
-🍷 <b>New Article Published</b>
+🍷 <b>${headline}</b>
 
 <b>${escapeHtml(article.title)}</b>
 
@@ -263,18 +274,24 @@ async function notifyArticle(slug: string, score?: number): Promise<void> {
 📖 <b>Words:</b> ${article.wordCount.toLocaleString()}
 🍾 <b>Wines:</b> ${wineStr}
 
-🔗 ${articleUrl}
+${destinationLine}
 `.trim();
 
-  const keyboard = [
-    [
-      { text: '✅ Keep', callback_data: `keep:${slug}` },
-      { text: '🗑 Delete', callback_data: `delete:${slug}` },
-    ],
-    [
-      { text: '🔗 View Article', url: articleUrl },
-    ],
-  ];
+  const keyboard = isLive
+    ? [
+        [
+          { text: '✅ Keep', callback_data: `keep:${slug}` },
+          { text: '🗑 Delete', callback_data: `delete:${slug}` },
+        ],
+        [
+          { text: '🔗 View Article', url: articleUrl },
+        ],
+      ]
+    : [
+        [
+          { text: '🔀 View PR', url: prUrl || `https://github.com/${githubRepository}` },
+        ],
+      ];
 
   let sent = false;
 
@@ -333,10 +350,19 @@ async function notifyPipelineSummary(logFile?: string): Promise<void> {
 
   const emoji = result.summary.newArticles > 0 ? '🍷' : '📊';
   const status = result.rejected.length > 0 ? '⚠️' : '✅';
+  const statusLine = pipelineStatus === 'merged_to_main'
+    ? 'Merged to main'
+    : pipelineStatus === 'pr_created'
+      ? `PR #${prNumber || '?'} created`
+      : pipelineStatus === 'no_changes'
+        ? 'No content changes'
+        : 'Publish-ready results';
+  const prUrl = prNumber && githubRepository ? `https://github.com/${githubRepository}/pull/${prNumber}` : null;
 
   let message = `
 ${emoji} <b>Content Pipeline Complete</b> ${status}
 
+<b>Status:</b> ${statusLine}
 <b>New Articles:</b> ${result.summary.newArticles}
 <b>Enriched:</b> ${result.summary.enrichedArticles}
 <b>Publish-Ready:</b> ${result.summary.publishedArticles}
@@ -376,17 +402,24 @@ ${emoji} <b>Content Pipeline Complete</b> ${status}
     }
   }
 
-  const keyboard = [
-    [
-      { text: '📋 View All Articles', url: `${SITE_URL}/learn/` },
-    ],
-  ];
+  const keyboard = prUrl
+    ? [
+        [
+          { text: '🔀 View PR', url: prUrl },
+          { text: '📋 View Articles', url: `${SITE_URL}/learn/` },
+        ],
+      ]
+    : [
+        [
+          { text: '📋 View All Articles', url: `${SITE_URL}/learn/` },
+        ],
+      ];
 
   const sent = await sendTelegramMessage(message, keyboard);
   console.log(sent ? '✅ Pipeline summary sent' : '❌ Failed to send summary');
 
   // Send individual notifications for new articles
-  if (result.generated.length > 0) {
+  if (result.generated.length > 0 && pipelineStatus === 'merged_to_main') {
     console.log('\nSending individual article notifications...');
     for (const article of result.generated) {
       const published = result.published.find(p => p.slug === article.slug);

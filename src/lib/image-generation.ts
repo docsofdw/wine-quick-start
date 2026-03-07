@@ -9,6 +9,27 @@ import path from 'path';
 import https from 'https';
 import http from 'http';
 
+function sleep(ms: number): Promise<void> {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+function parseRetryDelayMs(error: unknown, attempt: number): number {
+  const message = error instanceof Error ? error.message : String(error);
+  const retryAfterMatch = message.match(/"retry_after":\s*([0-9]+)/i) || message.match(/retry[_ -]?after[^0-9]*([0-9]+)/i);
+  const resetMatch = message.match(/resets in ~([0-9]+)s/i);
+  const seconds = retryAfterMatch?.[1] || resetMatch?.[1];
+  if (seconds) {
+    return (parseInt(seconds, 10) + 1) * 1000;
+  }
+
+  return Math.min(30000, attempt * 5000);
+}
+
+function isRetryableReplicateError(error: unknown): boolean {
+  const message = error instanceof Error ? error.message : String(error);
+  return /\b429\b/.test(message) || /\b5\d{2}\b/.test(message) || /throttl/i.test(message) || /timeout/i.test(message);
+}
+
 // Wine color detection patterns
 const WINE_COLORS = {
   red: [
@@ -310,27 +331,41 @@ export async function generateArticleImage(
   try {
     const replicate = new Replicate({ auth: replicateToken });
     const prompt = generateImagePrompt(keyword);
+    const maxAttempts = 4;
 
     console.log(`   📝 Prompt: ${prompt.substring(0, 100)}...`);
 
-    const output = await replicate.run(
-      "black-forest-labs/flux-schnell",
-      {
-        input: {
-          prompt,
-          num_outputs: 1,
-          aspect_ratio: "16:9",
-          output_format: "png",
-          output_quality: 90,
+    for (let attempt = 1; attempt <= maxAttempts; attempt++) {
+      try {
+        const output = await replicate.run(
+          "black-forest-labs/flux-schnell",
+          {
+            input: {
+              prompt,
+              num_outputs: 1,
+              aspect_ratio: "16:9",
+              output_format: "png",
+              output_quality: 90,
+            }
+          }
+        );
+
+        const imageUrl = String((output as any)[0]);
+        await downloadImage(imageUrl, filepath);
+        console.log(`   ✅ Saved ${slug}.png`);
+
+        return { success: true, altText, caption };
+      } catch (error: any) {
+        if (attempt < maxAttempts && isRetryableReplicateError(error)) {
+          const delayMs = parseRetryDelayMs(error, attempt);
+          console.log(`   ⚠️  Image generation throttled (attempt ${attempt}/${maxAttempts}), retrying in ${Math.ceil(delayMs / 1000)}s...`);
+          await sleep(delayMs);
+          continue;
         }
+
+        throw error;
       }
-    );
-
-    const imageUrl = String((output as any)[0]);
-    await downloadImage(imageUrl, filepath);
-    console.log(`   ✅ Saved ${slug}.png`);
-
-    return { success: true, altText, caption };
+    }
 
   } catch (error: any) {
     console.error(`   ❌ Failed to generate image: ${error.message}`);
