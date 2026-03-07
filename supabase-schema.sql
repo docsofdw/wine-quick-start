@@ -116,6 +116,39 @@ BEGIN
   END IF;
 END $$;
 
+-- Content Operation Snapshots Table
+CREATE TABLE IF NOT EXISTS content_operation_snapshots (
+  id BIGSERIAL PRIMARY KEY,
+  run_identifier TEXT NOT NULL,
+  trigger_type TEXT NOT NULL,
+  inventory_total INTEGER DEFAULT 0,
+  inventory_by_category JSONB DEFAULT '{}'::jsonb,
+  underbuilt_clusters JSONB DEFAULT '[]'::jsonb,
+  refresh_backlog JSONB DEFAULT '[]'::jsonb,
+  qa_distribution JSONB DEFAULT '{}'::jsonb,
+  snapshot_json JSONB DEFAULT '{}'::jsonb,
+  created_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+CREATE INDEX IF NOT EXISTS idx_content_operation_snapshots_run_identifier ON content_operation_snapshots(run_identifier);
+CREATE INDEX IF NOT EXISTS idx_content_operation_snapshots_created_at ON content_operation_snapshots(created_at DESC);
+
+ALTER TABLE content_operation_snapshots ENABLE ROW LEVEL SECURITY;
+
+DO $$
+BEGIN
+  IF NOT EXISTS (
+    SELECT 1
+    FROM pg_policies
+    WHERE schemaname = 'public'
+      AND tablename = 'content_operation_snapshots'
+      AND policyname = 'Enable all access for authenticated users'
+  ) THEN
+    CREATE POLICY "Enable all access for authenticated users" ON content_operation_snapshots
+    FOR ALL USING (true);
+  END IF;
+END $$;
+
 -- Newsletter Subscribers Table
 CREATE TABLE IF NOT EXISTS newsletter_subscribers (
   id SERIAL PRIMARY KEY,

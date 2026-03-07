@@ -236,6 +236,40 @@ FOR ALL USING (true);
       console.log('✅ pipeline_article_outcomes table exists');
     }
 
+    // Test content_operation_snapshots table
+    console.log('\n7. Testing content_operation_snapshots table...');
+    const { error: contentSnapshotError } = await supabase
+      .from('content_operation_snapshots')
+      .select('*')
+      .limit(1);
+
+    if (contentSnapshotError) {
+      console.log('❌ content_operation_snapshots table missing:', contentSnapshotError.message);
+      console.log('📝 You need to create this table in Supabase dashboard');
+      console.log('\nSQL to run in Supabase SQL Editor:');
+      console.log(`
+CREATE TABLE content_operation_snapshots (
+  id BIGSERIAL PRIMARY KEY,
+  run_identifier TEXT NOT NULL,
+  trigger_type TEXT NOT NULL,
+  inventory_total INTEGER DEFAULT 0,
+  inventory_by_category JSONB DEFAULT '{}'::jsonb,
+  underbuilt_clusters JSONB DEFAULT '[]'::jsonb,
+  refresh_backlog JSONB DEFAULT '[]'::jsonb,
+  qa_distribution JSONB DEFAULT '{}'::jsonb,
+  snapshot_json JSONB DEFAULT '{}'::jsonb,
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
+ALTER TABLE content_operation_snapshots ENABLE ROW LEVEL SECURITY;
+
+CREATE POLICY "Enable all access for authenticated users" ON content_operation_snapshots
+FOR ALL USING (true);
+      `);
+    } else {
+      console.log('✅ content_operation_snapshots table exists');
+    }
+
     console.log('\n📋 Database setup complete!');
     console.log('\n🔗 Next steps:');
     console.log('1. Go to your Supabase dashboard: https://app.supabase.com/project/nsyubkcfsrsowgefkbii');

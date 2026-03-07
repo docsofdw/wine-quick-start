@@ -224,6 +224,11 @@ jobs:
             git diff --staged --stat
           fi
 
+      - name: Capture Content Operations Snapshot
+        if: always()
+        run: |
+          npx tsx src/scripts/content-operations-report.ts --write-snapshot --persist
+
       - name: Upload pipeline logs
         if: always()
         uses: actions/upload-artifact@v4
