@@ -408,7 +408,7 @@ function scoreSEO(content: string): {
   let score = 100;
 
   // Extract and check meta description
-  const metaMatch = content.match(/description:\s*["']([^"']{1,200})["']/);
+  const metaMatch = content.match(/description:\s*["']([^"']{1,200})["']/) || content.match(/description=["']([^"']{1,200})["']/);
   const metaDescription = metaMatch ? metaMatch[1] : null;
   const hasMetaDesc = metaDescription !== null && metaDescription.length >= 50 && metaDescription.length <= 160;
 
@@ -424,7 +424,7 @@ function scoreSEO(content: string): {
   }
 
   // Check title
-  const hasTitleTag = /title:\s*["'][^"']+["']/.test(content);
+  const hasTitleTag = /title:\s*["'][^"']+["']/.test(content) || /title=["'][^"']+["']/.test(content);
   if (!hasTitleTag) {
     issues.push('Missing title');
     score -= 20;
