@@ -3,6 +3,11 @@ import ArticleLayout from '../../layouts/ArticleLayout.astro';
 import featuredImage from '../../assets/images/articles/best-champagne.png';
 
 const frontmatter = {
+  clusterKey: "champagne",
+  intentClass: "commercial",
+  pageRole: "supporting",
+  canonicalUrl: "https://winesquickstart.com/learn/best-champagne",
+
   title: "Best Champagne - Expert Guide",
   description: "Explore the best champagne wines with our expert guide. Curated recommendations, tasting notes, and insider tips from certified sommeliers to elevate your...",
   pubDate: "2026-01-14",
@@ -79,7 +84,7 @@ const frontmatter = {
 };
 ---
 
-<ArticleLayout title={frontmatter.title} description={frontmatter.description} author={frontmatter.author} readTime={frontmatter.readTime} category="Wine Guide" schema={frontmatter.structured_data} featuredImage={featuredImage}>
+<ArticleLayout canonical={frontmatter.canonicalUrl} categorySlug="learn" title={frontmatter.title} description={frontmatter.description} author={frontmatter.author} readTime={frontmatter.readTime} category="Wine Guide" schema={frontmatter.structured_data} featuredImage={featuredImage}>
   <!-- Author Attribution -->
   <div class="bg-gray-50 p-4 rounded-lg mb-6 flex items-center gap-4">
     <div class="w-12 h-12 rounded-full bg-wine-100 flex items-center justify-center text-wine-700 font-bold">
@@ -276,6 +281,34 @@ const frontmatter = {
 
 <h3>Recognizing Proper Aging vs. Spoilage</h3>
 <p>Well-aged champagne shows golden to amber hues with fine, persistent bubbles. Aromas become more complex but remain fresh. <strong>Warning signs of spoilage</strong> include brown coloration, musty cork odors, flat mousse, or vinegar-like acetic notes. Properly aged champagne maintains its effervescence and develops honeyed, nutty complexity while preserving underlying freshness—the hallmark of truly great champagne.</p>
+
+  <h2>Related Guides</h2>
+  <ul>
+
+  <li>
+    <a href="/learn" class="internal-link">Wine Guides</a>
+    <span class="text-sm text-gray-600"> - Learn the broader context</span>
+  </li>
+
+  <li>
+    <a href="/wine-pairings" class="internal-link">Wine Pairings</a>
+    <span class="text-sm text-gray-600"> - See pairing-focused follow-ups</span>
+  </li>
+
+  <li>
+    <a href="/buy" class="internal-link">Buying Guides</a>
+    <span class="text-sm text-gray-600"> - Move into bottle-level decisions</span>
+  </li>
+
+  <li>
+    <a href="/learn/champagne-wine" class="internal-link">Champagne Wine - Expert Guide</a>
+    <span class="text-sm text-gray-600"> - Same topic cluster</span>
+  </li>
+  </ul>
+
+
+
+
 
 <h2>Frequently Asked Questions</h2>
 <div class="space-y-6">

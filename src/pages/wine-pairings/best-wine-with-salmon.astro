@@ -1,6 +1,14 @@
 ---
 import ArticleLayout from '../../layouts/ArticleLayout.astro';
 import featuredImage from '../../assets/images/articles/best-wine-with-salmon.png';
+const retrofitMetadata = {
+  clusterKey: "salmon",
+  intentClass: "commercial",
+  pageRole: "supporting",
+  keywords: ["best wine with salmon", "best wine", "best wine with salmon pairing", "wine pairing guide", "Best Wine With Salmon"],
+  canonicalUrl: "https://winesquickstart.com/wine-pairings/best-wine-with-salmon",
+};
+
 
 const schema = {
   "@context": "https://schema.org",
@@ -17,7 +25,7 @@ const schema = {
 };
 ---
 
-<ArticleLayout
+<ArticleLayout canonical={retrofitMetadata.canonicalUrl}
   title="Best Wine with Salmon - Expert Pairing Guide"
   description="Discover the perfect wines for salmon with our sommelier guide. From Pinot Noir to Chardonnay, find ideal matches for grilled, baked, and smoked salmon."
   category="Seafood Pairing"
@@ -357,6 +365,34 @@ const schema = {
 
   <li><strong>Choose Stemware That Enhances Food Aromas</strong> - Use a Burgundy bowl glass with its wide opening to concentrate pinot's delicate aromatics, which are crucial for food pairing. The broad surface area allows both wine and food aromas to mingle, creating synergistic flavor combinations. Avoid narrow glasses that trap the wine's subtle nuances needed for successful food matching.</li>
 </ol>
+
+  <h2>Related Guides</h2>
+  <ul>
+
+  <li>
+    <a href="/learn" class="internal-link">Wine Guides</a>
+    <span class="text-sm text-gray-600"> - Learn the broader context</span>
+  </li>
+
+  <li>
+    <a href="/wine-pairings" class="internal-link">Wine Pairings</a>
+    <span class="text-sm text-gray-600"> - See pairing-focused follow-ups</span>
+  </li>
+
+  <li>
+    <a href="/buy" class="internal-link">Buying Guides</a>
+    <span class="text-sm text-gray-600"> - Move into bottle-level decisions</span>
+  </li>
+
+  <li>
+    <a href="/buy/best-cabernet-sauvignon-under-20" class="internal-link">Best Cabernet Sauvignon Under 20 - Expert Guide</a>
+    <span class="text-sm text-gray-600"> - Commercial next step</span>
+  </li>
+  </ul>
+
+
+
+
 
 <h2>Frequently Asked Questions</h2>
 <div class="space-y-6">

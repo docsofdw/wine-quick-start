@@ -3,6 +3,10 @@ import ArticleLayout from '../../layouts/ArticleLayout.astro';
 import featuredImage from '../../assets/images/articles/white-wine-how-to-serve.png';
 
 const frontmatter = {
+  clusterKey: "white-serve",
+  intentClass: "informational",
+  pageRole: "seed",
+
   title: "White Wine How To Serve: Complete Guide from Sommeliers",
   description: "Learn about white wine how to serve: expert tasting notes, food pairings & buying tips from certified sommeliers. Complete guide.",
   pubDate: "2026-03-07",
@@ -112,7 +116,7 @@ const frontmatter = {
 };
 ---
 
-<ArticleLayout title={frontmatter.title} description={frontmatter.description} author={frontmatter.author} readTime={frontmatter.readTime} category="Wine Guide" schema={frontmatter.structured_data} featuredImage={featuredImage} featuredImageAlt={frontmatter.featuredImageAlt}>
+<ArticleLayout canonical={frontmatter.canonicalUrl} categorySlug="learn" title={frontmatter.title} description={frontmatter.description} author={frontmatter.author} readTime={frontmatter.readTime} category="Wine Guide" schema={frontmatter.structured_data} featuredImage={featuredImage} featuredImageAlt={frontmatter.featuredImageAlt}>
   <!-- Author Attribution -->
   <div class="bg-gray-50 p-4 rounded-lg mb-6 flex items-center gap-4">
     <div class="w-12 h-12 rounded-full bg-wine-100 flex items-center justify-center text-wine-700 font-bold">
@@ -309,8 +313,6 @@ const frontmatter = {
   <li><strong>Handle Sediment and Crystals Like a Professional</strong> - Tartrate crystals in white wine are harmless but affect presentation - store bottles upright for 24 hours before service to let crystals settle. For aged whites with actual sediment, decant carefully by candlelight, stopping when sediment reaches the bottle neck. These crystals indicate proper cold stabilization wasn't performed and are more common in natural wines.</li>
 </ol>
 
-
-
   <h2>Aging & Cellaring</h2>
 
 <p>Understanding when to serve white wines requires knowledge of their aging potential and evolution over time. Most white wines are designed for immediate consumption, but premium bottlings can develop extraordinary complexity with proper cellaring.</p>
@@ -334,6 +336,34 @@ const frontmatter = {
 <h3>Recognizing Peak Maturity</h3>
 
 <p>Properly aged white wines show deeper golden hues and complex aromatics. Warning signs include browning (oxidation), flat aromas, or vinegar notes. Premium aged Riesling may develop a distinctive petrol character—a positive trait indicating proper development. Always taste before serving guests, as individual bottles can vary significantly in their aging trajectory.</p>
+
+  <h2>Related Guides</h2>
+  <ul>
+
+  <li>
+    <a href="/learn" class="internal-link">Wine Guides</a>
+    <span class="text-sm text-gray-600"> - Learn the broader context</span>
+  </li>
+
+  <li>
+    <a href="/wine-pairings" class="internal-link">Wine Pairings</a>
+    <span class="text-sm text-gray-600"> - See pairing-focused follow-ups</span>
+  </li>
+
+  <li>
+    <a href="/buy" class="internal-link">Buying Guides</a>
+    <span class="text-sm text-gray-600"> - Move into bottle-level decisions</span>
+  </li>
+
+  <li>
+    <a href="/buy/best-cabernet-sauvignon-under-20" class="internal-link">Best Cabernet Sauvignon Under 20 - Expert Guide</a>
+    <span class="text-sm text-gray-600"> - Commercial next step</span>
+  </li>
+  </ul>
+
+
+
+
 
 <h2>Frequently Asked Questions</h2>
 <div class="space-y-6">

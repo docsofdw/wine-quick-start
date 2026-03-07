@@ -3,6 +3,12 @@ import ArticleLayout from '../../layouts/ArticleLayout.astro';
 import featuredImage from '../../assets/images/articles/prosecco.png';
 
 const frontmatter = {
+  clusterKey: "prosecco",
+  intentClass: "informational",
+  pageRole: "supporting",
+  keywords: ["prosecco", "prosecco pairing", "wine pairing guide", "Prosecco"],
+  canonicalUrl: "https://winesquickstart.com/wine-pairings/prosecco",
+
   title: "Prosecco: How Different Options Stack Up",
   description: "Everything you need to know about prosecco: tasting profiles, food pairings, and top bottle recommendations from certified sommeliers. Find your perfect match.",
   wine_type: "sparkling",
@@ -82,7 +88,7 @@ const frontmatter = {
 };
 ---
 
-<ArticleLayout title={frontmatter.title} description={frontmatter.description} author={frontmatter.author} readTime={frontmatter.readTime} category="Wine Guide" schema={frontmatter.structured_data} featuredImage={featuredImage}>
+<ArticleLayout canonical={frontmatter.canonicalUrl} categorySlug="wine-pairings" title={frontmatter.title} description={frontmatter.description} author={frontmatter.author} readTime={frontmatter.readTime} category="Wine Guide" schema={frontmatter.structured_data} featuredImage={featuredImage}>
   <div slot="quick-answer">
     <p><strong>Quick Answer:</strong> Prosecco is a light, refreshing Italian sparkling wine. Serve chilled as an aperitif or pair with light appetizers, seafood, and fresh salads.</p>
   </div>
@@ -289,7 +295,7 @@ const frontmatter = {
   </div>
 
   <div>
-    <h3 class="text-lg font-semibent text-wine-700 mb-2">Which Prosecco producers offer the best value under $20?</h3>
+    <h3 class="text-lg font-semibold text-wine-700 mb-2">Which Prosecco producers offer the best value under $20?</h3>
     <p class="text-gray-700">Mionetto Prosecco DOC delivers consistent quality with bright citrus notes and fine bubbles for around $12-15. Villa Sandi Il Fresco offers excellent value at $15-18 with its clean minerality and delicate pear flavors from sustainable vineyards. For premium quality under $20, look for Bisol Jeio Prosecco di Valdobbiadene DOCG, which provides the complexity of hillside fruit at an accessible price point.</p>
   </div>
 
@@ -373,6 +379,34 @@ const frontmatter = {
         <p class="text-gray-600 mb-2"><strong>Variety:</strong> Champagne Blend</p>
         <p class="text-gray-700 mt-3">Fine bubbles with notes of brioche, apple, and citrus.</p>
       </div>
+
+  <h2>Related Guides</h2>
+  <ul>
+
+  <li>
+    <a href="/learn" class="internal-link">Wine Guides</a>
+    <span class="text-sm text-gray-600"> - Learn the broader context</span>
+  </li>
+
+  <li>
+    <a href="/wine-pairings" class="internal-link">Wine Pairings</a>
+    <span class="text-sm text-gray-600"> - See pairing-focused follow-ups</span>
+  </li>
+
+  <li>
+    <a href="/buy" class="internal-link">Buying Guides</a>
+    <span class="text-sm text-gray-600"> - Move into bottle-level decisions</span>
+  </li>
+
+  <li>
+    <a href="/buy/best-cabernet-sauvignon-under-20" class="internal-link">Best Cabernet Sauvignon Under 20 - Expert Guide</a>
+    <span class="text-sm text-gray-600"> - Commercial next step</span>
+  </li>
+  </ul>
+
+
+
+
 
 <h2>More Excellent Options</h2>
 <div class="grid md:grid-cols-2 gap-4 my-6">

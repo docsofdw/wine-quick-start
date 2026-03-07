@@ -3,6 +3,12 @@ import ArticleLayout from '../../layouts/ArticleLayout.astro';
 import featuredImage from '../../assets/images/articles/malbec.png';
 
 const frontmatter = {
+  clusterKey: "malbec",
+  intentClass: "informational",
+  pageRole: "supporting",
+  keywords: ["malbec", "malbec pairing", "wine pairing guide", "Malbec"],
+  canonicalUrl: "https://winesquickstart.com/wine-pairings/malbec",
+
   title: "Malbec: In-Depth Review & Ratings",
   description: "Everything you need to know about malbec: tasting profiles, food pairings, and top bottle recommendations from certified sommeliers. Find your perfect match.",
   wine_type: "red",
@@ -82,7 +88,7 @@ const frontmatter = {
 };
 ---
 
-<ArticleLayout title={frontmatter.title} description={frontmatter.description} author={frontmatter.author} readTime={frontmatter.readTime} category="Wine Guide" schema={frontmatter.structured_data} featuredImage={featuredImage}>
+<ArticleLayout canonical={frontmatter.canonicalUrl} categorySlug="wine-pairings" title={frontmatter.title} description={frontmatter.description} author={frontmatter.author} readTime={frontmatter.readTime} category="Wine Guide" schema={frontmatter.structured_data} featuredImage={featuredImage}>
   <div slot="quick-answer">
     <p><strong>Quick Answer:</strong> Malbec is a full-bodied red wine with bold dark fruit flavors. It pairs perfectly with grilled steak, barbecue, and spicy dishes.</p>
   </div>
@@ -324,6 +330,34 @@ const frontmatter = {
 <h3>Aging Assessment</h3>
 
 <p class="bg-wine-50 text-wine-700 p-4 rounded">Properly aged Malbec develops a garnet rim while maintaining core density. The nose should show integrated oak with emerging earthy complexity. <strong>Warning signs include</strong>: excessive browning (oxidation), vinegar aromas (acetification), or complete fruit loss, indicating the wine has passed its prime drinking window.</p>
+
+  <h2>Related Guides</h2>
+  <ul>
+
+  <li>
+    <a href="/learn" class="internal-link">Wine Guides</a>
+    <span class="text-sm text-gray-600"> - Learn the broader context</span>
+  </li>
+
+  <li>
+    <a href="/wine-pairings" class="internal-link">Wine Pairings</a>
+    <span class="text-sm text-gray-600"> - See pairing-focused follow-ups</span>
+  </li>
+
+  <li>
+    <a href="/buy" class="internal-link">Buying Guides</a>
+    <span class="text-sm text-gray-600"> - Move into bottle-level decisions</span>
+  </li>
+
+  <li>
+    <a href="/buy/best-cabernet-sauvignon-under-20" class="internal-link">Best Cabernet Sauvignon Under 20 - Expert Guide</a>
+    <span class="text-sm text-gray-600"> - Commercial next step</span>
+  </li>
+  </ul>
+
+
+
+
 
 <h2>Frequently Asked Questions</h2>
 <div class="space-y-6">

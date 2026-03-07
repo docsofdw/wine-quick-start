@@ -3,6 +3,12 @@ import ArticleLayout from '../../layouts/ArticleLayout.astro';
 import featuredImage from '../../assets/images/articles/price-orange-wine.png';
 
 const frontmatter = {
+  clusterKey: "orange",
+  intentClass: "transactional",
+  pageRole: "money",
+  keywords: ["price orange wine", "price orange", "price orange wine buying guide", "best wine to buy", "Price Orange Wine"],
+  canonicalUrl: "https://winesquickstart.com/buy/price-orange-wine",
+
   title: "Price orange wine: Complete Guide & Recommendations",
   description: "Find the best price orange wine with our expert buying guide. Price comparisons, quality picks, and insider recommendations from certified sommeliers.",
   wine_type: "red",
@@ -108,7 +114,7 @@ const frontmatter = {
 };
 ---
 
-<ArticleLayout title={frontmatter.title} description={frontmatter.description} author={frontmatter.author} readTime={frontmatter.readTime} category="Wine Guide" schema={frontmatter.structured_data} featuredImage={featuredImage}>
+<ArticleLayout canonical={frontmatter.canonicalUrl} categorySlug="buy" title={frontmatter.title} description={frontmatter.description} author={frontmatter.author} readTime={frontmatter.readTime} category="Wine Guide" schema={frontmatter.structured_data} featuredImage={featuredImage}>
   <div slot="quick-answer">
     <p><strong>Quick Answer:</strong> For price orange wine, look for wines with good balance, appropriate body, and food-friendly characteristics. Quality producers and proper storage ensure the best experience.</p>
   </div>
@@ -389,5 +395,33 @@ const frontmatter = {
     <p class="text-xs text-wine-600 mt-2"><strong>Variety:</strong> Pinot Grigio</p>
   </div>
 </div>
+
+  <h2>Related Guides</h2>
+  <ul>
+
+  <li>
+    <a href="/learn" class="internal-link">Wine Guides</a>
+    <span class="text-sm text-gray-600"> - Learn the broader context</span>
+  </li>
+
+  <li>
+    <a href="/wine-pairings" class="internal-link">Wine Pairings</a>
+    <span class="text-sm text-gray-600"> - See pairing-focused follow-ups</span>
+  </li>
+
+  <li>
+    <a href="/buy" class="internal-link">Buying Guides</a>
+    <span class="text-sm text-gray-600"> - Move into bottle-level decisions</span>
+  </li>
+
+  <li>
+    <a href="/learn/barolo-wine" class="internal-link">Barolo Wine - Expert Guide</a>
+    <span class="text-sm text-gray-600"> - Supporting context</span>
+  </li>
+  </ul>
+
+
+
+
 
 </ArticleLayout>

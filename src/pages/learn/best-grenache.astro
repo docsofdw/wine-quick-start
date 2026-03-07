@@ -3,6 +3,11 @@ import ArticleLayout from '../../layouts/ArticleLayout.astro';
 import featuredImage from '../../assets/images/articles/best-grenache.png';
 
 const frontmatter = {
+  clusterKey: "grenache",
+  intentClass: "commercial",
+  pageRole: "supporting",
+  canonicalUrl: "https://winesquickstart.com/learn/best-grenache",
+
   title: "Best Grenache - Expert Guide",
   description: "Discover the best grenache. Expert recommendations, tasting notes, and tips from certified sommeliers.",
   pubDate: "2026-01-21",
@@ -27,7 +32,7 @@ const frontmatter = {
 };
 ---
 
-<ArticleLayout title={frontmatter.title} description={frontmatter.description} author={frontmatter.author} readTime={frontmatter.readTime} category="Wine Guide" schema={frontmatter.structured_data} featuredImage={featuredImage}>
+<ArticleLayout canonical={frontmatter.canonicalUrl} categorySlug="learn" title={frontmatter.title} description={frontmatter.description} author={frontmatter.author} readTime={frontmatter.readTime} category="Wine Guide" schema={frontmatter.structured_data} featuredImage={featuredImage}>
   <!-- Author Attribution -->
   <div class="bg-gray-50 p-4 rounded-lg mb-6 flex items-center gap-4">
     <div class="w-12 h-12 rounded-full bg-wine-100 flex items-center justify-center text-wine-700 font-bold">
@@ -131,6 +136,34 @@ const frontmatter = {
 <h3>Aging Assessment</h3>
 
 <p>Properly aged Grenache maintains bright acidity and develops <strong>complex savory elements</strong> without losing fruit definition. Warning signs include excessive brown coloration, volatile acidity (vinegar notes), or complete fruit loss. Check cork condition annually on valuable bottles—Grenache's alcohol content helps preserve wines even with minor cork compromise, but significant ullage indicates potential oxidation.</p>
+
+  <h2>Related Guides</h2>
+  <ul>
+
+  <li>
+    <a href="/learn" class="internal-link">Wine Guides</a>
+    <span class="text-sm text-gray-600"> - Learn the broader context</span>
+  </li>
+
+  <li>
+    <a href="/wine-pairings" class="internal-link">Wine Pairings</a>
+    <span class="text-sm text-gray-600"> - See pairing-focused follow-ups</span>
+  </li>
+
+  <li>
+    <a href="/buy" class="internal-link">Buying Guides</a>
+    <span class="text-sm text-gray-600"> - Move into bottle-level decisions</span>
+  </li>
+
+  <li>
+    <a href="/buy/best-cabernet-sauvignon-under-20" class="internal-link">Best Cabernet Sauvignon Under 20 - Expert Guide</a>
+    <span class="text-sm text-gray-600"> - Commercial next step</span>
+  </li>
+  </ul>
+
+
+
+
 
 <h2>Frequently Asked Questions</h2>
 <div class="space-y-6">

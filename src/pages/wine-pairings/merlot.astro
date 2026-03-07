@@ -3,6 +3,12 @@ import ArticleLayout from '../../layouts/ArticleLayout.astro';
 import featuredImage from '../../assets/images/articles/merlot.png';
 
 const frontmatter = {
+  clusterKey: "merlot",
+  intentClass: "informational",
+  pageRole: "supporting",
+  keywords: ["merlot", "merlot pairing", "wine pairing guide", "Merlot"],
+  canonicalUrl: "https://winesquickstart.com/wine-pairings/merlot",
+
   title: "Merlot: A Comprehensive Guide",
   description: "Everything you need to know about merlot: tasting profiles, food pairings, and top bottle recommendations from certified sommeliers. Find your perfect match.",
   wine_type: "red",
@@ -82,7 +88,7 @@ const frontmatter = {
 };
 ---
 
-<ArticleLayout title={frontmatter.title} description={frontmatter.description} author={frontmatter.author} readTime={frontmatter.readTime} category="Wine Guide" schema={frontmatter.structured_data} featuredImage={featuredImage}>
+<ArticleLayout canonical={frontmatter.canonicalUrl} categorySlug="wine-pairings" title={frontmatter.title} description={frontmatter.description} author={frontmatter.author} readTime={frontmatter.readTime} category="Wine Guide" schema={frontmatter.structured_data} featuredImage={featuredImage}>
   <div slot="quick-answer">
     <p><strong>Quick Answer:</strong> Merlot is a smooth, medium-bodied red wine known for its plum and cherry flavors. It pairs excellently with grilled meats, pasta dishes, and aged cheeses.</p>
   </div>
@@ -296,7 +302,7 @@ const frontmatter = {
   </div>
 
   <div>
-    <h3 class="text-lg font-semibered text-wine-700 mb-2">Should I decant Merlot and for how long?</h3>
+    <h3 class="text-lg font-semibold text-wine-700 mb-2">Should I decant Merlot and for how long?</h3>
     <p class="text-gray-700">Most Merlots benefit from 30-60 minutes of decanting to soften any remaining tannins and enhance aromatics. Young, structured Merlots from regions like Saint-Émilion or Pomerol may need up to 2 hours, while mature wines over 10 years old require only 15-30 minutes to avoid over-oxidation. Entry-level Merlots are typically ready to drink immediately but still improve with 20-30 minutes of air exposure.</p>
   </div>
 
@@ -360,6 +366,34 @@ const frontmatter = {
 
 <h3>Special Occasion Selections</h3>
 <p>For elegant entertaining, pair aged Pomerol with <strong>truffle risotto</strong>, where the wine's developed tertiary aromas complement the truffle's earthiness, or serve Saint-Émilion Grand Cru with <strong>braised short ribs</strong>, allowing the wine's structured tannins to soften the meat's collagen while its dark fruit flavors enhance the braising sauce's complexity.</p>
+
+  <h2>Related Guides</h2>
+  <ul>
+
+  <li>
+    <a href="/learn" class="internal-link">Wine Guides</a>
+    <span class="text-sm text-gray-600"> - Learn the broader context</span>
+  </li>
+
+  <li>
+    <a href="/wine-pairings" class="internal-link">Wine Pairings</a>
+    <span class="text-sm text-gray-600"> - See pairing-focused follow-ups</span>
+  </li>
+
+  <li>
+    <a href="/buy" class="internal-link">Buying Guides</a>
+    <span class="text-sm text-gray-600"> - Move into bottle-level decisions</span>
+  </li>
+
+  <li>
+    <a href="/learn/best-merlot" class="internal-link">Best Merlot - Expert Guide</a>
+    <span class="text-sm text-gray-600"> - Same topic cluster</span>
+  </li>
+  </ul>
+
+
+
+
 
 <h2>Our Top Picks</h2>
       <div class="bg-gray-50 rounded-lg p-6 mb-4">

@@ -19,6 +19,7 @@ interface RelatedArticle {
 interface Props {
   title: string;
   description: string;
+  canonical?: string;
   author?: string;
   readTime?: string;
   category?: string;
@@ -32,6 +33,7 @@ interface Props {
 const {
   title,
   description,
+  canonical,
   author = 'Wine Quick Start Team',
   readTime = '5 min',
   category = 'Wine Guide',
@@ -53,7 +55,7 @@ const breadcrumbItems = [
 ];
 ---
 
-<BaseLayout {title} {description} {schema} {ogImage}>
+<BaseLayout {title} {description} canonical={canonical} {schema} {ogImage}>
   <article class="py-8 md:py-12 lg:py-16">
     <div class="max-w-4xl mx-auto px-4 sm:px-6">
       <!-- Breadcrumbs -->

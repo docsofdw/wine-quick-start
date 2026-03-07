@@ -3,6 +3,12 @@ import ArticleLayout from '../../layouts/ArticleLayout.astro';
 import featuredImage from '../../assets/images/articles/syrah.png';
 
 const frontmatter = {
+  clusterKey: "syrah",
+  intentClass: "informational",
+  pageRole: "supporting",
+  keywords: ["syrah", "syrah pairing", "wine pairing guide", "Syrah"],
+  canonicalUrl: "https://winesquickstart.com/wine-pairings/syrah",
+
   title: "Top Syrah Selections Worth Trying",
   description: "Everything you need to know about top syrah selections worth trying: tasting profiles, food pairings, and top bottle recommendations from certified...",
   wine_type: "red",
@@ -82,7 +88,7 @@ const frontmatter = {
 };
 ---
 
-<ArticleLayout title={frontmatter.title} description={frontmatter.description} author={frontmatter.author} readTime={frontmatter.readTime} category="Wine Guide" schema={frontmatter.structured_data} featuredImage={featuredImage}>
+<ArticleLayout canonical={frontmatter.canonicalUrl} categorySlug="wine-pairings" title={frontmatter.title} description={frontmatter.description} author={frontmatter.author} readTime={frontmatter.readTime} category="Wine Guide" schema={frontmatter.structured_data} featuredImage={featuredImage}>
   <div slot="quick-answer">
     <p><strong>Quick Answer:</strong> Syrah (Shiraz) is a bold, full-bodied red wine with dark fruit and spice. Pair with grilled lamb, barbecue, and hearty stews.</p>
   </div>
@@ -265,6 +271,34 @@ const frontmatter = {
     <p class="text-xs text-wine-600 mt-2"><strong>Variety:</strong> Syrah</p>
   </div>
 </div>
+
+  <h2>Related Guides</h2>
+  <ul>
+
+  <li>
+    <a href="/learn" class="internal-link">Wine Guides</a>
+    <span class="text-sm text-gray-600"> - Learn the broader context</span>
+  </li>
+
+  <li>
+    <a href="/wine-pairings" class="internal-link">Wine Pairings</a>
+    <span class="text-sm text-gray-600"> - See pairing-focused follow-ups</span>
+  </li>
+
+  <li>
+    <a href="/buy" class="internal-link">Buying Guides</a>
+    <span class="text-sm text-gray-600"> - Move into bottle-level decisions</span>
+  </li>
+
+  <li>
+    <a href="/buy/best-cabernet-sauvignon-under-20" class="internal-link">Best Cabernet Sauvignon Under 20 - Expert Guide</a>
+    <span class="text-sm text-gray-600"> - Commercial next step</span>
+  </li>
+  </ul>
+
+
+
+
 
 <h2>More Excellent Options</h2>
 <div class="grid md:grid-cols-2 gap-4 my-6">

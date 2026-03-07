@@ -3,6 +3,10 @@ import ArticleLayout from '../../layouts/ArticleLayout.astro';
 import featuredImage from '../../assets/images/articles/natural-wine.png';
 
 const frontmatter = {
+  clusterKey: "natural",
+  intentClass: "informational",
+  pageRole: "supporting",
+
   title: "Natural Wine: Complete Guide from Sommeliers",
   description: "Learn about natural wine: expert tasting notes, food pairings & buying tips from certified sommeliers. Complete guide.",
   pubDate: "2026-03-07",
@@ -112,7 +116,7 @@ const frontmatter = {
 };
 ---
 
-<ArticleLayout title={frontmatter.title} description={frontmatter.description} author={frontmatter.author} readTime={frontmatter.readTime} category="Wine Guide" schema={frontmatter.structured_data} featuredImage={featuredImage} featuredImageAlt={frontmatter.featuredImageAlt}>
+<ArticleLayout canonical={frontmatter.canonicalUrl} categorySlug="learn" title={frontmatter.title} description={frontmatter.description} author={frontmatter.author} readTime={frontmatter.readTime} category="Wine Guide" schema={frontmatter.structured_data} featuredImage={featuredImage} featuredImageAlt={frontmatter.featuredImageAlt}>
   <!-- Author Attribution -->
   <div class="bg-gray-50 p-4 rounded-lg mb-6 flex items-center gap-4">
     <div class="w-12 h-12 rounded-full bg-wine-100 flex items-center justify-center text-wine-700 font-bold">
@@ -233,8 +237,6 @@ const frontmatter = {
   <li><strong>Time Your Natural Wine Service to the Season</strong> - Many natural wines reflect their vintage conditions more dramatically than conventional wines. Serve lighter, more fragile natural wines (especially pét-nats and young reds) during cooler months when they're less likely to be affected by ambient temperature. Save more structured natural wines with some bottle age for warmer weather service, as they can better handle slight temperature increases.</li>
 </ol>
 
-
-
   <h2>Aging & Cellaring</h2>
 
 <p>Natural wines present unique aging considerations due to their minimal intervention winemaking. Without sulfite protection, these wines require more careful storage and often have different aging trajectories than conventional wines.</p>
@@ -257,6 +259,34 @@ const frontmatter = {
 
 <h3>Aging vs. Spoilage</h3>
 <p>Proper aging in natural wines develops <strong class="text-wine-700">earthy complexity, integrated tannins, and harmonious acidity</strong>. Warning signs include sharp vinegar aromas (volatile acidity gone too far), mousy off-flavors from Brettanomyces overgrowth, or complete fruit loss without compensating complexity. Trust your nose—natural wines should smell inviting, not off-putting, even when fully evolved.</p>
+
+  <h2>Related Guides</h2>
+  <ul>
+
+  <li>
+    <a href="/learn" class="internal-link">Wine Guides</a>
+    <span class="text-sm text-gray-600"> - Learn the broader context</span>
+  </li>
+
+  <li>
+    <a href="/wine-pairings" class="internal-link">Wine Pairings</a>
+    <span class="text-sm text-gray-600"> - See pairing-focused follow-ups</span>
+  </li>
+
+  <li>
+    <a href="/buy" class="internal-link">Buying Guides</a>
+    <span class="text-sm text-gray-600"> - Move into bottle-level decisions</span>
+  </li>
+
+  <li>
+    <a href="/buy/natural-wine-price" class="internal-link">Perfect Natural wine price - Wine Expert Tips</a>
+    <span class="text-sm text-gray-600"> - Same topic cluster</span>
+  </li>
+  </ul>
+
+
+
+
 
 <h2>Frequently Asked Questions</h2>
 <div class="space-y-6">
@@ -296,7 +326,7 @@ const frontmatter = {
   </div>
 
   <div>
-    <h3 class="text-lg font-semibeled text-wine-700 mb-2">Is natural wine suitable for beginners or should they start with conventional wines?</h3>
+    <h3 class="text-lg font-semibold text-wine-700 mb-2">Is natural wine suitable for beginners or should they start with conventional wines?</h3>
     <p class="text-gray-700">Beginners should start with well-made natural wines from established producers rather than jumping into the most experimental bottles, as poorly made examples can create negative associations. Look for natural wines with clean fruit expression like those from Domaine Marcel Lapierre or Château Le Puy, which showcase the style's benefits without overwhelming funkiness. Starting with natural rosés or light reds can provide an approachable introduction to the category's unique character.</p>
   </div>
 </div>

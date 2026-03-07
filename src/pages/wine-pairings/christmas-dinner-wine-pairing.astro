@@ -3,6 +3,11 @@ import ArticleLayout from '../../layouts/ArticleLayout.astro';
 import featuredImage from '../../assets/images/articles/christmas-dinner-wine-pairing.png';
 
 const frontmatter = {
+  clusterKey: "christmas-dinner",
+  intentClass: "informational",
+  pageRole: "supporting",
+  canonicalUrl: "https://winesquickstart.com/wine-pairings/christmas-dinner-wine-pairing",
+
   title: "Christmas Dinner Wine Pairing - Expert Guide",
   description: "Choose the perfect wines for christmas dinner with our sommelier-curated guide. Get top recommendations, serving tips, and pairing suggestions for a...",
   pubDate: "2026-01-15",
@@ -79,7 +84,7 @@ const frontmatter = {
 };
 ---
 
-<ArticleLayout title={frontmatter.title} description={frontmatter.description} author={frontmatter.author} readTime={frontmatter.readTime} category="Wine Guide" schema={frontmatter.structured_data} featuredImage={featuredImage}>
+<ArticleLayout canonical={frontmatter.canonicalUrl} categorySlug="wine-pairings" title={frontmatter.title} description={frontmatter.description} author={frontmatter.author} readTime={frontmatter.readTime} category="Wine Guide" schema={frontmatter.structured_data} featuredImage={featuredImage}>
   <!-- Author Attribution -->
   <div class="bg-gray-50 p-4 rounded-lg mb-6 flex items-center gap-4">
     <div class="w-12 h-12 rounded-full bg-wine-100 flex items-center justify-center text-wine-700 font-bold">
@@ -228,7 +233,35 @@ const frontmatter = {
   <li><strong>Open Wines 30 Minutes Before Guests Arrive</strong> - This timing allows wines to reach proper serving temperature and begin opening up, while preventing over-oxidation during the typically lengthy Christmas dinner service. For whites, this means removing from refrigeration; for reds, it allows them to warm from cellar temperature while you're managing final food preparations.</li>
 </ol>
 
-  <h2>Frequently Asked Questions</h2>
+  <h2>Related Guides</h2>
+  <ul>
+
+  <li>
+    <a href="/learn" class="internal-link">Wine Guides</a>
+    <span class="text-sm text-gray-600"> - Learn the broader context</span>
+  </li>
+
+  <li>
+    <a href="/wine-pairings" class="internal-link">Wine Pairings</a>
+    <span class="text-sm text-gray-600"> - See pairing-focused follow-ups</span>
+  </li>
+
+  <li>
+    <a href="/buy" class="internal-link">Buying Guides</a>
+    <span class="text-sm text-gray-600"> - Move into bottle-level decisions</span>
+  </li>
+
+  <li>
+    <a href="/learn/best-wine-for-christmas-dinner" class="internal-link">Best Wine For Christmas Dinner - Expert Guide</a>
+    <span class="text-sm text-gray-600"> - Same topic cluster</span>
+  </li>
+  </ul>
+
+
+
+
+
+<h2>Frequently Asked Questions</h2>
 <div class="space-y-6">
   <div>
     <h3 class="text-lg font-semibold text-wine-700 mb-2">What wine should I serve with turkey at Christmas dinner?</h3>

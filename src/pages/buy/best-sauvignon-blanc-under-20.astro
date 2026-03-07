@@ -3,6 +3,11 @@ import ArticleLayout from '../../layouts/ArticleLayout.astro';
 import featuredImage from '../../assets/images/articles/best-sauvignon-blanc-under-20.png';
 
 const frontmatter = {
+  clusterKey: "sauvignon-blanc",
+  intentClass: "commercial",
+  pageRole: "money",
+  canonicalUrl: "https://winesquickstart.com/buy/best-sauvignon-blanc-under-20",
+
   title: "Best Sauvignon Blanc Under 20 - Expert Guide",
   description: "Discover the best sauvignon blanc under 20. Expert recommendations, tasting notes, and tips from certified sommeliers.",
   pubDate: "2026-01-21",
@@ -27,7 +32,7 @@ const frontmatter = {
 };
 ---
 
-<ArticleLayout title={frontmatter.title} description={frontmatter.description} author={frontmatter.author} readTime={frontmatter.readTime} category="Wine Guide" schema={frontmatter.structured_data} featuredImage={featuredImage}>
+<ArticleLayout canonical={frontmatter.canonicalUrl} categorySlug="buy" title={frontmatter.title} description={frontmatter.description} author={frontmatter.author} readTime={frontmatter.readTime} category="Wine Guide" schema={frontmatter.structured_data} featuredImage={featuredImage}>
   <!-- Author Attribution -->
   <div class="bg-gray-50 p-4 rounded-lg mb-6 flex items-center gap-4">
     <div class="w-12 h-12 rounded-full bg-wine-100 flex items-center justify-center text-wine-700 font-bold">
@@ -127,6 +132,34 @@ const frontmatter = {
 
 <h3>Quality Indicators</h3>
 <p>Properly aged sauvignon blanc maintains bright acidity while gaining complexity. Warning signs include browning color (should remain pale gold), flat aromas, or oxidized notes resembling sherry. Unlike reds, sauvignon blanc rarely benefits from extended cellaring, making the <strong>2-4 year sweet spot</strong> ideal for most sub-$20 bottles.</p>
+
+  <h2>Related Guides</h2>
+  <ul>
+
+  <li>
+    <a href="/learn" class="internal-link">Wine Guides</a>
+    <span class="text-sm text-gray-600"> - Learn the broader context</span>
+  </li>
+
+  <li>
+    <a href="/wine-pairings" class="internal-link">Wine Pairings</a>
+    <span class="text-sm text-gray-600"> - See pairing-focused follow-ups</span>
+  </li>
+
+  <li>
+    <a href="/buy" class="internal-link">Buying Guides</a>
+    <span class="text-sm text-gray-600"> - Move into bottle-level decisions</span>
+  </li>
+
+  <li>
+    <a href="/learn/best-sauvignon-blanc" class="internal-link">Best Sauvignon Blanc - Expert Guide</a>
+    <span class="text-sm text-gray-600"> - Same topic cluster</span>
+  </li>
+  </ul>
+
+
+
+
 
 <h2>Frequently Asked Questions</h2>
 <div class="space-y-6">

@@ -749,6 +749,7 @@ function generateArticleContent(
   const layoutProps = [
     `title={frontmatter.title}`,
     `description={frontmatter.description}`,
+    `canonical={frontmatter.canonicalUrl}`,
     `author={frontmatter.author}`,
     `readTime={frontmatter.readTime}`,
     `category="${category === 'learn' ? 'Wine Guide' : category === 'wine-pairings' ? 'Wine Pairing' : 'Buying Guide'}"`,

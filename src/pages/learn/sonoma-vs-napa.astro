@@ -3,6 +3,11 @@ import ArticleLayout from '../../layouts/ArticleLayout.astro';
 import featuredImage from '../../assets/images/articles/sonoma-vs-napa.png';
 
 const frontmatter = {
+  clusterKey: "sonoma-napa",
+  intentClass: "commercial",
+  pageRole: "seed",
+  canonicalUrl: "https://winesquickstart.com/learn/sonoma-vs-napa",
+
   title: "Sonoma Vs Napa - Expert Guide",
   description: "Compare sonoma and napa: key differences in taste, food pairings, and when to choose each. Expert sommelier insights to help you pick the perfect wine.",
   pubDate: "2026-01-16",
@@ -79,7 +84,7 @@ const frontmatter = {
 };
 ---
 
-<ArticleLayout title={frontmatter.title} description={frontmatter.description} author={frontmatter.author} readTime={frontmatter.readTime} category="Wine Guide" schema={frontmatter.structured_data} featuredImage={featuredImage}>
+<ArticleLayout canonical={frontmatter.canonicalUrl} categorySlug="learn" title={frontmatter.title} description={frontmatter.description} author={frontmatter.author} readTime={frontmatter.readTime} category="Wine Guide" schema={frontmatter.structured_data} featuredImage={featuredImage}>
   <!-- Author Attribution -->
   <div class="bg-gray-50 p-4 rounded-lg mb-6 flex items-center gap-4">
     <div class="w-12 h-12 rounded-full bg-wine-100 flex items-center justify-center text-wine-700 font-bold">
@@ -537,6 +542,34 @@ const frontmatter = {
     <p class="text-xs text-wine-600 mt-2"><strong>Variety:</strong> Zinfandel</p>
   </div>
 </div>
+
+  <h2>Related Guides</h2>
+  <ul>
+
+  <li>
+    <a href="/learn" class="internal-link">Wine Guides</a>
+    <span class="text-sm text-gray-600"> - Learn the broader context</span>
+  </li>
+
+  <li>
+    <a href="/wine-pairings" class="internal-link">Wine Pairings</a>
+    <span class="text-sm text-gray-600"> - See pairing-focused follow-ups</span>
+  </li>
+
+  <li>
+    <a href="/buy" class="internal-link">Buying Guides</a>
+    <span class="text-sm text-gray-600"> - Move into bottle-level decisions</span>
+  </li>
+
+  <li>
+    <a href="/buy/best-cabernet-sauvignon-under-20" class="internal-link">Best Cabernet Sauvignon Under 20 - Expert Guide</a>
+    <span class="text-sm text-gray-600"> - Commercial next step</span>
+  </li>
+  </ul>
+
+
+
+
 
 <h2>More Excellent Options</h2>
 <div class="grid md:grid-cols-2 gap-4 my-6">

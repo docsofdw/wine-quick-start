@@ -3,6 +3,11 @@ import ArticleLayout from '../../layouts/ArticleLayout.astro';
 import featuredImage from '../../assets/images/articles/champagne-wine.png';
 
 const frontmatter = {
+  clusterKey: "champagne",
+  intentClass: "informational",
+  pageRole: "supporting",
+  canonicalUrl: "https://winesquickstart.com/learn/champagne-wine",
+
   title: "Champagne Wine - Expert Guide",
   description: "Your complete guide to champagne wine. Explore top producers, signature styles, and expert recommendations from certified sommeliers to find your perfect...",
   pubDate: "2026-01-14",
@@ -79,7 +84,7 @@ const frontmatter = {
 };
 ---
 
-<ArticleLayout title={frontmatter.title} description={frontmatter.description} author={frontmatter.author} readTime={frontmatter.readTime} category="Wine Guide" schema={frontmatter.structured_data} featuredImage={featuredImage}>
+<ArticleLayout canonical={frontmatter.canonicalUrl} categorySlug="learn" title={frontmatter.title} description={frontmatter.description} author={frontmatter.author} readTime={frontmatter.readTime} category="Wine Guide" schema={frontmatter.structured_data} featuredImage={featuredImage}>
   <!-- Author Attribution -->
   <div class="bg-gray-50 p-4 rounded-lg mb-6 flex items-center gap-4">
     <div class="w-12 h-12 rounded-full bg-wine-100 flex items-center justify-center text-wine-700 font-bold">
@@ -233,6 +238,34 @@ const frontmatter = {
 
 <h3>Recognizing Proper Development</h3>
 <p>Well-aged Champagne displays a deeper golden color while maintaining clarity and persistent bubbles. The aroma should show complex tertiary notes without any musty or vinegar-like off-odors. <span class="text-wine-700"><strong>Warning signs include</strong></span> brown coloration, flat mousse, or sharp acetaldehyde aromas indicating oxidation. Trust your palate—properly aged Champagne should taste harmonious and complex, never harsh or deteriorated.</p>
+
+  <h2>Related Guides</h2>
+  <ul>
+
+  <li>
+    <a href="/learn" class="internal-link">Wine Guides</a>
+    <span class="text-sm text-gray-600"> - Learn the broader context</span>
+  </li>
+
+  <li>
+    <a href="/wine-pairings" class="internal-link">Wine Pairings</a>
+    <span class="text-sm text-gray-600"> - See pairing-focused follow-ups</span>
+  </li>
+
+  <li>
+    <a href="/buy" class="internal-link">Buying Guides</a>
+    <span class="text-sm text-gray-600"> - Move into bottle-level decisions</span>
+  </li>
+
+  <li>
+    <a href="/learn/best-champagne" class="internal-link">Best Champagne - Expert Guide</a>
+    <span class="text-sm text-gray-600"> - Same topic cluster</span>
+  </li>
+  </ul>
+
+
+
+
 
 <h2>Frequently Asked Questions</h2>
 <div class="space-y-6">

@@ -3,6 +3,11 @@ import ArticleLayout from '../../layouts/ArticleLayout.astro';
 import featuredImage from '../../assets/images/articles/best-wine-for-christmas-dinner.png';
 
 const frontmatter = {
+  clusterKey: "christmas-dinner",
+  intentClass: "commercial",
+  pageRole: "supporting",
+  canonicalUrl: "https://winesquickstart.com/learn/best-wine-for-christmas-dinner",
+
   title: "Best Wine For Christmas Dinner - Expert Guide",
   description: "Explore best wine for christmas dinner with our comprehensive sommelier guide. Expert recommendations, detailed tasting notes, food pairings, and tips for...",
   pubDate: "2026-01-15",
@@ -79,7 +84,7 @@ const frontmatter = {
 };
 ---
 
-<ArticleLayout title={frontmatter.title} description={frontmatter.description} author={frontmatter.author} readTime={frontmatter.readTime} category="Wine Guide" schema={frontmatter.structured_data} featuredImage={featuredImage}>
+<ArticleLayout canonical={frontmatter.canonicalUrl} categorySlug="learn" title={frontmatter.title} description={frontmatter.description} author={frontmatter.author} readTime={frontmatter.readTime} category="Wine Guide" schema={frontmatter.structured_data} featuredImage={featuredImage}>
   <!-- Author Attribution -->
   <div class="bg-gray-50 p-4 rounded-lg mb-6 flex items-center gap-4">
     <div class="w-12 h-12 rounded-full bg-wine-100 flex items-center justify-center text-wine-700 font-bold">
@@ -270,6 +275,34 @@ const frontmatter = {
 <p>Well-aged wines show <strong>brick-red edges</strong> in reds and golden hues in whites. Sediment formation is normal in aged reds—decant carefully. Warning signs include brown coloration throughout, vinegar aromas, or cork particles floating in clear wine, indicating oxidation or cork failure.</p>
 
 <p>Plan your Christmas cellar selections knowing that patience rewards with wines that transform simple holiday meals into extraordinary celebrations.</p>
+
+  <h2>Related Guides</h2>
+  <ul>
+
+  <li>
+    <a href="/learn" class="internal-link">Wine Guides</a>
+    <span class="text-sm text-gray-600"> - Learn the broader context</span>
+  </li>
+
+  <li>
+    <a href="/wine-pairings" class="internal-link">Wine Pairings</a>
+    <span class="text-sm text-gray-600"> - See pairing-focused follow-ups</span>
+  </li>
+
+  <li>
+    <a href="/buy" class="internal-link">Buying Guides</a>
+    <span class="text-sm text-gray-600"> - Move into bottle-level decisions</span>
+  </li>
+
+  <li>
+    <a href="/wine-pairings/christmas-dinner-wine-pairing" class="internal-link">Christmas Dinner Wine Pairing - Expert Guide</a>
+    <span class="text-sm text-gray-600"> - Same topic cluster</span>
+  </li>
+  </ul>
+
+
+
+
 
 <h2>Frequently Asked Questions</h2>
 <div class="space-y-6">

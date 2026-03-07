@@ -1,6 +1,14 @@
 ---
 import ArticleLayout from '../../layouts/ArticleLayout.astro';
 import featuredImage from '../../assets/images/articles/pinot-noir-food-pairing.png';
+const retrofitMetadata = {
+  clusterKey: "pinot-noir",
+  intentClass: "informational",
+  pageRole: "supporting",
+  keywords: ["pinot noir food pairing", "pinot noir", "pinot noir food pairing pairing", "wine pairing guide", "Pinot Noir Food Pairing"],
+  canonicalUrl: "https://winesquickstart.com/wine-pairings/pinot-noir-food-pairing",
+};
+
 
 const schema = {
   "@context": "https://schema.org",
@@ -17,7 +25,7 @@ const schema = {
 };
 ---
 
-<ArticleLayout
+<ArticleLayout canonical={retrofitMetadata.canonicalUrl} categorySlug="wine-pairings"
   title="Pinot Noir Food Pairing - The Ultimate Guide"
   description="Master the art of Pinot Noir food pairing with our sommelier guide. From duck to mushrooms, discover perfect matches for this versatile red wine."
   category="Red Wine Pairing"
@@ -276,6 +284,34 @@ const schema = {
 
   <li><strong>Time Your Pairing with Food Temperature</strong> - Serve Pinot Noir with warm dishes immediately after opening to allow the wine's temperature to gradually rise with the meal. This creates an evolving pairing experience—starting with bright fruit notes that complement appetizers, then developing into earthier flavors that enhance main courses like mushroom-stuffed chicken or beef tenderloin with truffle sauce.</li>
 </ol>
+
+  <h2>Related Guides</h2>
+  <ul>
+
+  <li>
+    <a href="/learn" class="internal-link">Wine Guides</a>
+    <span class="text-sm text-gray-600"> - Learn the broader context</span>
+  </li>
+
+  <li>
+    <a href="/wine-pairings" class="internal-link">Wine Pairings</a>
+    <span class="text-sm text-gray-600"> - See pairing-focused follow-ups</span>
+  </li>
+
+  <li>
+    <a href="/buy" class="internal-link">Buying Guides</a>
+    <span class="text-sm text-gray-600"> - Move into bottle-level decisions</span>
+  </li>
+
+  <li>
+    <a href="/buy/best-pinot-noir-under-20" class="internal-link">Best Pinot Noir Under 20 - Expert Guide</a>
+    <span class="text-sm text-gray-600"> - Same topic cluster</span>
+  </li>
+  </ul>
+
+
+
+
 
 <h2>Frequently Asked Questions</h2>
 <div class="space-y-6">

@@ -3,6 +3,10 @@ import ArticleLayout from '../../layouts/ArticleLayout.astro';
 import featuredImage from '../../assets/images/articles/rose-wine-with-chicken.png';
 
 const frontmatter = {
+  clusterKey: "rose-chicken",
+  intentClass: "informational",
+  pageRole: "supporting",
+
   title: "Best Rosé Wine with Chicken: Sommelier Picks & Pairing Guide",
   description: "Discover the best rosé wines to pair with chicken. Expert sommelier picks from Provence, Bandol, and beyond with serving tips. Updated Feb 2026.",
   pubDate: "2026-02-03",
@@ -112,7 +116,7 @@ const frontmatter = {
 };
 ---
 
-<ArticleLayout title={frontmatter.title} description={frontmatter.description} author={frontmatter.author} readTime={frontmatter.readTime} category="Wine Pairing" schema={frontmatter.structured_data} featuredImage={featuredImage} featuredImageAlt={frontmatter.featuredImageAlt}>
+<ArticleLayout canonical={frontmatter.canonicalUrl} categorySlug="wine-pairings" title={frontmatter.title} description={frontmatter.description} author={frontmatter.author} readTime={frontmatter.readTime} category="Wine Pairing" schema={frontmatter.structured_data} featuredImage={featuredImage} featuredImageAlt={frontmatter.featuredImageAlt}>
   <!-- Author Attribution -->
   <div class="bg-gray-50 p-4 rounded-lg mb-6 flex items-center gap-4">
     <div class="w-12 h-12 rounded-full bg-wine-100 flex items-center justify-center text-wine-700 font-bold">
@@ -187,7 +191,35 @@ const frontmatter = {
   <li><strong>Age Considerations for Long-Term Planning</strong> - Most wines paired with chicken are best consumed within 2-3 years for optimal freshness and fruit expression. White Burgundy can age 5-8 years, developing nutty complexity that pairs beautifully with mature chicken dishes. Avoid heavily aged reds (10+ years) as their developed earthy notes can overwhelm chicken's delicate flavors—save these for red meat preparations.</li>
 </ol>
 
-  <h2>Frequently Asked Questions</h2>
+  <h2>Related Guides</h2>
+  <ul>
+
+  <li>
+    <a href="/learn" class="internal-link">Wine Guides</a>
+    <span class="text-sm text-gray-600"> - Learn the broader context</span>
+  </li>
+
+  <li>
+    <a href="/wine-pairings" class="internal-link">Wine Pairings</a>
+    <span class="text-sm text-gray-600"> - See pairing-focused follow-ups</span>
+  </li>
+
+  <li>
+    <a href="/buy" class="internal-link">Buying Guides</a>
+    <span class="text-sm text-gray-600"> - Move into bottle-level decisions</span>
+  </li>
+
+  <li>
+    <a href="/wine-pairings/rose-wine-with-chicken-on-label" class="internal-link">Best Wine with Chicken On Label: Sommelier Picks & Pairing Tips</a>
+    <span class="text-sm text-gray-600"> - Same topic cluster</span>
+  </li>
+  </ul>
+
+
+
+
+
+<h2>Frequently Asked Questions</h2>
 <div class="space-y-6">
   <div>
     <h3 class="text-lg font-semibold text-wine-700 mb-2">What's the difference between pairing wine with white meat versus dark meat chicken?</h3>

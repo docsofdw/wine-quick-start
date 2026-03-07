@@ -3,6 +3,12 @@ import ArticleLayout from '../../layouts/ArticleLayout.astro';
 import featuredImage from '../../assets/images/articles/rose-wine.png';
 
 const frontmatter = {
+  clusterKey: "rose",
+  intentClass: "informational",
+  pageRole: "supporting",
+  keywords: ["rose wine", "rose wine pairing", "wine pairing guide", "Rose Wine"],
+  canonicalUrl: "https://winesquickstart.com/wine-pairings/rose-wine",
+
   title: "Rose wine Guide: Everything You Need to Know",
   description: "Everything you need to know about rose wine guide: tasting profiles, food pairings, and top bottle recommendations from certified sommeliers. Find your...",
   wine_type: "rose",
@@ -82,7 +88,7 @@ const frontmatter = {
 };
 ---
 
-<ArticleLayout title={frontmatter.title} description={frontmatter.description} author={frontmatter.author} readTime={frontmatter.readTime} category="Wine Guide" schema={frontmatter.structured_data} featuredImage={featuredImage}>
+<ArticleLayout canonical={frontmatter.canonicalUrl} categorySlug="wine-pairings" title={frontmatter.title} description={frontmatter.description} author={frontmatter.author} readTime={frontmatter.readTime} category="Wine Guide" schema={frontmatter.structured_data} featuredImage={featuredImage}>
   <div slot="quick-answer">
     <p><strong>Quick Answer:</strong> Rosé is a versatile pink wine perfect for warm weather. Pair with Mediterranean dishes, grilled vegetables, and light salads.</p>
   </div>
@@ -288,6 +294,34 @@ const frontmatter = {
 <h3>Quality Indicators</h3>
 
 <p><strong>Proper aging</strong> shows gradual color evolution while maintaining clarity and fresh acidity. <strong>Warning signs of spoilage</strong> include murky appearance, vinegar-like aromas, or complete loss of fruit character. Most rosés showing brown tinges or oxidized sherry notes have passed their prime and should be consumed immediately or discarded.</p>
+
+  <h2>Related Guides</h2>
+  <ul>
+
+  <li>
+    <a href="/learn" class="internal-link">Wine Guides</a>
+    <span class="text-sm text-gray-600"> - Learn the broader context</span>
+  </li>
+
+  <li>
+    <a href="/wine-pairings" class="internal-link">Wine Pairings</a>
+    <span class="text-sm text-gray-600"> - See pairing-focused follow-ups</span>
+  </li>
+
+  <li>
+    <a href="/buy" class="internal-link">Buying Guides</a>
+    <span class="text-sm text-gray-600"> - Move into bottle-level decisions</span>
+  </li>
+
+  <li>
+    <a href="/buy/best-cabernet-sauvignon-under-20" class="internal-link">Best Cabernet Sauvignon Under 20 - Expert Guide</a>
+    <span class="text-sm text-gray-600"> - Commercial next step</span>
+  </li>
+  </ul>
+
+
+
+
 
 <h2>Frequently Asked Questions</h2>
 <div class="space-y-6">

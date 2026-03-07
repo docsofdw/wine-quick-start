@@ -3,6 +3,11 @@ import ArticleLayout from '../../layouts/ArticleLayout.astro';
 import featuredImage from '../../assets/images/articles/best-wine-with-pizza.png';
 
 const frontmatter = {
+  clusterKey: "pizza",
+  intentClass: "commercial",
+  pageRole: "supporting",
+  canonicalUrl: "https://winesquickstart.com/wine-pairings/best-wine-with-pizza",
+
   title: "Best Wine With Pizza - Expert Guide",
   description: "Find the perfect wine to pair with pizza. Our certified sommeliers share top picks, flavor matching tips, and serving suggestions for an unforgettable meal.",
   pubDate: "2026-01-20",
@@ -79,7 +84,7 @@ const frontmatter = {
 };
 ---
 
-<ArticleLayout title={frontmatter.title} description={frontmatter.description} author={frontmatter.author} readTime={frontmatter.readTime} category="Wine Guide" schema={frontmatter.structured_data} featuredImage={featuredImage}>
+<ArticleLayout canonical={frontmatter.canonicalUrl} categorySlug="wine-pairings" title={frontmatter.title} description={frontmatter.description} author={frontmatter.author} readTime={frontmatter.readTime} category="Wine Guide" schema={frontmatter.structured_data} featuredImage={featuredImage}>
   <!-- Author Attribution -->
   <div class="bg-gray-50 p-4 rounded-lg mb-6 flex items-center gap-4">
     <div class="w-12 h-12 rounded-full bg-wine-100 flex items-center justify-center text-wine-700 font-bold">
@@ -210,7 +215,35 @@ const frontmatter = {
   <li><strong>Build a "Pizza Wine Flight" for Variety Nights</strong> - When serving multiple pizza types, prepare 3-4 different wines in small pours rather than committing to one bottle. A classic combination includes a crisp Italian white (Pinot Grigio), a light red (Dolcetto), and a medium-bodied red (Chianti). This approach lets everyone discover their preferred pairing while preventing palate fatigue from drinking the same wine with different flavor profiles throughout the meal.</li>
 </ol>
 
-  <h2>Frequently Asked Questions</h2>
+  <h2>Related Guides</h2>
+  <ul>
+
+  <li>
+    <a href="/learn" class="internal-link">Wine Guides</a>
+    <span class="text-sm text-gray-600"> - Learn the broader context</span>
+  </li>
+
+  <li>
+    <a href="/wine-pairings" class="internal-link">Wine Pairings</a>
+    <span class="text-sm text-gray-600"> - See pairing-focused follow-ups</span>
+  </li>
+
+  <li>
+    <a href="/buy" class="internal-link">Buying Guides</a>
+    <span class="text-sm text-gray-600"> - Move into bottle-level decisions</span>
+  </li>
+
+  <li>
+    <a href="/buy/best-cabernet-sauvignon-under-20" class="internal-link">Best Cabernet Sauvignon Under 20 - Expert Guide</a>
+    <span class="text-sm text-gray-600"> - Commercial next step</span>
+  </li>
+  </ul>
+
+
+
+
+
+<h2>Frequently Asked Questions</h2>
 <div class="space-y-6">
   <div>
     <h3 class="text-lg font-semibold text-wine-700 mb-2">What's the difference between pairing wine with thin crust versus thick crust pizza?</h3>
