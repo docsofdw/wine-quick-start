@@ -73,9 +73,14 @@ jobs:
 
       - name: Test Wine Catalog Connection
         id: catalog-test
+        env:
+          WINE_CATALOG_URL: ${{ secrets.WINE_CATALOG_URL }}
+          WINE_CATALOG_ANON_KEY: ${{ secrets.WINE_CATALOG_ANON_KEY }}
         run: |
           npx tsx -e "
+            import { config } from 'dotenv';
             import { testWineCatalogConnection } from './src/lib/wine-catalog.js';
+            config({ path: '.env.local', override: true });
             (async () => {
               const result = await testWineCatalogConnection();
               if (!result.success) {
