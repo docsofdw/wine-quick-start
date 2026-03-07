@@ -181,8 +181,21 @@ function inferFallbackRegion(keyword: string): string | null {
   return regions.find(region => lowerKw.includes(region)) || null;
 }
 
+function normalizeRecommendationIdentity(name: string): string {
+  return name
+    .toLowerCase()
+    .replace(/\b(\w+)\s+\1\b/g, '$1')
+    .replace(/[^a-z0-9]+/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
 function mapCatalogWineToRecommendation(wine: any, keyword: string): any {
-  const displayName = `${wine.vintage ? `${wine.vintage} ` : ''}${wine.producer} ${wine.wine_name}`.trim();
+  const rawName = `${wine.vintage ? `${wine.vintage} ` : ''}${wine.producer} ${wine.wine_name}`.trim();
+  const displayName = rawName
+    .replace(new RegExp(`\\b${String(wine.producer).replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\s+${String(wine.producer).replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\b`, 'i'), String(wine.producer))
+    .replace(/\s+/g, ' ')
+    .trim();
   const variety = wine.variety || 'Blend';
   const region = wine.region || wine.subregion || 'Unknown region';
   const lowerVariety = String(variety).toLowerCase();
@@ -230,6 +243,31 @@ async function getFallbackRecommendations(
   return randomWines.map((wine: any) => mapCatalogWineToRecommendation(wine, keyword));
 }
 
+async function ensureMinimumRecommendations(
+  keyword: string,
+  category: 'learn' | 'wine-pairings' | 'buy',
+  wines: any[],
+  minimum: number = 3
+): Promise<any[]> {
+  if (wines.length >= minimum) {
+    return wines;
+  }
+
+  const supplemental = await getFallbackRecommendations(keyword, category);
+  const merged = [...wines];
+  const seen = new Set(merged.map(wine => normalizeRecommendationIdentity(wine.name)));
+
+  for (const wine of supplemental) {
+    const identity = normalizeRecommendationIdentity(wine.name);
+    if (seen.has(identity)) continue;
+    merged.push(wine);
+    seen.add(identity);
+    if (merged.length >= minimum) break;
+  }
+
+  return merged;
+}
+
 function canGenerateWithoutBottlePicks(keyword: string, category: 'learn' | 'wine-pairings' | 'buy'): boolean {
   if (category !== 'learn') {
     return false;
@@ -252,88 +290,152 @@ function canGenerateWithoutBottlePicks(keyword: string, category: 'learn' | 'win
 // Content Generation
 // ============================================================================
 
-function generateIntro(keyword: string, intent: string): string {
-  const intros: Record<string, string[]> = {
-    commercial: [
-      `Looking for the perfect ${keyword}? Our certified sommeliers have tasted dozens of options to bring you these expert-curated recommendations that deliver exceptional quality at every price point.`,
-      `Choosing the right ${keyword} can transform your experience. We've done the research so you don't have to—here are our top picks backed by professional tasting notes and real-world testing.`,
-    ],
-    transactional: [
-      `Ready to buy? Our sommelier team has curated the best ${keyword} options across every budget. From everyday values to special occasion splurges, these picks won't disappoint.`,
-      `Finding great ${keyword} doesn't have to be complicated. We've selected wines that deliver outstanding quality, whether you're spending $15 or $150.`,
-    ],
-    informational: [
-      `Understanding ${keyword} opens up a world of flavor possibilities. In this comprehensive guide, we'll explore everything from tasting profiles to food pairings—all from a sommelier's perspective.`,
-      `${keyword.charAt(0).toUpperCase() + keyword.slice(1)} represents one of wine's most fascinating topics. Let's dive deep into what makes it special and how to get the most from your experience.`,
-    ],
-  };
+type ArticleArchetype = 'learn' | 'pairing' | 'buy' | 'comparison';
 
-  const options = intros[intent] || intros.informational;
-  return options[Math.floor(Math.random() * options.length)];
+function toTitleCase(text: string): string {
+  return text
+    .split(' ')
+    .filter(Boolean)
+    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(' ');
 }
 
-function generateQuickAnswer(keyword: string, intent: string): string {
-  const kw = keyword.toLowerCase();
-
-  // Food pairing quick answers
-  if (kw.includes('with ') || kw.includes('pairing')) {
-    const food = kw.replace(/^.*?with\s+/i, '').replace(/\s+pairing.*$/i, '').replace(/wine\s*/i, '').trim();
-    return `For ${food}, choose wines that complement the dish's weight and flavors. Medium-bodied options with good acidity typically work best, creating harmony between food and wine. Consider the cooking method and sauces when making your final selection.`;
-  }
-
-  // Budget quick answers
-  if (/under\s+\$?\d+|cheap|affordable|budget/.test(kw)) {
-    return `Excellent wines exist at every price point. Focus on lesser-known regions and grape varieties for the best value—these often deliver $30+ quality at fraction of the cost. Portugal, Argentina, and southern France consistently overdeliver.`;
-  }
-
-  // Comparison quick answers
-  if (/\bvs\b|versus/.test(kw)) {
-    return `Both wines have distinct characteristics that make them ideal for different occasions. Consider your food pairing, personal taste preferences, and the specific occasion when choosing between them.`;
-  }
-
-  // Varietal/region quick answers
-  return `Start with well-regarded producers from established regions to understand the classic style. Then explore different expressions based on your taste preferences. Quality indicators matter more than price point.`;
+function determineArticleArchetype(keyword: string, category: 'learn' | 'wine-pairings' | 'buy'): ArticleArchetype {
+  const lowerKw = keyword.toLowerCase();
+  if (/\bvs\b|versus/.test(lowerKw)) return 'comparison';
+  if (category === 'wine-pairings') return 'pairing';
+  if (category === 'buy') return 'buy';
+  return 'learn';
 }
 
-function generateDefaultFAQs(keyword: string): { question: string; answer: string }[] {
-  const kw = keyword.toLowerCase();
+function extractFoodTarget(keyword: string): string {
+  return keyword
+    .toLowerCase()
+    .replace(/^.*?with\s+/i, '')
+    .replace(/\s+pairing.*$/i, '')
+    .replace(/^best\s+wine\s+for\s+/i, '')
+    .replace(/^wine\s+for\s+/i, '')
+    .replace(/wine\s*/i, '')
+    .trim();
+}
 
-  // Generate topic-specific FAQs
-  const faqs: { question: string; answer: string }[] = [];
+function generateIntro(keyword: string, archetype: ArticleArchetype): string {
+  switch (archetype) {
+    case 'comparison':
+      return `${toTitleCase(keyword)} is usually a decision problem, not a trivia problem. The useful move is to compare body, acidity, fruit profile, and when each style works best at the table so you can choose the right bottle faster.`;
+    case 'pairing':
+      return `Good ${keyword} advice starts with the dish, not the bottle. Weight, salt, fat, acid, and cooking method all matter more than generic red-versus-white rules, so this guide focuses on how the meal behaves in the glass and on the plate.`;
+    case 'buy':
+      return `Buying ${keyword} gets easier once you know where quality actually shows up. Price matters, but producer discipline, region, and style cues tell you far more about whether a bottle will drink like a smart buy or an expensive miss.`;
+    default:
+      return `${toTitleCase(keyword)} is most useful when it becomes practical. Instead of repeating broad tasting-note language, this guide focuses on the markers that help you recognize the style, buy better bottles, and know what to try next.`;
+  }
+}
 
-  // Common pattern: "What should I look for..."
-  faqs.push({
-    question: `What should I look for when choosing ${keyword}?`,
-    answer: `Focus on balance between fruit, acidity, and structure. Look for reputable producers, check vintage quality, and consider your specific use case—whether for immediate drinking, aging, or food pairing.`,
-  });
-
-  // Price question
-  faqs.push({
-    question: `How much should I spend on ${keyword}?`,
-    answer: `Quality ${keyword} exists at every price point. For everyday drinking, $15-25 offers excellent value. For special occasions, $40-75 typically provides a noticeable quality jump. Above $100, you're often paying for prestige.`,
-  });
-
-  // Storage question
-  faqs.push({
-    question: `How do I store ${keyword} properly?`,
-    answer: `Store bottles on their side in a cool (55°F/13°C), dark place with consistent temperature. Avoid vibration and temperature fluctuations. Most wines are best consumed within 2-5 years of purchase.`,
-  });
-
-  // Serving question
-  faqs.push({
-    question: `What's the best way to serve ${keyword}?`,
-    answer: `Serve whites chilled (45-50°F) and reds slightly below room temperature (60-65°F). Consider decanting fuller-bodied wines for 30-60 minutes to allow flavors to open up.`,
-  });
-
-  // Beginner question
-  if (!kw.includes('beginner')) {
-    faqs.push({
-      question: `Is ${keyword} good for wine beginners?`,
-      answer: `Absolutely. Start with approachable, fruit-forward examples and work your way toward more complex styles. Don't be afraid to ask for recommendations at your local wine shop.`,
-    });
+function generateQuickAnswer(keyword: string, archetype: ArticleArchetype, recommendationMode: 'direct' | 'fallback' | 'educational'): string {
+  if (archetype === 'pairing') {
+    const food = extractFoodTarget(keyword) || 'the dish';
+    return `For ${food}, look for wines whose weight matches the food and whose acidity or tannin solves the main texture problem on the plate. Start with balanced, food-friendly styles, then adjust based on sauce, smoke, spice, and richness.`;
   }
 
-  return faqs;
+  if (archetype === 'buy') {
+    return `Shop ${keyword} by producer, region, and style before you shop by hype. If the goal is value, lesser-known regions and disciplined producers usually outperform famous labels at the same price.`;
+  }
+
+  if (archetype === 'comparison') {
+    return `The better choice in ${keyword} depends on what you value most: freshness, body, fruit profile, structure, and what you plan to eat with it. Compare the styles on those five levers and the right bottle becomes much easier to spot.`;
+  }
+
+  if (recommendationMode === 'educational') {
+    return `Treat ${keyword} like a tasting framework. Learn the defining markers first, then compare two or three benchmark bottles side by side so the style becomes obvious in the glass instead of staying theoretical.`;
+  }
+
+  return `Start with benchmark bottles and use them to anchor your palate. Once you know the classic style for ${keyword}, it becomes much easier to judge value, spot regional differences, and buy with confidence.`;
+}
+
+function generateDefaultFAQs(keyword: string, archetype: ArticleArchetype): { question: string; answer: string }[] {
+  if (archetype === 'pairing') {
+    const food = extractFoodTarget(keyword) || 'this dish';
+    return [
+      {
+        question: `What style of wine usually works best with ${food}?`,
+        answer: `Start with styles that match the dish's intensity and solve its biggest challenge. Richer dishes often need acidity or tannin to keep the pairing fresh, while delicate dishes usually work better with lighter, cleaner wines.`,
+      },
+      {
+        question: `Does sauce matter more than the protein in ${keyword}?`,
+        answer: `Often, yes. Cream sauces, spice, char, sweetness, and tomato acidity can completely change the pairing even when the main protein stays the same, so evaluate the full plate rather than only the headline ingredient.`,
+      },
+      {
+        question: `Should I serve the wine colder or warmer with ${food}?`,
+        answer: `Serve a touch cooler than room temperature for reds and properly chilled for whites or sparkling wines. Temperature changes how tannin, acidity, and alcohol show up, which directly affects how the pairing feels with food.`,
+      },
+      {
+        question: `What is the safest fallback if I am unsure about ${keyword}?`,
+        answer: `Reach for a balanced, medium-bodied, food-friendly bottle with solid acidity. That profile covers more dishes well than heavily oaked, overly alcoholic, or aggressively tannic wines.`,
+      },
+    ];
+  }
+
+  if (archetype === 'buy') {
+    return [
+      {
+        question: `What should I prioritize when buying ${keyword}?`,
+        answer: `Prioritize producer consistency, region, and style fit before chasing critic language or luxury branding. Those three signals usually tell you more about whether the bottle will drink well for the money.`,
+      },
+      {
+        question: `Is expensive ${keyword} always better?`,
+        answer: `No. Higher prices can reflect scarcity, prestige, or age-worthiness, but there are many cases where a disciplined producer in a less fashionable region offers better drinking value than a famous label.`,
+      },
+      {
+        question: `How can I spot value in ${keyword}?`,
+        answer: `Look for second labels, strong cooperatives, emerging subregions, and producers with a clear house style. Value usually comes from smart sourcing and overlooked geography, not from the loudest shelf talker.`,
+      },
+      {
+        question: `How many bottles of ${keyword} should I buy at once?`,
+        answer: `If you find a bottle that clearly outperforms its price, buy enough to taste it now and revisit it later. A small repeat purchase is one of the fastest ways to learn whether a wine is a true value or a one-off good showing.`,
+      },
+    ];
+  }
+
+  if (archetype === 'comparison') {
+    return [
+      {
+        question: `What is the biggest difference in ${keyword}?`,
+        answer: `Usually the biggest difference is structural: body, acidity, tannin, and fruit profile. Once you isolate which wine is fresher, richer, softer, or more savory, the comparison becomes much easier to use in real buying decisions.`,
+      },
+      {
+        question: `Is one side of ${keyword} better for food?`,
+        answer: `Not universally. One style may be more flexible at the table, while the other may be better for sipping or richer dishes. The right answer depends on the meal and whether you want contrast or harmony.`,
+      },
+      {
+        question: `Can beginners understand ${keyword} through tasting?`,
+        answer: `Yes. Tasting the two styles side by side is the fastest way to understand the comparison. Focus on body, acidity, fruit ripeness, and finish instead of trying to memorize every tasting term.`,
+      },
+      {
+        question: `Should I buy both sides of ${keyword}?`,
+        answer: `If you want to learn quickly, yes. Buying one benchmark bottle from each side of the comparison gives you a practical frame of reference that makes future shopping decisions much easier.`,
+      },
+    ];
+  }
+
+  return [
+    {
+      question: `What should I pay attention to first with ${keyword}?`,
+      answer: `Start with the structural markers: body, acidity, fruit profile, texture, and finish. Those clues tell you more about style and quality than isolated tasting-note words.`,
+    },
+    {
+      question: `Is ${keyword} approachable for newer wine drinkers?`,
+      answer: `Usually, yes, especially if you begin with benchmark producers and clearly labeled styles. A focused tasting across two or three examples teaches the category faster than reading broad summaries in isolation.`,
+    },
+    {
+      question: `How should I serve ${keyword}?`,
+      answer: `Serve it at a temperature that keeps the wine balanced rather than hot or over-chilled. Good serving temperature helps acidity, tannin, and aromatics show up in a cleaner, more useful way.`,
+    },
+    {
+      question: `What should I try after ${keyword}?`,
+      answer: `Try one bottle that stays close to the classic style and one that stretches it. That contrast is where most people start to understand regional and stylistic differences in a meaningful way.`,
+    },
+  ];
 }
 
 function generateWineHTML(wines: any[]): string {
@@ -352,41 +454,45 @@ function generateWineHTML(wines: any[]): string {
 function generateEducationalExplorationHTML(keyword: string): string {
   return `
       <div class="space-y-4 text-gray-700">
-        <p>For a topic like <strong>${keyword}</strong>, start with benchmark producers and compare styles side by side. The goal is to understand the core differences in body, acidity, fruit profile, and serving context before chasing specific labels.</p>
-        <p>Use this guide as a framework, then taste across two or three contrasting bottles to calibrate your palate. That will give you faster signal than reading generic tasting notes in isolation.</p>
+        <p>For a topic like <strong>${keyword}</strong>, start with benchmark bottles and compare them side by side. Focus on body, acidity, fruit profile, alcohol, and finish so the category becomes concrete instead of abstract.</p>
+        <p>Use this guide as a tasting plan. Try one classic example, one modern or higher-fruit example, and one bottle from a different region if possible. That sequence gives you a much clearer read on the topic than generic tasting-note language alone.</p>
       </div>`;
 }
 
-function generateExpertTipsHTML(keyword: string): string {
-  const kw = keyword.toLowerCase();
-
-  // Generate topic-specific tips
+function generateExpertTipsHTML(keyword: string, archetype: ArticleArchetype): string {
   let tips: string[] = [];
 
-  if (kw.includes('pairing') || kw.includes('with ')) {
+  if (archetype === 'pairing') {
     tips = [
-      `<strong>Match intensity</strong> - Pair bold wines with rich dishes, lighter wines with delicate foods. The wine and food should complement, not overpower each other.`,
-      `<strong>Consider acidity</strong> - High-acid wines cut through fatty and creamy dishes beautifully, cleansing the palate between bites.`,
-      `<strong>Bridge flavors</strong> - Look for flavor connections between wine and food—herbal wines with herb-crusted dishes, for example.`,
-      `<strong>Regional pairing</strong> - Wines and foods from the same region often pair naturally after centuries of co-evolution.`,
-      `<strong>Don't overthink it</strong> - If you enjoy the combination, it works. Trust your palate over rigid rules.`,
+      `<strong>Match weight before flavor notes</strong> - A lean dish with a heavy, oaky wine feels clumsy even if the tasting notes sound compatible.`,
+      `<strong>Let acid do the cleanup</strong> - Rich, fried, creamy, or buttery foods often need a wine with enough acidity to reset the palate.`,
+      `<strong>Sauce can overrule the protein</strong> - A tomato, cream, pepper, or sweet glaze often matters more than whether the plate is chicken, pork, or seafood.`,
+      `<strong>Use tannin carefully</strong> - Tannic reds love fat and protein, but they can turn harsh with spicy heat or bitter greens.`,
+      `<strong>Test with a small sip-and-bite cycle</strong> - The first three bites usually tell you whether the pairing is getting cleaner, flatter, or more aggressive.`,
     ];
-  } else if (/under\s+\$?\d+|cheap|budget/.test(kw)) {
+  } else if (archetype === 'buy') {
     tips = [
-      `<strong>Explore lesser-known regions</strong> - Portugal, Chile, and southern France consistently deliver outstanding value.`,
-      `<strong>Look for younger vintages</strong> - Fresh, current releases often offer better value than aged wines at this price point.`,
-      `<strong>Try indigenous varieties</strong> - Local grape varieties from their home regions often overdeliver on quality-to-price ratio.`,
-      `<strong>Buy by the case</strong> - Many retailers offer 10-20% discounts on case purchases, stretching your budget further.`,
-      `<strong>Check scores carefully</strong> - A 90-point wine at $15 is a better value than a 92-point wine at $40.`,
+      `<strong>Buy producer first</strong> - A reliable producer in an overlooked region often beats a famous appellation with weaker farming or cellar work.`,
+      `<strong>Price should match the occasion</strong> - Everyday value bottles and cellar-worthy bottles solve different problems, so do not shop them with the same standard.`,
+      `<strong>Look for style clues on the label</strong> - Region, alcohol level, and producer reputation usually tell you more than flashy shelf copy.`,
+      `<strong>Use one benchmark bottle</strong> - Having one trusted reference point makes it much easier to judge whether a new bottle is overpriced or underpriced.`,
+      `<strong>Track repeat winners</strong> - The goal is not one lucky bottle. The goal is building a list of producers and regions you can buy confidently on autopilot.`,
+    ];
+  } else if (archetype === 'comparison') {
+    tips = [
+      `<strong>Taste side by side</strong> - Comparisons become obvious faster when both wines are open at the same time under the same conditions.`,
+      `<strong>Write down the structural difference</strong> - Note which wine is fresher, fuller, softer, firmer, or more savory before you chase aroma details.`,
+      `<strong>Check the context</strong> - One side of the comparison may win on its own, while the other wins at the dinner table.`,
+      `<strong>Do not confuse ripeness with quality</strong> - Bigger fruit and more oak can feel impressive, but that is not automatically the better wine for every use case.`,
+      `<strong>Use the comparison to shop smarter</strong> - Once you know which side suits your palate, region and producer choices get much easier.`,
     ];
   } else {
     tips = [
-      `<strong>Temperature matters</strong> - Serve whites at 45-50°F and reds at 60-65°F for optimal flavor expression.`,
-      `<strong>Decanting helps</strong> - Give bold reds 30-60 minutes in a decanter to open up and soften tannins.`,
-      `<strong>Trust your palate</strong> - Wine scores are guides, not rules. The best wine is the one you enjoy most.`,
-      `<strong>Store properly</strong> - Keep bottles on their side in a cool, dark place with stable temperature.`,
-      `<strong>Ask questions</strong> - Wine professionals love sharing knowledge. Don't hesitate to ask for recommendations.`,
-      `<strong>Take notes</strong> - Keep track of what you enjoy to refine your preferences over time.`,
+      `<strong>Anchor the classic style first</strong> - Start with a benchmark example before exploring edge cases or trend-driven bottles.`,
+      `<strong>Pay attention to structure</strong> - Body, acidity, tannin, and finish are the fastest way to understand a wine topic in practical terms.`,
+      `<strong>Temperature changes the story</strong> - Serving a wine too warm or too cold can hide the traits you are trying to learn.`,
+      `<strong>Take short tasting notes</strong> - One line on style, one line on food fit, and one line on whether you would rebuy is enough to improve quickly.`,
+      `<strong>Move from broad to narrow</strong> - Learn the category, then compare producers, regions, and price tiers once the foundation is clear.`,
     ];
   }
 
@@ -407,6 +513,153 @@ function generateFAQHTML(faqs: { question: string; answer: string }[]): string {
       </div>`;
 }
 
+function generateRelatedGuidesHTML(
+  keyword: string,
+  category: 'learn' | 'wine-pairings' | 'buy'
+): string {
+  const links = [
+    {
+      href: '/learn',
+      label: 'Wine guides',
+      description: `Build a stronger foundation around ${keyword} with broader educational guides.`,
+    },
+    {
+      href: '/wine-pairings',
+      label: 'Wine pairings',
+      description: category === 'wine-pairings'
+        ? `Compare this advice with other food pairings to see how sauce, fat, acid, and texture shift the recommendation.`
+        : `See how this topic changes at the table by exploring pairing-specific guidance and menu context.`,
+    },
+    {
+      href: '/buy',
+      label: 'Buying guides',
+      description: `Turn this topic into a shopping decision with bottle-focused buying guides and value benchmarks.`,
+    },
+  ];
+
+  return `
+      <div class="grid gap-4 md:grid-cols-3">
+        ${links.map(link => `
+        <a href="${link.href}" class="block rounded-lg border border-gray-200 p-4 hover:border-wine-300 hover:bg-gray-50 transition">
+          <h3 class="text-lg font-semibold text-wine-700 mb-2">${link.label}</h3>
+          <p class="text-sm text-gray-700">${link.description}</p>
+        </a>`).join('')}
+      </div>`;
+}
+
+function buildIntentSections(
+  keyword: string,
+  archetype: ArticleArchetype,
+  wines: any[],
+  recommendationMode: 'direct' | 'fallback' | 'educational',
+  category: 'learn' | 'wine-pairings' | 'buy'
+): { heading: string; body: string }[] {
+  const displayKeyword = toTitleCase(keyword);
+  const picksHeading = recommendationMode === 'direct'
+    ? 'Bottles That Illustrate The Style'
+    : recommendationMode === 'fallback'
+      ? 'Real Bottles To Explore'
+      : 'How To Explore This Topic';
+  const picksContent = wines.length > 0
+    ? generateWineHTML(wines)
+    : generateEducationalExplorationHTML(keyword);
+
+  switch (archetype) {
+    case 'comparison':
+      return [
+        {
+          heading: `What Changes In ${displayKeyword}`,
+          body: `<p>${generateIntro(keyword, archetype)}</p><p>Focus first on body, acidity, tannin, fruit ripeness, and finish. Those five markers usually explain why one side of the comparison feels fresher, broader, softer, or more structured, and they translate directly into better bottle choices.</p>`,
+        },
+        {
+          heading: 'How To Decide Which Style Fits The Moment',
+          body: `<p>Use food, occasion, and budget as your filter. If you are pouring the wine with dinner, think about whether you need freshness, richness, or flexibility. If the bottle is for sipping on its own, texture and finish may matter more than pairing versatility.</p><p>Side-by-side tasting is the fastest shortcut. One benchmark bottle from each side will teach you more in twenty minutes than a week of abstract tasting-note reading.</p>`,
+        },
+        {
+          heading: picksHeading,
+          body: picksContent,
+        },
+        {
+          heading: 'Common Comparison Mistakes',
+          body: `<p>The most common mistake is treating one side as “better” in every situation. Many wine comparisons are really about fit: one style works better with richer food, another is better with lighter dishes or for casual drinking.</p><p>The second mistake is comparing non-equivalent bottles. If one bottle is heavily oaked, overripe, or from a very different price tier, you are learning more about winemaking choices than the core comparison itself.</p>`,
+        },
+        {
+          heading: 'How To Taste The Difference Faster',
+          body: `<p>Pour both wines at the same time and alternate between them with water in between. That makes changes in texture, acidity, and finish much easier to notice than tasting one bottle in isolation.</p><p>Write down one sentence on aroma, one on structure, and one on food fit. Short, disciplined notes usually teach you more than trying to capture every possible descriptor.</p>`,
+        },
+      ];
+    case 'pairing':
+      return [
+        {
+          heading: `How To Think About ${displayKeyword}`,
+          body: `<p>${generateIntro(keyword, archetype)}</p><p>Look at the dish in terms of fat, salt, acid, sweetness, spice, and char. Those elements tell you whether the wine needs cleansing acidity, softer tannin, brighter fruit, or more body.</p>`,
+        },
+        {
+          heading: 'What Usually Works Best',
+          body: `<p>Most successful pairings solve the dish's biggest texture or flavor problem. Acid cuts richness, tannin grips protein and fat, fruit cushions spice, and lighter-bodied wines protect delicate flavors from being buried.</p><p>Once you know the dominant element on the plate, the range of good wine choices narrows quickly and the pairing becomes much more repeatable.</p>`,
+        },
+        {
+          heading: picksHeading,
+          body: picksContent,
+        },
+        {
+          heading: 'Serving And Pairing Adjustments',
+          body: `<p>If the pairing feels heavy, chill the wine slightly or move to a brighter style. If it feels sharp or thin, pick a riper, rounder bottle or reduce the acidity on the plate. Small adjustments in temperature and sauce often fix a pairing faster than switching categories completely.</p>`,
+        },
+        {
+          heading: 'When To Break The Usual Pairing Rule',
+          body: `<p>Rules are useful until the dish changes shape. Smoke, sweetness, chili heat, and heavy sauces often justify moving away from the textbook pairing and toward a bottle that handles the dominant flavor more cleanly.</p><p>The best test is whether the wine keeps the next bite feeling clearer and more appetizing. If it dulls the food or makes the finish harsher, change the bottle.</p>`,
+        },
+      ];
+    case 'buy':
+      return [
+        {
+          heading: `What Matters Most When Buying ${displayKeyword}`,
+          body: `<p>${generateIntro(keyword, archetype)}</p><p>Separate shopping goals before you buy. A reliable weeknight bottle, a cellar candidate, and a gift bottle all deserve different standards, and most bad purchases happen when those goals get blurred together.</p>`,
+        },
+        {
+          heading: 'How To Spot Quality Faster',
+          body: `<p>Look for consistency markers: serious producers, coherent regional identity, and a style that matches the occasion. That gives you a better edge than chasing point scores in a vacuum or assuming the highest price is the safest bottle.</p><p>If you are shopping on value, favor overlooked regions and disciplined producers rather than prestige labels that already price in reputation.</p>`,
+        },
+        {
+          heading: picksHeading,
+          body: picksContent,
+        },
+        {
+          heading: 'When It Is Worth Spending More',
+          body: `<p>Spend more when you are paying for a meaningful jump in balance, age-worthiness, precision, or site character. Do not spend more just because the bottle is famous. Prestige pricing is real, and the gap between “better wine” and “better label” matters.</p>`,
+        },
+        {
+          heading: 'How To Build A Reliable Buying Bench',
+          body: `<p>Once you find a producer or region that consistently delivers for your palate, use it as a benchmark. That gives you a practical reference when comparing new bottles and helps you avoid chasing random one-off recommendations.</p><p>Over time, a short list of benchmark bottles becomes the backbone of an autonomous buying system, which is exactly what most drinkers need more than endless option lists.</p>`,
+        },
+      ];
+    default:
+      return [
+        {
+          heading: `Understanding ${displayKeyword}`,
+          body: `<p>${generateIntro(keyword, archetype)}</p><p>When you learn a wine topic, focus on the practical markers that show up every time you open a bottle: body, acid line, tannin level, fruit profile, and how the wine finishes. Those clues are more durable than memorizing long tasting-note lists.</p>`,
+        },
+        {
+          heading: 'What To Notice In The Glass',
+          body: `<p>Try to describe what the wine is doing structurally before you describe aroma details. Is it lean or broad, crisp or soft, savory or fruit-driven, short or persistent? That framework helps you understand the style well enough to buy and pair with intention.</p>`,
+        },
+        {
+          heading: picksHeading,
+          body: picksContent,
+        },
+        {
+          heading: 'How To Keep Learning Without Guessing',
+          body: `<p>Use one classic example as your baseline, then compare it with a bottle from another producer, region, or price tier. Controlled comparison is how you move from “I liked this” to “I understand why this tastes different.”</p>`,
+        },
+        {
+          heading: 'What To Taste Next',
+          body: `<p>After you understand the baseline style, explore one adjacent category that shares a few markers and one category that contrasts sharply. That creates a much stronger mental map than repeatedly tasting small variations of the same bottle profile.</p><p>If you keep simple notes on what changed, you will build a reusable framework for future buying and pairing decisions rather than starting from zero each time.</p>`,
+        },
+      ];
+  }
+}
+
 // ============================================================================
 // Article Generation
 // ============================================================================
@@ -421,13 +674,16 @@ function generateArticleContent(
   recommendationMode: 'direct' | 'fallback' | 'educational'
 ): string {
   const intent = determineIntent(keyword);
+  const archetype = determineArticleArchetype(keyword, category);
   const title = generateSEOTitle(keyword, category);
   const description = generateMetaDescription(keyword, intent);
   const canonicalUrl = generateCanonicalUrl(category, slug);
   const today = new Date().toISOString().split('T')[0];
 
   // Generate FAQs for schema
-  const faqs = generateDefaultFAQs(keyword);
+  const faqs = generateDefaultFAQs(keyword, archetype);
+  const sections = buildIntentSections(keyword, archetype, wines, recommendationMode, category);
+  const relatedGuides = generateRelatedGuidesHTML(keyword, category);
 
   // Build structured data with multiple schemas
   const structuredData = {
@@ -539,17 +795,18 @@ const frontmatter = {
   </div>
 
   <div slot="quick-answer">
-    <p><strong>Quick Answer:</strong> ${generateQuickAnswer(keyword, intent)}</p>
+    <p><strong>Quick Answer:</strong> ${generateQuickAnswer(keyword, archetype, recommendationMode)}</p>
   </div>
 
-  <h2>Understanding ${keyword.split(' ').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ')}</h2>
-  <p>${generateIntro(keyword, intent)}</p>
-
-  <h2>${picksHeading}</h2>
-  ${picksContent}
+  ${sections.map(section => `
+  <h2>${section.heading}</h2>
+  ${section.body}`).join('\n')}
 
   <h2>Expert Tips</h2>
-  ${generateExpertTipsHTML(keyword)}
+  ${generateExpertTipsHTML(keyword, archetype)}
+
+  <h2>Related Guides</h2>
+  ${relatedGuides}
 
   <h2>Frequently Asked Questions</h2>
   ${generateFAQHTML(faqs)}
@@ -697,6 +954,11 @@ async function generateArticles() {
         }
       } else {
         console.log(`   🍷 Found ${wines.length} wine recommendations`);
+      }
+
+      if (recommendationMode !== 'educational') {
+        wines = await ensureMinimumRecommendations(kw.keyword, category, wines, 3);
+        console.log(`   🍇 Final recommendation set: ${wines.length} bottles`);
       }
 
       if (isDryRun) {

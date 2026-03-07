@@ -55,6 +55,8 @@ const sendNotification = args.includes('--notify');
 const verbose = args.includes('--verbose');
 const doValidateWines = args.includes('--validate-wines');
 const fullScan = args.includes('--full-scan');
+const generateTimeoutMs = parseInt(process.env.PIPELINE_GENERATE_TIMEOUT_MS || '720000', 10);
+const enrichTimeoutMs = parseInt(process.env.PIPELINE_ENRICH_TIMEOUT_MS || '720000', 10);
 
 // Quality thresholds
 const AUTO_PUBLISH_THRESHOLD = 85;  // Raised from 80 for higher quality
@@ -125,6 +127,48 @@ function debug(message: string) {
   if (verbose) {
     console.log(`   🔍 ${message}`);
   }
+}
+
+async function runSubprocessWithTimeout(
+  commandArgs: string[],
+  timeoutMs: number,
+  stage: 'generation' | 'enrichment',
+  target: string,
+  result: PipelineResult
+): Promise<number | null> {
+  const { spawn } = await import('child_process');
+
+  return new Promise((resolve) => {
+    const proc = spawn('npx', commandArgs, {
+      cwd: process.cwd(),
+      stdio: verbose ? 'inherit' : 'pipe',
+    });
+
+    let settled = false;
+    const timeout = setTimeout(() => {
+      if (settled) return;
+      settled = true;
+      proc.kill('SIGTERM');
+      result.errors.push(`${stage} timed out for ${target} after ${Math.round(timeoutMs / 1000)}s`);
+      debug(`Timed out ${stage} for ${target}`);
+      resolve(null);
+    }, timeoutMs);
+
+    proc.on('close', (code) => {
+      if (settled) return;
+      settled = true;
+      clearTimeout(timeout);
+      resolve(code ?? null);
+    });
+
+    proc.on('error', (err) => {
+      if (settled) return;
+      settled = true;
+      clearTimeout(timeout);
+      result.errors.push(`${stage} error for ${target}: ${err.message}`);
+      resolve(null);
+    });
+  });
 }
 
 function isMissingTrackingTable(error: any): boolean {
@@ -387,42 +431,37 @@ async function generateArticle(keyword: any, result: PipelineResult): Promise<st
   }
 
   try {
-    // Import and run the generation logic
-    const { spawn } = await import('child_process');
-
-    return new Promise((resolve) => {
-      const proc = spawn('npx', [
+    const code = await runSubprocessWithTimeout(
+      [
         'tsx',
         'src/scripts/generate-priority-articles.ts',
         '--limit=1',
         `--keyword=${keyword.keyword}`,
         '--no-mark-used',
-      ], {
-        cwd: process.cwd(),
-        stdio: verbose ? 'inherit' : 'pipe',
-      });
+      ],
+      generateTimeoutMs,
+      'generation',
+      keyword.keyword,
+      result
+    );
 
-      proc.on('close', (code) => {
-        const fileExists = fs.existsSync(expectedFilePath);
-        if (code === 0 && fileExists) {
-          result.generated.push({ slug, category, keyword: keyword.keyword });
-          resolve(slug);
-        } else if (code === 0 && !fileExists) {
-          result.errors.push(
-            `Generation reported success but expected file missing for "${keyword.keyword}" (${category}/${slug}.astro)`
-          );
-          resolve(null);
-        } else {
-          result.errors.push(`Generation failed for ${keyword.keyword}`);
-          resolve(null);
-        }
-      });
+    const fileExists = fs.existsSync(expectedFilePath);
+    if (code === 0 && fileExists) {
+      result.generated.push({ slug, category, keyword: keyword.keyword });
+      return slug;
+    }
+    if (code === 0 && !fileExists) {
+      result.errors.push(
+        `Generation reported success but expected file missing for "${keyword.keyword}" (${category}/${slug}.astro)`
+      );
+      return null;
+    }
+    if (code === null) {
+      return null;
+    }
 
-      proc.on('error', (err) => {
-        result.errors.push(`Generation error: ${err.message}`);
-        resolve(null);
-      });
-    });
+    result.errors.push(`Generation failed for ${keyword.keyword}`);
+    return null;
   } catch (err: any) {
     result.errors.push(`Failed to generate ${keyword.keyword}: ${err.message}`);
     return null;
@@ -443,44 +482,37 @@ async function enrichArticle(score: QAScore, result: PipelineResult): Promise<nu
   }
 
   try {
-    const { spawn } = await import('child_process');
-
-    return new Promise((resolve) => {
-      const proc = spawn('npx', [
+    const code = await runSubprocessWithTimeout(
+      [
         'tsx',
         'src/scripts/enrich-articles.ts',
         `--article=${score.slug}`,
         '--limit=1',
-      ], {
-        cwd: process.cwd(),
-        stdio: verbose ? 'inherit' : 'pipe',
-      });
+      ],
+      enrichTimeoutMs,
+      'enrichment',
+      score.slug,
+      result
+    );
 
-      proc.on('close', async (code) => {
-        if (code === 0) {
-          // Re-score after enrichment
-          try {
-            const newScore = await scoreArticle(score.filePath);
-            result.enriched.push({
-              slug: score.slug,
-              beforeScore,
-              afterScore: newScore.totalScore,
-            });
-            resolve(newScore.totalScore);
-          } catch (err) {
-            resolve(beforeScore);
-          }
-        } else {
-          result.errors.push(`Enrichment failed for ${score.slug}`);
-          resolve(beforeScore);
-        }
-      });
+    if (code === 0) {
+      try {
+        const newScore = await scoreArticle(score.filePath);
+        result.enriched.push({
+          slug: score.slug,
+          beforeScore,
+          afterScore: newScore.totalScore,
+        });
+        return newScore.totalScore;
+      } catch (err) {
+        return beforeScore;
+      }
+    }
 
-      proc.on('error', (err) => {
-        result.errors.push(`Enrichment error: ${err.message}`);
-        resolve(beforeScore);
-      });
-    });
+    if (code !== null) {
+      result.errors.push(`Enrichment failed for ${score.slug}`);
+    }
+    return beforeScore;
   } catch (err: any) {
     result.errors.push(`Failed to enrich ${score.slug}: ${err.message}`);
     return beforeScore;

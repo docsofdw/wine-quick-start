@@ -459,6 +459,10 @@ function scoreSEO(content: string): {
     issues.push(`Few internal links: ${internalLinkCount} (target: 3+)`);
     score -= 10;
   }
+  if (!content.includes('href="/learn"') || !content.includes('href="/wine-pairings"') || !content.includes('href="/buy"')) {
+    issues.push('Missing cross-intent internal links');
+    score -= 10;
+  }
 
   return {
     score: Math.max(0, score),
@@ -507,23 +511,77 @@ function detectAIContent(content: string): { score: number; issues: string[]; ai
   return { score, issues, aiPhraseCount, detectedPhrases };
 }
 
+function extractIntroParagraph(content: string): string {
+  const quickAnswerIndex = content.indexOf('slot="quick-answer"');
+  const searchStart = quickAnswerIndex >= 0 ? quickAnswerIndex : 0;
+  const introMatch = content.slice(searchStart).match(/<p>(.*?)<\/p>/s);
+  return introMatch ? introMatch[1].replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim() : '';
+}
+
+function detectRepetitiveSentenceStarts(content: string): { repeatedStarts: string[]; maxRepeat: number } {
+  const clean = content
+    .replace(/---[\s\S]*?---/, '')
+    .replace(/<[^>]+>/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
+  const sentenceStarts = new Map<string, number>();
+  const sentences = clean
+    .split(/[.!?]+/)
+    .map(sentence => sentence.trim())
+    .filter(sentence => sentence.length > 25);
+
+  for (const sentence of sentences) {
+    const tokens = sentence.toLowerCase().split(/\s+/).slice(0, 3);
+    if (tokens.length < 2) continue;
+    const start = tokens.join(' ');
+    sentenceStarts.set(start, (sentenceStarts.get(start) || 0) + 1);
+  }
+
+  const repeatedStarts = Array.from(sentenceStarts.entries())
+    .filter(([, count]) => count >= 3)
+    .map(([start]) => start);
+  const maxRepeat = repeatedStarts.length > 0
+    ? Math.max(...repeatedStarts.map(start => sentenceStarts.get(start) || 0))
+    : 0;
+
+  return { repeatedStarts, maxRepeat };
+}
+
 /**
  * Score content quality
  */
-function scoreContentQuality(content: string): { score: number; issues: string[]; wineCount: number; aiPhraseCount: number } {
+function scoreContentQuality(content: string, category: string): { score: number; issues: string[]; wineCount: number; aiPhraseCount: number } {
   const issues: string[] = [];
   let score = 100;
 
   // Count wine recommendations
   const wineMatches = content.match(/<h3[^>]*>[\d]+\./g) || [];
   const wineCount = wineMatches.length;
+  const isEducationalGuide = content.includes('How To Explore This Topic');
+  const introParagraph = extractIntroParagraph(content).toLowerCase();
+  const genericIntroPhrases = [
+    'this guide focuses on',
+    'opens up a world',
+    'one of wine',
+    'in this guide',
+    'let us look at',
+  ];
+  const repeatedStarts = detectRepetitiveSentenceStarts(content);
+  const hasRelatedGuides = content.includes('<h2>Related Guides</h2>');
 
-  if (wineCount < 2) {
+  if (!isEducationalGuide && wineCount < 2) {
     issues.push(`Too few wine recommendations: ${wineCount} (min: 3)`);
     score -= 25;
-  } else if (wineCount < 3) {
+  } else if (!isEducationalGuide && wineCount < 3) {
     issues.push(`Could use more wine recommendations: ${wineCount}`);
     score -= 10;
+  } else if (isEducationalGuide && category === 'learn') {
+    score += 0;
+  }
+
+  if (category === 'buy' && wineCount < 3) {
+    issues.push('Buying guides need concrete bottle picks');
+    score -= 15;
   }
 
   // Check for duplicate content indicators
@@ -553,6 +611,32 @@ function scoreContentQuality(content: string): { score: number; issues: string[]
   if (content.includes('undefined') || content.includes('null')) {
     issues.push('Contains undefined/null references');
     score -= 15;
+  }
+
+  if (!hasRelatedGuides) {
+    issues.push('Missing related guides section');
+    score -= 10;
+  }
+
+  if (genericIntroPhrases.some(phrase => introParagraph.includes(phrase))) {
+    issues.push('Intro reads generic');
+    score -= 10;
+  }
+
+  if (repeatedStarts.maxRepeat >= 3) {
+    issues.push(`Repetitive sentence openings detected: ${repeatedStarts.repeatedStarts.slice(0, 2).join(', ')}`);
+    score -= 10;
+  }
+
+  if (wineCount > 0) {
+    const producerMatches = content.match(/<strong>Producer:<\/strong>/g) || [];
+    const regionMatches = content.match(/<strong>Region:<\/strong>/g) || [];
+    const varietyMatches = content.match(/<strong>Variety:<\/strong>/g) || [];
+    const evidenceCount = producerMatches.length + regionMatches.length + varietyMatches.length;
+    if (evidenceCount < wineCount * 2) {
+      issues.push('Bottle recommendations lack enough supporting detail');
+      score -= 10;
+    }
   }
 
   // AI content detection
@@ -841,7 +925,7 @@ export async function scoreArticle(
   const wordCountResult = scoreWordCount(wordCount);
   const structureResult = scoreStructure(content);
   const seoResult = scoreSEO(content);
-  const contentResult = scoreContentQuality(content);
+  const contentResult = scoreContentQuality(content, category);
   const technicalResult = scoreTechnicalValidity(content, filePath);
   const readabilityResult = scoreReadability(content);
   const diversityResult = checkTopicDiversity(slug, category, allSlugs);
