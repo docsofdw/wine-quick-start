@@ -34,6 +34,8 @@
     "articles:remediate:dry": "tsx src/scripts/remediate-legacy-articles.ts --dry-run",
     "articles:retrofit": "tsx src/scripts/retrofit-legacy-articles.ts --write",
     "articles:retrofit:dry": "tsx src/scripts/retrofit-legacy-articles.ts --dry-run",
+    "articles:rewrite-review": "tsx src/scripts/rewrite-review-articles.ts --write",
+    "articles:rewrite-review:dry": "tsx src/scripts/rewrite-review-articles.ts --dry-run",
     "articles:wines:refresh": "tsx src/scripts/refresh-article-wines.ts --write",
     "articles:wines:refresh:dry": "tsx src/scripts/refresh-article-wines.ts --dry-run",
     "seo:audit": "tsx src/scripts/enhance-seo.ts --audit",
