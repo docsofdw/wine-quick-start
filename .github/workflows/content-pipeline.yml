@@ -33,6 +33,15 @@ on:
         description: 'Max articles to enrich'
         required: false
         default: '3'
+      refresh_only:
+        description: 'Run refresh mode instead of new generation'
+        required: false
+        type: boolean
+        default: false
+      refresh_limit:
+        description: 'Max refresh targets to process'
+        required: false
+        default: '3'
       dry_run:
         description: 'Dry run mode (no changes)'
         required: false
@@ -166,6 +175,10 @@ jobs:
             CMD="$CMD --skip-generate"
           fi
 
+          if [ "${{ github.event.inputs.refresh_only }}" == "true" ]; then
+            CMD="$CMD --refresh-only --skip-generate"
+          fi
+
           if [ -n "${{ github.event.inputs.generate_count }}" ]; then
             CMD="$CMD --generate=${{ github.event.inputs.generate_count }}"
           else
@@ -176,6 +189,10 @@ jobs:
             CMD="$CMD --enrich-limit=${{ github.event.inputs.enrich_limit }}"
           else
             CMD="$CMD --enrich-limit=3"
+          fi
+
+          if [ -n "${{ github.event.inputs.refresh_limit }}" ]; then
+            CMD="$CMD --refresh-limit=${{ github.event.inputs.refresh_limit }}"
           fi
 
           # Wine validation (default: true)

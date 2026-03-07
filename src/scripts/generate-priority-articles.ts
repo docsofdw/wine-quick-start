@@ -616,6 +616,10 @@ function buildIntentSections(
           body: `<p>Look for consistency markers: serious producers, coherent regional identity, and a style that matches the occasion. That gives you a better edge than chasing point scores in a vacuum or assuming the highest price is the safest bottle.</p><p>If you are shopping on value, favor overlooked regions and disciplined producers rather than prestige labels that already price in reputation.</p>`,
         },
         {
+          heading: 'Best Fit By Buyer Type',
+          body: `<p>If you want everyday value, prioritize bottles with strong producer discipline and lower hype premiums. If you are buying for a dinner party, flexibility and food-friendliness matter more than rarity. If the bottle is a gift, presentation and producer recognition start to matter more alongside quality.</p><p>This framing keeps the page useful because it answers the real question behind most searches: not just “what is good?” but “what is right for how I plan to use it?”</p>`,
+        },
+        {
           heading: picksHeading,
           body: picksContent,
         },
@@ -626,6 +630,10 @@ function buildIntentSections(
         {
           heading: 'How To Build A Reliable Buying Bench',
           body: `<p>Once you find a producer or region that consistently delivers for your palate, use it as a benchmark. That gives you a practical reference when comparing new bottles and helps you avoid chasing random one-off recommendations.</p><p>Over time, a short list of benchmark bottles becomes the backbone of an autonomous buying system, which is exactly what most drinkers need more than endless option lists.</p>`,
+        },
+        {
+          heading: 'What To Avoid',
+          body: `<p>Avoid buying based only on shelf hype, luxury branding, or a vague promise of smoothness. Those cues are often expensive shortcuts around the actual question of whether the wine fits your taste, the occasion, and the food.</p><p>Also avoid mixing price tiers in your own reference points. If every comparison bottle in your head comes from a different style and budget, your buying decisions will stay noisy instead of getting sharper over time.</p>`,
         },
       ];
     default:

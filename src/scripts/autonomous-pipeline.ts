@@ -61,6 +61,9 @@ const sendNotification = args.includes('--notify');
 const verbose = args.includes('--verbose');
 const doValidateWines = args.includes('--validate-wines');
 const fullScan = args.includes('--full-scan');
+const refreshOnly = args.includes('--refresh-only');
+const refreshLimitArg = args.find(a => a.startsWith('--refresh-limit='));
+const refreshLimit = refreshLimitArg ? parseInt(refreshLimitArg.split('=')[1]) : enrichLimit;
 const generateTimeoutMs = parseInt(process.env.PIPELINE_GENERATE_TIMEOUT_MS || '720000', 10);
 const enrichTimeoutMs = parseInt(process.env.PIPELINE_ENRICH_TIMEOUT_MS || '720000', 10);
 
@@ -697,8 +700,11 @@ async function runPipeline(): Promise<PipelineResult> {
   console.log('🍷 AUTONOMOUS CONTENT PIPELINE');
   console.log('═'.repeat(60));
   console.log(`Mode: ${isDryRun ? 'DRY RUN' : 'LIVE'}`);
-  console.log(`Generate: ${skipGenerate ? 'SKIP' : generateCount + ' articles'}`);
+  console.log(`Generate: ${skipGenerate || refreshOnly ? 'SKIP' : generateCount + ' articles'}`);
   console.log(`Enrich: ${skipEnrich ? 'SKIP' : 'up to ' + enrichLimit + ' articles'}`);
+  if (refreshOnly) {
+    console.log(`Refresh Mode: ENABLED (limit ${refreshLimit})`);
+  }
   console.log(`Wine Validation: ${doValidateWines ? 'ENABLED' : 'DISABLED'}`);
   console.log(`Scoring Scope: ${fullScan ? 'FULL SCAN' : 'INCREMENTAL'}`);
   console.log('═'.repeat(60) + '\n');
@@ -706,7 +712,7 @@ async function runPipeline(): Promise<PipelineResult> {
   result.runRecordId = await createPipelineRunRecord();
 
   // Step 1: Generate new articles
-  if (!skipGenerate) {
+  if (!skipGenerate && !refreshOnly) {
     log('STEP 1: Generating new articles...', 'info');
 
     const keywords = await getKeywordsNeedingArticles(generateCount);
@@ -848,7 +854,11 @@ async function runPipeline(): Promise<PipelineResult> {
   // Step 3: Enrich articles that need it
   if (!skipEnrich) {
     log('\nSTEP 3: Enriching low-scoring articles...', 'info');
-    const refreshPriority = rankRefreshCandidates(allScores, collectContentGraph(), Math.max(enrichLimit * 2, 6));
+    const refreshPriority = rankRefreshCandidates(
+      allScores,
+      collectContentGraph(),
+      refreshOnly ? Math.max(refreshLimit * 2, refreshLimit) : Math.max(enrichLimit * 2, 6)
+    );
     const refreshMap = new Map(refreshPriority.map(candidate => [`${candidate.category}/${candidate.slug}`, candidate.score]));
     const needsEnrichment = allScores
       .filter(s => s.totalScore < AUTO_PUBLISH_THRESHOLD && s.totalScore >= REJECT_THRESHOLD)
@@ -858,7 +868,7 @@ async function runPipeline(): Promise<PipelineResult> {
         if (aPriority !== bPriority) return bPriority - aPriority;
         return a.totalScore - b.totalScore;
       })
-      .slice(0, enrichLimit);
+      .slice(0, refreshOnly ? refreshLimit : enrichLimit);
 
     if (needsEnrichment.length === 0) {
       log('No articles need enrichment', 'success');

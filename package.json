@@ -48,6 +48,7 @@
     "pipeline:generate": "tsx src/scripts/autonomous-pipeline.ts --skip-enrich",
     "pipeline:enrich": "tsx src/scripts/autonomous-pipeline.ts --skip-generate",
     "pipeline:validate": "tsx src/scripts/autonomous-pipeline.ts --skip-generate --validate-wines",
+    "content:report": "tsx src/scripts/content-operations-report.ts",
     "catalog:health": "tsx src/scripts/validate-all-wines.ts",
     "catalog:validate": "tsx src/scripts/validate-all-wines.ts --verbose",
     "catalog:fix": "tsx src/scripts/validate-all-wines.ts --fix",
