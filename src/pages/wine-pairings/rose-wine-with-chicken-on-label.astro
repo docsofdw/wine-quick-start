@@ -6,6 +6,7 @@ const frontmatter = {
   clusterKey: "rose-chicken",
   intentClass: "informational",
   pageRole: "supporting",
+  robots: "noindex, follow",
 
   title: "Best Wine with Chicken On Label: Sommelier Picks & Pairing Tips",
   description: "Find the perfect wine for chicken on label. Expert sommelier picks with flavor matching tips and serving suggestions. Updated Feb 2026.",
@@ -15,7 +16,7 @@ const frontmatter = {
   authorSlug: "james-thornton",
   readTime: "12 min",
   keywords: ["rose wine with chicken on label", "rose", "wine", "with", "chicken", "label", "wine guide", "sommelier picks"],
-  canonicalUrl: "https://winesquickstart.com/wine-pairings/rose-wine-with-chicken-on-label",
+  canonicalUrl: "https://winesquickstart.com/wine-pairings/rose-wine-with-chicken",
   featuredImageAlt: "Rose Wine With Chicken On Label - Professional photo of rosé wine paired with chicken",
   structured_data: {
       "@context": "https://schema.org",
@@ -116,7 +117,7 @@ const frontmatter = {
 };
 ---
 
-<ArticleLayout canonical={frontmatter.canonicalUrl} categorySlug="wine-pairings" title={frontmatter.title} description={frontmatter.description} author={frontmatter.author} readTime={frontmatter.readTime} category="Wine Pairing" schema={frontmatter.structured_data} featuredImage={featuredImage} featuredImageAlt={frontmatter.featuredImageAlt}>
+<ArticleLayout canonical={frontmatter.canonicalUrl} robots={frontmatter.robots} categorySlug="wine-pairings" title={frontmatter.title} description={frontmatter.description} author={frontmatter.author} readTime={frontmatter.readTime} category="Wine Pairing" schema={frontmatter.structured_data} featuredImage={featuredImage} featuredImageAlt={frontmatter.featuredImageAlt}>
   <!-- Author Attribution -->
   <div class="bg-gray-50 p-4 rounded-lg mb-6 flex items-center gap-4">
     <div class="w-12 h-12 rounded-full bg-wine-100 flex items-center justify-center text-wine-700 font-bold">

@@ -6,7 +6,8 @@ const frontmatter = {
   clusterKey: "napa-valley",
   intentClass: "informational",
   pageRole: "seed",
-  canonicalUrl: "https://winesquickstart.com/learn/napa-valley-wine-guide",
+  canonicalUrl: "https://winesquickstart.com/learn/napa-valley-wine",
+  robots: "noindex, follow",
 
   title: "Napa Valley Wine Guide - Expert Guide",
   description: "Your complete guide to napa valley wine guide. Explore top producers, signature styles, and expert recommendations from certified sommeliers to find your...",
@@ -84,7 +85,7 @@ const frontmatter = {
 };
 ---
 
-<ArticleLayout canonical={frontmatter.canonicalUrl} categorySlug="learn" title={frontmatter.title} description={frontmatter.description} author={frontmatter.author} readTime={frontmatter.readTime} category="Wine Guide" schema={frontmatter.structured_data} featuredImage={featuredImage}>
+<ArticleLayout canonical={frontmatter.canonicalUrl} robots={frontmatter.robots} categorySlug="learn" title={frontmatter.title} description={frontmatter.description} author={frontmatter.author} readTime={frontmatter.readTime} category="Wine Guide" schema={frontmatter.structured_data} featuredImage={featuredImage}>
   <!-- Author Attribution -->
   <div class="bg-gray-50 p-4 rounded-lg mb-6 flex items-center gap-4">
     <div class="w-12 h-12 rounded-full bg-wine-100 flex items-center justify-center text-wine-700 font-bold">

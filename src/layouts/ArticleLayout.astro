@@ -20,6 +20,7 @@ interface Props {
   title: string;
   description: string;
   canonical?: string;
+  robots?: string;
   author?: string;
   readTime?: string;
   category?: string;
@@ -34,6 +35,7 @@ const {
   title,
   description,
   canonical,
+  robots,
   author = 'Wine Quick Start Team',
   readTime = '5 min',
   category = 'Wine Guide',
@@ -55,7 +57,7 @@ const breadcrumbItems = [
 ];
 ---
 
-<BaseLayout {title} {description} canonical={canonical} {schema} {ogImage}>
+<BaseLayout {title} {description} canonical={canonical} robots={robots} {schema} {ogImage}>
   <article class="py-8 md:py-12 lg:py-16">
     <div class="max-w-4xl mx-auto px-4 sm:px-6">
       <!-- Breadcrumbs -->

@@ -7,6 +7,7 @@ const {
   title = 'Wine Quick Start - Simple Wine Guidance',
   description = 'Simple wine guidance from certified sommeliers. Find the right wine for any occasion.',
   canonical,
+  robots = 'index, follow',
   schema,
   ogImage
 } = Astro.props;
@@ -46,7 +47,7 @@ const currentPath = Astro.url.pathname;
     <meta name="twitter:image" content={ogImageURL} />
     
     <!-- Additional Meta -->
-    <meta name="robots" content="index, follow" />
+    <meta name="robots" content={robots} />
     <meta name="author" content="Wine Quick Start" />
     <meta name="theme-color" content="#a52145" />
     
