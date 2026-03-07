@@ -1,0 +1,36 @@
+{
+  "timestamp": "2026-03-07T04:24:43.187Z",
+  "generated": [
+    {
+      "slug": "natural-wine",
+      "category": "learn",
+      "keyword": "natural wine"
+    }
+  ],
+  "enriched": [
+    {
+      "slug": "natural-wine",
+      "beforeScore": 70,
+      "afterScore": 92
+    }
+  ],
+  "published": [
+    {
+      "slug": "natural-wine",
+      "score": 91
+    }
+  ],
+  "rejected": [],
+  "skipped": [],
+  "flaggedWines": [],
+  "errors": [],
+  "summary": {
+    "totalProcessed": 1,
+    "newArticles": 1,
+    "enrichedArticles": 1,
+    "publishedArticles": 1,
+    "rejectedArticles": 0,
+    "flaggedWineArticles": 0,
+    "avgScore": 91
+  }
+}
