@@ -39,6 +39,12 @@ import {
   type QAScore,
 } from './qa-score-article.js';
 import { getWinesForKeyword } from '../lib/wine-catalog.js';
+import {
+  collectContentGraph,
+  rankKeywordCandidates,
+  rankRefreshCandidates,
+  type RankedKeywordCandidate,
+} from '../lib/content-graph.js';
 
 config({ path: '.env.local', override: true });
 
@@ -87,6 +93,7 @@ interface PipelineResult {
   rejected: { slug: string; score: number; reason: string }[];
   skipped: { slug: string; reason: string }[];
   flaggedWines: { slug: string; invalidWines: string[] }[];  // NEW: Articles with invalid wines
+  refreshTargets: { slug: string; category: string; reasons: string[]; priorityScore: number }[];
   errors: string[];
   runRecordId?: number | null;
   summary: {
@@ -361,7 +368,7 @@ async function insertArticleOutcomeRecords(runRecordId: number | null, result: P
 /**
  * Get high-priority keywords that need articles
  */
-async function getKeywordsNeedingArticles(limit: number): Promise<any[]> {
+async function getKeywordsNeedingArticles(limit: number): Promise<RankedKeywordCandidate[]> {
   if (!supabase) {
     log('Supabase not configured, using fallback keywords', 'warn');
     return [];
@@ -379,7 +386,8 @@ async function getKeywordsNeedingArticles(limit: number): Promise<any[]> {
       .limit(fetchLimit); // Pull a wider candidate pool because many keywords fail wine matching
 
     if (error) throw error;
-    return keywords || [];
+    const graph = collectContentGraph();
+    return rankKeywordCandidates(keywords || [], graph, limit * 4);
   } catch (err: any) {
     log(`Failed to fetch keywords: ${err.message}`, 'error');
     return [];
@@ -529,7 +537,6 @@ async function markKeywordUsed(keyword: string): Promise<boolean> {
     const { data, error } = await supabase
       .from('keyword_opportunities')
       .update({ status: 'used', used_at: new Date().toISOString() })
-      .eq('status', 'active')
       .eq('keyword', keyword)
       .select('keyword');
 
@@ -671,6 +678,7 @@ async function runPipeline(): Promise<PipelineResult> {
     rejected: [],
     skipped: [],
     flaggedWines: [],
+    refreshTargets: [],
     errors: [],
     runRecordId: null,
     summary: {
@@ -724,6 +732,8 @@ async function runPipeline(): Promise<PipelineResult> {
             debug(`Wine check failed: ${err.message} - proceeding anyway`);
           }
         }
+
+        debug(`Cluster ${keyword.clusterKey} | role ${keyword.pageRole} | category ${keyword.category} | cluster coverage ${keyword.clusterCoverage}`);
 
         const slug = await generateArticle(keyword, result);
         if (slug) {
@@ -838,10 +848,16 @@ async function runPipeline(): Promise<PipelineResult> {
   // Step 3: Enrich articles that need it
   if (!skipEnrich) {
     log('\nSTEP 3: Enriching low-scoring articles...', 'info');
-
+    const refreshPriority = rankRefreshCandidates(allScores, collectContentGraph(), Math.max(enrichLimit * 2, 6));
+    const refreshMap = new Map(refreshPriority.map(candidate => [`${candidate.category}/${candidate.slug}`, candidate.score]));
     const needsEnrichment = allScores
       .filter(s => s.totalScore < AUTO_PUBLISH_THRESHOLD && s.totalScore >= REJECT_THRESHOLD)
-      .sort((a, b) => a.totalScore - b.totalScore)
+      .sort((a, b) => {
+        const aPriority = refreshMap.get(`${a.category}/${a.slug}`) || 0;
+        const bPriority = refreshMap.get(`${b.category}/${b.slug}`) || 0;
+        if (aPriority !== bPriority) return bPriority - aPriority;
+        return a.totalScore - b.totalScore;
+      })
       .slice(0, enrichLimit);
 
     if (needsEnrichment.length === 0) {
@@ -882,6 +898,7 @@ async function runPipeline(): Promise<PipelineResult> {
   log('\nSTEP 4: Final scoring and publishing decisions...', 'info');
 
   const finalScores = await scoreArticleFiles(scoringFilePaths, doValidateWines);
+  const contentGraph = collectContentGraph();
 
   for (const score of finalScores) {
     // Check for invalid wines
@@ -923,6 +940,14 @@ async function runPipeline(): Promise<PipelineResult> {
     flaggedWineArticles: result.flaggedWines.length,
     avgScore: getScoreSummary(finalScores).avgScore,
   };
+
+  result.refreshTargets = rankRefreshCandidates(finalScores, contentGraph, Math.max(enrichLimit, 3))
+    .map(candidate => ({
+      slug: candidate.slug,
+      category: candidate.category,
+      reasons: candidate.reasons,
+      priorityScore: candidate.score,
+    }));
 
   // Log results
   if (!isDryRun) {
@@ -986,6 +1011,13 @@ function printSummary(result: PipelineResult) {
       const delta = e.afterScore - e.beforeScore;
       const arrow = delta > 0 ? '↑' : delta < 0 ? '↓' : '→';
       console.log(`   ${e.slug}: ${e.beforeScore}% ${arrow} ${e.afterScore}% (${delta > 0 ? '+' : ''}${delta})`);
+    }
+  }
+
+  if (result.refreshTargets.length > 0) {
+    console.log(`\n🔁 REFRESH TARGETS:`);
+    for (const target of result.refreshTargets.slice(0, 5)) {
+      console.log(`   ${target.category}/${target.slug} (${target.priorityScore}) - ${target.reasons.join(', ')}`);
     }
   }
 

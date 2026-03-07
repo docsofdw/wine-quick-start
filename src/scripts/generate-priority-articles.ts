@@ -42,6 +42,12 @@ import {
   type FAQItem,
   type HowToStep,
 } from '../lib/seo-utils.js';
+import {
+  deriveClusterKey,
+  determineIntentClass,
+  determinePageRole,
+  suggestLinksForArticle,
+} from '../lib/content-graph.js';
 
 // Parse CLI args
 const args = process.argv.slice(2);
@@ -517,32 +523,20 @@ function generateRelatedGuidesHTML(
   keyword: string,
   category: 'learn' | 'wine-pairings' | 'buy'
 ): string {
-  const links = [
-    {
-      href: '/learn',
-      label: 'Wine guides',
-      description: `Build a stronger foundation around ${keyword} with broader educational guides.`,
-    },
-    {
-      href: '/wine-pairings',
-      label: 'Wine pairings',
-      description: category === 'wine-pairings'
-        ? `Compare this advice with other food pairings to see how sauce, fat, acid, and texture shift the recommendation.`
-        : `See how this topic changes at the table by exploring pairing-specific guidance and menu context.`,
-    },
-    {
-      href: '/buy',
-      label: 'Buying guides',
-      description: `Turn this topic into a shopping decision with bottle-focused buying guides and value benchmarks.`,
-    },
+  const links = suggestLinksForArticle(keyword, category, 3);
+  const fallbackLinks = [
+    { href: '/learn', label: 'Wine guides', reason: 'Broader context' },
+    { href: '/wine-pairings', label: 'Wine pairings', reason: 'Food context' },
+    { href: '/buy', label: 'Buying guides', reason: 'Commercial next step' },
   ];
+  const finalLinks = links.length > 0 ? links : fallbackLinks;
 
   return `
       <div class="grid gap-4 md:grid-cols-3">
-        ${links.map(link => `
+        ${finalLinks.map(link => `
         <a href="${link.href}" class="block rounded-lg border border-gray-200 p-4 hover:border-wine-300 hover:bg-gray-50 transition">
           <h3 class="text-lg font-semibold text-wine-700 mb-2">${link.label}</h3>
-          <p class="text-sm text-gray-700">${link.description}</p>
+          <p class="text-sm text-gray-700">${'reason' in link ? link.reason : 'Related reading'}</p>
         </a>`).join('')}
       </div>`;
 }
@@ -675,6 +669,9 @@ function generateArticleContent(
 ): string {
   const intent = determineIntent(keyword);
   const archetype = determineArticleArchetype(keyword, category);
+  const clusterKey = deriveClusterKey(keyword);
+  const intentClass = determineIntentClass(keyword);
+  const pageRole = determinePageRole(keyword, category);
   const title = generateSEOTitle(keyword, category);
   const description = generateMetaDescription(keyword, intent);
   const canonicalUrl = generateCanonicalUrl(category, slug);
@@ -775,6 +772,9 @@ const frontmatter = {
   authorRole: "${author.role}",
   authorSlug: "${author.slug}",
   readTime: "6 min",
+  clusterKey: "${clusterKey}",
+  intentClass: "${intentClass}",
+  pageRole: "${pageRole}",
   keywords: ["${keyword}", ${keywordParts.map(w => `"${w}"`).join(', ')}, "wine guide", "sommelier picks"],
   canonicalUrl: "${canonicalUrl}",
   ${imageData.success ? `featuredImageAlt: "${imageData.altText}",` : ''}
