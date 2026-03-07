@@ -159,6 +159,83 @@ FOR ALL USING (true);
       console.log('✅ email_subscribers table exists');
     }
 
+    // Test pipeline_runs table
+    console.log('\n5. Testing pipeline_runs table...');
+    const { error: pipelineRunsError } = await supabase
+      .from('pipeline_runs')
+      .select('*')
+      .limit(1);
+
+    if (pipelineRunsError) {
+      console.log('❌ pipeline_runs table missing:', pipelineRunsError.message);
+      console.log('📝 You need to create this table in Supabase dashboard');
+      console.log('\nSQL to run in Supabase SQL Editor:');
+      console.log(`
+CREATE TABLE pipeline_runs (
+  id BIGSERIAL PRIMARY KEY,
+  run_identifier TEXT UNIQUE NOT NULL,
+  trigger_type TEXT NOT NULL,
+  run_mode TEXT NOT NULL,
+  status TEXT NOT NULL,
+  config JSONB DEFAULT '{}'::jsonb,
+  commit_sha TEXT,
+  source_branch TEXT,
+  generated_articles INTEGER DEFAULT 0,
+  enriched_articles INTEGER DEFAULT 0,
+  publish_ready_articles INTEGER DEFAULT 0,
+  rejected_articles INTEGER DEFAULT 0,
+  flagged_wine_articles INTEGER DEFAULT 0,
+  avg_score NUMERIC(5,2),
+  error_count INTEGER DEFAULT 0,
+  result_json JSONB DEFAULT '{}'::jsonb,
+  started_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+  completed_at TIMESTAMP WITH TIME ZONE
+);
+
+ALTER TABLE pipeline_runs ENABLE ROW LEVEL SECURITY;
+
+CREATE POLICY "Enable all access for authenticated users" ON pipeline_runs
+FOR ALL USING (true);
+      `);
+    } else {
+      console.log('✅ pipeline_runs table exists');
+    }
+
+    // Test pipeline_article_outcomes table
+    console.log('\n6. Testing pipeline_article_outcomes table...');
+    const { error: pipelineOutcomesError } = await supabase
+      .from('pipeline_article_outcomes')
+      .select('*')
+      .limit(1);
+
+    if (pipelineOutcomesError) {
+      console.log('❌ pipeline_article_outcomes table missing:', pipelineOutcomesError.message);
+      console.log('📝 You need to create this table in Supabase dashboard');
+      console.log('\nSQL to run in Supabase SQL Editor:');
+      console.log(`
+CREATE TABLE pipeline_article_outcomes (
+  id BIGSERIAL PRIMARY KEY,
+  pipeline_run_id BIGINT REFERENCES pipeline_runs(id) ON DELETE CASCADE,
+  run_identifier TEXT NOT NULL,
+  slug TEXT NOT NULL,
+  keyword TEXT,
+  category TEXT,
+  outcome TEXT NOT NULL,
+  reason TEXT,
+  qa_score NUMERIC(5,2),
+  metadata JSONB DEFAULT '{}'::jsonb,
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
+ALTER TABLE pipeline_article_outcomes ENABLE ROW LEVEL SECURITY;
+
+CREATE POLICY "Enable all access for authenticated users" ON pipeline_article_outcomes
+FOR ALL USING (true);
+      `);
+    } else {
+      console.log('✅ pipeline_article_outcomes table exists');
+    }
+
     console.log('\n📋 Database setup complete!');
     console.log('\n🔗 Next steps:');
     console.log('1. Go to your Supabase dashboard: https://app.supabase.com/project/nsyubkcfsrsowgefkbii');

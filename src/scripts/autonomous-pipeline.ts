@@ -86,6 +86,7 @@ interface PipelineResult {
   skipped: { slug: string; reason: string }[];
   flaggedWines: { slug: string; invalidWines: string[] }[];  // NEW: Articles with invalid wines
   errors: string[];
+  runRecordId?: number | null;
   summary: {
     totalProcessed: number;
     newArticles: number;
@@ -96,6 +97,21 @@ interface PipelineResult {
     avgScore: number;
   };
 }
+
+interface PipelineArticleOutcomeRecord {
+  slug: string;
+  keyword: string | null;
+  category: string | null;
+  outcome: 'generated' | 'skipped' | 'publish_ready' | 'rejected' | 'enriched' | 'flagged_wines';
+  reason?: string | null;
+  qaScore?: number | null;
+  metadata?: Record<string, unknown> | null;
+}
+
+const runIdentifier = process.env.GITHUB_RUN_ID || `local-${Date.now()}`;
+const triggerType = process.env.GITHUB_EVENT_NAME || (isDryRun ? 'dry_run' : 'manual');
+let pipelineTrackingDisabled = false;
+let activePipelineResult: PipelineResult | null = null;
 
 /**
  * Logger utility
@@ -108,6 +124,193 @@ function log(message: string, level: 'info' | 'warn' | 'error' | 'success' = 'in
 function debug(message: string) {
   if (verbose) {
     console.log(`   🔍 ${message}`);
+  }
+}
+
+function isMissingTrackingTable(error: any): boolean {
+  const message = String(error?.message || error || '');
+  return /pipeline_runs|pipeline_article_outcomes|relation .* does not exist/i.test(message);
+}
+
+async function createPipelineRunRecord(): Promise<number | null> {
+  if (!supabase || isDryRun || pipelineTrackingDisabled) return null;
+
+  const payload = {
+    run_identifier: runIdentifier,
+    trigger_type: triggerType,
+    run_mode: isDryRun ? 'dry_run' : 'live',
+    status: 'running',
+    started_at: new Date().toISOString(),
+    config: {
+      generateCount,
+      enrichLimit,
+      skipGenerate,
+      skipEnrich,
+      fullScan,
+      validateWines: doValidateWines,
+    },
+    commit_sha: process.env.GITHUB_SHA || null,
+    source_branch: process.env.GITHUB_REF_NAME || null,
+  };
+
+  try {
+    const { data, error } = await supabase
+      .from('pipeline_runs')
+      .insert(payload)
+      .select('id')
+      .single();
+
+    if (error) throw error;
+    return data?.id ?? null;
+  } catch (error: any) {
+    if (isMissingTrackingTable(error)) {
+      pipelineTrackingDisabled = true;
+      debug('Pipeline tracking tables are not present yet; continuing without durable run tracking');
+      return null;
+    }
+
+    debug(`Failed to create pipeline run record: ${error.message}`);
+    return null;
+  }
+}
+
+async function updatePipelineRunRecord(runRecordId: number | null, result: PipelineResult, status: 'completed' | 'failed'): Promise<void> {
+  if (!supabase || isDryRun || !runRecordId || pipelineTrackingDisabled) return;
+
+  try {
+    const { error } = await supabase
+      .from('pipeline_runs')
+      .update({
+        status,
+        completed_at: new Date().toISOString(),
+        generated_articles: result.summary.newArticles,
+        enriched_articles: result.summary.enrichedArticles,
+        publish_ready_articles: result.summary.publishedArticles,
+        rejected_articles: result.summary.rejectedArticles,
+        flagged_wine_articles: result.summary.flaggedWineArticles,
+        avg_score: result.summary.avgScore,
+        error_count: result.errors.length,
+        result_json: result,
+      })
+      .eq('id', runRecordId);
+
+    if (error) throw error;
+  } catch (error: any) {
+    if (isMissingTrackingTable(error)) {
+      pipelineTrackingDisabled = true;
+      debug('Pipeline tracking tables are not present yet; skipping run update');
+      return;
+    }
+
+    debug(`Failed to update pipeline run record: ${error.message}`);
+  }
+}
+
+function buildArticleOutcomeRecords(result: PipelineResult): PipelineArticleOutcomeRecord[] {
+  const records: PipelineArticleOutcomeRecord[] = [];
+
+  for (const article of result.generated) {
+    records.push({
+      slug: article.slug,
+      keyword: article.keyword,
+      category: article.category,
+      outcome: 'generated',
+    });
+  }
+
+  for (const article of result.enriched) {
+    records.push({
+      slug: article.slug,
+      keyword: null,
+      category: null,
+      outcome: 'enriched',
+      metadata: {
+        beforeScore: article.beforeScore,
+        afterScore: article.afterScore,
+      },
+    });
+  }
+
+  for (const article of result.published) {
+    const generatedMatch = result.generated.find(g => g.slug === article.slug);
+    records.push({
+      slug: article.slug,
+      keyword: generatedMatch?.keyword || null,
+      category: generatedMatch?.category || null,
+      outcome: 'publish_ready',
+      qaScore: article.score,
+    });
+  }
+
+  for (const article of result.rejected) {
+    records.push({
+      slug: article.slug,
+      keyword: null,
+      category: null,
+      outcome: 'rejected',
+      reason: article.reason,
+      qaScore: article.score,
+    });
+  }
+
+  for (const article of result.skipped) {
+    records.push({
+      slug: article.slug,
+      keyword: result.generated.find(g => g.slug === article.slug)?.keyword || null,
+      category: result.generated.find(g => g.slug === article.slug)?.category || null,
+      outcome: 'skipped',
+      reason: article.reason,
+    });
+  }
+
+  for (const article of result.flaggedWines) {
+    records.push({
+      slug: article.slug,
+      keyword: null,
+      category: null,
+      outcome: 'flagged_wines',
+      metadata: {
+        invalidWines: article.invalidWines,
+      },
+    });
+  }
+
+  return records;
+}
+
+async function insertArticleOutcomeRecords(runRecordId: number | null, result: PipelineResult): Promise<void> {
+  if (!supabase || isDryRun || !runRecordId || pipelineTrackingDisabled) return;
+
+  const records = buildArticleOutcomeRecords(result);
+  if (records.length === 0) return;
+
+  try {
+    const payload = records.map(record => ({
+      pipeline_run_id: runRecordId,
+      run_identifier: runIdentifier,
+      slug: record.slug,
+      keyword: record.keyword,
+      category: record.category,
+      outcome: record.outcome,
+      reason: record.reason || null,
+      qa_score: record.qaScore || null,
+      metadata: record.metadata || null,
+      created_at: new Date().toISOString(),
+    }));
+
+    const { error } = await supabase
+      .from('pipeline_article_outcomes')
+      .insert(payload);
+
+    if (error) throw error;
+  } catch (error: any) {
+    if (isMissingTrackingTable(error)) {
+      pipelineTrackingDisabled = true;
+      debug('Pipeline tracking tables are not present yet; skipping article outcome tracking');
+      return;
+    }
+
+    debug(`Failed to insert article outcome records: ${error.message}`);
   }
 }
 
@@ -437,6 +640,7 @@ async function runPipeline(): Promise<PipelineResult> {
     skipped: [],
     flaggedWines: [],
     errors: [],
+    runRecordId: null,
     summary: {
       totalProcessed: 0,
       newArticles: 0,
@@ -447,6 +651,7 @@ async function runPipeline(): Promise<PipelineResult> {
       avgScore: 0,
     },
   };
+  activePipelineResult = result;
 
   console.log('\n' + '═'.repeat(60));
   console.log('🍷 AUTONOMOUS CONTENT PIPELINE');
@@ -457,6 +662,8 @@ async function runPipeline(): Promise<PipelineResult> {
   console.log(`Wine Validation: ${doValidateWines ? 'ENABLED' : 'DISABLED'}`);
   console.log(`Scoring Scope: ${fullScan ? 'FULL SCAN' : 'INCREMENTAL'}`);
   console.log('═'.repeat(60) + '\n');
+
+  result.runRecordId = await createPipelineRunRecord();
 
   // Step 1: Generate new articles
   if (!skipGenerate) {
@@ -690,11 +897,15 @@ async function runPipeline(): Promise<PipelineResult> {
     logResults(result);
   }
 
+  await insertArticleOutcomeRecords(result.runRecordId ?? null, result);
+  await updatePipelineRunRecord(result.runRecordId ?? null, result, 'completed');
+
   // Send notification if requested
   if (sendNotification) {
     await sendNotificationSummary(result);
   }
 
+  activePipelineResult = null;
   return result;
 }
 
@@ -767,7 +978,13 @@ function printSummary(result: PipelineResult) {
 // Main execution
 runPipeline()
   .then(printSummary)
-  .catch((err) => {
+  .catch(async (err) => {
+    if (activePipelineResult) {
+      activePipelineResult.errors.push(err instanceof Error ? err.message : String(err));
+      await updatePipelineRunRecord(activePipelineResult.runRecordId ?? null, activePipelineResult, 'failed');
+      activePipelineResult = null;
+    }
+    debug(`Pipeline failed before completion: ${err instanceof Error ? err.message : String(err)}`);
     console.error('Pipeline failed:', err);
     process.exit(1);
   });
