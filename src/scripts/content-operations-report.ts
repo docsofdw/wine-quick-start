@@ -22,6 +22,7 @@ export interface ContentOperationsSnapshot {
   };
   underbuiltClusters: Array<{ clusterKey: string; total: number; money: number; seed: number; supporting: number }>;
   refreshBacklog: Array<{ slug: string; category: string; score: number; reasons: string[]; clusterKey: string }>;
+  reviewIssueBacklog: Array<{ issueType: string; count: number }>;
   qaDistribution: {
     pass: number;
     review: number;
@@ -54,6 +55,16 @@ export async function generateOperationsSnapshot(): Promise<ContentOperationsSna
     .slice(0, 15);
 
   const refreshBacklog = rankRefreshCandidates(scores, graph, 15);
+  const reviewIssueMap = new Map<string, number>();
+  for (const score of scores.filter(entry => entry.totalScore >= 60 && entry.totalScore < 85)) {
+    for (const issueType of score.issueTypes || []) {
+      reviewIssueMap.set(issueType, (reviewIssueMap.get(issueType) || 0) + 1);
+    }
+  }
+  const reviewIssueBacklog = Array.from(reviewIssueMap.entries())
+    .map(([issueType, count]) => ({ issueType, count }))
+    .sort((a, b) => b.count - a.count)
+    .slice(0, 10);
   const byCategory = new Map<string, number>();
   for (const node of graph) {
     byCategory.set(node.category, (byCategory.get(node.category) || 0) + 1);
@@ -81,6 +92,7 @@ export async function generateOperationsSnapshot(): Promise<ContentOperationsSna
       reasons: candidate.reasons,
       clusterKey: candidate.clusterKey,
     })),
+    reviewIssueBacklog,
     qaDistribution,
   };
 }
@@ -108,6 +120,15 @@ function printSnapshot(snapshot: ContentOperationsSnapshot): void {
   } else {
     for (const candidate of snapshot.refreshBacklog) {
       console.log(`   ${candidate.category}/${candidate.slug} (${candidate.score}) - ${candidate.reasons.join(', ')}`);
+    }
+  }
+
+  console.log('\n🩺 Review Issue Backlog');
+  if (snapshot.reviewIssueBacklog.length === 0) {
+    console.log('   none');
+  } else {
+    for (const issue of snapshot.reviewIssueBacklog) {
+      console.log(`   ${issue.issueType}: ${issue.count}`);
     }
   }
 
@@ -143,6 +164,7 @@ async function persistSnapshotToSupabase(snapshot: ContentOperationsSnapshot): P
         inventory_by_category: snapshot.inventory.byCategory,
         underbuilt_clusters: snapshot.underbuiltClusters,
         refresh_backlog: snapshot.refreshBacklog,
+        review_issue_backlog: snapshot.reviewIssueBacklog,
         qa_distribution: snapshot.qaDistribution,
         snapshot_json: snapshot,
         created_at: snapshot.timestamp,

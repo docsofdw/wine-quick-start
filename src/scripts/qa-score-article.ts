@@ -40,6 +40,7 @@ export interface QAScore {
   slug: string;
   category: string;
   filePath: string;
+  issueTypes: ReviewIssueType[];
   scores: {
     wordCount: number;        // 0-100
     structure: number;        // 0-100
@@ -76,6 +77,22 @@ export interface QAScore {
     metaDescription?: string; // For uniqueness checking
   };
 }
+
+export type ReviewIssueType =
+  | 'word_count_low'
+  | 'word_count_high'
+  | 'duplicate_content'
+  | 'weak_recommendations'
+  | 'missing_internal_links'
+  | 'readability'
+  | 'generic_intro'
+  | 'repetitive_structure'
+  | 'metadata'
+  | 'technical'
+  | 'wine_validation'
+  | 'topic_saturation'
+  | 'missing_sections'
+  | 'ai_style';
 
 // Recent topics cache for diversity checking (populated during scoreAllArticles)
 let recentTopicsCache: Map<string, string[]> = new Map();
@@ -308,29 +325,71 @@ function checkTopicDiversity(slug: string, category: string, allSlugs: string[])
   return { score, issues, similarTopics };
 }
 
-/**
- * Score word count (target: 1500-3000 words)
- */
-function scoreWordCount(wordCount: number): { score: number; issues: string[] } {
-  const issues: string[] = [];
+interface WordCountTargets {
+  min: number;
+  target: number;
+  idealMax: number;
+  hardMax: number;
+}
 
-  if (wordCount < 500) {
-    issues.push(`Word count critically low: ${wordCount} (min: 500)`);
+function extractFrontmatterValue(content: string, key: string): string | null {
+  const match = content.match(new RegExp(`${key}:\\s*["']([^"']+)["']`));
+  return match ? match[1] : null;
+}
+
+function getWordCountTargets(
+  category: string,
+  pageRole: string | null,
+  intentClass: string | null
+): WordCountTargets {
+  if (category === 'buy' || pageRole === 'money') {
+    return { min: 1100, target: 1400, idealMax: 2800, hardMax: 3600 };
+  }
+
+  if (pageRole === 'seed') {
+    return { min: 900, target: 1100, idealMax: 2200, hardMax: 3200 };
+  }
+
+  if (category === 'wine-pairings') {
+    return { min: 1100, target: 1300, idealMax: 2400, hardMax: 3400 };
+  }
+
+  if (intentClass === 'informational') {
+    return { min: 1200, target: 1500, idealMax: 2800, hardMax: 4000 };
+  }
+
+  return { min: 1000, target: 1300, idealMax: 2600, hardMax: 3600 };
+}
+
+/**
+ * Score word count with intent-aware targets.
+ */
+function scoreWordCount(
+  wordCount: number,
+  category: string,
+  pageRole: string | null,
+  intentClass: string | null
+): { score: number; issues: string[] } {
+  const issues: string[] = [];
+  const targets = getWordCountTargets(category, pageRole, intentClass);
+
+  if (wordCount < Math.floor(targets.min * 0.5)) {
+    issues.push(`Word count critically low: ${wordCount} (min: ${targets.min})`);
     return { score: 20, issues };
   }
-  if (wordCount < 1000) {
-    issues.push(`Word count low: ${wordCount} (target: 1500+)`);
+  if (wordCount < targets.min) {
+    issues.push(`Word count low: ${wordCount} (target: ${targets.target}+)`);
     return { score: 50, issues };
   }
-  if (wordCount < 1500) {
-    issues.push(`Word count below target: ${wordCount} (target: 1500+)`);
-    return { score: 70, issues };
+  if (wordCount < targets.target) {
+    issues.push(`Word count below target: ${wordCount} (target: ${targets.target}+)`);
+    return { score: 78, issues };
   }
-  if (wordCount > 4000) {
-    issues.push(`Word count excessive: ${wordCount} (max: 4000)`);
+  if (wordCount > targets.hardMax) {
+    issues.push(`Word count excessive: ${wordCount} (max: ${targets.hardMax})`);
     return { score: 80, issues };
   }
-  if (wordCount >= 1500 && wordCount <= 3000) {
+  if (wordCount >= targets.target && wordCount <= targets.idealMax) {
     return { score: 100, issues };
   }
   return { score: 90, issues };
@@ -908,6 +967,8 @@ export async function scoreArticle(
   const content = fs.readFileSync(filePath, 'utf-8');
   const slug = path.basename(filePath, '.astro');
   const category = path.basename(path.dirname(filePath));
+  const pageRole = extractFrontmatterValue(content, 'pageRole');
+  const intentClass = extractFrontmatterValue(content, 'intentClass');
 
   // Calculate word count
   const textContent = content
@@ -922,7 +983,7 @@ export async function scoreArticle(
   const hasImage = content.includes('featuredImage');
 
   // Run all scoring functions
-  const wordCountResult = scoreWordCount(wordCount);
+  const wordCountResult = scoreWordCount(wordCount, category, pageRole, intentClass);
   const structureResult = scoreStructure(content);
   const seoResult = scoreSEO(content);
   const contentResult = scoreContentQuality(content, category);
@@ -959,6 +1020,7 @@ export async function scoreArticle(
     ...diversityResult.issues,
     ...wineValidityResult.issues,
   ];
+  const issueTypes = classifyIssueTypes(issues);
 
   // Check for key sections (for metrics)
   const hasQuickAnswer = content.includes('slot="quick-answer"') || content.includes('Quick Answer');
@@ -970,6 +1032,7 @@ export async function scoreArticle(
     slug,
     category,
     filePath,
+    issueTypes,
     scores,
     totalScore,
     status,
@@ -997,6 +1060,29 @@ export async function scoreArticle(
       metaDescription: seoResult.metaDescription || undefined,
     },
   };
+}
+
+export function classifyIssueTypes(issues: string[]): ReviewIssueType[] {
+  const issueTypes = new Set<ReviewIssueType>();
+
+  for (const issue of issues) {
+    if (/Word count critically low|Word count low|Word count below target/i.test(issue)) issueTypes.add('word_count_low');
+    if (/Word count excessive/i.test(issue)) issueTypes.add('word_count_high');
+    if (/duplicate|Similar topic exists|Topic has duplicates/i.test(issue)) issueTypes.add('duplicate_content');
+    if (/Too few wine recommendations|Could use more wine recommendations|Buying guides need concrete bottle picks|Bottle recommendations lack enough supporting detail/i.test(issue)) issueTypes.add('weak_recommendations');
+    if (/Few internal links|Missing cross-intent internal links/i.test(issue)) issueTypes.add('missing_internal_links');
+    if (/Flesch score|Content too complex|Content too simple/i.test(issue)) issueTypes.add('readability');
+    if (/Intro reads generic/i.test(issue)) issueTypes.add('generic_intro');
+    if (/Repetitive sentence openings|Missing related guides section/i.test(issue)) issueTypes.add('repetitive_structure');
+    if (/Missing meta|Meta description|Missing title|Missing canonical URL|Missing keywords array/i.test(issue)) issueTypes.add('metadata');
+    if (/invalid frontmatter|Missing ArticleLayout wrapper|Potential unclosed HTML tags|Missing imports|File does not exist|undefined|null references/i.test(issue)) issueTypes.add('technical');
+    if (/invalid wines|Wine recommendation validation failed|not found in catalog/i.test(issue)) issueTypes.add('wine_validation');
+    if (/Topic oversaturated|Similar topic exists|Topic has duplicates/i.test(issue)) issueTypes.add('topic_saturation');
+    if (/Missing quick answer section|Missing expert tips section|Missing FAQ section|Missing author attribution/i.test(issue)) issueTypes.add('missing_sections');
+    if (/AI phrases|Minor AI phrases|Some AI phrases/i.test(issue)) issueTypes.add('ai_style');
+  }
+
+  return Array.from(issueTypes);
 }
 
 /**

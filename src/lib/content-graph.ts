@@ -13,6 +13,7 @@ export interface ContentNode {
   clusterKey: string;
   intentClass: IntentClass;
   pageRole: PageRole;
+  robots: string | null;
   keywords: string[];
 }
 
@@ -130,6 +131,7 @@ export function collectContentGraph(): ContentNode[] {
       const clusterKey = extractMetadataValue(content, 'clusterKey') || deriveClusterKey(keywords[0] || slug);
       const intentClass = (extractMetadataValue(content, 'intentClass') as IntentClass | null) || determineIntentClass(keywords[0] || slug);
       const pageRole = (extractMetadataValue(content, 'pageRole') as PageRole | null) || determinePageRole(keywords[0] || slug, category);
+      const robots = extractMetadataValue(content, 'robots');
 
       nodes.push({
         slug,
@@ -139,6 +141,7 @@ export function collectContentGraph(): ContentNode[] {
         clusterKey,
         intentClass,
         pageRole,
+        robots,
         keywords,
       });
     }
@@ -239,11 +242,12 @@ export interface RefreshCandidate {
   url: string;
   clusterKey: string;
   score: number;
+  issueTypes: string[];
   reasons: string[];
 }
 
 export function rankRefreshCandidates(
-  scores: Array<{ slug: string; category: string; totalScore: number; metrics: { wordCount: number; internalLinkCount: number } }>,
+  scores: Array<{ slug: string; category: string; totalScore: number; issues: string[]; issueTypes?: string[]; metrics: { wordCount: number; internalLinkCount: number } }>,
   nodes: ContentNode[],
   limit: number
 ): RefreshCandidate[] {
@@ -251,18 +255,40 @@ export function rankRefreshCandidates(
   return scores
     .map(score => {
       const node = nodes.find(entry => entry.slug === score.slug && entry.category === score.category);
+      if (node?.robots?.includes('noindex')) return null;
       const reasons: string[] = [];
+      const issueTypes = score.issueTypes || [];
       let priorityScore = 0;
 
       if (score.totalScore < 85) {
         reasons.push('Below current publish threshold');
         priorityScore += 30;
       }
-      if (score.metrics.wordCount < 1200) {
+      if (issueTypes.includes('word_count_low') || score.metrics.wordCount < 1200) {
         reasons.push('Thin content');
         priorityScore += 20;
       }
-      if (score.metrics.internalLinkCount < 4) {
+      if (issueTypes.includes('word_count_high')) {
+        reasons.push('Overlong content');
+        priorityScore += 18;
+      }
+      if (issueTypes.includes('weak_recommendations')) {
+        reasons.push('Weak bottle support');
+        priorityScore += 22;
+      }
+      if (issueTypes.includes('duplicate_content') || issueTypes.includes('topic_saturation')) {
+        reasons.push('Needs duplication cleanup');
+        priorityScore += 20;
+      }
+      if (issueTypes.includes('repetitive_structure') || issueTypes.includes('generic_intro')) {
+        reasons.push('Needs editorial rewrite');
+        priorityScore += 16;
+      }
+      if (issueTypes.includes('readability')) {
+        reasons.push('Needs readability cleanup');
+        priorityScore += 14;
+      }
+      if (issueTypes.includes('missing_internal_links') || score.metrics.internalLinkCount < 4) {
         reasons.push('Weak internal linking');
         priorityScore += 15;
       }
@@ -280,11 +306,12 @@ export function rankRefreshCandidates(
         category: score.category as ArticleCategory,
         url: `/${score.category}/${score.slug}`,
         clusterKey: node?.clusterKey || deriveClusterKey(score.slug),
+        issueTypes,
         score: priorityScore,
         reasons,
       };
     })
-    .filter(candidate => candidate.score > 0)
+    .filter((candidate): candidate is RefreshCandidate => candidate !== null && candidate.score > 0)
     .sort((a, b) => b.score - a.score)
     .slice(0, limit);
 }
