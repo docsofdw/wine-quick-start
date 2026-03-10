@@ -1,557 +1,150 @@
 ---
 import ArticleLayout from '../../layouts/ArticleLayout.astro';
 import featuredImage from '../../assets/images/articles/best-wine-with-salmon.png';
-const retrofitMetadata = {
+
+const frontmatter = {
   clusterKey: "salmon",
   intentClass: "commercial",
   pageRole: "supporting",
-  keywords: ["best wine with salmon", "best wine", "best wine with salmon pairing", "wine pairing guide", "Best Wine With Salmon"],
   canonicalUrl: "https://winesquickstart.com/wine-pairings/best-wine-with-salmon",
-};
 
-
-const schema = {
-  "@context": "https://schema.org",
-  "@type": "Article",
-  "headline": "Best Wine with Salmon - Expert Pairing Guide",
-  "description": "Discover the perfect wines for salmon with our sommelier guide. From Pinot Noir to Chardonnay, find ideal matches for grilled, baked, and smoked salmon.",
-  "author": {
-    "@type": "Person",
-    "name": "Elena Rodriguez",
-    "jobTitle": "Certified Sommelier"
-  },
-  "datePublished": "2024-01-15",
-  "dateModified": "2024-01-15"
+  title: "Best Wine With Salmon - Expert Pairing Guide",
+  description: "Find the best wine with salmon based on how it is cooked and sauced. Practical pairing advice for grilled, baked, smoked, and glazed salmon.",
+  pubDate: "2026-01-15",
+  author: "Elena Rodriguez",
+  authorRole: "Certified Sommelier",
+  authorSlug: "elena-rodriguez",
+  readTime: "8 min",
+  keywords: ["best wine with salmon", "wine with salmon", "salmon wine pairing", "wine for grilled salmon"],
+  structured_data: {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "Best Wine With Salmon - Expert Pairing Guide",
+    "description": "Find the best wine with salmon based on how it is cooked and sauced. Practical pairing advice for grilled, baked, smoked, and glazed salmon.",
+    "author": {
+      "@type": "Person",
+      "name": "Elena Rodriguez",
+      "jobTitle": "Certified Sommelier"
+    },
+    "datePublished": "2026-01-15",
+    "dateModified": "2026-01-15"
+  }
 };
 ---
 
-<ArticleLayout canonical={retrofitMetadata.canonicalUrl}
-  title="Best Wine with Salmon - Expert Pairing Guide"
-  description="Discover the perfect wines for salmon with our sommelier guide. From Pinot Noir to Chardonnay, find ideal matches for grilled, baked, and smoked salmon."
+<ArticleLayout canonical={frontmatter.canonicalUrl}
+  title={frontmatter.title}
+  description={frontmatter.description}
   category="Seafood Pairing"
   categorySlug="wine-pairings"
-  author="Elena Rodriguez, Certified Sommelier"
-  readTime="5 min"
-  schema={schema}
-  featuredImage={featuredImage}
-  relatedArticles={[
-    { title: "Pinot Noir Food Pairing Guide", slug: "pinot-noir-food-pairing", category: "Red Wine", description: "Master pinot noir guide food pairing with our expert guide. Discover ideal dishes, flavor combinations, and pro tips from certified sommeliers for perfect..." },
-    { title: "Wine for Mushroom Risotto", slug: "wine-pairing-mushroom-risotto", category: "Italian", description: "Perfect wines for creamy risotto dishes" },
-    { title: "Bordeaux Wine Guide", slug: "bordeaux-wine-guide", category: "Wine Regions", description: "Explore the world's most prestigious wine region", basePath: "/learn" }
-  ]}
->
+  author={`${frontmatter.author}, ${frontmatter.authorRole}`}
+  readTime={frontmatter.readTime}
+  schema={frontmatter.structured_data}
+  featuredImage={featuredImage}>
 
-  <p slot="quick-answer"><strong>Quick Answer:</strong> Albariño, Pinot Noir, Chablis, or off-dry Riesling. Choose whites for delicate preparations and light reds for richer, grilled salmon. The key is matching wine weight to cooking method and sauce intensity.</p>
+  <p slot="quick-answer"><strong>Quick Answer:</strong> Pinot Noir, Chablis, Albariño, and off-dry Riesling are the safest wines with salmon. Use whites for cleaner or lighter preparations, and use Pinot Noir when the salmon is grilled, richer, or more savory.</p>
 
-  <h2>Why Salmon is Wine-Friendly</h2>
-  
-  <p>Salmon's unique characteristics make it one of the most versatile fish for wine pairing:</p>
-  
-  <ul>
-    <li><strong>Rich texture</strong> that can handle both white and light red wines</li>
-    <li><strong>Natural oils</strong> that need wine acidity to cleanse the palate</li>
-    <li><strong>Mild flavor</strong> that won't overpower delicate wines</li>
-    <li><strong>Versatile preparation methods</strong> that pair with different wine styles</li>
-  </ul>
+  <p>Salmon is one of the few fish that can handle both white wine and lighter red wine. That is because it has more oil and more texture than delicate white fish. The right bottle depends less on the species name and more on whether the salmon is grilled, smoked, baked with butter, or glazed with something sweet or spicy.</p>
 
-  <h2>White Wine Pairings</h2>
+  <h2>Why Salmon Is So Wine-Friendly</h2>
 
-  <h3>Albariño (Our Top Pick for Grilled)</h3>
-  <p>This Spanish coastal wine is magical with salmon:</p>
-  <ul>
-    <li>High acidity cuts through salmon's rich oils</li>
-    <li>Mineral notes complement the fish's natural flavors</li>
-    <li>Sea spray character echoes salmon's oceanic origins</li>
-    <li>Perfect for grilled or blackened salmon</li>
-  </ul>
+  <p>Salmon has enough richness for acid to matter and enough texture for light reds to stay interesting. That means you are not trapped in white-wine-only pairing logic. A good pairing cleans up the fish’s oil while still respecting the preparation.</p>
 
-  <h3>Chablis & Unoaked Chardonnay</h3>
-  <p>Classic French elegance meets Pacific salmon:</p>
-  <ul>
-    <li>Steely minerality doesn't compete with fish</li>
-    <li>Crisp acidity provides perfect palate cleansing</li>
-    <li>Ideal for poached salmon or cream-based sauces</li>
-    <li>Burgundian terroir adds sophistication</li>
-  </ul>
+  <p>The trap is overbuilding the match. Heavy oak, hard tannin, or obvious sweetness can all distort the pairing fast unless the sauce specifically calls for them.</p>
 
-  <h3>Riesling (For Spiced Preparations)</h3>
-  <p>German precision for complex salmon dishes:</p>
-  <ul>
-    <li>Off-dry sweetness balances spicy Asian marinades</li>
-    <li>High acidity cuts through rich teriyaki glazes</li>
-    <li>Stone fruit notes complement fruit salsas</li>
-    <li>Works beautifully with cedar plank smoking</li>
-  </ul>
+  <h2>Best Wine Styles For Salmon</h2>
 
-  <h2>Red Wine Pairings</h2>
+  <h3>Pinot Noir</h3>
+  <p>The safest red wine with salmon. Pinot Noir has enough acidity and savory detail to work with grilled salmon, cedar plank salmon, and richer mushroom or herb preparations without crushing the fish.</p>
 
-  <h3>Pinot Noir (The Perfect Red)</h3>
-  <p>The only red wine many sommeliers recommend with fish:</p>
-  <ul>
-    <li>Light tannins won't overpower delicate salmon</li>
-    <li>Bright acidity complements fish oils</li>
-    <li>Earthy notes work with herb crusts</li>
-    <li>Exceptional with grilled or cedar plank salmon</li>
-  </ul>
+  <h3>Chablis Or Other Mineral Chardonnay</h3>
+  <p>Excellent with baked or pan-roasted salmon, especially when butter, lemon, or a simple cream sauce is involved. The wine brings more texture than Sauvignon Blanc without becoming too broad.</p>
 
-  <h3>Beaujolais (Light & Fresh)</h3>
-  <p>Gamay's bright fruit pairs surprisingly well:</p>
-  <ul>
-    <li>Low tannins preserve fish's delicate texture</li>
-    <li>Berry notes complement fruit-based sauces</li>
-    <li>Serve slightly chilled for best results</li>
-  </ul>
+  <h3>Albariño</h3>
+  <p>A strong choice for grilled salmon or cleaner preparations because it has salt-and-citrus energy that works well with the fish’s natural richness.</p>
 
-  <h2>Pairing by Preparation Method</h2>
+  <h3>Off-Dry Riesling</h3>
+  <p>The best answer when the salmon has spice, teriyaki, glaze, or sweet-salty sauce. A little residual sugar can absorb those flavors better than dry whites or red wine.</p>
 
-  <h3>Grilled or Blackened Salmon</h3>
-  <p><strong>Best wines:</strong> Albariño, Pinot Noir, or Sancerre</p>
-  <p>The char and smokiness can handle more assertive wines with good acidity.</p>
+  <h2>Real Bottles That Work</h2>
+  <div class="grid md:grid-cols-2 gap-4 my-6">
+    <div class="bg-gray-50 rounded-lg p-5 border border-gray-100">
+      <h3 class="text-lg font-semibold text-wine-700 mb-1">1. Cristom Mt. Jefferson Cuvée</h3>
+      <p class="text-sm text-gray-600 mb-2">Eola-Amity Hills, Oregon</p>
+      <p class="text-gray-700 text-sm">A strong grilled salmon Pinot because it brings savory red fruit, enough acidity, and just enough earth to connect with char or cedar without making the fish taste smaller.</p>
+      <p class="text-xs text-wine-600 mt-2"><strong>Variety:</strong> Pinot Noir</p>
+    </div>
+    <div class="bg-gray-50 rounded-lg p-5 border border-gray-100">
+      <h3 class="text-lg font-semibold text-wine-700 mb-1">2. Domaine Bernard Defaix Chablis</h3>
+      <p class="text-sm text-gray-600 mb-2">Chablis, France</p>
+      <p class="text-gray-700 text-sm">A clean mineral Chardonnay for baked or pan-roasted salmon. This works best when butter, lemon, or simple herbs are doing most of the seasoning.</p>
+      <p class="text-xs text-wine-600 mt-2"><strong>Variety:</strong> Chardonnay</p>
+    </div>
+    <div class="bg-gray-50 rounded-lg p-5 border border-gray-100">
+      <h3 class="text-lg font-semibold text-wine-700 mb-1">3. Dr. Loosen Blue Slate Kabinett</h3>
+      <p class="text-sm text-gray-600 mb-2">Mosel, Germany</p>
+      <p class="text-gray-700 text-sm">A better choice than dry white wine when the salmon is glazed, spicy, or sweet-savory. The slight sweetness keeps the pairing from becoming bitter or sharp.</p>
+      <p class="text-xs text-wine-600 mt-2"><strong>Variety:</strong> Riesling</p>
+    </div>
+  </div>
 
-  <h3>Poached or Steamed Salmon</h3>
-  <p><strong>Best wines:</strong> Chablis, Muscadet, or light Burgundy</p>
-  <p>Delicate preparation needs gentle, mineral-driven wines.</p>
+  <h2>Pairing By Preparation</h2>
 
-  <h3>Cedar Plank Salmon</h3>
-  <p><strong>Best wines:</strong> Oregon Pinot Noir or aged white Burgundy</p>
-  <p>Smoky cedar notes pair beautifully with earthy wines.</p>
+  <p><strong>Grilled salmon:</strong> Pinot Noir or Albariño. The grill adds enough char that the fish can support more structure.</p>
 
-  <h3>Smoked Salmon</h3>
-  <p><strong>Best wines:</strong> Champagne, Crémant, or crisp Riesling</p>
-  <p>Bubbles and high acidity cut through rich, smoky flavors.</p>
+  <p><strong>Baked salmon with lemon or butter:</strong> Chablis, restrained Chardonnay, or sparkling wine.</p>
 
-  <h3>Teriyaki or Asian-Style</h3>
-  <p><strong>Best wines:</strong> Off-dry Riesling, Gewürztraminer, or Viognier</p>
-  <p>Sweet-salty glazes need wines with balancing sweetness.</p>
+  <p><strong>Smoked salmon:</strong> Champagne, Crémant, or crisp Riesling. Bubbles and acidity help more than oak or tannin.</p>
 
-  <h2>Our Top Picks</h2>
-      <div class="bg-gray-50 rounded-lg p-6 mb-4">
-        <h3 class="text-xl font-semibold text-wine-700 mb-2">1. 2019 Adelsheim Vineyard Adelsheim Elizabeth's Reserve Pinot Noir</h3>
-        <p class="text-gray-600 mb-2"><strong>Producer:</strong> Adelsheim Vineyard</p>
-        <p class="text-gray-600 mb-2"><strong>Region:</strong> Chehalem Mountains, Oregon</p>
-        <p class="text-gray-600 mb-2"><strong>Variety:</strong> Pinot Noir</p>
-        <p class="text-gray-700 mt-3">Light-bodied with vibrant acidity and a long, refined finish.</p>
-      </div>
+  <p><strong>Teriyaki or glazed salmon:</strong> off-dry Riesling first. Dry, sharp whites often struggle once sweetness enters the plate.</p>
 
-      <div class="bg-gray-50 rounded-lg p-6 mb-4">
-        <h3 class="text-xl font-semibold text-wine-700 mb-2">2. 2018 Antica Terra Botanica Pinot Noir</h3>
-        <p class="text-gray-600 mb-2"><strong>Producer:</strong> Antica Terra</p>
-        <p class="text-gray-600 mb-2"><strong>Region:</strong> Eola-Amity Hills, Oregon</p>
-        <p class="text-gray-600 mb-2"><strong>Variety:</strong> Pinot Noir</p>
-        <p class="text-gray-700 mt-3">Elegant with bright cherry and raspberry notes, silky tannins, and earthy undertones.</p>
-      </div>
+  <h2>Common Mistakes</h2>
 
-      <div class="bg-gray-50 rounded-lg p-6 mb-4">
-        <h3 class="text-xl font-semibold text-wine-700 mb-2">3. 2019 Aubert Pinot Noir Sonoma Coast</h3>
-        <p class="text-gray-600 mb-2"><strong>Producer:</strong> Aubert</p>
-        <p class="text-gray-600 mb-2"><strong>Region:</strong> Sonoma County, California</p>
-        <p class="text-gray-600 mb-2"><strong>Variety:</strong> Pinot Noir</p>
-        <p class="text-gray-700 mt-3">Light-bodied with vibrant acidity and a long, refined finish.</p>
-      </div>
+  <p>The biggest mistake is treating salmon like delicate white fish. It is richer than that, which is why red wine can work. The second mistake is going too big with the red. Heavy Cabernet, Barolo, and similarly tannic wines usually overpower the fish and make the pairing feel metallic or coarse.</p>
 
-<h2>Pro Tips for Perfect Pairing</h2>
+  <p>The third mistake is forgetting the sauce. Teriyaki salmon and plain roasted salmon do not want the same bottle.</p>
 
+  <h2>Best One-Bottle Answer</h2>
+
+  <p>If you do not know the exact preparation but need one safe bottle, Pinot Noir is the strongest all-around choice. It covers grilled salmon, richer baked salmon, and many savory preparations better than most whites. If you know the dish will stay light and citrusy, Chablis or Albariño can be even better.</p>
+
+  <h2>Expert Tips</h2>
   <ol>
-    <li><strong>Match intensity:</strong> Delicate poached salmon needs light wines</li>
-    <li><strong>Consider the sauce:</strong> Often more important than the fish itself</li>
-    <li><strong>Temperature matters:</strong> Serve whites well-chilled, reds slightly cool</li>
-    <li><strong>Don't overthink it:</strong> Salmon is very wine-friendly</li>
+    <li>Use Pinot Noir when the salmon is grilled, smoky, or more savory.</li>
+    <li>Use mineral Chardonnay or Chablis when butter and lemon are involved.</li>
+    <li>Use Riesling when glaze or spice enters the dish.</li>
+    <li>Do not over-oak the pairing unless the sauce is rich enough to support it.</li>
+    <li>Do not use tannic heavy reds with salmon.</li>
+    <li>Smoked salmon usually likes bubbles more than still wine.</li>
+    <li>Pair to the sauce before you pair to the fish if the dish is heavily seasoned.</li>
+    <li>If in doubt, choose freshness over power.</li>
   </ol>
 
-  
-<div class="bg-gray-50 rounded-lg p-5 border border-gray-100">
-    <h3 class="text-lg font-semibold text-wine-700 mb-1">La Crema Sonoma Coast Pinot Noir</h3>
-    <p class="text-sm text-gray-600 mb-2">Sonoma Coast, California | ~$25</p>
-    <p class="text-gray-700 text-sm">Sourced from cool coastal vineyards, this Pinot offers remarkable complexity for the price with layers of dark cherry, cola, and subtle baking spices. The marine influence creates natural acidity and mineral tension that pairs beautifully with both meat and vegetarian dishes.</p>
-    <p class="text-xs text-wine-600 mt-2"><strong>Best for:</strong> Date nights and dinner parties featuring roasted chicken or wild mushroom dishes</p>
+  <h2>Frequently Asked Questions</h2>
+  <div class="space-y-6">
+    <div>
+      <h3>Can red wine go with salmon?</h3>
+      <p>Yes. Pinot Noir is the best-known red pairing for salmon because it has low enough tannin and high enough acidity to work with the fish.</p>
+    </div>
+    <div>
+      <h3>What white wine is best with salmon?</h3>
+      <p>Chablis, Albariño, and some Riesling styles are strong choices depending on whether the salmon is buttery, grilled, or glazed.</p>
+    </div>
+    <div>
+      <h3>What wine goes with grilled salmon?</h3>
+      <p>Pinot Noir and Albariño are two of the strongest choices for grilled salmon because they can handle both richness and char.</p>
+    </div>
+    <div>
+      <h3>What wine goes with smoked salmon?</h3>
+      <p>Champagne or other dry sparkling wine is often the best match for smoked salmon because bubbles and acidity cut through the smoke and oil.</p>
+    </div>
   </div>
-
-  <div class="bg-gray-50 rounded-lg p-5 border border-gray-100">
-    <h3 class="text-lg font-semibold text-wine-700 mb-1">Archery Summit Premier Cuvée Pinot Noir</h3>
-    <p class="text-sm text-gray-600 mb-2">Willamette Valley, Oregon | ~$45</p>
-    <p class="text-gray-700 text-sm">This estate bottling from the Dundee Hills showcases the elegance of Oregon Pinot with perfumed red fruit, forest floor earthiness, and seamless integration of French oak. The wine's natural acidity and moderate alcohol make it versatile with both delicate and robust preparations.</p>
-    <p class="text-xs text-wine-600 mt-2"><strong>Best for:</strong> Special occasions and pairing with duck confit or herb-crusted lamb</p>
-  </div>
-
-  <div class="bg-gray-50 rounded-lg p-5 border border-gray-100">
-    <h3 class="text-lg font-semibold text-wine-700 mb-1">Flowers Sonoma Coast Pinot Noir</h3>
-    <p class="text-sm text-gray-600 mb-2">Sonoma Coast, California | ~$55</p>
-    <p class="text-gray-700 text-sm">From windswept vineyards just miles from the Pacific, this Pinot displays remarkable concentration and finesse with dark cherry, wild herbs, and mineral complexity. The wine's structured tannins and bright acidity create a perfect framework for rich, savory dishes while maintaining elegance.</p>
-    <p class="text-xs text-wine-600 mt-2"><strong>Best for:</strong> Wine enthusiasts seeking California terroir expression with beef bourguignon or aged cheeses</p>
-  </div>
-
-  <div class="bg-gray-50 rounded-lg p-5 border border-gray-100">
-    <h3 class="text-lg font-semibold text-wine-700 mb-1">Kosta Browne Russian River Valley Pinot Noir</h3>
-    <p class="text-sm text-gray-600 mb-2">Russian River Valley, California | ~$75</p>
-    <p class="text-gray-700 text-sm">This cult producer crafts intensely flavored yet refined Pinot with layers of black cherry, exotic spices, and subtle smokiness from careful oak integration. The wine's opulent texture and persistent finish make it worthy of special occasions and can stand up to richer, more complex dishes.</p>
-    <p class="text-xs text-wine-600 mt-2"><strong>Best for:</strong> Celebrations and pairing with truffle dishes or slow-braised short ribs</p>
-  </div>
-
-  <div class="bg-gray-50 rounded-lg p-5 border border-gray-100">
-    <h3 class="text-lg font-semibold text-wine-700 mb-1">Domaine Drouhin Oregon Pinot Noir</h3>
-    <p class="text-sm text-gray-600 mb-2">Willamette Valley, Oregon | ~$65</p>
-    <p class="text-gray-700 text-sm">From the Burgundian masters who brought Old World expertise to Oregon, this wine combines classic European elegance with New World fruit intensity. The result is a sophisticated Pinot with silky texture, complex earth and fruit interplay, and remarkable food compatibility across diverse cuisines.</p>
-    <p class="text-xs text-wine-600 mt-2"><strong>Best for:</strong> Wine collectors and sophisticated palates enjoying coq au vin or wild game</p>
-  </div>
-
-  <div class="bg-gray-50 rounded-lg p-5 border border-gray-100">
-    <h3 class="text-lg font-semibold text-wine-700 mb-1">Brooks Ara Pinot Noir</h3>
-    <p class="text-sm text-gray-600 mb-2">Willamette Valley, Oregon | ~$38</p>
-    <p class="text-gray-700 text-sm">This biodynamically farmed gem from the Eola-Amity Hills offers exceptional terroir expression with vibrant red fruit, floral aromatics, and distinctive mineral backbone. The wine's pure, unmanipulated character and lively acidity make it an outstanding food companion that lets both wine and dish shine.</p>
-    <p class="text-xs text-wine-600 mt-2"><strong>Best for:</strong> Natural wine enthusiasts and pairing with farm-to-table cuisine or grilled vegetables</p>
-  </div>
-
-  <div class="bg-gray-50 rounded-lg p-5 border border-gray-100">
-    <h3 class="text-lg font-semibold text-wine-700 mb-1">Patricia Green Cellars Ribbon Ridge Pinot Noir</h3>
-    <p class="text-sm text-gray-600 mb-2">Ribbon Ridge, Oregon | ~$42</p>
-    <p class="text-gray-700 text-sm">Often overlooked despite consistent quality, this producer crafts expressive Pinot from the volcanic soils of Ribbon Ridge with bright cherry fruit, spice box complexity, and remarkable aging potential. The wine's balanced structure and food-friendly profile make it a hidden gem among Oregon's elite producers.</p>
-    <p class="text-xs text-wine-600 mt-2"><strong>Best for:</strong> Discovering underrated Oregon producers with pork tenderloin or mushroom-based dishes</p>
-  </div>
-</div>
-
-</h2>
-
-  <ul>
-    <li>❌ Heavy, oaky Chardonnays (overpower the fish)</li>
-    <li>❌ Tannic red wines (clash with delicate flavors)</li>
-    <li>❌ Very sweet wines (unless with spicy preparations)</li>
-  </ul>
-
-  <p>Remember, the best pairing is the one you enjoy. These guidelines provide a starting point, but personal preference always wins. Whether you prefer the classic elegance of Chablis or the coastal charm of Albariño, salmon's versatility ensures a delicious match.</p>
-
-<h2>Perfect Food Pairings</h2>
-
-<h3 class="text-wine-700">The Science Behind Pinot Noir's Pairing Versatility</h3>
-<p>Pinot Noir's exceptional food-pairing flexibility stems from its unique chemical composition. With moderate tannins (typically 1-2 grams per liter), bright acidity (pH 3.2-3.6), and relatively low alcohol (12.5-14.5% ABV), it creates harmonious bridges rather than overwhelming contrasts. The wine's natural acidity cuts through rich fats while its silky tannins complement rather than compete with delicate proteins. The abundant anthocyanins responsible for its ruby color also contribute earthy, forest-floor notes that echo umami-rich ingredients like mushrooms and aged cheeses.</p>
-
-<h3 class="text-wine-700">Classic Pairings That Define Excellence</h3>
-<p><strong>Duck confit with Burgundian Pinot Noir</strong> represents the gold standard of wine pairing. The wine's acidity slices through duck's rich fat while its earthy undertones complement the meat's gaminess. Oregon Pinot Noir with wild Pacific salmon works similarly—the wine's bright cherry fruit balances the fish's oil content without overwhelming its delicate flavor.</p>
-
-<p><strong>Coq au vin</strong> showcases perfect regional harmony, where Burgundian Pinot Noir both cooks and accompanies the dish. The wine's tannins soften during braising while maintaining enough structure to support the chicken and bacon. Meanwhile, <strong>beef bourguignon</strong> demonstrates how Pinot Noir's acidity prevents palate fatigue from the dish's rich, wine-reduced sauce.</p>
-
-<h3 class="text-wine-700">Contemporary Pairing Innovation</h3>
-<p>Modern pairings exploit Pinot Noir's versatility with unexpected success. <strong>Pork belly tacos with Central Coast Pinot Noir</strong> work brilliantly—the wine's fruit-forward character complements spicy elements while its acidity cuts the pork's richness. <strong>Miso-glazed black cod</strong> pairs beautifully with cool-climate Pinot Noir from Tasmania or Sonoma Coast, where the wine's mineral backbone echoes the dish's umami depth.</p>
-
-<p><strong>Mushroom risotto</strong> finds its perfect match in aged Burgundian Pinot Noir, where tertiary earthy notes mirror the dish's fungal complexity. The wine's remaining acidity prevents the creamy risotto from coating the palate.</p>
-
-<h3 class="bg-wine-50 p-4">Cooking Methods That Transform Pairings</h3>
-<p>Preparation method dramatically affects pairing success. <strong>Grilled lamb chops</strong> need a structured Pinot Noir from Willamette Valley or Central Otago—the char's smoky intensity requires more concentration than delicate preparations. Conversely, <strong>poached chicken breast</strong> calls for lighter styles from cool climates like Sonoma Coast or Champagne, where subtle fruit won't overwhelm the protein's gentleness.</p>
-
-<p><strong>Braised short ribs</strong> transform with slow cooking, requiring aged Pinot Noir with developed secondary flavors to match the dish's concentrated richness, while <strong>pan-seared scallops</strong> need young, crisp examples that won't mask their sweetness.</p>
-
-<h3 class="text-wine-700">Sauce and Seasoning Strategies</h3>
-<p>Sauce selection pivots pairing decisions. <strong>Cream-based sauces</strong> need Pinot Noir's acidity to prevent richness overload—think Chablis-style Pinot Noir with chicken in cream sauce. <strong>Tomato-based preparations</strong> require careful matching; San Marzano tomato acidity can clash with high-acid wines, making fruit-forward California Pinot Noir preferable.</p>
-
-<p><strong>Herb-crusted preparations</strong> with thyme, rosemary, or sage echo Pinot Noir's natural herbal notes, while <strong>black truffle dishes</strong> find perfect resonance with aged Burgundy's earthy complexity.</p>
-
-<h3 class="text-wine-700">Pairings to Avoid</h3>
-<p>Pinot Noir struggles with <strong>very spicy cuisines</strong>—capsaicin heat overwhelms its delicate fruit and amplifies alcohol burn. <strong>Heavily smoked meats</strong> can dominate lighter styles, while <strong>overly salty preparations</strong> make the wine taste thin and acidic. <strong>Chocolate desserts</strong> clash with Pinot Noir's savory elements, creating unpleasant metallic notes.</p>
-
-  <div class="bg-gray-50 rounded-lg p-5 border border-gray-100">
-    <h3 class="text-lg font-semibold text-wine-700 mb-1">Sokol Blosser Evolution Lucky No. 9</h3>
-    <p class="text-sm text-gray-600 mb-2">Willamette Valley, Oregon | ~$18</p>
-    <p class="text-gray-700 text-sm">This organic, red blend anchored by Pinot Noir delivers exceptional value with its juicy blackberry and plum flavors complemented by hints of spice and vanilla. The wine's food-friendly structure and approachable style make it perfect for casual entertaining and everyday meals.</p>
-    <p class="text-xs text-wine-600 mt-2"><strong>Best for:</strong> Budget-conscious wine lovers and casual gatherings</p>
-  </div>
-
-  <div class="bg-gray-50 rounded-lg p-5 border border-gray-100">
-    <h3 class="text-lg font-semibold text-wine-700 mb-1">Domaine Drouhin Oregon Pinot Noir</h3>
-    <p class="text-sm text-gray-600 mb-2">Willamette Valley, Oregon | ~$45</p>
-    <p class="text-gray-700 text-sm">Crafted by the renowned Burgundian Drouhin family, this wine exemplifies Oregon terroir with layers of red fruit, forest floor, and subtle spice. The elegant structure and refined tannins showcase why Willamette Valley rivals Burgundy, offering complexity that evolves beautifully with hearty dishes like duck confit or wild mushroom preparations.</p>
-    <p class="text-xs text-wine-600 mt-2"><strong>Best for:</strong> Special dinners and Burgundy lovers seeking New World expression</p>
-  </div>
-
-  <div class="bg-gray-50 rounded-lg p-5 border border-gray-100">
-    <h3 class="text-lg font-semibold text-wine-700 mb-1">Archery Summit Vireton Vineyard Pinot Noir</h3>
-    <p class="text-sm text-gray-600 mb-2">Willamette Valley, Oregon | ~$55</p>
-    <p class="text-gray-700 text-sm">This single-vineyard expression from Dundee Hills showcases the mineral-driven character of volcanic soils with concentrated dark cherry, rose petal aromatics, and a distinctive earthy backbone. The wine's structured elegance and long finish make it exceptional with game birds, aged cheeses, and truffle-based dishes.</p>
-    <p class="text-xs text-wine-600 mt-2"><strong>Best for:</strong> Wine collectors and enthusiasts exploring single-vineyard expressions</p>
-  </div>
-
-  <div class="bg-gray-50 rounded-lg p-5 border border-gray-100">
-    <h3 class="text-lg font-semibold text-wine-700 mb-1">Kosta Browne Russian River Valley Pinot Noir</h3>
-    <p class="text-sm text-gray-600 mb-2">Russian River Valley, California | ~$75</p>
-    <p class="text-gray-700 text-sm">This cult producer crafts intensely flavored yet balanced Pinot Noir with concentrated dark fruit, exotic spices, and seamless French oak integration. The wine's rich texture and complex flavor profile make it ideal for special occasions, particularly when paired with lamb, beef tenderloin, or aged hard cheeses.</p>
-    <p class="text-xs text-wine-600 mt-2"><strong>Best for:</strong> Anniversary dinners and serious Pinot Noir aficionados</p>
-  </div>
-
-  <div class="bg-gray-50 rounded-lg p-5 border border-gray-100">
-    <h3 class="text-lg font-semibold text-wine-700 mb-1">Williams Selyem Westside Road Neighbors Pinot Noir</h3>
-    <p class="text-sm text-gray-600 mb-2">Russian River Valley, California | ~$85</p>
-    <p class="text-gray-700 text-sm">From the pioneering California Pinot Noir producer, this wine combines fruit from multiple acclaimed vineyard sites to create a harmonious blend of power and elegance. Expect layers of black cherry, cola, and baking spices with silky tannins that complement everything from roasted poultry to chocolate desserts.</p>
-    <p class="text-xs text-wine-600 mt-2"><strong>Best for:</strong> Milestone celebrations and California wine enthusiasts</p>
-  </div>
-
-  <div class="bg-gray-50 rounded-lg p-5 border border-gray-100">
-    <h3 class="text-lg font-semibold text-wine-700 mb-1">Littorai Hirsch Vineyard Pinot Noir</h3>
-    <p class="text-sm text-gray-600 mb-2">Sonoma Coast, California | ~$38</p>
-    <p class="text-gray-700 text-sm">This hidden gem from one of California's most respected small producers showcases the extreme Sonoma Coast's potential with ethereal aromatics of red fruit, coastal herbs, and mineral precision. The wine's haunting elegance and food-friendly acidity make it a sommelier favorite that punches well above its price point.</p>
-    <p class="text-xs text-wine-600 mt-2"><strong>Best for:</strong> Wine professionals and adventurous drinkers seeking undiscovered treasures</p>
-  </div>
-
-  <div class="bg-gray-50 rounded-lg p-5 border border-gray-100">
-    <h3 class="text-lg font-semibold text-wine-700 mb-1">Anthill Farms Sonoma Coast Pinot Noir</h3>
-    <p class="text-sm text-gray-600 mb-2">Sonoma Coast, California | ~$42</p>
-    <p class="text-gray-700 text-sm">Crafted by former sommelier Anthony Filiberti, this wine represents exceptional value in California Pinot Noir with its precise expression of coastal terroir. The wine offers bright acidity, red fruit purity, and subtle herbal notes that create perfect harmony with a wide range of dishes, from seared tuna to roasted vegetables.</p>
-    <p class="text-xs text-wine-600 mt-2"><strong>Best for:</strong> Restaurant-quality wine at home and pairing with diverse cuisines</p>
-  </div>
-</div>
-
-  <div class="bg-gray-50 rounded-lg p-5 border border-gray-100">
-    <h3 class="text-lg font-semibold text-wine-700 mb-1">Bourgogne Rouge Louis Jadot</h3>
-    <p class="text-sm text-gray-600 mb-2">Burgundy, France | ~$28</p>
-    <p class="text-gray-700 text-sm">A classic entry-level Burgundy that showcases traditional Pinot Noir character with cherry fruit, mineral backbone, and that distinctive Burgundian earthiness. The moderate alcohol and balanced acidity make it perfect for pairing with coq au vin, roasted chicken, or aged cheeses while offering authentic French terroir expression.</p>
-    <p class="text-xs text-wine-600 mt-2"><strong>Best for:</strong> Those wanting to explore Burgundy without the premium price</p>
-  </div>
-
-  <div class="bg-gray-50 rounded-lg p-5 border border-gray-100">
-    <h3 class="text-lg font-semibold text-wine-700 mb-1">Archery Summit Premier Cuvée</h3>
-    <p class="text-sm text-gray-600 mb-2">Willamette Valley, Oregon | ~$42</p>
-    <p class="text-gray-700 text-sm">This Dundee Hills producer crafts a beautifully balanced Pinot with signature Oregon characteristics: bright cherry and raspberry fruit, forest floor complexity, and silky tannins. The wine's natural acidity and elegant structure make it exceptional with duck confit, wild mushroom dishes, and herb-crusted lamb.</p>
-    <p class="text-xs text-wine-600 mt-2"><strong>Best for:</strong> Special occasions and wine enthusiasts seeking Oregon terroir</p>
-  </div>
-
-  <div class="bg-gray-50 rounded-lg p-5 border border-gray-100">
-    <h3 class="text-lg font-semibold text-wine-700 mb-1">Cloudline Willamette Valley Pinot Noir</h3>
-    <p class="text-sm text-gray-600 mb-2">Willamette Valley, Oregon | ~$18</p>
-    <p class="text-gray-700 text-sm">An outstanding value from Oregon that punches well above its weight class, offering clean raspberry and cherry flavors with hints of spice and earth. The wine's approachable style and food-friendly acidity make it versatile enough for everything from pizza night to Thanksgiving dinner, proving great Pinot doesn't require a hefty price tag.</p>
-    <p class="text-xs text-wine-600 mt-2"><strong>Best for:</strong> Budget-conscious wine lovers and everyday drinking</p>
-  </div>
-
-  <div class="bg-gray-50 rounded-lg p-5 border border-gray-100">
-    <h3 class="text-lg font-semibold text-wine-700 mb-1">Kosta Browne Russian River Valley</h3>
-    <p class="text-sm text-gray-600 mb-2">Russian River Valley, California | ~$75</p>
-    <p class="text-gray-700 text-sm">This cult California producer creates intensely flavored yet elegant Pinot Noir with layers of dark cherry, cola, and baking spices. The wine's concentration and silky texture make it ideal for rich dishes like beef tenderloin, duck breast, or wild game, while maintaining the finesse that defines great Pinot Noir.</p>
-    <p class="text-xs text-wine-600 mt-2"><strong>Best for:</strong> Wine collectors and special celebrations</p>
-  </div>
-
-  <div class="bg-gray-50 rounded-lg p-5 border border-gray-100">
-    <h3 class="text-lg font-semibold text-wine-700 mb-1">Domaine Drouhin Dundee Hills</h3>
-    <p class="text-sm text-gray-600 mb-2">Willamette Valley, Oregon | ~$55</p>
-    <p class="text-gray-700 text-sm">The Oregon outpost of the famous Burgundy house produces Pinot Noir that bridges Old and New World styles beautifully. Expect refined red fruit, subtle oak integration, and the signature minerality of the Dundee Hills, creating a wine that pairs magnificently with Pacific Northwest cuisine, particularly salmon and wild mushrooms.</p>
-    <p class="text-xs text-wine-600 mt-2"><strong>Best for:</strong> Wine dinners and impressing Burgundy lovers</p>
-  </div>
-
-  <div class="bg-gray-50 rounded-lg p-5 border border-gray-100">
-    <h3 class="text-lg font-semibold text-wine-700 mb-1">Failla Keefer Ranch Pinot Noir</h3>
-    <p class="text-sm text-gray-600 mb-2">Russian River Valley, California | ~$48</p>
-    <p class="text-gray-700 text-sm">This hidden gem from a boutique producer showcases what happens when cool-climate Russian River Valley meets thoughtful winemaking. The wine displays complex aromatics, precise fruit expression, and mineral-driven finish that make it exceptional with everything from roasted vegetables to game birds. Failla's commitment to minimal intervention results in wines of remarkable purity and food compatibility.</p>
-    <p class="text-xs text-wine-600 mt-2"><strong>Best for:</strong> Wine geeks seeking undiscovered California terroir</p>
-  </div>
-
-  <div class="bg-gray-50 rounded-lg p-5 border border-gray-100">
-    <h3 class="text-lg font-semibold text-wine-700 mb-1">Williams Selyem Rochioli Riverblock</h3>
-    <p class="text-sm text-gray-600 mb-2">Russian River Valley, California | ~$95</p>
-    <p class="text-gray-700 text-sm">From one of California's most revered Pinot Noir producers and an iconic vineyard site, this wine represents the pinnacle of Russian River Valley expression. The combination of Rochioli's legendary fruit and Williams Selyem's masterful winemaking creates a wine of extraordinary depth, complexity, and aging potential that transforms rich, savory dishes into memorable dining experiences.</p>
-    <p class="text-xs text-wine-600 mt-2"><strong>Best for:</strong> Once-in-a-lifetime occasions and serious collectors</p>
-  </div>
-</div>
-
-<h2>Expert Tips</h2>
-<ol class="list-decimal list-inside space-y-4 text-gray-700">
-  <li><strong>Match Pinot Noir's Weight to Food Intensity</strong> - Pinot noir's medium body makes it perfect for dishes that fall between delicate and robust. Burgundian producers understand this - pair lighter Côte de Beaune pinots with roasted chicken or pork tenderloin, while earthier Gevrey-Chambertin handles duck confit or beef bourguignon. The wine's natural acidity (typically 6-7 g/L) cuts through rich sauces without overwhelming subtle proteins.</li>
-
-  <li><strong>Serve at 60-65°F for Optimal Food Harmony</strong> - Unlike heavier reds, pinot noir shows its food-friendly qualities best when served slightly cool. This temperature preserves the wine's bright acidity and prevents alcohol heat from masking delicate flavors in dishes like salmon, mushroom risotto, or coq au vin. Too warm (above 68°F) and the wine becomes flabby against food.</li>
-
-  <li><strong>Embrace the Mushroom Connection</strong> - Pinot noir's natural earthiness, derived from compounds like geosmin and 2-methylisoborneol, creates magical pairings with fungi. The wine's umami qualities complement everything from simple sautéed chanterelles to complex truffle dishes. Oregon pinots, with their forest floor notes, are particularly stellar with wild mushroom preparations.</li>
-
-  <li><strong>Consider Regional Food Traditions</strong> - Burgundy pinots evolved alongside local cuisine for centuries. Pair Côte de Nuits wines with traditional Burgundian dishes like coq au vin or beef bourguignon, where the wine's tannin structure (typically 1-2 g/L) complements slow-braised meats. California pinots work beautifully with grilled salmon, reflecting the Pacific Coast's seafood culture.</li>
-
-  <li><strong>Use Young Pinots for Fruit-Forward Pairings</strong> - Fresh, fruit-driven pinots (2-4 years old) complement dishes with bright flavors - think duck breast with cherry sauce, pork with apple compote, or roasted beets with goat cheese. The wine's primary fruit characteristics harmonize with the food's natural sweetness without competing tannins interfering.</li>
-
-  <li><strong>Aged Pinots Excel with Earthy, Gamey Fare</strong> - Pinots with 8-15 years of age develop tertiary aromas of forest floor, leather, and dried herbs that pair magnificently with game birds, venison, or aged cheeses. The wine's evolved tannins won't overpower delicate game, while its developed complexity matches the intensity of wild flavors.</li>
-
-  <li><strong>Leverage Pinot's Natural Acidity for Rich Dishes</strong> - Pinot noir's bright acidity (higher than most reds) makes it exceptional with fatty fish like salmon or tuna, cream-based sauces, and rich cheeses. The acidity acts as a palate cleanser, preventing richness fatigue. This is why pinot works so well with dishes like coq au vin or salmon in beurre blanc.</li>
-
-  <li><strong>Choose Stemware That Enhances Food Aromas</strong> - Use a Burgundy bowl glass with its wide opening to concentrate pinot's delicate aromatics, which are crucial for food pairing. The broad surface area allows both wine and food aromas to mingle, creating synergistic flavor combinations. Avoid narrow glasses that trap the wine's subtle nuances needed for successful food matching.</li>
-</ol>
 
   <h2>Related Guides</h2>
   <ul>
-
-  <li>
-    <a href="/learn" class="internal-link">Wine Guides</a>
-    <span class="text-sm text-gray-600"> - Learn the broader context</span>
-  </li>
-
-  <li>
-    <a href="/wine-pairings" class="internal-link">Wine Pairings</a>
-    <span class="text-sm text-gray-600"> - See pairing-focused follow-ups</span>
-  </li>
-
-  <li>
-    <a href="/buy" class="internal-link">Buying Guides</a>
-    <span class="text-sm text-gray-600"> - Move into bottle-level decisions</span>
-  </li>
-
-  <li>
-    <a href="/buy/best-cabernet-sauvignon-under-20" class="internal-link">Best Cabernet Sauvignon Under 20 - Expert Guide</a>
-    <span class="text-sm text-gray-600"> - Commercial next step</span>
-  </li>
+    <li><a href="/learn" class="internal-link">Wine Guides</a><span class="text-sm text-gray-600"> - Learn the broader white and red style context</span></li>
+    <li><a href="/wine-pairings" class="internal-link">Wine Pairings</a><span class="text-sm text-gray-600"> - See more food-first recommendations</span></li>
+    <li><a href="/buy" class="internal-link">Buying Guides</a><span class="text-sm text-gray-600"> - Move into bottle-level decisions</span></li>
+    <li><a href="/wine-pairings/pinot-noir-food-pairing" class="internal-link">Pinot Noir Food Pairing Guide</a><span class="text-sm text-gray-600"> - Go deeper on one of the best salmon matches</span></li>
   </ul>
-
-
-
-
-
-<h2>Frequently Asked Questions</h2>
-<div class="space-y-6">
-  <div>
-    <h3 class="text-lg font-semibold text-wine-700 mb-2">What makes Pinot Noir so versatile for food pairing?</h3>
-    <p class="text-gray-700">Pinot Noir's moderate tannins, bright acidity, and elegant fruit profile create exceptional food versatility without overwhelming delicate dishes. Its silky texture and earthy undertones complement both light proteins like salmon and duck, as well as mushroom-based vegetarian dishes. The wine's natural acidity cuts through rich sauces while its fruit character enhances both sweet and savory flavors in the same meal.</p>
-  </div>
-
-  <div>
-    <h3 class="text-lg font-semibold text-wine-700 mb-2">Should I pair light or full-bodied Pinot Noir with salmon?</h3>
-    <p class="text-gray-700">Light to medium-bodied Pinot Noir works best with salmon, particularly Oregon Willamette Valley or Burgundy Côte de Beaune styles. These wines offer enough structure to complement salmon's richness without masking its delicate flavor, while their bright acidity enhances the fish's natural oils. Avoid heavily oaked or full-bodied California Pinots, which can overpower salmon's subtle taste.</p>
-  </div>
-
-  <div>
-    <h3 class="text-lg font-semibold text-wine-700 mb-2">What's the biggest mistake people make when pairing Pinot Noir with food?</h3>
-    <p class="text-gray-700">The most common mistake is choosing overly bold, high-alcohol Pinot Noirs that compete with food rather than complement it. Many people also pair Pinot Noir with heavy, strongly spiced dishes that mask the wine's subtle characteristics. Instead, focus on preparations that highlight Pinot's elegance—think herb-crusted lamb, mushroom risotto, or roasted chicken with thyme rather than heavily sauced or spicy dishes.</p>
-  </div>
-
-  <div>
-    <h3 class="text-lg font-semibold text-wine-700 mb-2">How do I choose between Burgundy and Oregon Pinot Noir for dinner parties?</h3>
-    <p class="text-gray-700">Oregon Pinot Noir offers more approachable fruit-forward flavors and typically provides better value for casual entertaining, making it ideal for guests unfamiliar with Burgundy's earthier profile. Burgundy excels with sophisticated menus featuring game, aged cheeses, or complex French preparations where its mineral complexity and terroir expression shine. Consider your menu's complexity and your guests' wine experience when deciding.</p>
-  </div>
-
-  <div>
-    <h3 class="text-lg font-semibold text-wine-700 mb-2">What temperature should I serve Pinot Noir for optimal food pairing?</h3>
-    <p class="text-gray-700">Serve Pinot Noir at 60-65°F (15-18°C) for food pairing—slightly cooler than room temperature but warmer than typical refrigerator temperature. This temperature range preserves the wine's delicate aromatics while preventing the alcohol from becoming overpowering with food. Chill the bottle for 30-45 minutes in the refrigerator before serving, or use an ice bucket for 10-15 minutes.</p>
-  </div>
-
-  <div>
-    <h3 class="text-lg font-semibold text-wine-700 mb-2">Can Pinot Noir pair with spicy food, and which styles work best?</h3>
-    <p class="text-gray-700">Pinot Noir can pair with mildly spiced dishes, but avoid intensely hot or heavily spiced foods that will overwhelm its delicate character. Fruit-forward styles from warmer climates like California Central Coast or New Zealand work better with gentle spice than earthy Burgundian styles. Consider dishes with warm spices like cinnamon, allspice, or mild chili rather than fiery heat—think Moroccan-spiced lamb or lightly spiced duck confit.</p>
-  </div>
-
-  <div>
-    <h3 class="text-lg font-semibold text-wine-700 mb-2">Is Pinot Noir good for beginners learning about wine and food pairing?</h3>
-    <p class="text-gray-700">Yes, Pinot Noir is excellent for beginners because its food-friendly characteristics make successful pairings more forgiving than tannic reds or highly acidic whites. Its moderate alcohol, approachable fruit flavors, and versatility with various proteins provide multiple pairing opportunities to learn from. Start with simple preparations like roasted chicken or grilled salmon to understand how the wine's acidity and fruit complement different flavors.</p>
-  </div>
-
-  <div>
-    <h3 class="text-lg font-semibold text-wine-700 mb-2">What are the best budget-friendly Pinot Noir options for regular food pairing?</h3>
-    <p class="text-gray-700">Look for Pinot Noir from Oregon's secondary AVAs like Umpqua Valley, California's Central Coast, or New Zealand's Marlborough region for excellent food-pairing value under $25. Producers like A to Z Wineworks, La Crema, and Oyster Bay consistently deliver food-friendly styles with good structure and balance. These wines offer the classic Pinot Noir pairing versatility without the premium pricing of Burgundy or top-tier Oregon estates.</p>
-  </div>
-</div>
-
-<div class="bg-gray-50 rounded-lg p-5 border border-gray-100">
-    <h3 class="text-lg font-semibold text-wine-700 mb-1">2018 Antica Terra Botanica Pinot Noir</h3>
-    <p class="text-sm text-gray-600 mb-2">Eola-Amity Hills, Oregon | ~$30-60</p>
-    <p class="text-gray-700 text-sm">Delicate red fruit aromas with hints of mushroom and forest floor.</p>
-    <p class="text-xs text-wine-600 mt-2"><strong>Variety:</strong> Pinot Noir</p>
-  </div>
-
-  <div class="bg-gray-50 rounded-lg p-5 border border-gray-100">
-    <h3 class="text-lg font-semibold text-wine-700 mb-1">2019 Aubert Pinot Noir Sonoma Coast</h3>
-    <p class="text-sm text-gray-600 mb-2">Sonoma County, California | ~$30-60</p>
-    <p class="text-gray-700 text-sm">Delicate red fruit aromas with hints of mushroom and forest floor.</p>
-    <p class="text-xs text-wine-600 mt-2"><strong>Variety:</strong> Pinot Noir</p>
-  </div>
-
-  <div class="bg-gray-50 rounded-lg p-5 border border-gray-100">
-    <h3 class="text-lg font-semibold text-wine-700 mb-1">2017 Aubert Pinot Noir UV-SL Vineyard</h3>
-    <p class="text-sm text-gray-600 mb-2">Sonoma County, California | ~$30-60</p>
-    <p class="text-gray-700 text-sm">Light-bodied with vibrant acidity and a long, refined finish.</p>
-    <p class="text-xs text-wine-600 mt-2"><strong>Variety:</strong> Pinot Noir</p>
-  </div>
-
-  <div class="bg-gray-50 rounded-lg p-5 border border-gray-100">
-    <h3 class="text-lg font-semibold text-wine-700 mb-1">2019 Beaux Frères The Beaux Frères Vineyard Pinot Noir</h3>
-    <p class="text-sm text-gray-600 mb-2">Ribbon Ridge, Oregon | ~$30-60</p>
-    <p class="text-gray-700 text-sm">Delicate red fruit aromas with hints of mushroom and forest floor.</p>
-    <p class="text-xs text-wine-600 mt-2"><strong>Variety:</strong> Pinot Noir</p>
-  </div>
-
-  <div class="bg-gray-50 rounded-lg p-5 border border-gray-100">
-    <h3 class="text-lg font-semibold text-wine-700 mb-1">2019 Bethel Heights Vineyard Bethel Heights Casteel Reserve Pinot Noir</h3>
-    <p class="text-sm text-gray-600 mb-2">Eola-Amity Hills, Oregon | ~$30-60</p>
-    <p class="text-gray-700 text-sm">Light-bodied with vibrant acidity and a long, refined finish.</p>
-    <p class="text-xs text-wine-600 mt-2"><strong>Variety:</strong> Pinot Noir</p>
-  </div>
-</div>
-
-<div class="bg-gray-50 rounded-lg p-5 border border-gray-100">
-    <h3 class="text-lg font-semibold text-wine-700 mb-1">2025 Bill Harlan final</h3>
-    <p class="text-sm text-gray-600 mb-2">Côte de Nuits, Unknown Region | ~$30-60</p>
-    <p class="text-gray-700 text-sm">Delicate red fruit aromas with hints of mushroom and forest floor.</p>
-    <p class="text-xs text-wine-600 mt-2"><strong>Variety:</strong> Pinot Noir</p>
-  </div>
-
-  <div class="bg-gray-50 rounded-lg p-5 border border-gray-100">
-    <h3 class="text-lg font-semibold text-wine-700 mb-1">2018 Cristom Vineyards Cristom Louise Vineyard Pinot Noir</h3>
-    <p class="text-sm text-gray-600 mb-2">Eola-Amity Hills, Oregon | ~$30-60</p>
-    <p class="text-gray-700 text-sm">Light-bodied with vibrant acidity and a long, refined finish.</p>
-    <p class="text-xs text-wine-600 mt-2"><strong>Variety:</strong> Pinot Noir</p>
-  </div>
-
-  <div class="bg-gray-50 rounded-lg p-5 border border-gray-100">
-    <h3 class="text-lg font-semibold text-wine-700 mb-1">2019 David Duband Bourgogne</h3>
-    <p class="text-sm text-gray-600 mb-2">Burgundy, Unknown Region | ~$30-60</p>
-    <p class="text-gray-700 text-sm">Light-bodied with vibrant acidity and a long, refined finish.</p>
-    <p class="text-xs text-wine-600 mt-2"><strong>Variety:</strong> Pinot Noir</p>
-  </div>
-
-  <div class="bg-gray-50 rounded-lg p-5 border border-gray-100">
-    <h3 class="text-lg font-semibold text-wine-700 mb-1">2018 Domaine Anne Gros Richebourg Grand Cru</h3>
-    <p class="text-sm text-gray-600 mb-2">Côte de Nuits, Burgundy | ~$30-60</p>
-    <p class="text-gray-700 text-sm">Light-bodied with vibrant acidity and a long, refined finish.</p>
-    <p class="text-xs text-wine-600 mt-2"><strong>Variety:</strong> Pinot Noir</p>
-  </div>
-
-  <div class="bg-gray-50 rounded-lg p-5 border border-gray-100">
-    <h3 class="text-lg font-semibold text-wine-700 mb-1">2017 Domaine Armand Rousseau Chambertin</h3>
-    <p class="text-sm text-gray-600 mb-2">Côte de Nuits, Burgundy | ~$30-60</p>
-    <p class="text-gray-700 text-sm">Delicate red fruit aromas with hints of mushroom and forest floor.</p>
-    <p class="text-xs text-wine-600 mt-2"><strong>Variety:</strong> Pinot Noir</p>
-  </div>
-</div>
-
-<h2>More Excellent Options</h2>
-<div class="grid md:grid-cols-2 gap-4 my-6">
-  <div class="bg-gray-50 rounded-lg p-5 border border-gray-100">
-    <h3 class="text-lg font-semibold text-wine-700 mb-1">2019 Domaine Comte Georges de Vogüé Musigny</h3>
-    <p class="text-sm text-gray-600 mb-2">Côte de Nuits, Burgundy | ~$30-60</p>
-    <p class="text-gray-700 text-sm">Light-bodied with vibrant acidity and a long, refined finish.</p>
-    <p class="text-xs text-wine-600 mt-2"><strong>Variety:</strong> Pinot Noir</p>
-  </div>
-
-  <div class="bg-gray-50 rounded-lg p-5 border border-gray-100">
-    <h3 class="text-lg font-semibold text-wine-700 mb-1">2019 Domaine Comte Georges de Vogüé Musigny Cuvée Vieilles Vignes</h3>
-    <p class="text-sm text-gray-600 mb-2">Côte de Nuits, Burgundy | ~$30-60</p>
-    <p class="text-gray-700 text-sm">Light-bodied with vibrant acidity and a long, refined finish.</p>
-    <p class="text-xs text-wine-600 mt-2"><strong>Variety:</strong> Pinot Noir</p>
-  </div>
-
-  <div class="bg-gray-50 rounded-lg p-5 border border-gray-100">
-    <h3 class="text-lg font-semibold text-wine-700 mb-1">2019 Domaine de la Romanée-Conti La Tâche</h3>
-    <p class="text-sm text-gray-600 mb-2">Côte de Nuits, Burgundy | ~$30-60</p>
-    <p class="text-gray-700 text-sm">Delicate red fruit aromas with hints of mushroom and forest floor.</p>
-    <p class="text-xs text-wine-600 mt-2"><strong>Variety:</strong> Pinot Noir</p>
-  </div>
-
-  <div class="bg-gray-50 rounded-lg p-5 border border-gray-100">
-    <h3 class="text-lg font-semibold text-wine-700 mb-1">2017 Domaine de la Romanée-Conti Richebourg</h3>
-    <p class="text-sm text-gray-600 mb-2">Côte de Nuits, Burgundy | ~$30-60</p>
-    <p class="text-gray-700 text-sm">Light-bodied with vibrant acidity and a long, refined finish.</p>
-    <p class="text-xs text-wine-600 mt-2"><strong>Variety:</strong> Pinot Noir</p>
-  </div>
-
-  <div class="bg-gray-50 rounded-lg p-5 border border-gray-100">
-    <h3 class="text-lg font-semibold text-wine-700 mb-1">2018 Domaine de la Romanée-Conti Romanée-Conti</h3>
-    <p class="text-sm text-gray-600 mb-2">Côte de Nuits, Burgundy | ~$30-60</p>
-    <p class="text-gray-700 text-sm">Delicate red fruit aromas with hints of mushroom and forest floor.</p>
-    <p class="text-xs text-wine-600 mt-2"><strong>Variety:</strong> Pinot Noir</p>
-  </div>
-
-  <div class="bg-gray-50 rounded-lg p-5 border border-gray-100">
-    <h3 class="text-lg font-semibold text-wine-700 mb-1">2019 Domaine Dujac Clos de la Roche Grand Cru</h3>
-    <p class="text-sm text-gray-600 mb-2">Côte de Nuits, Burgundy | ~$30-60</p>
-    <p class="text-gray-700 text-sm">Delicate red fruit aromas with hints of mushroom and forest floor.</p>
-    <p class="text-xs text-wine-600 mt-2"><strong>Variety:</strong> Pinot Noir</p>
-  </div>
-</div>
-
 </ArticleLayout>
