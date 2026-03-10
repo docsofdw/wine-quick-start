@@ -9,87 +9,57 @@ const frontmatter = {
   canonicalUrl: "https://winesquickstart.com/wine-pairings/chardonnay-food-pairing",
 
   title: "Chardonnay Food Pairing - Expert Guide",
-  description: "Master chardonnay food pairing with our expert guide. Discover ideal dishes, flavor combinations, and pro tips from certified sommeliers for perfect...",
+  description: "Use Chardonnay more effectively at the table with pairing advice for roast chicken, seafood, cream sauces, and richer vegetarian dishes.",
   pubDate: "2026-01-16",
   author: "James Thornton",
   authorRole: "Founder & Lead Wine Consultant",
   authorSlug: "james-thornton",
-  readTime: "26 min",
-  keywords: ["chardonnay food pairing", "chardonnay", "food", "pairing", "wine guide"],
+  readTime: "9 min",
+  keywords: ["chardonnay food pairing", "chardonnay pairing", "what goes with chardonnay", "chardonnay with food"],
   structured_data: {
-            "@context": "https://schema.org",
-            "@graph": [
-                  {
-                        "@type": "Organization",
-                        "@id": "https://winesquickstart.com/#organization",
-                        "name": "Wine Quick Start",
-                        "url": "https://winesquickstart.com",
-                        "description": "Expert wine guidance from certified sommeliers"
-                  },
-                  {
-                        "@type": "WebSite",
-                        "@id": "https://winesquickstart.com/#website",
-                        "url": "https://winesquickstart.com",
-                        "name": "Wine Quick Start",
-                        "publisher": {
-                              "@id": "https://winesquickstart.com/#organization"
-                        }
-                  },
-                  {
-                        "@type": "BreadcrumbList",
-                        "itemListElement": [
-                              {
-                                    "@type": "ListItem",
-                                    "position": 1,
-                                    "name": "Home",
-                                    "item": "https://winesquickstart.com"
-                              },
-                              {
-                                    "@type": "ListItem",
-                                    "position": 2,
-                                    "name": "Wine Pairings",
-                                    "item": "https://winesquickstart.com/wine-pairings/"
-                              },
-                              {
-                                    "@type": "ListItem",
-                                    "position": 3,
-                                    "name": "Chardonnay Food Pairing - Expert Guide"
-                              }
-                        ]
-                  },
-                  {
-                        "@type": "Article",
-                        "headline": "Chardonnay Food Pairing - Expert Guide",
-                        "description": "Master chardonnay food pairing with our expert guide. Discover ideal dishes, flavor combinations, and pro tips from certified sommeliers for perfect...",
-                        "author": {
-                              "@type": "Person",
-                              "name": "James Thornton",
-                              "jobTitle": "Founder & Lead Wine Consultant"
-                        },
-                        "publisher": {
-                              "@id": "https://winesquickstart.com/#organization"
-                        },
-                        "datePublished": "2026-01-16",
-                        "dateModified": "2026-01-16",
-                        "mainEntityOfPage": {
-                              "@type": "WebPage",
-                              "@id": "https://winesquickstart.com/wine-pairings/chardonnay-food-pairing"
-                        },
-                        "isPartOf": {
-                              "@id": "https://winesquickstart.com/#website"
-                        }
-                  }
-            ]
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Organization",
+        "@id": "https://winesquickstart.com/#organization",
+        "name": "Wine Quick Start",
+        "url": "https://winesquickstart.com",
+        "description": "Expert wine guidance from certified sommeliers"
+      },
+      {
+        "@type": "WebSite",
+        "@id": "https://winesquickstart.com/#website",
+        "url": "https://winesquickstart.com",
+        "name": "Wine Quick Start",
+        "publisher": { "@id": "https://winesquickstart.com/#organization" }
+      },
+      {
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://winesquickstart.com" },
+          { "@type": "ListItem", "position": 2, "name": "Wine Pairings", "item": "https://winesquickstart.com/wine-pairings/" },
+          { "@type": "ListItem", "position": 3, "name": "Chardonnay Food Pairing - Expert Guide" }
+        ]
+      },
+      {
+        "@type": "Article",
+        "headline": "Chardonnay Food Pairing - Expert Guide",
+        "description": "Use Chardonnay more effectively at the table with pairing advice for roast chicken, seafood, cream sauces, and richer vegetarian dishes.",
+        "author": { "@type": "Person", "name": "James Thornton", "jobTitle": "Founder & Lead Wine Consultant" },
+        "publisher": { "@id": "https://winesquickstart.com/#organization" },
+        "datePublished": "2026-01-16",
+        "dateModified": "2026-01-16",
+        "mainEntityOfPage": { "@type": "WebPage", "@id": "https://winesquickstart.com/wine-pairings/chardonnay-food-pairing" },
+        "isPartOf": { "@id": "https://winesquickstart.com/#website" }
       }
+    ]
+  }
 };
 ---
 
 <ArticleLayout canonical={frontmatter.canonicalUrl} categorySlug="wine-pairings" title={frontmatter.title} description={frontmatter.description} author={frontmatter.author} readTime={frontmatter.readTime} category="Wine Guide" schema={frontmatter.structured_data} featuredImage={featuredImage}>
-  <!-- Author Attribution -->
   <div class="bg-gray-50 p-4 rounded-lg mb-6 flex items-center gap-4">
-    <div class="w-12 h-12 rounded-full bg-wine-100 flex items-center justify-center text-wine-700 font-bold">
-      JT
-    </div>
+    <div class="w-12 h-12 rounded-full bg-wine-100 flex items-center justify-center text-wine-700 font-bold">JT</div>
     <div>
       <a href="/about/james-thornton" class="font-semibold text-gray-900 hover:text-wine-600">James Thornton</a>
       <p class="text-sm text-gray-600">Founder & Lead Wine Consultant | WSET Level 3 Award in Wines</p>
@@ -97,447 +67,100 @@ const frontmatter = {
   </div>
 
   <div slot="quick-answer">
-    <p><strong>Quick Answer:</strong> For the best chardonnay food pairing, look for wines with balanced acidity and complementary flavor profiles. Medium-bodied options often provide the most versatility.</p>
+    <p><strong>Quick Answer:</strong> Chardonnay works best with roast chicken, richer seafood, cream sauces, butter-based dishes, and mushroom-driven plates. The key is matching the Chardonnay style to the food: leaner Chardonnay for cleaner dishes, richer Chardonnay for richer plates.</p>
   </div>
 
-  <h2>Understanding Chardonnay Food Pairing</h2>
-  <p>When it comes to chardonnay food pairing, quality matters more than price. Our team of sommeliers has tasted hundreds of options to bring you these expert recommendations.</p>
-
-  <h2>Perfect Food Pairings</h2>
-
-<h3>The Science Behind Successful Chardonnay Pairings</h3>
-
-<p>Chardonnay's versatility stems from its chameleon-like ability to express different characteristics based on winemaking techniques. <strong>Unoaked Chardonnay's crisp acidity</strong> (typically 6-7 g/L tartaric acid) cuts through rich, creamy dishes by cleansing the palate and preventing flavor fatigue. Meanwhile, <strong>oak-aged Chardonnay's higher pH and vanilla compounds</strong> from malolactic fermentation create bridges with dishes containing similar flavors—butter, cream, and caramelized proteins.</p>
-
-<p>The wine's medium to full body provides enough weight to stand up to substantial dishes without overwhelming delicate preparations, while its typically lower tannin levels make it incredibly food-friendly across diverse cuisines.</p>
-
-<h3>Classic Pairings That Never Fail</h3>
-
-<p><strong>Lobster with drawn butter</strong> represents the quintessential Chardonnay pairing. The wine's acidity cuts through the rich butter while its body matches the lobster's sweet, substantial texture. A <strong>Chablis Premier Cru</strong> elevates this pairing with its mineral backbone complementing the ocean's salinity.</p>
-
-<p><strong>Roasted chicken with herbs</strong> showcases Chardonnay's affinity for poultry. The wine's fruit-forward character harmonizes with the bird's natural sweetness, while oak-aged versions echo the caramelized skin's nutty notes. <strong>Burgundian Meursault</strong> particularly shines here, its honeyed complexity matching perfectly with roasted garlic and thyme.</p>
-
-<p><strong>Creamy risotto</strong>, especially with mushrooms or seafood, creates a textural symphony with barrel-fermented Chardonnay. The wine's buttery mouthfeel from extended lees contact mirrors the risotto's creamy starch, while shared umami compounds create seamless integration.</p>
-
-<h3>Modern Creative Combinations</h3>
-
-<p><strong>Seared scallops with cauliflower purée</strong> represents contemporary pairing excellence. The scallops' caramelized proteins match Chardonnay's Maillard reaction compounds from barrel-toasting, while the cauliflower's subtle sweetness complements the wine's fruit character.</p>
-
-<p><strong>Pork belly with apple-fennel slaw</strong> creates an unexpected triumph. The pork's richness demands Chardonnay's acidity for balance, while the apple's malic acid echoes the wine's natural acids. Fennel's anise notes surprisingly complement many Chardonnays' subtle spice undertones.</p>
-
-<p><strong>Truffle mac and cheese</strong> with a rich Russian River Chardonnay exemplifies modern luxury pairing—the wine's oak-derived vanillin compounds harmonize with the truffle's earthy complexity while cutting through the cheese's richness.</p>
-
-<h3>Cooking Methods That Transform Pairings</h3>
-
-<p><strong>Grilling</strong> adds smoky char that pairs beautifully with oak-aged Chardonnay's toasty notes. Grilled halibut or salmon develop caramelized proteins that mirror the wine's barrel-fermentation flavors.</p>
-
-<p><strong>Poaching</strong> preserves delicate textures that suit crisp, mineral-driven Chablis. Poached sole or turbot maintain subtlety that showcases the wine's pure fruit expression.</p>
-
-<p><strong>Braising</strong> concentrates flavors that require fuller-bodied Chardonnays. Braised chicken thighs with white wine and herbs create flavor compounds that directly complement the wine's own profile.</p>
-
-<h3>Sauce Considerations</h3>
-
-<p><strong>Butter-based sauces</strong> (beurre blanc, hollandaise) demand oak-aged Chardonnay's diacetyl compounds for seamless integration. <strong>Cream sauces</strong> require high-acidity styles to prevent palate fatigue, while <strong>citrus-based sauces</strong> pair brilliantly with steel-fermented Chardonnay's bright acid structure.</p>
-
-<h3>Pairings to Avoid</h3>
-
-<p><strong>Heavily spiced dishes</strong> overwhelm Chardonnay's subtle nuances, while <strong>very tannic red wine reductions</strong> clash with the wine's soft structure. <strong>Raw preparations</strong> with strong herbs like cilantro or mint can create metallic off-flavors when paired with oaked versions.</p>
-
-<h3>Burgundian Authenticity</h3>
-
-<p>Honor Chardonnay's Burgundian roots with <strong>coq au vin blanc</strong>, <strong>escargots in garlic butter</strong>, or <strong>quiche Lorraine</strong>—dishes that evolved alongside these wines, creating perfect symbiosis through centuries of regional refinement.</p>
-
-<h2>Perfect Food Pairings</h2>
-
-<h3>Why Chardonnay Pairings Work: The Science Behind Success</h3>
-<p>Chardonnay's versatility as a food wine stems from its naturally high acidity and ability to express terroir through different winemaking techniques. The wine's malic and tartaric acids cut through rich, fatty foods, while its fruit-forward character complements delicate proteins. Oaked Chardonnays develop additional complexity through malolactic fermentation, which converts sharp malic acid into softer lactic acid, creating the creamy, buttery textures that pair beautifully with similar richness in food. The wine's moderate alcohol content (typically 12.5-14.5%) won't overpower subtle flavors, while its full body stands up to heartier preparations.</p>
-
-<h3>Classic Pairings: Time-Tested Combinations</h3>
-<p>The quintessential pairing remains <strong>lobster with butter-poached Chardonnay</strong>—the wine's natural acidity cuts through the rich butter while its mineral backbone complements the sweet shellfish. Roasted chicken with herbs showcases how Chardonnay's fruit notes enhance poultry's natural flavors without competing. <strong>Grilled salmon</strong> paired with unoaked Chablis demonstrates textbook harmony: the wine's steely minerality matches the fish's oils, while citrus notes brighten the overall experience. Creamy risottos, particularly those featuring mushrooms or seafood, create magnificent marriages with oak-aged Chardonnays from Burgundy or California, where the wine's vanilla and toast notes echo the dish's earthy richness.</p>
-
-<h3>Modern Creative Pairings: Contemporary Innovation</h3>
-<p>Today's adventurous pairings push boundaries while respecting Chardonnay's core characteristics. <strong>Sushi and sashimi</strong> work brilliantly with cool-climate, mineral-driven Chardonnays like those from Tasmania or Sonoma Coast—the wine's precision enhances delicate fish without masking subtle flavors. Fried chicken finds an unexpected partner in sparkling Chardonnay, where bubbles and acidity cut through breading while fruit notes complement the meat. Aged Gruyère or Comté cheeses create sophisticated matches with mature white Burgundy, where the wine's developed nutty characteristics mirror the cheese's complexity.</p>
-
-<h3>Cooking Methods Matter: Technique Transforms Pairing</h3>
-<p>Preparation method dramatically influences Chardonnay selection. <strong>Grilled preparations</strong> develop smoky, caramelized flavors that pair best with oak-aged Chardonnays whose toast and vanilla notes complement char marks. Conversely, <strong>poached or steamed dishes</strong> require unoaked expressions that won't overwhelm delicate textures. Braised meats in white wine sauces create natural synergy with the same Chardonnay used in cooking, while roasted vegetables caramelize beautifully alongside richer, barrel-fermented styles.</p>
-
-<h3>Sauces and Seasonings: The Game Changers</h3>
-<p><strong>Cream-based sauces</strong> demand oak-aged Chardonnays whose buttery textures create seamless integration. Hollandaise, beurre blanc, and alfredo all sing with rich California or Australian Chardonnays. Herb-forward preparations—especially those featuring tarragon, thyme, or sage—pair beautifully with Loire Valley Chardonnays whose mineral precision highlights herbal nuances. Citrus-based marinades and vinaigrettes require high-acid, unoaked styles that won't clash with acidic components.</p>
-
-<h3>What to Avoid: Problematic Pairings</h3>
-<p>Heavily spiced dishes overwhelm Chardonnay's subtle fruit character—avoid pairing with fiery curries or heavily peppered preparations. Raw tomatoes and tomato-based sauces create harsh acidic clashes. Strongly flavored fish like mackerel or sardines overpower most Chardonnays, while very lean preparations can make even crisp styles seem flabby.</p>
-
-<h3>Regional Authenticity: Burgundian Traditions</h3>
-<p>In Burgundy's homeland, <strong>coq au vin blanc</strong> showcases perfect regional harmony, while <strong>escargots in garlic butter</strong> demonstrate how local terroir influences both wine and cuisine. These time-honored combinations reveal why Chardonnay evolved as the perfect expression of Burgundian gastronomy.</p>
-
-<h2>Perfect Food Pairings</h2>
-
-<h3>The Science Behind Chardonnay Pairings</h3>
-<p>Chardonnay's versatility in food pairing stems from its wide spectrum of styles and the interplay between acidity, weight, and texture. <strong>Crisp, unoaked Chardonnays</strong> like Sancerre or Muscadet possess bright acidity (typically 6-7 g/L tartaric acid) that cuts through rich, fatty foods by cleansing the palate. Meanwhile, <strong>oak-aged Burgundian styles</strong> develop creamy textures from malolactic fermentation and lees aging, creating complementary rather than contrasting pairings with similarly rich dishes.</p>
-
-<p>The wine's moderate alcohol (12.5-14.5% ABV) and full body allow it to stand up to substantial proteins without overwhelming delicate preparations. Oak aging introduces vanillin and toast compounds that naturally harmonize with caramelized flavors from roasting and grilling.</p>
-
-<h3>Classic Pairings That Never Fail</h3>
-<p><strong>Lobster with drawn butter</strong> remains the quintessential Chardonnay pairing—the wine's acidity cuts the richness while its weight matches the sweet, meaty texture. A Premier Cru Chablis works beautifully here, its mineral backbone providing structure against the butter's fat.</p>
-
-<p><strong>Roasted chicken with herbs</strong> showcases why Burgundian producers have perfected this combination over centuries. The wine's oak-derived spice notes complement thyme and tarragon, while the chicken's umami flavors enhance the wine's fruit character. A Meursault or Puligny-Montrachet elevates this simple dish to restaurant quality.</p>
-
-<p><strong>Gruyère and aged Comté cheeses</strong> create magical pairings with oaked Chardonnay. The cheese's crystalline texture and nutty flavors mirror the wine's malolactic conversion notes, while both share similar aging processes that develop complementary compounds.</p>
-
-<h3>Modern Creative Pairings</h3>
-<p><strong>Miso-glazed black cod</strong> demonstrates Chardonnay's affinity for umami-rich preparations. The wine's oak aging creates savory compounds that harmonize with the miso's fermented complexity, while the fish's delicate texture pairs beautifully with the wine's creamy mouthfeel.</p>
-
-<p><strong>Cauliflower risotto with truffle oil</strong> offers a contemporary vegetarian pairing where the wine's richness doesn't overpower the subtle vegetable, and the earthy truffle notes complement oak-aged expressions.</p>
-
-<h3>How Cooking Methods Transform Pairings</h3>
-<p><strong>Grilled preparations</strong> develop Maillard reaction compounds that pair naturally with oak-aged Chardonnay's vanilla and toast notes. Grilled salmon or pork tenderloin work exceptionally well with Russian River or Sonoma Coast bottlings.</p>
-
-<p><strong>Poached or steamed dishes</strong> require the precision of unoaked styles. A Petit Chablis complements poached sole without masking its delicate flavor, while the wine's minerality adds complexity.</p>
-
-<h3>Sauce Considerations</h3>
-<p><strong>Cream-based sauces</strong> demand oaked Chardonnay's weight and texture. Fettuccine Alfredo pairs beautifully with Burgundy, where both wine and sauce share similar richness levels.</p>
-
-<p><strong>Butter-based preparations</strong> like beurre blanc work with both styles—unoaked versions provide acidic contrast, while oaked expressions offer textural harmony.</p>
-
-<h3>Pairings to Avoid</h3>
-<p><strong>Highly spiced cuisines</strong> overwhelm Chardonnay's subtleties. Avoid Thai curry or Mexican mole, where capsaicin heat and complex spice blends mask the wine's nuanced fruit and oak characteristics.</p>
-
-<p><strong>Tomato-heavy dishes</strong> clash with the wine's lower acidity compared to Sauvignon Blanc or Sangiovese, creating unbalanced, flabby combinations.</p>
-
-<h3>Burgundian Regional Traditions</h3>
-<p>In Burgundy, <strong>coq au vin blanc</strong> using local Chardonnay creates the ultimate regional pairing. The wine's acidity tenderizes the chicken while its oak complements the dish's herbs and mushrooms, demonstrating centuries of evolved harmony between local terroir and cuisine.</p>
-
-<h2>Perfect Food Pairings</h2>
-
-<p>Chardonnay's remarkable versatility stems from its ability to express terroir and winemaking techniques, creating wines that range from crisp and mineral-driven to rich and buttery. Understanding how acidity, oak treatment, and texture interact with food is key to unlocking perfect chardonnay food pairing combinations.</p>
-
-<h3 class="text-wine-700">The Science Behind Successful Pairings</h3>
-
-<p>Chardonnay's natural acidity acts as a palate cleanser, cutting through rich fats and cream-based sauces while enhancing the wine's fruit characteristics. When aged in oak, the wine develops compounds like vanillin and eugenol that complement caramelized flavors from roasting or grilling. The wine's medium body and smooth tannin structure make it ideal for delicate proteins that would be overwhelmed by bold reds, while its acidity prevents it from being overshadowed by richer preparations.</p>
-
-<h3 class="text-wine-700">Classic Pairings That Never Fail</h3>
-
-<p>The quintessential pairing of <strong>lobster thermidor with oaked Chardonnay</strong> works because the wine's buttery notes mirror the dish's cream sauce, while its acidity cuts through the richness. Similarly, <strong>roast chicken with herbs de Provence</strong> paired with white Burgundy creates harmony through shared terroir—the wine's mineral backbone complements the bird's savory herbs while its subtle oak enhances the caramelized skin.</p>
-
-<p><strong>Grilled salmon with lemon butter</strong> showcases how Chardonnay's acidity amplifies citrus while its body matches the fish's richness. For cheese lovers, aged Comté or Gruyère with unoaked Chablis demonstrates how the wine's minerality enhances nutty, crystalline textures without competing with complex aged flavors.</p>
-
-<h3 class="text-wine-700">Modern Creative Combinations</h3>
-
-<p>Contemporary chefs are discovering exciting new territories for chardonnay food pairing. <strong>Korean fried chicken with gochujang glaze</strong> pairs beautifully with off-dry Chardonnay—the wine's slight sweetness balances spice while its acidity cuts through crispy coatings. <strong>Truffle risotto with wild mushrooms</strong> and oaked Sonoma Chardonnay creates an umami explosion, as the wine's creamy texture matches the dish while oak tannins complement earthy mushroom flavors.</p>
-
-<p><strong>Seared scallops with cauliflower purée and pancetta</strong> demonstrates modern technique: the wine's acidity brightens the sweet scallops, its body matches the silky purée, and oak notes complement the pancetta's smokiness.</p>
-
-<h3 class="text-wine-700">Cooking Methods and Wine Selection</h3>
-
-<p>Preparation technique dramatically affects pairing success. <strong>Grilled preparations</strong> develop Maillard reactions that pair beautifully with oaked Chardonnay's vanilla and spice notes. <strong>Poached or steamed dishes</strong> require unoaked styles like Muscadet or Sancerre to avoid overwhelming delicate flavors. <strong>Braised preparations</strong> with rich sauces call for full-bodied styles like Meursault or Russian River Chardonnay that won't be overshadowed.</p>
-
-<h3 class="text-wine-700">Sauce and Seasoning Considerations</h3>
-
-<p><strong>Cream-based sauces</strong> demand wines with sufficient acidity to prevent palate fatigue—think beurre blanc with Sancerre. <strong>Herb-forward preparations</strong> work with mineral-driven wines that won't compete, while <strong>caramelized or brown butter sauces</strong> sing with oak-aged styles. Avoid pairing Chardonnay with <strong>tomato-based sauces</strong>, as the wine's low acidity can't balance tomato's tartness, or <strong>heavily spiced Indian or Thai dishes</strong>, where the wine's subtlety gets lost.</p>
-
-<h3 class="text-wine-700">Authentic Regional Traditions</h3>
-
-<p>In Burgundy, <strong>escargot in garlic butter</strong> with local Chardonnay demonstrates perfect regional harmony—the wine's minerality enhances the snails' earthy character while matching the preparation's richness. <strong>Coq au vin blanc</strong> from the same region shows how wine in both glass and pot creates seamless integration of flavors, with the Chardonnay's acidity brightening the braised chicken while its body supports the cream finish.</p>
-
-<h2>Our Top Picks</h2>
-      <div class="bg-gray-50 rounded-lg p-6 mb-4">
-        <h3 class="text-xl font-semibold text-wine-700 mb-2">1. 2019 Aubert Chardonnay Larry Hyde & Sons</h3>
-        <p class="text-gray-600 mb-2"><strong>Producer:</strong> Aubert</p>
-        <p class="text-gray-600 mb-2"><strong>Region:</strong> Napa / Sonoma, California</p>
-        <p class="text-gray-600 mb-2"><strong>Variety:</strong> Chardonnay</p>
-        <p class="text-gray-700 mt-3">Rich and buttery with notes of tropical fruit and vanilla.</p>
-      </div>
-
-      <div class="bg-gray-50 rounded-lg p-6 mb-4">
-        <h3 class="text-xl font-semibold text-wine-700 mb-2">2. 2019 Aubert Chardonnay Lauren Estate Vineyard</h3>
-        <p class="text-gray-600 mb-2"><strong>Producer:</strong> Aubert</p>
-        <p class="text-gray-600 mb-2"><strong>Region:</strong> Sonoma County, California</p>
-        <p class="text-gray-600 mb-2"><strong>Variety:</strong> Chardonnay</p>
-        <p class="text-gray-700 mt-3">Crisp apple and citrus with balanced oak and a creamy texture.</p>
-      </div>
-
-      <div class="bg-gray-50 rounded-lg p-6 mb-4">
-        <h3 class="text-xl font-semibold text-wine-700 mb-2">3. 2019 Aubert Wines Aubert Ritchie Vineyard Chardonnay</h3>
-        <p class="text-gray-600 mb-2"><strong>Producer:</strong> Aubert Wines</p>
-        <p class="text-gray-600 mb-2"><strong>Region:</strong> Sonoma Coast, California</p>
-        <p class="text-gray-600 mb-2"><strong>Variety:</strong> Chardonnay</p>
-        <p class="text-gray-700 mt-3">Rich and buttery with notes of tropical fruit and vanilla.</p>
-      </div>
-
-<h2>Expert Tips</h2>
-<ol class="list-decimal list-inside space-y-4 text-gray-700">
-  <li><strong>Match Oak Levels to Food Intensity</strong> - Unoaked Chablis or Sancerre pairs beautifully with delicate seafood like oysters and sashimi, while heavily oaked Napa Valley Chardonnay complements rich lobster thermidor or roasted chicken with cream sauce. The rule: lighter foods need mineral-driven, crisp Chardonnays, while creamy, buttery dishes can handle the vanilla and spice notes from oak aging.</li>
-
-  <li><strong>Temperature is Critical for Food Balance</strong> - Serve Chardonnay at 50-55°F (10-13°C) for food pairing—warmer than most whites. This temperature allows the wine's texture and subtle flavors to shine alongside food without the alcohol becoming harsh. Too cold and you'll lose the creamy mouthfeel that makes Chardonnay perfect with rich dishes like risotto or grilled salmon.</li>
-
-  <li><strong>Consider Malolactic Fermentation in Your Pairings</strong> - Chardonnays that underwent malolactic fermentation (like most Burgundians and many Californians) have a buttery, creamy texture perfect for dishes with cream sauces, aged cheeses, or roasted poultry. Wines that skipped "malo" (many Chablis, some Oregon) retain bright acidity ideal for cutting through fatty fish or complementing goat cheese salads.</li>
-
-  <li><strong>Age Determines Pairing Strategy</strong> - Young Chardonnays (1-3 years) pair best with lighter preparations—grilled fish, pasta with olive oil, or fresh cheeses. Aged Chardonnays (5-10 years) develop honeyed, nutty complexity perfect for richer dishes like coq au vin, truffle risotto, or aged Gruyère. The wine's evolution mirrors the complexity you can handle in food.</li>
-
-  <li><strong>Use Burgundy Glasses for Premium Food Pairings</strong> - The wide bowl of a proper Burgundy glass concentrates Chardonnay's aromatics, crucial when pairing with aromatic dishes. This enhanced nose integration helps the wine complement complex preparations like bouillabaisse or mushroom dishes where you want the wine's subtle earth and mineral notes to interact with the food's aromatics.</li>
-
-  <li><strong>Regional Terroir Guides Specific Food Matches</strong> - Chablis' limestone minerality pairs exceptionally with shellfish and raw preparations, while Meursault's richer, nuttier profile complements roasted root vegetables and pork. California's fruit-forward style works with grilled foods and spicy cuisines, while cool-climate Oregon Chardonnay bridges European and New World styles, perfect for Pacific Northwest salmon and mushroom-based dishes.</li>
-
-  <li><strong>Avoid Decanting—Focus on Glassware Instead</strong> - Unlike reds, Chardonnay rarely benefits from decanting for food pairings. Instead, invest in proper stemware and serve directly from the bottle. If the wine seems tight, gentle swirling in the glass provides adequate aeration while maintaining the precise temperature control essential for food compatibility.</li>
-
-  <li><strong>Timing Matters More Than Age</strong> - Drink Chardonnay within 2-3 hours of opening for optimal food pairing. The wine's delicate balance of fruit, acidity, and oak integration can shift with extended air exposure, potentially throwing off carefully planned food matches. This is especially crucial with lean preparations where the wine's precision is paramount to the pairing's success.</li>
-</ol>
-
-  <h2>Frequently Asked Questions</h2>
-<div class="space-y-6">
-  <div>
-    <h3 class="text-lg font-semibold text-wine-700 mb-2">What's the difference between pairing oaked vs unoaked Chardonnay with food?</h3>
-    <p class="text-gray-700">Oaked Chardonnay with its vanilla, butter, and toast notes pairs beautifully with richer dishes like lobster with cream sauce, roasted chicken, or mushroom risotto. Unoaked Chardonnay, with its crisp acidity and mineral-driven profile, complements lighter fare such as oysters, grilled fish, goat cheese salads, or Asian cuisine. The oak treatment fundamentally changes the wine's weight and flavor profile, requiring different food considerations.</p>
-  </div>
-
-  <div>
-    <h3 class="text-lg font-semibold text-wine-700 mb-2">Why does Chardonnay pair so well with seafood and shellfish?</h3>
-    <p class="text-gray-700">Chardonnay's natural acidity cuts through the richness of shellfish while its mineral backbone complements the briny oceanic flavors. The wine's citrus notes enhance the sweetness of crab and lobster, while its medium body matches the texture of most seafood without overwhelming delicate flavors. Cool-climate Chardonnays with higher acidity work especially well with raw preparations like oysters and sashimi.</p>
-  </div>
-
-  <div>
-    <h3 class="text-lg font-semibold text-wine-700 mb-2">What temperature should I serve Chardonnay for optimal food pairing?</h3>
-    <p class="text-gray-700">Serve Chardonnay at 50-55°F (10-13°C) for food pairing, which is slightly warmer than typical white wine service. This temperature allows the wine's aromatics and flavors to fully express themselves alongside food, while maintaining enough coolness to provide refreshing contrast. Over-chilling mutes Chardonnay's complex flavors, while serving too warm makes it taste flabby and unbalanced with most dishes.</p>
-  </div>
-
-  <div>
-    <h3 class="text-lg font-semibold text-wine-700 mb-2">Is Chardonnay food pairing good for wine pairing beginners?</h3>
-    <p class="text-gray-700">Yes, Chardonnay is excellent for beginners because it's incredibly versatile and forgiving with food pairings. Its moderate tannins, balanced acidity, and familiar flavor profile make it compatible with a wide range of dishes from simple grilled chicken to complex cream sauces. The variety also offers clear style distinctions (oaked vs unoaked) that help beginners understand how wine production affects food compatibility.</p>
-  </div>
-
-  <div>
-    <h3 class="text-lg font-semibold text-wine-700 mb-2">What are the biggest mistakes people make when pairing Chardonnay with food?</h3>
-    <p class="text-gray-700">The most common mistake is pairing heavily oaked Chardonnay with delicate fish, which overwhelms subtle flavors with vanilla and butter notes. Another error is serving Chardonnay too cold, which mutes its aromatics and makes it taste thin alongside rich foods. Many also pair unoaked Chardonnay with very heavy, creamy dishes where a fuller-bodied oaked style would be more appropriate.</p>
-  </div>
-
-  <div>
-    <h3 class="text-lg font-semibold text-wine-700 mb-2">How do I choose the right Chardonnay style for spicy cuisine?</h3>
-    <p class="text-gray-700">For spicy dishes, choose unoaked or lightly oaked Chardonnay with bright acidity and lower alcohol (under 13.5%). The wine's crisp acidity provides cooling relief from heat, while avoiding heavy oak prevents clash with spice complexity. Look for examples from cool climates like Chablis, Sonoma Coast, or Tasmania, which offer the mineral-driven freshness needed to complement rather than compete with bold flavors.</p>
-  </div>
-
-  <div>
-    <h3 class="text-lg font-semibold text-wine-700 mb-2">What are good alternatives if I don't like Chardonnay but want similar food pairing versatility?</h3>
-    <p class="text-gray-700">Viognier offers similar richness to oaked Chardonnay with peachy fruit and floral notes, pairing well with roasted poultry and cream sauces. For unoaked Chardonnay alternatives, try Albariño or Vermentino, which provide crisp acidity and mineral notes perfect for seafood. White Rhône blends (Roussanne/Marsanne) also offer the weight and complexity needed for richer dishes while maintaining food-friendly acidity.</p>
-  </div>
-
-  <div>
-    <h3 class="text-lg font-semibold text-wine-700 mb-2">Can aged Chardonnay improve food pairing experiences?</h3>
-    <p class="text-gray-700">Yes, aged Chardonnay (5-10 years) develops tertiary flavors like honey, nuts, and brioche that create more complex food pairings. These developed wines pair exceptionally with aged cheeses, mushroom dishes, and roasted meats where younger Chardonnays might feel too simple. However, ensure proper storage as aged Chardonnay can become overly oxidized, losing the fresh acidity essential for food compatibility.</p>
-  </div>
-</div>
-
-<!-- Related Articles -->
-  <div class="mt-10 pt-8 border-t border-gray-200">
-    <h3 class="text-xl font-semibold mb-6">Related Articles</h3>
-    <div class="grid md:grid-cols-2 gap-4">
-      <a href="/wine-pairings/white-wine-food-pairing" class="block p-4 bg-white border border-gray-200 rounded-lg hover:border-wine-300 hover:shadow-md transition-all">
-        <h4 class="font-semibold text-gray-900 hover:text-wine-600">White Wine Food Pairing - Expert Guide</h4>
-        <p class="text-sm text-gray-600 mt-1">Discover the best white wine food pairing. Expert recommendations, tasting notes...</p>
-      </a>
-      <a href="/wine-pairings/red-wine-food-pairing" class="block p-4 bg-white border border-gray-200 rounded-lg hover:border-wine-300 hover:shadow-md transition-all">
-        <h4 class="font-semibold text-gray-900 hover:text-wine-600">Red Wine Food Pairing - Expert Guide</h4>
-        <p class="text-sm text-gray-600 mt-1">Discover the best red wine food pairing. Expert recommendations, tasting notes, ...</p>
-      </a>
-      <a href="/wine-pairings/salmon-wine-pairing" class="block p-4 bg-white border border-gray-200 rounded-lg hover:border-wine-300 hover:shadow-md transition-all">
-        <h4 class="font-semibold text-gray-900 hover:text-wine-600">Salmon Wine Pairing - Expert Guide</h4>
-        <p class="text-sm text-gray-600 mt-1">Discover the best salmon wine pairing. Expert recommendations, tasting notes, an...</p>
-      </a>
+  <p>Chardonnay is one of the most useful food wines because it can move from mineral and sharp to creamy and broad without leaving the grape. That flexibility is also why people pair it badly. The right Chardonnay with the right dish is excellent. The wrong Chardonnay can feel heavy, oaky, or simply mismatched.</p>
+
+  <h2>Start With The Style Of Chardonnay</h2>
+
+  <p>Lean Chardonnay, like Chablis or more restrained cool-climate bottles, works best with oysters, shellfish, simple fish, roast chicken with lemon, and cleaner sauces. These wines bring acidity and mineral shape more than oak weight.</p>
+
+  <p>Richer Chardonnay, especially bottles with more oak, lees texture, or malolactic softness, works better with lobster, roast chicken with butter, cream sauces, mushroom dishes, and fuller seafood. These wines need food with enough richness to support the texture.</p>
+
+  <h2>Best Foods With Chardonnay</h2>
+
+  <h3>Roast Chicken</h3>
+  <p>One of the best Chardonnay pairings because the wine has enough body for the meat and enough acidity for the skin and drippings. This works especially well with herb and butter-based preparations.</p>
+
+  <h3>Seafood With Butter Or Cream</h3>
+  <p>Chardonnay is usually stronger than Sauvignon Blanc once the seafood gets richer. Lobster, salmon with butter sauce, crab cakes, and scallops all make sense, especially with more textural Chardonnay styles.</p>
+
+  <h3>Mushroom Dishes</h3>
+  <p>Mushroom risotto, creamy mushroom pasta, and roast mushroom dishes all work well because Chardonnay can carry both earth and richness when the bottle is balanced.</p>
+
+  <h3>Cheese And Rich Vegetarian Plates</h3>
+  <p>Chardonnay often works with nutty cheeses, creamy vegetable dishes, and richer pasta better than sharper whites do because it has more body and mid-palate weight.</p>
+
+  <h2>Real Bottles That Work</h2>
+  <div class="grid md:grid-cols-2 gap-4 my-6">
+    <div class="bg-gray-50 rounded-lg p-5 border border-gray-100">
+      <h3 class="text-lg font-semibold text-wine-700 mb-1">1. Domaine Bernard Defaix Chablis</h3>
+      <p class="text-sm text-gray-600 mb-2">Chablis, France</p>
+      <p class="text-gray-700 text-sm">A lean Chardonnay for seafood, roast chicken with lemon, and lighter cream sauces. This bottle shows the fresher side of the grape and keeps pairings precise.</p>
+      <p class="text-xs text-wine-600 mt-2"><strong>Variety:</strong> Chardonnay</p>
+    </div>
+    <div class="bg-gray-50 rounded-lg p-5 border border-gray-100">
+      <h3 class="text-lg font-semibold text-wine-700 mb-1">2. Kumeu River Estate Chardonnay</h3>
+      <p class="text-sm text-gray-600 mb-2">Auckland, New Zealand</p>
+      <p class="text-gray-700 text-sm">A useful middle-ground Chardonnay with enough texture for richer dishes, but enough acid to stay flexible. This is an easy dinner-table bottle when the menu has both seafood and poultry.</p>
+      <p class="text-xs text-wine-600 mt-2"><strong>Variety:</strong> Chardonnay</p>
+    </div>
+    <div class="bg-gray-50 rounded-lg p-5 border border-gray-100">
+      <h3 class="text-lg font-semibold text-wine-700 mb-1">3. Ramey Russian River Chardonnay</h3>
+      <p class="text-sm text-gray-600 mb-2">Russian River Valley, California</p>
+      <p class="text-gray-700 text-sm">A richer style for lobster, cream sauce, roast chicken, and fuller mushroom dishes. It works when the plate needs more than a sharp white can give.</p>
+      <p class="text-xs text-wine-600 mt-2"><strong>Variety:</strong> Chardonnay</p>
     </div>
   </div>
 
-  <div class="bg-gray-50 rounded-lg p-5 border border-gray-100">
-    <h3 class="text-lg font-semibold text-wine-700 mb-1">2012 Bollinger La Grande Année</h3>
-    <p class="text-sm text-gray-600 mb-2">Aÿ, Champagne | ~$25-50</p>
-    <p class="text-gray-700 text-sm">Crisp apple and citrus with balanced oak and a creamy texture.</p>
-    <p class="text-xs text-wine-600 mt-2"><strong>Variety:</strong> Chardonnay</p>
-  </div>
+  <h2>What To Avoid</h2>
 
-  <div class="bg-gray-50 rounded-lg p-5 border border-gray-100">
-    <h3 class="text-lg font-semibold text-wine-700 mb-1">2019 Chalk Hill Estate Chardonnay</h3>
-    <p class="text-sm text-gray-600 mb-2">Chalk Hill, California | ~$25-50</p>
-    <p class="text-gray-700 text-sm">Elegant with stone fruit, subtle minerality, and a long finish.</p>
-    <p class="text-xs text-wine-600 mt-2"><strong>Variety:</strong> Chardonnay</p>
-  </div>
+  <p>Very spicy dishes usually flatten Chardonnay. So do sharply acidic tomato-driven dishes unless the wine is especially lean. Heavy oak with delicate shellfish can also feel clumsy fast.</p>
 
-  <div class="bg-gray-50 rounded-lg p-5 border border-gray-100">
-    <h3 class="text-lg font-semibold text-wine-700 mb-1">2019 Domaine Bonneau du Martray Corton-Charlemagne Grand Cru</h3>
-    <p class="text-sm text-gray-600 mb-2">Côte de Beaune, Burgundy | ~$25-50</p>
-    <p class="text-gray-700 text-sm">Rich and buttery with notes of tropical fruit and vanilla.</p>
-    <p class="text-xs text-wine-600 mt-2"><strong>Variety:</strong> Chardonnay</p>
-  </div>
+  <p>The easiest mistake is choosing the richest Chardonnay you can find for food that needs freshness. Weight only helps when the plate has enough weight of its own.</p>
 
-  <div class="bg-gray-50 rounded-lg p-5 border border-gray-100">
-    <h3 class="text-lg font-semibold text-wine-700 mb-1">2018 Domaine Coche-Dury Corton-Charlemagne Grand Cru</h3>
-    <p class="text-sm text-gray-600 mb-2">Côte de Beaune, Burgundy | ~$25-50</p>
-    <p class="text-gray-700 text-sm">Crisp apple and citrus with balanced oak and a creamy texture.</p>
-    <p class="text-xs text-wine-600 mt-2"><strong>Variety:</strong> Chardonnay</p>
-  </div>
+  <h2>Best One-Bottle Uses</h2>
 
-  <div class="bg-gray-50 rounded-lg p-5 border border-gray-100">
-    <h3 class="text-lg font-semibold text-wine-700 mb-1">2018 Domaine Jacques Prieur Montrachet Grand Cru</h3>
-    <p class="text-sm text-gray-600 mb-2">Côte de Beaune, Burgundy | ~$25-50</p>
-    <p class="text-gray-700 text-sm">Crisp apple and citrus with balanced oak and a creamy texture.</p>
-    <p class="text-xs text-wine-600 mt-2"><strong>Variety:</strong> Chardonnay</p>
-  </div>
-</div>
+  <p>If you need one white for roast chicken, richer seafood, mushroom dishes, and mixed dinner-party use, Chardonnay is one of the best answers available. A balanced bottle with acid and moderate oak is usually safer than an extreme lean or extreme buttery version.</p>
 
-<div class="bg-gray-50 rounded-lg p-5 border border-gray-100">
-    <h3 class="text-lg font-semibold text-wine-700 mb-1">2018 Domaine Jean-Marc Roulot Meursault Les Perrières</h3>
-    <p class="text-sm text-gray-600 mb-2">Côte de Beaune, Burgundy | ~$25-50</p>
-    <p class="text-gray-700 text-sm">Rich and buttery with notes of tropical fruit and vanilla.</p>
-    <p class="text-xs text-wine-600 mt-2"><strong>Variety:</strong> Chardonnay</p>
-  </div>
+  <h2>Expert Tips</h2>
+  <ol>
+    <li>Pair the style of Chardonnay to the weight of the dish, not just to the ingredient.</li>
+    <li>Use Chablis-style Chardonnay for cleaner seafood and lighter poultry.</li>
+    <li>Use richer Chardonnay for lobster, cream sauce, and roast chicken.</li>
+    <li>Do not force heavily oaked Chardonnay onto delicate shellfish.</li>
+    <li>Mushroom dishes are often better with Chardonnay than people expect.</li>
+    <li>When in doubt, choose balanced Chardonnay over the richest bottle on the shelf.</li>
+    <li>Chardonnay is usually better than Sauvignon Blanc once butter or cream enters the plate.</li>
+    <li>If the dish is spicy or tomato-heavy, Chardonnay is often not the best choice.</li>
+  </ol>
 
-  <div class="bg-gray-50 rounded-lg p-5 border border-gray-100">
-    <h3 class="text-lg font-semibold text-wine-700 mb-1">2019 Domaine Leflaive Chevalier-Montrachet Grand Cru</h3>
-    <p class="text-sm text-gray-600 mb-2">Côte de Beaune, Burgundy | ~$25-50</p>
-    <p class="text-gray-700 text-sm">Elegant with stone fruit, subtle minerality, and a long finish.</p>
-    <p class="text-xs text-wine-600 mt-2"><strong>Variety:</strong> Chardonnay</p>
+  <h2>Frequently Asked Questions</h2>
+  <div class="space-y-6">
+    <div>
+      <h3>What food goes best with Chardonnay?</h3>
+      <p>Roast chicken, richer seafood, butter sauces, cream sauces, and mushroom dishes are among the best foods with Chardonnay.</p>
+    </div>
+    <div>
+      <h3>Is Chardonnay good with fish?</h3>
+      <p>Yes, especially with richer fish like salmon or with fish served in butter or cream-based sauces.</p>
+    </div>
+    <div>
+      <h3>Is Chardonnay good with chicken?</h3>
+      <p>Yes. Chardonnay is one of the best white wines with roast chicken, especially when herbs, butter, or pan juices are involved.</p>
+    </div>
+    <div>
+      <h3>What foods should I avoid with Chardonnay?</h3>
+      <p>Very spicy food, sharply acidic tomato dishes, and delicate shellfish with heavily oaked Chardonnay are common mismatches.</p>
+    </div>
   </div>
-
-  <div class="bg-gray-50 rounded-lg p-5 border border-gray-100">
-    <h3 class="text-lg font-semibold text-wine-700 mb-1">2019 Domaine Ramonet Bâtard-Montrachet Grand Cru</h3>
-    <p class="text-sm text-gray-600 mb-2">Côte de Beaune, Burgundy | ~$25-50</p>
-    <p class="text-gray-700 text-sm">Rich and buttery with notes of tropical fruit and vanilla.</p>
-    <p class="text-xs text-wine-600 mt-2"><strong>Variety:</strong> Chardonnay</p>
-  </div>
-
-  <div class="bg-gray-50 rounded-lg p-5 border border-gray-100">
-    <h3 class="text-lg font-semibold text-wine-700 mb-1">2002 Dom Pérignon P2 Plénitude</h3>
-    <p class="text-sm text-gray-600 mb-2">Epernay, Champagne | ~$25-50</p>
-    <p class="text-gray-700 text-sm">Elegant with stone fruit, subtle minerality, and a long finish.</p>
-    <p class="text-xs text-wine-600 mt-2"><strong>Variety:</strong> Chardonnay</p>
-  </div>
-
-  <div class="bg-gray-50 rounded-lg p-5 border border-gray-100">
-    <h3 class="text-lg font-semibold text-wine-700 mb-1">2019 Evening Land Seven Springs Vineyard Chardonnay</h3>
-    <p class="text-sm text-gray-600 mb-2">Eola-Amity Hills, Oregon | ~$25-50</p>
-    <p class="text-gray-700 text-sm">Rich and buttery with notes of tropical fruit and vanilla.</p>
-    <p class="text-xs text-wine-600 mt-2"><strong>Variety:</strong> Chardonnay</p>
-  </div>
-</div>
-
-<div class="bg-gray-50 rounded-lg p-5 border border-gray-100">
-    <h3 class="text-lg font-semibold text-wine-700 mb-1">2019 Hartford Family Winery Hartford Court Four Hearts Chardonnay</h3>
-    <p class="text-sm text-gray-600 mb-2">Russian River Valley, California | ~$25-50</p>
-    <p class="text-gray-700 text-sm">Crisp apple and citrus with balanced oak and a creamy texture.</p>
-    <p class="text-xs text-wine-600 mt-2"><strong>Variety:</strong> Chardonnay</p>
-  </div>
-
-  <div class="bg-gray-50 rounded-lg p-5 border border-gray-100">
-    <h3 class="text-lg font-semibold text-wine-700 mb-1">2008 Jacquesson Dizy Corne Bautray</h3>
-    <p class="text-sm text-gray-600 mb-2">Dizy, Champagne | ~$25-50</p>
-    <p class="text-gray-700 text-sm">Crisp apple and citrus with balanced oak and a creamy texture.</p>
-    <p class="text-xs text-wine-600 mt-2"><strong>Variety:</strong> Chardonnay</p>
-  </div>
-
-  <div class="bg-gray-50 rounded-lg p-5 border border-gray-100">
-    <h3 class="text-lg font-semibold text-wine-700 mb-1">2019 Kistler Vineyards McCrea Vineyard Chardonnay</h3>
-    <p class="text-sm text-gray-600 mb-2">Sonoma, California | ~$25-50</p>
-    <p class="text-gray-700 text-sm">Crisp apple and citrus with balanced oak and a creamy texture.</p>
-    <p class="text-xs text-wine-600 mt-2"><strong>Variety:</strong> Chardonnay</p>
-  </div>
-
-  <div class="bg-gray-50 rounded-lg p-5 border border-gray-100">
-    <h3 class="text-lg font-semibold text-wine-700 mb-1">2008 Krug Clos du Mesnil</h3>
-    <p class="text-sm text-gray-600 mb-2">Côte des Blancs, Champagne | ~$25-50</p>
-    <p class="text-gray-700 text-sm">Rich and buttery with notes of tropical fruit and vanilla.</p>
-    <p class="text-xs text-wine-600 mt-2"><strong>Variety:</strong> Chardonnay</p>
-  </div>
-
-  <div class="bg-gray-50 rounded-lg p-5 border border-gray-100">
-    <h3 class="text-lg font-semibold text-wine-700 mb-1">Krug Grande Cuvée</h3>
-    <p class="text-sm text-gray-600 mb-2">Reims, Champagne | ~$25-50</p>
-    <p class="text-gray-700 text-sm">Rich and buttery with notes of tropical fruit and vanilla.</p>
-    <p class="text-xs text-wine-600 mt-2"><strong>Variety:</strong> Chardonnay</p>
-  </div>
-</div>
 
   <h2>Related Guides</h2>
   <ul>
-
-  <li>
-    <a href="/learn" class="internal-link">Wine Guides</a>
-    <span class="text-sm text-gray-600"> - Learn the broader context</span>
-  </li>
-
-  <li>
-    <a href="/wine-pairings" class="internal-link">Wine Pairings</a>
-    <span class="text-sm text-gray-600"> - See pairing-focused follow-ups</span>
-  </li>
-
-  <li>
-    <a href="/buy" class="internal-link">Buying Guides</a>
-    <span class="text-sm text-gray-600"> - Move into bottle-level decisions</span>
-  </li>
-
-  <li>
-    <a href="/buy/best-chardonnay-under-20" class="internal-link">Best Chardonnay Under 20 - Expert Guide</a>
-    <span class="text-sm text-gray-600"> - Commercial next step</span>
-  </li>
+    <li><a href="/learn" class="internal-link">Wine Guides</a><span class="text-sm text-gray-600"> - Learn the broader white wine context</span></li>
+    <li><a href="/wine-pairings" class="internal-link">Wine Pairings</a><span class="text-sm text-gray-600"> - See more food-first recommendations</span></li>
+    <li><a href="/buy" class="internal-link">Buying Guides</a><span class="text-sm text-gray-600"> - Move into bottle-level decisions</span></li>
+    <li><a href="/learn/chardonnay-vs-sauvignon-blanc" class="internal-link">Chardonnay Vs Sauvignon Blanc</a><span class="text-sm text-gray-600"> - Compare Chardonnay to another core white</span></li>
   </ul>
-
-
-
-
-
-<h2>More Excellent Options</h2>
-<div class="grid md:grid-cols-2 gap-4 my-6">
-  <div class="bg-gray-50 rounded-lg p-5 border border-gray-100">
-    <h3 class="text-lg font-semibold text-wine-700 mb-1">2019 Domaine Jean-Louis Chave Hermitage Blanc</h3>
-    <p class="text-sm text-gray-600 mb-2">Côte de Beaune, Burgundy | ~$25-50</p>
-    <p class="text-gray-700 text-sm">Rich and buttery with notes of tropical fruit and vanilla.</p>
-    <p class="text-xs text-wine-600 mt-2"><strong>Variety:</strong> Chardonnay</p>
-  </div>
-
-  <div class="bg-gray-50 rounded-lg p-5 border border-gray-100">
-    <h3 class="text-lg font-semibold text-wine-700 mb-1">2019 Leeuwin Estate Art Series Chardonnay</h3>
-    <p class="text-sm text-gray-600 mb-2">Margaret River, Western Australia | ~$25-50</p>
-    <p class="text-gray-700 text-sm">Elegant with stone fruit, subtle minerality, and a long finish.</p>
-    <p class="text-xs text-wine-600 mt-2"><strong>Variety:</strong> Chardonnay</p>
-  </div>
-
-  <div class="bg-gray-50 rounded-lg p-5 border border-gray-100">
-    <h3 class="text-lg font-semibold text-wine-700 mb-1">2019 Lingua Franca Estate Chardonnay</h3>
-    <p class="text-sm text-gray-600 mb-2">Eola-Amity Hills, Oregon | ~$25-50</p>
-    <p class="text-gray-700 text-sm">Elegant with stone fruit, subtle minerality, and a long finish.</p>
-    <p class="text-xs text-wine-600 mt-2"><strong>Variety:</strong> Chardonnay</p>
-  </div>
-
-  <div class="bg-gray-50 rounded-lg p-5 border border-gray-100">
-    <h3 class="text-lg font-semibold text-wine-700 mb-1">2014 Louis Roederer Cristal</h3>
-    <p class="text-sm text-gray-600 mb-2">Reims, Champagne | ~$25-50</p>
-    <p class="text-gray-700 text-sm">Rich and buttery with notes of tropical fruit and vanilla.</p>
-    <p class="text-xs text-wine-600 mt-2"><strong>Variety:</strong> Chardonnay</p>
-  </div>
-
-  <div class="bg-gray-50 rounded-lg p-5 border border-gray-100">
-    <h3 class="text-lg font-semibold text-wine-700 mb-1">2017 Marcassin Estate Chardonnay</h3>
-    <p class="text-sm text-gray-600 mb-2">Sonoma Coast, California | ~$25-50</p>
-    <p class="text-gray-700 text-sm">Elegant with stone fruit, subtle minerality, and a long finish.</p>
-    <p class="text-xs text-wine-600 mt-2"><strong>Variety:</strong> Chardonnay</p>
-  </div>
-
-  <div class="bg-gray-50 rounded-lg p-5 border border-gray-100">
-    <h3 class="text-lg font-semibold text-wine-700 mb-1">2012 Moët & Chandon Dom Pérignon Vintage</h3>
-    <p class="text-sm text-gray-600 mb-2">Épernay, Champagne | ~$25-50</p>
-    <p class="text-gray-700 text-sm">Crisp apple and citrus with balanced oak and a creamy texture.</p>
-    <p class="text-xs text-wine-600 mt-2"><strong>Variety:</strong> Chardonnay</p>
-  </div>
-</div>
-
-<!-- Author Bio Footer -->
-  <div class="mt-12 p-6 bg-gray-50 rounded-lg border border-gray-200">
-    <h3 class="text-lg font-semibold mb-3">About the Author</h3>
-    <div class="flex items-start gap-4">
-      <div class="w-16 h-16 rounded-full bg-wine-100 flex items-center justify-center text-wine-700 font-bold text-xl flex-shrink-0">
-        JT
-      </div>
-      <div>
-        <a href="/about/james-thornton" class="font-semibold text-wine-600 hover:text-wine-800">James Thornton</a>
-        <p class="text-sm text-gray-600 mb-2">Founder & Lead Wine Consultant</p>
-        <p class="text-sm text-gray-700">Certified Sommelier and WSET Level 3 holder with 10+ years in wine education and consulting.</p>
-      </div>
-    </div>
-  </div>
 </ArticleLayout>
