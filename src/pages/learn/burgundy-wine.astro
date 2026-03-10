@@ -9,83 +9,82 @@ const frontmatter = {
   canonicalUrl: "https://winesquickstart.com/learn/burgundy-wine",
 
   title: "Burgundy Wine - Expert Guide",
-  description: "Your complete guide to burgundy wine. Explore top producers, signature styles, and expert recommendations from certified sommeliers to find your perfect bottle.",
+  description: "A cleaner guide to Burgundy wine: what it is, how the region works, what it tastes like, and how to buy bottles without getting lost in the hierarchy.",
   pubDate: "2026-01-14",
   author: "Elena Martinez",
   authorRole: "Senior Wine Writer",
   authorSlug: "elena-martinez",
-  readTime: "18 min",
-  keywords: ["burgundy wine", "burgundy", "wine", "wine guide"],
+  readTime: "8 min",
+  keywords: ["burgundy wine", "burgundy", "pinot noir", "chardonnay", "wine guide"],
   structured_data: {
-            "@context": "https://schema.org",
-            "@graph": [
-                  {
-                        "@type": "Organization",
-                        "@id": "https://winesquickstart.com/#organization",
-                        "name": "Wine Quick Start",
-                        "url": "https://winesquickstart.com",
-                        "description": "Expert wine guidance from certified sommeliers"
-                  },
-                  {
-                        "@type": "WebSite",
-                        "@id": "https://winesquickstart.com/#website",
-                        "url": "https://winesquickstart.com",
-                        "name": "Wine Quick Start",
-                        "publisher": {
-                              "@id": "https://winesquickstart.com/#organization"
-                        }
-                  },
-                  {
-                        "@type": "BreadcrumbList",
-                        "itemListElement": [
-                              {
-                                    "@type": "ListItem",
-                                    "position": 1,
-                                    "name": "Home",
-                                    "item": "https://winesquickstart.com"
-                              },
-                              {
-                                    "@type": "ListItem",
-                                    "position": 2,
-                                    "name": "Learn",
-                                    "item": "https://winesquickstart.com/learn/"
-                              },
-                              {
-                                    "@type": "ListItem",
-                                    "position": 3,
-                                    "name": "Burgundy Wine - Expert Guide"
-                              }
-                        ]
-                  },
-                  {
-                        "@type": "Article",
-                        "headline": "Burgundy Wine - Expert Guide",
-                        "description": "Your complete guide to burgundy wine. Explore top producers, signature styles, and expert recommendations from certified sommeliers to find your perfect bottle.",
-                        "author": {
-                              "@type": "Person",
-                              "name": "Elena Martinez",
-                              "jobTitle": "Senior Wine Writer"
-                        },
-                        "publisher": {
-                              "@id": "https://winesquickstart.com/#organization"
-                        },
-                        "datePublished": "2026-01-14",
-                        "dateModified": "2026-01-14",
-                        "mainEntityOfPage": {
-                              "@type": "WebPage",
-                              "@id": "https://winesquickstart.com/learn/burgundy-wine"
-                        },
-                        "isPartOf": {
-                              "@id": "https://winesquickstart.com/#website"
-                        }
-                  }
-            ]
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Organization",
+        "@id": "https://winesquickstart.com/#organization",
+        "name": "Wine Quick Start",
+        "url": "https://winesquickstart.com",
+        "description": "Expert wine guidance from certified sommeliers"
+      },
+      {
+        "@type": "WebSite",
+        "@id": "https://winesquickstart.com/#website",
+        "url": "https://winesquickstart.com",
+        "name": "Wine Quick Start",
+        "publisher": {
+          "@id": "https://winesquickstart.com/#organization"
+        }
+      },
+      {
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "name": "Home",
+            "item": "https://winesquickstart.com"
+          },
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "name": "Learn",
+            "item": "https://winesquickstart.com/learn/"
+          },
+          {
+            "@type": "ListItem",
+            "position": 3,
+            "name": "Burgundy Wine - Expert Guide"
+          }
+        ]
+      },
+      {
+        "@type": "Article",
+        "headline": "Burgundy Wine - Expert Guide",
+        "description": "A cleaner guide to Burgundy wine: what it is, how the region works, what it tastes like, and how to buy bottles without getting lost in the hierarchy.",
+        "author": {
+          "@type": "Person",
+          "name": "Elena Martinez",
+          "jobTitle": "Senior Wine Writer"
+        },
+        "publisher": {
+          "@id": "https://winesquickstart.com/#organization"
+        },
+        "datePublished": "2026-01-14",
+        "dateModified": "2026-01-14",
+        "mainEntityOfPage": {
+          "@type": "WebPage",
+          "@id": "https://winesquickstart.com/learn/burgundy-wine"
+        },
+        "isPartOf": {
+          "@id": "https://winesquickstart.com/#website"
+        }
       }
+    ]
+  }
 };
 ---
 
 <ArticleLayout canonical={frontmatter.canonicalUrl} categorySlug="learn" title={frontmatter.title} description={frontmatter.description} author={frontmatter.author} readTime={frontmatter.readTime} category="Wine Guide" schema={frontmatter.structured_data} featuredImage={featuredImage}>
-  <!-- Author Attribution -->
   <div class="bg-gray-50 p-4 rounded-lg mb-6 flex items-center gap-4">
     <div class="w-12 h-12 rounded-full bg-wine-100 flex items-center justify-center text-wine-700 font-bold">
       EM
@@ -97,402 +96,141 @@ const frontmatter = {
   </div>
 
   <div slot="quick-answer">
-    <p><strong>Quick Answer:</strong> Start with classic examples from renowned regions, then explore based on your personal preferences. Don't be afraid to try something new!</p>
+    <p><strong>Quick Answer:</strong> Burgundy is France's most terroir-driven fine-wine region, built mainly on Pinot Noir for reds and Chardonnay for whites. The wines are prized less for raw power than for detail, texture, and site expression. If Bordeaux is about blend and structure, Burgundy is about place and nuance.</p>
   </div>
 
-  <h2>Understanding Burgundy Wine</h2>
-  <p>The world of burgundy wine offers incredible diversity and complexity. In this guide, we'll help you navigate the options and find exactly what you're looking for.</p>
+  <p>Burgundy intimidates people because it asks you to learn geography before it rewards you. The region does not lead with simple grape labels or easy hierarchy. It leads with villages, vineyards, producers, and tiny differences in site. That complexity is real, but the practical buying lesson is simpler than the mythology: good Burgundy is about precision, not size.</p>
 
-<h2>History & Origins of Burgundy Wine</h2>
+  <p>If you are looking for a collector-style red comparison, pair this with <a href="/learn/bordeaux-vs-burgundy" class="internal-link">our Bordeaux vs Burgundy guide</a>. Buyers who want to move straight into bottle recommendations should also read <a href="/learn/best-pinot-noir" class="internal-link">our Pinot Noir buying guide</a> and explore the broader <a href="/buy" class="internal-link">buying guide library</a>. This page is the context layer that makes those shopping decisions smarter.</p>
 
-<p>The storied history of Burgundy wine begins with the Romans, who first planted vines in this eastern French region during the 1st century AD. However, it was the Cistercian and Benedictine monks who truly shaped Burgundy's destiny, beginning in the 6th century when they established monasteries throughout the Côte d'Or. These devoted religious orders meticulously mapped the terroir, identifying which grape varieties thrived in specific vineyard sites—a practice that laid the foundation for Burgundy's modern <strong>climat</strong> system.</p>
+  <h2>What Burgundy Actually Means</h2>
 
-<p>The <strong>Dukes of Burgundy</strong> elevated the region's reputation during the 14th and 15th centuries, using wine as a diplomatic tool across European courts. Duke Philip the Bold's 1395 decree banning the "disloyal" Gamay grape in favor of Pinot Noir proved pivotal, establishing the varietal hierarchy that defines Burgundy today. The monks of Clos de Vougeot, particularly the Cistercians, created the region's first grand cru vineyard in the 12th century, demonstrating the potential for single-vineyard wines of extraordinary complexity.</p>
+  <p>Red Burgundy is almost always Pinot Noir. White Burgundy is almost always Chardonnay. That sounds simple, but the region is not organized around grape variety the way most New World regions are. It is organized around place.</p>
 
-<p>Burgundy's classification system evolved organically over centuries, but received official recognition with the establishment of France's <strong>Appellation d'Origine Contrôlée (AOC)</strong> laws in 1935. The region's hierarchy—from regional appellations to village wines, premier crus, and the prestigious grand crus—reflects nearly a millennium of terroir observation. Notable families like the <strong>Domaine de la Romanée-Conti</strong>, whose vineyards have been documented since 1232, continue to uphold these ancient traditions.</p>
+  <p>The core of that place-based logic is the <em>climat</em> system: small vineyard sites believed to express meaningfully different character. In Burgundy, a few meters of slope, drainage, or limestone exposure can change both price and reputation.</p>
 
-<p>The French Revolution dramatically altered Burgundy's landscape when church and noble lands were redistributed among peasant families, creating the region's characteristic <strong>fractured vineyard ownership</strong>. This parcellation means that prestigious vineyards like Clos de Vougeot now have over 80 different owners, each crafting unique interpretations of the same terroir.</p>
+  <h2>The Burgundy Hierarchy Without The Filler</h2>
 
-<p>Today, Burgundy encompasses 84 appellations across approximately 28,000 hectares, producing some of the world's most sought-after wines. The region's reputation for <strong>transparency of terroir</strong>—where Pinot Noir and Chardonnay express their specific vineyard origins with remarkable clarity—remains unmatched globally.</p>
+  <p><strong>Regional Burgundy:</strong> the broadest category and usually the best place to start if you want the producer's style without paying village pricing.</p>
 
-<h2>Terroir & Climate</h2>
+  <p><strong>Village wines:</strong> bottles labeled Gevrey-Chambertin, Meursault, Volnay, Chablis, and so on. This is where Burgundy starts to feel specific.</p>
 
-<h3>Continental Climate with Maritime Influences</h3>
-<p>Burgundy's <strong>semi-continental climate</strong> creates the perfect tension between warmth and coolness that Pinot Noir and Chardonnay demand. Average temperatures range from 32-39°F (0-4°C) in winter to 66-75°F (19-24°C) in summer, with annual rainfall between 24-32 inches (600-800mm). The region receives approximately 1,900 hours of sunshine annually—enough to ripen grapes but insufficient to overpower Burgundy's signature elegance.</p>
+  <p><strong>Premier Cru:</strong> stronger vineyard sites within a village. Prices climb fast, and site identity becomes more visible.</p>
 
-<p>This marginal climate creates dramatic <strong>vintage variation</strong> that defines Burgundy's character. Cool years like 2013 produce wines with piercing acidity and mineral precision, while warmer vintages such as 2015 yield richer, more powerful expressions. Spring frost remains a constant threat, particularly in Chablis, where vintners employ wind machines and heaters to protect budding vines.</p>
+  <p><strong>Grand Cru:</strong> the elite vineyards. These bottles are not automatically “better for everyone,” but they are usually the most site-specific, age-worthy, and expensive.</p>
 
-<h3>Geological Foundation: Jurassic Limestone Legacy</h3>
-<p>Burgundy's soils tell the story of ancient seas that covered this region 150-200 million years ago. The dominant <strong>Jurassic limestone</strong> bedrock, particularly Kimmeridgian and Oxfordian formations, provides excellent drainage while retaining sufficient moisture for dry periods. This calcareous foundation contributes directly to Burgundy's characteristic mineral backbone and age-worthy structure.</p>
+  <h2>How Red Burgundy Tastes</h2>
 
-<p>Surface soils vary dramatically across appellations. <strong>Côte d'Or</strong> vineyards feature thin layers of limestone mixed with clay and marl, creating wines with both power and finesse. The iron-rich <strong>oolitic limestone</strong> of Gevrey-Chambertin produces Pinot Noirs with distinctive earthy, mushroom-like complexity, while Volnay's sandy limestone yields more delicate, perfumed expressions. In Chablis, the famous <strong>Kimmeridgian clay</strong>—rich in fossilized oyster shells—imparts the region's signature steely minerality and saline finish.</p>
+  <p>Good red Burgundy is about aromatic detail and texture rather than size. Expect red cherry, cranberry, rose petal, spice, tea, and earth more than massive blackberry fruit or heavy oak. The best bottles feel transparent and persistent instead of loud.</p>
 
-<h3>Topographical Complexity</h3>
-<p>Burgundy's <strong>east-facing slopes</strong> capture gentle morning sun while avoiding harsh afternoon heat, crucial for preserving acidity in both varieties. Elevations range from 750-1,150 feet (230-350m), with the finest vineyards positioned on mid-slope locations that offer optimal drainage and sun exposure. The <strong>Côte d'Or escarpment</strong>—a geological fault line—creates a series of amphitheater-like slopes that concentrate flavors through natural wind protection and heat retention.</p>
+  <p>That is why people who want power sometimes bounce off Burgundy at first. The point is not force. The point is how much complexity can come through a wine that still feels lifted.</p>
 
-<h3>Microclimate Influences</h3>
-<p>The <strong>Saône River valley</strong> moderates temperature extremes and provides crucial humidity during dry spells. Morning fog often blankets lower vineyards, extending the growing season and preserving aromatic compounds. The <strong>Morvan hills</strong> to the west shield vineyards from Atlantic storms while channeling cooling air through valley corridors.</p>
+  <h2>How White Burgundy Tastes</h2>
 
-<p>These combined terroir factors translate directly into wine characteristics: limestone creates mineral tension and aging potential, clay adds body and color intensity, while eastern exposure preserves the bright acidity and red fruit purity that make Burgundy wines so distinctively elegant and food-friendly.</p>
+  <p>White Burgundy ranges from Chablis-like tension to richer Meursault and Puligny-Montrachet textures, but the common thread is shape. The best wines feel energetic even when they are creamy. They give you citrus, orchard fruit, chalk, hazelnut, and a mineral edge that keeps the wine from turning flat.</p>
 
-<h2>What Does Burgundy Wine Taste Like?</h2>
+  <p>Bad white Burgundy is usually obvious for the wrong reasons: too much oak, too much softness, or not enough freshness to justify the price.</p>
 
-<div class="bg-wine-50 p-6 rounded-lg">
-
-<h3 class="text-wine-700 font-semibold mb-3">Appearance</h3>
-<p>Red Burgundy displays a distinctive pale to medium ruby color, noticeably lighter than Bordeaux or New World Pinot Noir. Young wines show bright cherry-red hues with purple edges, while mature Burgundies develop beautiful brick-orange rims and garnet cores. The color intensity often correlates with vineyard site—Premier and Grand Cru wines typically show deeper saturation. White Burgundy ranges from pale gold to deep straw, with Premier Crus exhibiting more viscous legs that cling to the glass, indicating higher glycerol content from oak aging and lees contact.</p>
-
-<h3 class="text-wine-700 font-semibold mb-3">Aromatics</h3>
-<p>Burgundy's aromatic complexity unfolds in distinct layers. <strong>Primary aromas</strong> feature red cherry, raspberry, and strawberry in reds, while whites showcase citrus blossom, green apple, and pear. <strong>Secondary aromas</strong> from fermentation include subtle brioche, wet leaves, and forest floor—particularly prominent in wines aged on lees. <strong>Tertiary aromas</strong> develop with bottle age: leather, game, dried roses, and mushroom in reds; honeyed notes, hazelnut, and wet stone minerality in aged Chardonnay. The hallmark "Burgundian funk"—a pleasant barnyard earthiness from native yeasts—distinguishes authentic examples.</p>
-
-<h3 class="text-wine-700 font-semibold mb-3">Palate Structure</h3>
-<p>Red Burgundy exhibits medium body with vibrant acidity that creates a lifting, energetic mouthfeel. Tannins are typically refined and silky rather than aggressive, allowing the wine's elegance to shine. Alcohol levels hover around 12.5-13.5%, feeling integrated rather than prominent. White Burgundy shows fuller body, particularly from Premier Cru sites, with a creamy texture balanced by crisp mineral acidity.</p>
-
-<h3 class="text-wine-700 font-semibold mb-3">Flavor Profile</h3>
-<p>The flavor spectrum spans bright red fruits—cherry, cranberry, pomegranate—supported by distinctive <strong>terroir-driven minerality</strong>. Limestone soils impart chalky, wet stone notes, while clay contributes earthier mushroom and truffle flavors. Spice elements include white pepper, cinnamon, and subtle herbs like thyme. Premium examples showcase remarkable flavor precision and site-specific characteristics.</p>
-
-<h3 class="text-wine-700 font-semibold mb-3">Finish and Quality Markers</h3>
-<p>Exceptional Burgundy delivers a long, evolving finish that can persist for 30+ seconds. Quality indicators include aromatic complexity, seamless integration of oak (never overwhelming), and the ability to express both fruit purity and terroir simultaneously. The greatest wines show remarkable transparency—you taste the vineyard, not just the grape variety.</p>
-
-</div>
-
-  <h2>Food Pairing Guide</h2>
-
-<p>Burgundy's ethereal elegance and complex terroir expression create remarkable food pairing opportunities. The key to successful matches lies in understanding Burgundy's <strong>flavor bridge</strong> – the wine's natural acidity, silky tannins, and earthy undertones that complement rather than compete with food.</p>
-
-<h3>Classic Regional Pairings</h3>
-
-<p>Burgundy's homeland offers time-tested combinations: <strong>Coq au Vin</strong> showcases how Pinot Noir's fruit-forward character enhances braised chicken, while the wine's acidity cuts through rich sauce. <strong>Beef Bourguignon</strong> demonstrates the perfect marriage of earthy mushrooms and wine tannins, creating layers of umami depth. <strong>Époisses cheese</strong> with aged Burgundy creates a transcendent pairing where the wine's minerality balances the cheese's pungent creaminess.</p>
-
-<h3>Versatile Everyday Options</h3>
-
-<ul class="space-y-2">
-<li><strong>Roasted salmon with herbs:</strong> Pinot Noir's delicate structure won't overpower fish, while shared earthy notes create harmony</li>
-<li><strong>Mushroom risotto:</strong> The wine's forest floor characteristics mirror fungal flavors, enhanced by acidity cutting through cream</li>
-<li><strong>Duck breast with cherry sauce:</strong> Natural fruit-to-fruit affinity amplifies both wine and dish complexity</li>
-</ul>
-
-<h3>Special Occasion Selections</h3>
-
-<p>For memorable dinners, consider <strong>truffle-enhanced dishes</strong> with aged Burgundy – the wine's tertiary aromas of leather and earth create symphonic depth with truffle's intensity. <strong>Rack of lamb with rosemary</strong> pairs beautifully with Gevrey-Chambertin, where the wine's structure supports the meat's richness while herbal notes bridge flavors.</p>
-
-<p><strong>Game birds like pheasant or quail</strong> represent Burgundy's apex pairing potential. The wine's natural acidity cleanses the palate between bites of rich, lean meat, while shared woodland characteristics create an almost mystical connection between terroir and table.</p>
-
-<p class="bg-wine-50 p-4 rounded-lg">
-<strong>Pro Tip:</strong> When pairing Burgundy, remember that lighter wines (Côte de Beaune) favor delicate preparations, while more structured bottles (Gevrey-Chambertin, Chambolle-Musigny) can handle richer, more complex dishes without losing their elegant character.
-</p>
-
-<h2>Our Top Picks</h2>
-      <div class="bg-gray-50 rounded-lg p-6 mb-4">
-        <h3 class="text-xl font-semibold text-wine-700 mb-2">1. 2019 David Duband Bourgogne</h3>
-        <p class="text-gray-600 mb-2"><strong>Producer:</strong> David Duband</p>
-        <p class="text-gray-600 mb-2"><strong>Region:</strong> Burgundy, Unknown Region</p>
-        <p class="text-gray-600 mb-2"><strong>Variety:</strong> Pinot Noir</p>
-        <p class="text-gray-700 mt-3">Light-bodied with vibrant acidity and a long, refined finish.</p>
-      </div>
-
-      <div class="bg-gray-50 rounded-lg p-6 mb-4">
-        <h3 class="text-xl font-semibold text-wine-700 mb-2">2. 2018 Domaine Anne Gros Richebourg Grand Cru</h3>
-        <p class="text-gray-600 mb-2"><strong>Producer:</strong> Domaine Anne Gros</p>
-        <p class="text-gray-600 mb-2"><strong>Region:</strong> Côte de Nuits, Burgundy</p>
-        <p class="text-gray-600 mb-2"><strong>Variety:</strong> Pinot Noir</p>
-        <p class="text-gray-700 mt-3">Elegant with bright cherry and raspberry notes, silky tannins, and earthy undertones.</p>
-      </div>
-
-      <div class="bg-gray-50 rounded-lg p-6 mb-4">
-        <h3 class="text-xl font-semibold text-wine-700 mb-2">3. 2017 Domaine Armand Rousseau Chambertin</h3>
-        <p class="text-gray-600 mb-2"><strong>Producer:</strong> Domaine Armand Rousseau</p>
-        <p class="text-gray-600 mb-2"><strong>Region:</strong> Côte de Nuits, Burgundy</p>
-        <p class="text-gray-600 mb-2"><strong>Variety:</strong> Pinot Noir</p>
-        <p class="text-gray-700 mt-3">Delicate red fruit aromas with hints of mushroom and forest floor.</p>
-      </div>
-
-<h2>Expert Tips</h2>
-<ol class="list-decimal list-inside space-y-4 text-gray-700">
-  <li><strong>Master the Village vs. Premier vs. Grand Cru Hierarchy</strong> - Burgundy's classification system directly impacts value and drinking windows. Village wines (like Gevrey-Chambertin) are ready in 3-7 years and offer the best introduction to a producer's style. Premier Crus need 5-10 years to show their terroir complexity, while Grand Crus like Chambertin or Montrachet can evolve for 15-30 years. Always check the classification level on the label—it's your roadmap to proper cellaring and expectations.</li>
-
-  <li><strong>Serve Red Burgundy Cooler Than Bordeaux</strong> - Pinot Noir's delicate structure shines at 60-62°F (15-17°C), significantly cooler than most reds. At this temperature, burgundy's signature earthy undertones, bright acidity, and silky tannins are perfectly balanced. Too warm, and the alcohol dominates the wine's elegant aromatics. Place bottles in the refrigerator for 30 minutes before serving, or use a wine thermometer to hit the sweet spot.</li>
-
-  <li><strong>Decant Only Aged Reds and Skip It for Whites</strong> - Young red burgundy (under 8 years) rarely needs decanting—its transparent, food-friendly nature is part of its charm. However, wines over 10 years may have developed sediment and benefit from gentle decanting 30 minutes before serving. White burgundy should never be decanted as it strips away the wine's mineral precision and can cause premature oxidation of its delicate fruit character.</li>
-
-  <li><strong>Choose Burgundy-Specific Glassware</strong> - Use a large-bowled, thin-rimmed glass with a narrower opening than Bordeaux glasses. The balloon shape concentrates burgundy's ethereal aromatics—think forest floor, rose petals, and spice—while the narrow rim directs these delicate scents to your nose. Avoid thick-rimmed glasses that interfere with the wine's subtle texture and always hand-wash to prevent detergent residue from masking the wine's mineral core.</li>
-
-  <li><strong>Learn Producer Styles Over Appellations</strong> - In Burgundy, the winemaker's philosophy matters more than the village name. Domaine de la Romanée-Conti crafts ethereal, long-lived wines, while Henri Jayer's approach emphasized power and richness. Research whether producers use whole cluster fermentation (adds spice and structure), new oak percentages (higher levels mask terroir), and their harvest philosophy. A great producer can make outstanding wine even from lesser appellations.</li>
-
-  <li><strong>Time White Burgundy Consumption Carefully</strong> - Most white burgundy hits its stride 3-5 years after vintage, when the initial tropical fruit integrates with mineral complexity. Chablis peaks earlier (2-4 years) due to its steel-fermented purity, while Meursault and Puligny-Montrachet can evolve beautifully for 8-12 years. Watch for the honeyed, nutty characteristics that develop with age—signals that premier and grand cru whites are entering their optimal drinking window.</li>
-
-  <li><strong>Store Burgundy Bottles Neck-Down for Aging</strong> - Burgundy's traditional thin bottles and delicate corks make them particularly susceptible to cork failure. Store bottles slightly inverted or completely upside down to keep corks moist and maintain the seal. The wine's naturally high acidity acts as a preservative, but only if oxygen exposure is minimized. Check stored bottles annually for ullage (fill level) and consume any showing significant loss quickly.</li>
-
-  <li><strong>Match Food to Burgundy's Earthy Character</strong> - Red burgundy's earthy, mushroom-laden profile pairs exceptionally with game birds, duck, and dishes featuring fungi like coq au vin or beef bourguignon. The wine's bright acidity cuts through rich sauces while its earthy tannins complement umami flavors. White burgundy's mineral backbone and subtle oak support shellfish, roasted chicken, and cream-based dishes without overwhelming delicate proteins—a perfect marriage of Burgundian terroir and cuisine.</li>
-</ol>
-
-  <h2>Aging & Cellaring</h2>
-
-<p>Burgundy's aging potential varies dramatically by classification and producer. <strong>Village-level Burgundies</strong> typically peak within 3-8 years, while <strong>Premier Cru</strong> wines develop beautifully over 8-15 years. The crown jewels—<strong>Grand Cru Burgundies</strong> from producers like Domaine de la Romanée-Conti or Armand Rousseau—can evolve gracefully for 20-30 years or more.</p>
-
-<h3>Evolution in the Cellar</h3>
-
-<p>Young red Burgundy often displays bright cherry and raspberry fruit with firm but elegant tannins. As it ages, the wine undergoes remarkable transformation: primary fruit evolves into complex notes of forest floor, truffle, leather, and dried roses. The silky tannins integrate further, creating Burgundy's signature velvety texture. White Burgundy transforms from crisp citrus and green apple to rich honey, hazelnut, and mineral complexity.</p>
-
-<h3>Optimal Storage Conditions</h3>
-
-<p>Store Burgundy at a consistent <strong>55-58°F (13-14°C)</strong> with 70-75% humidity. Keep bottles on their sides in a dark environment away from vibrations. Burgundy's thin Pinot Noir skins make it particularly sensitive to temperature fluctuations, which can cause premature oxidation.</p>
-
-<h3>Peak Drinking Windows</h3>
-
-<ul>
-<li><strong>Bourgogne AOC:</strong> 2-5 years</li>
-<li><strong>Village wines:</strong> 4-8 years</li>
-<li><strong>Premier Cru:</strong> 6-15 years</li>
-<li><strong>Grand Cru:</strong> 10-25+ years</li>
-</ul>
-
-<h3>Recognizing Proper Development</h3>
-
-<p>Well-aged Burgundy shows <strong>brick-red edges</strong> in reds and deeper gold in whites. Aromas become more complex and integrated. Warning signs include browning throughout the wine, acetone-like smells, or complete loss of fruit character. The cork should remain moist and intact—a dry, crumbly cork often indicates poor storage conditions that may have compromised the wine's integrity.</p>
-
-<h2>Frequently Asked Questions</h2>
-<div class="space-y-6">
-  <div>
-    <h3 class="text-lg font-semibold text-wine-700 mb-2">What's the difference between red Burgundy and Pinot Noir from other regions?</h3>
-    <p class="text-gray-700">Red Burgundy is exclusively Pinot Noir, but it expresses unique characteristics due to Burgundy's limestone-rich soils and continental climate. Burgundian Pinot Noir typically shows more earthy, mineral notes with red fruit flavors, higher acidity, and more structured tannins compared to the riper, fruit-forward styles found in California or the herbaceous qualities of Oregon Pinot Noir. The concept of terroir in Burgundy creates distinct flavor profiles that vary dramatically even between neighboring vineyards.</p>
-  </div>
-
-  <div>
-    <h3 class="text-lg font-semibold text-wine-700 mb-2">Is Burgundy wine good for beginners, or should I start elsewhere?</h3>
-    <p class="text-gray-700">Burgundy can be challenging for beginners due to its subtle, complex flavors and high prices, but village-level wines like Gevrey-Chambertin or Meursault offer an excellent introduction. Start with entry-level Burgundian producers like Louis Jadot or Joseph Drouhin to understand the region's style without breaking the bank. The wine's elegance and food-friendliness make it very approachable once you develop a palate for more nuanced flavors rather than bold, fruit-forward wines.</p>
-  </div>
-
-  <div>
-    <h3 class="text-lg font-semibold text-wine-700 mb-2">Why is Burgundy wine so expensive compared to other French wines?</h3>
-    <p class="text-gray-700">Burgundy's high prices stem from extremely limited production due to small vineyard plots (some Grand Cru vineyards are only a few acres), strict appellation laws, and centuries of reputation building. The region's complex classification system creates scarcity—there are only about 30 Grand Cru vineyards in all of Burgundy, producing tiny quantities. Additionally, Burgundy's fragmented ownership means many producers make only a few barrels of each wine, driving up costs through supply and demand economics.</p>
-  </div>
-
-  <div>
-    <h3 class="text-lg font-semibold text-wine-700 mb-2">How do I choose between white and red Burgundy for a dinner party?</h3>
-    <p class="text-gray-700">Choose white Burgundy (Chardonnay) for seafood, poultry, cream-based dishes, and cheese courses, as its mineral acidity and subtle oak complement delicate flavors. Red Burgundy pairs beautifully with roasted meats, game, mushroom dishes, and soft cheeses due to its earthy complexity and moderate tannins. For versatility, a white Burgundy like Chablis works with more diverse foods, while a light red Burgundy like Volnay can handle both meat and heartier fish dishes.</p>
-  </div>
-
-  <div>
-    <h3 class="text-lg font-semibold text-wine-700 mb-2">What's the difference between Chablis and other white Burgundy wines?</h3>
-    <p class="text-gray-700">Chablis comes from the northernmost part of Burgundy and is made from Chardonnay grown in Kimmeridgian limestone soils, creating wines with pronounced mineral character, crisp acidity, and minimal oak influence. Other white Burgundies from Côte de Beaune areas like Meursault or Puligny-Montrachet typically show richer, more buttery textures with more prominent oak aging and tropical fruit notes. Chablis emphasizes purity and mineral expression, while Côte de Beaune whites focus on richness and complexity.</p>
-  </div>
-
-  <div>
-    <h3 class="text-lg font-semibold text-wine-700 mb-2">Should I decant red Burgundy, and if so, for how long?</h3>
-    <p class="text-gray-700">Young red Burgundy (under 10 years) benefits from 30-60 minutes of decanting to open up its complex aromatics and soften tannins, while mature Burgundy (15+ years) should be decanted just before serving to avoid over-aeration. The wine's delicate structure means it can lose its elegance quickly if over-exposed to air. For very old Burgundy, use a gentle pour method or brief decanting (10-15 minutes) to separate sediment without sacrificing the wine's fragile bouquet.</p>
-  </div>
-
-  <div>
-    <h3 class="text-lg font-semibold text-wine-700 mb-2">What are the best value alternatives to expensive Burgundy wines?</h3>
-    <p class="text-gray-700">For red Burgundy alternatives, look to Oregon Pinot Noir from Willamette Valley, German Spätburgunder, or wines from Burgundy's satellite regions like Mercurey or Givry which offer similar terroir expression at lower prices. For white Burgundy substitutes, consider Chablis Premier Cru over Grand Cru, or explore high-quality Chardonnays from Mâcon-Villages, which share Burgundy's mineral-driven style. Australian Chardonnays from cool climates like Adelaide Hills also provide excellent value with similar elegance and complexity.</p>
-  </div>
-
-  <div>
-    <h3 class="text-lg font-semibold text-wine-700 mb-2">What's the biggest mistake people make when buying Burgundy wine?</h3>
-    <p class="text-gray-700">The biggest mistake is not researching the producer—in Burgundy, the winemaker matters more than the vineyard classification, as quality varies dramatically between producers even from the same appellation. Many buyers focus solely on Grand Cru or Premier Cru designations without considering that a skilled winemaker's village-level wine often outperforms a mediocre producer's Premier Cru. Always prioritize reputable producers like Domaine de la Romanée-Conti, Henri Jayer, or Leroy over vineyard classification alone.</p>
-  </div>
-</div>
-
-<!-- Related Articles -->
-  <div class="mt-10 pt-8 border-t border-gray-200">
-    <h3 class="text-xl font-semibold mb-6">Related Articles</h3>
-    <div class="grid md:grid-cols-2 gap-4">
-      <a href="/wine-pairings/red-wine-food-pairing" class="block p-4 bg-white border border-gray-200 rounded-lg hover:border-wine-300 hover:shadow-md transition-all">
-        <h4 class="font-semibold text-gray-900 hover:text-wine-600">Red Wine Food Pairing - Expert Guide</h4>
-        <p class="text-sm text-gray-600 mt-1">Discover the best red wine food pairing. Expert recommendations, tasting notes, ...</p>
-      </a>
-      <a href="/wine-pairings/best-wine-with-salmon" class="block p-4 bg-white border border-gray-200 rounded-lg hover:border-wine-300 hover:shadow-md transition-all">
-        <h4 class="font-semibold text-gray-900 hover:text-wine-600">Pinot Noir Food Pairing Guide</h4>
-        <p class="text-sm text-gray-600 mt-1">Master the art of pairing Pinot Noir with food</p>
-      </a>
-      <a href="/learn/napa-valley-wine" class="block p-4 bg-white border border-gray-200 rounded-lg hover:border-wine-300 hover:shadow-md transition-all">
-        <h4 class="font-semibold text-gray-900 hover:text-wine-600">Napa Valley Wine - Expert Guide</h4>
-        <p class="text-sm text-gray-600 mt-1">Discover the best napa valley wine. Expert recommendations, tasting notes, and t...</p>
-      </a>
+  <h2>Real Bottles To Understand Burgundy</h2>
+  <div class="grid md:grid-cols-2 gap-4 my-6">
+    <div class="bg-gray-50 rounded-lg p-5 border border-gray-100">
+      <h3 class="text-lg font-semibold text-wine-700 mb-1">1. David Duband Bourgogne Rouge</h3>
+      <p class="text-sm text-gray-600 mb-2">Burgundy, France</p>
+      <p class="text-gray-700 text-sm">A strong first bottle because it teaches Burgundy's red-wine lift without requiring Premier Cru money. It is the sort of bottle that helps buyers understand why texture and aroma matter more than raw scale.</p>
+      <p class="text-xs text-wine-600 mt-2"><strong>Variety:</strong> Pinot Noir</p>
+    </div>
+    <div class="bg-gray-50 rounded-lg p-5 border border-gray-100">
+      <h3 class="text-lg font-semibold text-wine-700 mb-1">2. Domaine William Fevre Chablis</h3>
+      <p class="text-sm text-gray-600 mb-2">Chablis, Burgundy</p>
+      <p class="text-gray-700 text-sm">A clean white Burgundy reference with citrus, chalk, and tension. Buy this if you want to understand the mineral side of Burgundy without the richer oak-influenced style of the Côte de Beaune.</p>
+      <p class="text-xs text-wine-600 mt-2"><strong>Variety:</strong> Chardonnay</p>
+    </div>
+    <div class="bg-gray-50 rounded-lg p-5 border border-gray-100">
+      <h3 class="text-lg font-semibold text-wine-700 mb-1">3. Domaine Michel Lafarge Volnay</h3>
+      <p class="text-sm text-gray-600 mb-2">Volnay, Burgundy</p>
+      <p class="text-gray-700 text-sm">A good example of why village and producer matter. It shows elegant Pinot Noir with more floral detail and less brute force than most buyers expect from serious red wine.</p>
+      <p class="text-xs text-wine-600 mt-2"><strong>Variety:</strong> Pinot Noir</p>
+    </div>
+    <div class="bg-gray-50 rounded-lg p-5 border border-gray-100">
+      <h3 class="text-lg font-semibold text-wine-700 mb-1">4. Domaine Leflaive Puligny-Montrachet</h3>
+      <p class="text-sm text-gray-600 mb-2">Puligny-Montrachet, Burgundy</p>
+      <p class="text-gray-700 text-sm">The kind of bottle that shows why white Burgundy can be profound. It is layered and textured, but still driven by mineral lift rather than heaviness.</p>
+      <p class="text-xs text-wine-600 mt-2"><strong>Variety:</strong> Chardonnay</p>
     </div>
   </div>
 
-  <div class="bg-gray-50 rounded-lg p-5 border border-gray-100">
-    <h3 class="text-lg font-semibold text-wine-700 mb-1">2018 Domaine Coche-Dury Domaine Coche-Dury Corton-Charlemagne Grand Cru</h3>
-    <p class="text-sm text-gray-600 mb-2">Côte de Beaune, Burgundy | ~$25-50</p>
-    <p class="text-gray-700 text-sm">Elegant with stone fruit, subtle minerality, and a long finish.</p>
-    <p class="text-xs text-wine-600 mt-2"><strong>Variety:</strong> Chardonnay</p>
-  </div>
+  <h2>How To Buy Burgundy Without Getting Lost</h2>
 
-  <div class="bg-gray-50 rounded-lg p-5 border border-gray-100">
-    <h3 class="text-lg font-semibold text-wine-700 mb-1">2019 Domaine de la Romanée-Conti Domaine de la Romanée-Conti La Tâche</h3>
-    <p class="text-sm text-gray-600 mb-2">Côte de Nuits, Burgundy | ~$30-60</p>
-    <p class="text-gray-700 text-sm">Elegant with bright cherry and raspberry notes, silky tannins, and earthy undertones.</p>
-    <p class="text-xs text-wine-600 mt-2"><strong>Variety:</strong> Pinot Noir</p>
-  </div>
+  <p>Start with producer and village, not Grand Cru fantasies. A strong regional or village wine from a disciplined producer will teach you far more than a random expensive bottle bought for the label.</p>
 
-  <div class="bg-gray-50 rounded-lg p-5 border border-gray-100">
-    <h3 class="text-lg font-semibold text-wine-700 mb-1">2017 Domaine de la Romanée-Conti Domaine de la Romanée-Conti Richebourg</h3>
-    <p class="text-sm text-gray-600 mb-2">Côte de Nuits, Burgundy | ~$30-60</p>
-    <p class="text-gray-700 text-sm">Delicate red fruit aromas with hints of mushroom and forest floor.</p>
-    <p class="text-xs text-wine-600 mt-2"><strong>Variety:</strong> Pinot Noir</p>
-  </div>
+  <p>Start white Burgundy with Chablis or Puligny-Montrachet if you like tension and mineral drive. Move toward Meursault when you want more texture and hazelnut richness. Start red Burgundy with Volnay or Chambolle-Musigny if you like fragrance and lift, then move to Gevrey-Chambertin or Nuits-Saint-Georges when you want more grip and darker shape.</p>
 
-  <div class="bg-gray-50 rounded-lg p-5 border border-gray-100">
-    <h3 class="text-lg font-semibold text-wine-700 mb-1">2018 Domaine de la Romanée-Conti Domaine de la Romanée-Conti Romanée-Conti</h3>
-    <p class="text-sm text-gray-600 mb-2">Côte de Nuits, Burgundy | ~$30-60</p>
-    <p class="text-gray-700 text-sm">Delicate red fruit aromas with hints of mushroom and forest floor.</p>
-    <p class="text-xs text-wine-600 mt-2"><strong>Variety:</strong> Pinot Noir</p>
-  </div>
+  <p>Most buyers should not begin with expensive Premier Cru or Grand Cru bottles. Burgundy is too producer-sensitive for that to be a smart learning strategy.</p>
 
-  <div class="bg-gray-50 rounded-lg p-5 border border-gray-100">
-    <h3 class="text-lg font-semibold text-wine-700 mb-1">2019 Domaine Dujac Domaine Dujac Clos de la Roche Grand Cru</h3>
-    <p class="text-sm text-gray-600 mb-2">Côte de Nuits, Burgundy | ~$30-60</p>
-    <p class="text-gray-700 text-sm">Light-bodied with vibrant acidity and a long, refined finish.</p>
-    <p class="text-xs text-wine-600 mt-2"><strong>Variety:</strong> Pinot Noir</p>
-  </div>
-</div>
+  <p>That same logic applies to food pairing. Red Burgundy usually shines with duck, roast chicken, mushroom dishes, and lighter game, while white Burgundy handles shellfish, butter sauces, roast poultry, and richer fish. The region rewards precision on the plate just as much as in the glass, which is why the <a href="/wine-pairings" class="internal-link">pairing library</a> matters so much here.</p>
 
-<div class="bg-gray-50 rounded-lg p-5 border border-gray-100">
-    <h3 class="text-lg font-semibold text-wine-700 mb-1">2018 Domaine Jacques Prieur Montrachet Grand Cru</h3>
-    <p class="text-sm text-gray-600 mb-2">Côte de Beaune, Burgundy | ~$25-50</p>
-    <p class="text-gray-700 text-sm">Elegant with stone fruit, subtle minerality, and a long finish.</p>
-    <p class="text-xs text-wine-600 mt-2"><strong>Variety:</strong> Chardonnay</p>
-  </div>
+  <h2>Why Burgundy Costs So Much</h2>
 
-  <div class="bg-gray-50 rounded-lg p-5 border border-gray-100">
-    <h3 class="text-lg font-semibold text-wine-700 mb-1">2019 Domaine Jean-Louis Chave Hermitage Blanc</h3>
-    <p class="text-sm text-gray-600 mb-2">Côte de Beaune, Burgundy | ~$25-50</p>
-    <p class="text-gray-700 text-sm">Elegant with stone fruit, subtle minerality, and a long finish.</p>
-    <p class="text-xs text-wine-600 mt-2"><strong>Variety:</strong> Chardonnay</p>
-  </div>
+  <p>The region is expensive because supply is small, demand is global, and the most famous sites are fragmented into tiny parcels. Add in frost, hail, and low yields, and the economics get brutal very quickly.</p>
 
-  <div class="bg-gray-50 rounded-lg p-5 border border-gray-100">
-    <h3 class="text-lg font-semibold text-wine-700 mb-1">2018 Domaine Jean-Marc Roulot Meursault Les Perrières</h3>
-    <p class="text-sm text-gray-600 mb-2">Côte de Beaune, Burgundy | ~$25-50</p>
-    <p class="text-gray-700 text-sm">Elegant with stone fruit, subtle minerality, and a long finish.</p>
-    <p class="text-xs text-wine-600 mt-2"><strong>Variety:</strong> Chardonnay</p>
-  </div>
+  <p>That does not mean every expensive Burgundy is worth it. It means the region punishes lazy buying harder than most famous appellations do.</p>
 
-  <div class="bg-gray-50 rounded-lg p-5 border border-gray-100">
-    <h3 class="text-lg font-semibold text-wine-700 mb-1">2018 Domaine Joseph Drouhin Clos de Vougeot Grand Cru</h3>
-    <p class="text-sm text-gray-600 mb-2">Côte de Nuits, Burgundy | ~$30-60</p>
-    <p class="text-gray-700 text-sm">Delicate red fruit aromas with hints of mushroom and forest floor.</p>
-    <p class="text-xs text-wine-600 mt-2"><strong>Variety:</strong> Pinot Noir</p>
-  </div>
+  <p>The best way to protect yourself is to choose producers with a coherent reputation and merchants with proper storage. Burgundy is too expensive to buy casually from warm shelves or vague online listings.</p>
 
-  <div class="bg-gray-50 rounded-lg p-5 border border-gray-100">
-    <h3 class="text-lg font-semibold text-wine-700 mb-1">2019 Domaine Leflaive Chevalier-Montrachet Grand Cru</h3>
-    <p class="text-sm text-gray-600 mb-2">Côte de Beaune, Burgundy | ~$25-50</p>
-    <p class="text-gray-700 text-sm">Crisp apple and citrus with balanced oak and a creamy texture.</p>
-    <p class="text-xs text-wine-600 mt-2"><strong>Variety:</strong> Chardonnay</p>
-  </div>
-</div>
+  <h2>Why These Reference Bottles Matter</h2>
 
-<div class="bg-gray-50 rounded-lg p-5 border border-gray-100">
-    <h3 class="text-lg font-semibold text-wine-700 mb-1">2019 Domaine Comte Georges de Vogüé Musigny</h3>
-    <p class="text-sm text-gray-600 mb-2">Côte de Nuits, Burgundy | ~$30-60</p>
-    <p class="text-gray-700 text-sm">Delicate red fruit aromas with hints of mushroom and forest floor.</p>
-    <p class="text-xs text-wine-600 mt-2"><strong>Variety:</strong> Pinot Noir</p>
-  </div>
+  <p>David Duband Bourgogne Rouge matters because it teaches what a producer can do at the entry level. If a producer cannot make a convincing regional Burgundy, the expensive wines rarely become a safe blind buy.</p>
 
-  <div class="bg-gray-50 rounded-lg p-5 border border-gray-100">
-    <h3 class="text-lg font-semibold text-wine-700 mb-1">2019 Domaine Comte Georges de Vogüé Musigny Cuvée Vieilles Vignes</h3>
-    <p class="text-sm text-gray-600 mb-2">Côte de Nuits, Burgundy | ~$30-60</p>
-    <p class="text-gray-700 text-sm">Elegant with bright cherry and raspberry notes, silky tannins, and earthy undertones.</p>
-    <p class="text-xs text-wine-600 mt-2"><strong>Variety:</strong> Pinot Noir</p>
-  </div>
+  <p>William Fevre Chablis is useful because it shows the clean, mineral, high-acid face of white Burgundy. Too many buyers start with oakier examples and mistake richness for the whole category.</p>
 
-  <div class="bg-gray-50 rounded-lg p-5 border border-gray-100">
-    <h3 class="text-lg font-semibold text-wine-700 mb-1">2018 Domaine Leroy Musigny</h3>
-    <p class="text-sm text-gray-600 mb-2">Côte de Nuits, Burgundy | ~$30-60</p>
-    <p class="text-gray-700 text-sm">Elegant with bright cherry and raspberry notes, silky tannins, and earthy undertones.</p>
-    <p class="text-xs text-wine-600 mt-2"><strong>Variety:</strong> Pinot Noir</p>
-  </div>
+  <p>Michel Lafarge Volnay explains why Burgundy people talk about finesse so much. It is not a blockbuster wine. It is a wine about aroma, texture, and controlled detail. Leflaive, on the white side, shows how that same discipline can become power without heaviness.</p>
 
-  <div class="bg-gray-50 rounded-lg p-5 border border-gray-100">
-    <h3 class="text-lg font-semibold text-wine-700 mb-1">2019 Domaine Meo-Camuzet Cros Parantoux</h3>
-    <p class="text-sm text-gray-600 mb-2">Côte de Nuits, Burgundy | ~$30-60</p>
-    <p class="text-gray-700 text-sm">Light-bodied with vibrant acidity and a long, refined finish.</p>
-    <p class="text-xs text-wine-600 mt-2"><strong>Variety:</strong> Pinot Noir</p>
-  </div>
+  <h2>What To Avoid</h2>
 
-  <div class="bg-gray-50 rounded-lg p-5 border border-gray-100">
-    <h3 class="text-lg font-semibold text-wine-700 mb-1">2017 Domaine Michel Lafarge Volnay Clos des Chênes</h3>
-    <p class="text-sm text-gray-600 mb-2">Côte de Beaune, Burgundy | ~$30-60</p>
-    <p class="text-gray-700 text-sm">Elegant with bright cherry and raspberry notes, silky tannins, and earthy undertones.</p>
-    <p class="text-xs text-wine-600 mt-2"><strong>Variety:</strong> Pinot Noir</p>
-  </div>
-</div>
+  <p>Avoid buying Burgundy only for prestige. If you want sheer power or obvious oak richness, you can usually spend less and be happier elsewhere.</p>
 
-<div class="bg-gray-50 rounded-lg p-5 border border-gray-100">
-    <h3 class="text-lg font-semibold text-wine-700 mb-1">2018 Domaine Ponsot Clos de la Roche</h3>
-    <p class="text-sm text-gray-600 mb-2">Côte de Nuits, Burgundy | ~$30-60</p>
-    <p class="text-gray-700 text-sm">Light-bodied with vibrant acidity and a long, refined finish.</p>
-    <p class="text-xs text-wine-600 mt-2"><strong>Variety:</strong> Pinot Noir</p>
-  </div>
+  <p>Avoid generic expensive labels with no producer track record. In Burgundy, producer discipline matters more than marketing language.</p>
 
-  <div class="bg-gray-50 rounded-lg p-5 border border-gray-100">
-    <h3 class="text-lg font-semibold text-wine-700 mb-1">2019 Domaine Ramonet Bâtard-Montrachet Grand Cru</h3>
-    <p class="text-sm text-gray-600 mb-2">Côte de Beaune, Burgundy | ~$25-50</p>
-    <p class="text-gray-700 text-sm">Elegant with stone fruit, subtle minerality, and a long finish.</p>
-    <p class="text-xs text-wine-600 mt-2"><strong>Variety:</strong> Chardonnay</p>
-  </div>
+  <p>Avoid warm, fat red Burgundy that tastes more like luxury Pinot than Burgundy. The region's value is its detail and tension, not blunt ripeness.</p>
 
-  <div class="bg-gray-50 rounded-lg p-5 border border-gray-100">
-    <h3 class="text-lg font-semibold text-wine-700 mb-1">1981 test toast</h3>
-    <p class="text-sm text-gray-600 mb-2">Burgundy, Unknown Region | ~$35-75</p>
-    <p class="text-gray-700 text-sm">Bold and structured with blackcurrant, cedar, and tobacco notes.</p>
-    <p class="text-xs text-wine-600 mt-2"><strong>Variety:</strong> Cabernet Sauvignon</p>
+  <h2>Expert Tips</h2>
+  <ol>
+    <li>Use village wines to learn the region before chasing Premier Cru or Grand Cru labels.</li>
+    <li>Buy producer first; Burgundy rewards careful names more than broad appellation shopping.</li>
+    <li>Start with Chablis for white and a strong Bourgogne Rouge or village Pinot for red.</li>
+    <li>If you want power, move away from Burgundy rather than forcing Burgundy to be something it is not.</li>
+    <li>Serve red Burgundy slightly cooler than Bordeaux to keep the wine lifted.</li>
+    <li>White Burgundy should feel energetic, not merely creamy.</li>
+    <li>Merchant storage matters because Burgundy is expensive enough that mistakes hurt fast.</li>
+    <li>Compare Burgundy against Oregon Pinot or white Burgundy against serious Chardonnay to understand what the region does differently.</li>
+  </ol>
+
+  <h2>Frequently Asked Questions</h2>
+  <div class="space-y-6">
+    <div>
+      <h3>Is Burgundy always Pinot Noir?</h3>
+      <p>Red Burgundy is essentially Pinot Noir, while white Burgundy is mostly Chardonnay. The important point is that Burgundy organizes identity around place more than grape labeling.</p>
+    </div>
+    <div>
+      <h3>Why is Burgundy so expensive?</h3>
+      <p>Small vineyard supply, famous sites, fragmented ownership, and huge global demand all push prices up. That is especially true for top producers and top vineyards.</p>
+    </div>
+    <div>
+      <h3>Where should beginners start in Burgundy?</h3>
+      <p>Start with a good regional or village wine from a trusted producer. That teaches the region much better than jumping straight into expensive classified bottles.</p>
+    </div>
+    <div>
+      <h3>What food works with Burgundy?</h3>
+      <p>Red Burgundy is excellent with duck, mushroom dishes, roast chicken, and lighter game. White Burgundy works with shellfish, poultry, creamy sauces, and richer fish dishes.</p>
+    </div>
   </div>
-</div>
 
   <h2>Related Guides</h2>
   <ul>
-
-  <li>
-    <a href="/learn" class="internal-link">Wine Guides</a>
-    <span class="text-sm text-gray-600"> - Learn the broader context</span>
-  </li>
-
-  <li>
-    <a href="/wine-pairings" class="internal-link">Wine Pairings</a>
-    <span class="text-sm text-gray-600"> - See pairing-focused follow-ups</span>
-  </li>
-
-  <li>
-    <a href="/buy" class="internal-link">Buying Guides</a>
-    <span class="text-sm text-gray-600"> - Move into bottle-level decisions</span>
-  </li>
-
-  <li>
-    <a href="/buy/best-cabernet-sauvignon-under-20" class="internal-link">Best Cabernet Sauvignon Under 20 - Expert Guide</a>
-    <span class="text-sm text-gray-600"> - Commercial next step</span>
-  </li>
+    <li><a href="/learn/bordeaux-vs-burgundy" class="internal-link">Bordeaux vs Burgundy</a><span class="text-sm text-gray-600"> - Compare the two classic French fine-wine models</span></li>
+    <li><a href="/learn/best-pinot-noir" class="internal-link">Best Pinot Noir</a><span class="text-sm text-gray-600"> - See Pinot Noir buying recommendations</span></li>
+    <li><a href="/learn" class="internal-link">Wine Guides</a><span class="text-sm text-gray-600"> - Explore more region and style explainers</span></li>
+    <li><a href="/wine-pairings" class="internal-link">Wine Pairings</a><span class="text-sm text-gray-600"> - Match Burgundy styles to food</span></li>
+    <li><a href="/buy" class="internal-link">Buying Guides</a><span class="text-sm text-gray-600"> - Explore more bottle-first decisions</span></li>
   </ul>
-
-
-
-
-
-<h2>More Excellent Options</h2>
-<div class="grid md:grid-cols-2 gap-4 my-6">
-  <div class="bg-gray-50 rounded-lg p-5 border border-gray-100">
-    <h3 class="text-lg font-semibold text-wine-700 mb-1">2019 Domaine Bonneau du Martray Corton-Charlemagne Grand Cru</h3>
-    <p class="text-sm text-gray-600 mb-2">Côte de Beaune, Burgundy | ~$25-50</p>
-    <p class="text-gray-700 text-sm">Crisp apple and citrus with balanced oak and a creamy texture.</p>
-    <p class="text-xs text-wine-600 mt-2"><strong>Variety:</strong> Chardonnay</p>
-  </div>
-</div>
-
-<!-- Author Bio Footer -->
-  <div class="mt-12 p-6 bg-gray-50 rounded-lg border border-gray-200">
-    <h3 class="text-lg font-semibold mb-3">About the Author</h3>
-    <div class="flex items-start gap-4">
-      <div class="w-16 h-16 rounded-full bg-wine-100 flex items-center justify-center text-wine-700 font-bold text-xl flex-shrink-0">
-        EM
-      </div>
-      <div>
-        <a href="/about/elena-martinez" class="font-semibold text-wine-600 hover:text-wine-800">Elena Martinez</a>
-        <p class="text-sm text-gray-600 mb-2">Senior Wine Writer</p>
-        <p class="text-sm text-gray-700">Wine writer and CSW holder specializing in making wine accessible to beginners.</p>
-      </div>
-    </div>
-  </div>
 </ArticleLayout>
