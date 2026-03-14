@@ -58,6 +58,7 @@ export interface QAScore {
     wordCount: number;
     h2Count: number;
     wineCount: number;
+    isNoindex: boolean;
     hasImage: boolean;
     hasSchema: boolean;
     hasMeta: boolean;
@@ -969,6 +970,8 @@ export async function scoreArticle(
   const category = path.basename(path.dirname(filePath));
   const pageRole = extractFrontmatterValue(content, 'pageRole');
   const intentClass = extractFrontmatterValue(content, 'intentClass');
+  const robots = extractFrontmatterValue(content, 'robots');
+  const isNoindex = robots?.includes('noindex') ?? false;
 
   // Calculate word count
   const textContent = content
@@ -1041,6 +1044,7 @@ export async function scoreArticle(
       wordCount,
       h2Count: structureResult.h2Count,
       wineCount: contentResult.wineCount,
+      isNoindex,
       hasImage,
       hasSchema: seoResult.hasSchema,
       hasMeta: seoResult.hasMeta,
@@ -1214,14 +1218,17 @@ export function getScoreSummary(results: QAScore[]): {
   avgScore: number;
   commonIssues: { issue: string; count: number }[];
 } {
-  const passed = results.filter(r => r.status === 'pass').length;
-  const review = results.filter(r => r.status === 'review').length;
-  const failed = results.filter(r => r.status === 'fail').length;
-  const avgScore = Math.round(results.reduce((sum, r) => sum + r.totalScore, 0) / results.length);
+  const activeResults = results.filter(r => !r.metrics.isNoindex);
+  const passed = activeResults.filter(r => r.status === 'pass').length;
+  const review = activeResults.filter(r => r.status === 'review').length;
+  const failed = activeResults.filter(r => r.status === 'fail').length;
+  const avgScore = activeResults.length > 0
+    ? Math.round(activeResults.reduce((sum, r) => sum + r.totalScore, 0) / activeResults.length)
+    : 0;
 
   // Count common issues
   const issueCounts = new Map<string, number>();
-  for (const result of results) {
+  for (const result of activeResults) {
     for (const issue of result.issues) {
       const baseIssue = issue.replace(/:\s*\d+.*$/, ''); // Remove specific numbers
       issueCounts.set(baseIssue, (issueCounts.get(baseIssue) || 0) + 1);
@@ -1233,7 +1240,7 @@ export function getScoreSummary(results: QAScore[]): {
     .sort((a, b) => b.count - a.count)
     .slice(0, 10);
 
-  return { total: results.length, passed, review, failed, avgScore, commonIssues };
+  return { total: activeResults.length, passed, review, failed, avgScore, commonIssues };
 }
 
 // Main execution

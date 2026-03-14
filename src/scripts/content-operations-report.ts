@@ -39,6 +39,7 @@ export async function generateOperationsSnapshot(): Promise<ContentOperationsSna
   const graph = collectContentGraph();
   const filePaths = collectArticleFilePaths();
   const scores = await scoreArticleFiles(filePaths);
+  const activeScores = scores.filter(score => !score.metrics.isNoindex);
 
   const clusterMap = new Map<string, { total: number; money: number; seed: number; supporting: number }>();
   for (const node of graph) {
@@ -54,9 +55,9 @@ export async function generateOperationsSnapshot(): Promise<ContentOperationsSna
     .sort((a, b) => a.total - b.total || a.money - b.money)
     .slice(0, 15);
 
-  const refreshBacklog = rankRefreshCandidates(scores, graph, 15);
+  const refreshBacklog = rankRefreshCandidates(activeScores, graph, 15);
   const reviewIssueMap = new Map<string, number>();
-  for (const score of scores.filter(entry => entry.totalScore >= 60 && entry.totalScore < 85)) {
+  for (const score of activeScores.filter(entry => entry.totalScore >= 60 && entry.totalScore < 85)) {
     for (const issueType of score.issueTypes || []) {
       reviewIssueMap.set(issueType, (reviewIssueMap.get(issueType) || 0) + 1);
     }
@@ -71,9 +72,9 @@ export async function generateOperationsSnapshot(): Promise<ContentOperationsSna
   }
 
   const qaDistribution = {
-    pass: scores.filter(score => score.totalScore >= 85).length,
-    review: scores.filter(score => score.totalScore >= 60 && score.totalScore < 85).length,
-    fail: scores.filter(score => score.totalScore < 60).length,
+    pass: activeScores.filter(score => score.totalScore >= 85).length,
+    review: activeScores.filter(score => score.totalScore >= 60 && score.totalScore < 85).length,
+    fail: activeScores.filter(score => score.totalScore < 60).length,
   };
 
   return {
