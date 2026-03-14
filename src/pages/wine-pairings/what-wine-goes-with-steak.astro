@@ -6,90 +6,60 @@ const frontmatter = {
   clusterKey: "goes-steak",
   intentClass: "informational",
   pageRole: "supporting",
-  canonicalUrl: "https://winesquickstart.com/wine-pairings/what-wine-goes-with-steak",
+  canonicalUrl: "https://winesquickstart.com/wine-pairings/best-wine-with-steak",
+  robots: "noindex, follow",
 
-  title: "What Wine Goes With Steak - Expert Guide",
-  description: "Find the perfect wine to pair with what wine goes with steak. Our certified sommeliers share top picks, flavor matching tips, and serving suggestions for an...",
+  title: "What Wine Goes With Steak? Start with the Cut",
+  description: "The short answer is Cabernet for richer steaks, Pinot Noir for filet, and Malbec or Syrah for grilled or heavily seasoned cuts.",
   pubDate: "2026-01-16",
   author: "James Thornton",
   authorRole: "Founder & Lead Wine Consultant",
   authorSlug: "james-thornton",
-  readTime: "26 min",
-  keywords: ["what wine goes with steak", "what", "wine", "goes", "with", "steak", "wine guide"],
+  readTime: "4 min",
+  keywords: ["what wine goes with steak", "wine with steak", "best steak wine"],
   structured_data: {
-            "@context": "https://schema.org",
-            "@graph": [
-                  {
-                        "@type": "Organization",
-                        "@id": "https://winesquickstart.com/#organization",
-                        "name": "Wine Quick Start",
-                        "url": "https://winesquickstart.com",
-                        "description": "Expert wine guidance from certified sommeliers"
-                  },
-                  {
-                        "@type": "WebSite",
-                        "@id": "https://winesquickstart.com/#website",
-                        "url": "https://winesquickstart.com",
-                        "name": "Wine Quick Start",
-                        "publisher": {
-                              "@id": "https://winesquickstart.com/#organization"
-                        }
-                  },
-                  {
-                        "@type": "BreadcrumbList",
-                        "itemListElement": [
-                              {
-                                    "@type": "ListItem",
-                                    "position": 1,
-                                    "name": "Home",
-                                    "item": "https://winesquickstart.com"
-                              },
-                              {
-                                    "@type": "ListItem",
-                                    "position": 2,
-                                    "name": "Wine Pairings",
-                                    "item": "https://winesquickstart.com/wine-pairings/"
-                              },
-                              {
-                                    "@type": "ListItem",
-                                    "position": 3,
-                                    "name": "What Wine Goes With Steak - Expert Guide"
-                              }
-                        ]
-                  },
-                  {
-                        "@type": "Article",
-                        "headline": "What Wine Goes With Steak - Expert Guide",
-                        "description": "Find the perfect wine to pair with what wine goes with steak. Our certified sommeliers share top picks, flavor matching tips, and serving suggestions for an...",
-                        "author": {
-                              "@type": "Person",
-                              "name": "James Thornton",
-                              "jobTitle": "Founder & Lead Wine Consultant"
-                        },
-                        "publisher": {
-                              "@id": "https://winesquickstart.com/#organization"
-                        },
-                        "datePublished": "2026-01-16",
-                        "dateModified": "2026-01-16",
-                        "mainEntityOfPage": {
-                              "@type": "WebPage",
-                              "@id": "https://winesquickstart.com/wine-pairings/what-wine-goes-with-steak"
-                        },
-                        "isPartOf": {
-                              "@id": "https://winesquickstart.com/#website"
-                        }
-                  }
-            ]
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Organization",
+        "@id": "https://winesquickstart.com/#organization",
+        "name": "Wine Quick Start",
+        "url": "https://winesquickstart.com",
+        "description": "Expert wine guidance from certified sommeliers"
+      },
+      {
+        "@type": "WebSite",
+        "@id": "https://winesquickstart.com/#website",
+        "url": "https://winesquickstart.com",
+        "name": "Wine Quick Start",
+        "publisher": { "@id": "https://winesquickstart.com/#organization" }
+      },
+      {
+        "@type": "Article",
+        "headline": "What Wine Goes With Steak? Start with the Cut",
+        "description": "The short answer is Cabernet for richer steaks, Pinot Noir for filet, and Malbec or Syrah for grilled or heavily seasoned cuts.",
+        "author": {
+          "@type": "Person",
+          "name": "James Thornton",
+          "jobTitle": "Founder & Lead Wine Consultant"
+        },
+        "publisher": { "@id": "https://winesquickstart.com/#organization" },
+        "datePublished": "2026-01-16",
+        "dateModified": "2026-01-16",
+        "mainEntityOfPage": {
+          "@type": "WebPage",
+          "@id": "https://winesquickstart.com/wine-pairings/what-wine-goes-with-steak"
+        },
+        "isPartOf": { "@id": "https://winesquickstart.com/#website" }
       }
+    ]
+  }
 };
 ---
 
-<ArticleLayout canonical={frontmatter.canonicalUrl} categorySlug="wine-pairings" title={frontmatter.title} description={frontmatter.description} author={frontmatter.author} readTime={frontmatter.readTime} category="Wine Guide" schema={frontmatter.structured_data} featuredImage={featuredImage}>
-  <!-- Author Attribution -->
+<ArticleLayout canonical={frontmatter.canonicalUrl} robots={frontmatter.robots} categorySlug="wine-pairings" title={frontmatter.title} description={frontmatter.description} author={frontmatter.author} readTime={frontmatter.readTime} category="Wine Pairing" schema={frontmatter.structured_data} featuredImage={featuredImage}>
   <div class="bg-gray-50 p-4 rounded-lg mb-6 flex items-center gap-4">
-    <div class="w-12 h-12 rounded-full bg-wine-100 flex items-center justify-center text-wine-700 font-bold">
-      JT
-    </div>
+    <div class="w-12 h-12 rounded-full bg-wine-100 flex items-center justify-center text-wine-700 font-bold">JT</div>
     <div>
       <a href="/about/james-thornton" class="font-semibold text-gray-900 hover:text-wine-600">James Thornton</a>
       <p class="text-sm text-gray-600">Founder & Lead Wine Consultant | WSET Level 3 Award in Wines</p>
@@ -97,429 +67,22 @@ const frontmatter = {
   </div>
 
   <div slot="quick-answer">
-    <p><strong>Quick Answer:</strong> For the best what wine goes with steak, look for wines with balanced acidity and complementary flavor profiles. Medium-bodied options often provide the most versatility.</p>
+    <p><strong>Quick Answer:</strong> Cabernet Sauvignon goes with ribeye and strip steak, Pinot Noir works better with filet, and Malbec or Syrah is often the stronger answer when the steak is grilled hard or covered in chimichurri or pepper.</p>
   </div>
 
-  <h2>Understanding What Wine Goes With Steak</h2>
-  <p>The world of what wine goes with steak offers incredible diversity and complexity. In this guide, we'll help you navigate the options and find exactly what you're looking for.</p>
+  <h2>Why This URL Should Not Compete with the Main Guide</h2>
+  <p>This question is the same user intent as our main steak pairing guide, so this page now acts as a short support page rather than another long version of the same article. The practical answer is that the cut and sauce matter more than the phrase you type into Google.</p>
 
-  <h2>Perfect Food Pairings</h2>
+  <h2>The Short Pairing Breakdown</h2>
+  <p><strong>Fatty cuts</strong> need more tannin, so Cabernet and Bordeaux blends make sense. <strong>Lean cuts</strong> need less force, so Pinot Noir usually performs better. <strong>Grilled or marinated cuts</strong> often work best with Malbec or Syrah because those wines handle smoke, herbs, and stronger seasonings more naturally.</p>
 
-<h3>The Science Behind Steak and Wine</h3>
-<p>The magic of pairing wine with steak lies in complementary chemistry. The tannins in red wine—phenolic compounds that create that drying sensation—bind with the proteins and fats in beef, softening both the wine's astringency and the meat's richness. Meanwhile, the wine's acidity cuts through the steak's marbling, cleansing the palate between bites. This interplay explains why a <strong>Cabernet Sauvignon's firm tannin structure</strong> transforms when paired with a well-marbled ribeye, becoming more approachable while the meat tastes more tender.</p>
-
-<h3>Classic Pairings That Never Fail</h3>
-<p>The quintessential pairing remains <strong>Napa Valley Cabernet Sauvignon with grilled New York strip</strong>. The wine's cassis and cedar notes complement the beef's savory char, while its structured tannins match the meat's protein density. For those preferring French tradition, <strong>Bordeaux Left Bank blends</strong> (Cabernet Sauvignon, Merlot, Cabernet Franc) pair beautifully with côte de bœuf, as the wine's graphite minerality and tobacco undertones enhance the meat's natural umami.</p>
-
-<p><strong>Argentine Malbec with skirt steak</strong> represents another time-tested combination. The wine's plush fruit and moderate tannins complement the cut's intense flavor without overwhelming its slightly chewy texture. The pairing works particularly well because both originated in cattle country, where bold flavors reign supreme.</p>
-
-<h3>Modern Creative Combinations</h3>
-<p>Contemporary pairings push beyond traditional boundaries with remarkable success. <strong>Oregon Pinot Noir with filet mignon</strong> might seem counterintuitive, but the wine's bright acidity and earthy undertones actually enhance the tenderloin's delicate flavor without masking it. The key is choosing a more structured Pinot from producers like Domaine Drouhin or Archery Summit.</p>
-
-<p>For adventurous palates, try <strong>Châteauneuf-du-Pape with coffee-rubbed ribeye</strong>. The wine's Grenache-driven warmth and hints of garrigue herbs create fascinating synergy with the spice rub's complexity, while its full body matches the cut's richness.</p>
-
-<h3>Cooking Methods Matter</h3>
-<p>Preparation dramatically affects wine selection. <strong>Grilled steaks</strong> develop char and smoky compounds that pair beautifully with wines showing similar characteristics—think smoky Syrah from Paso Robles or Australian Shiraz with hints of eucalyptus. The high-heat searing creates Maillard reactions that complement wines aged in heavily toasted barrels.</p>
-
-<p><strong>Braised short ribs</strong> require different treatment entirely. The slow, moist cooking breaks down tough connective tissues, creating silk-textured meat that pairs magnificently with <strong>aged Barolo or Brunello di Montalcino</strong>. These wines' high acidity cuts through the dish's richness while their complex tertiary flavors match the meat's depth.</p>
-
-<h3>Sauce Considerations</h3>
-<p>Béarnaise sauce's buttery richness calls for wines with enough acidity to cut through fat—<strong>Champagne or Chablis Premier Cru</strong> work surprisingly well. Conversely, <strong>peppercorn sauce</strong> demands wines that complement rather than compete with spice; try Côtes du Rhône or Spanish Tempranillo, whose fruit-forward nature balances the heat.</p>
-
-<h3>What to Avoid</h3>
-<p>Avoid delicate wines like <strong>Beaujolais or light Pinot Grigio</strong> with heavily marbled steaks—the mismatch in intensity leaves both wine and food tasting flat. Similarly, heavily oaked Chardonnay clashes with red meat's iron content, creating metallic off-flavors.</p>
-
-<h3>Regional Authenticity</h3>
-<p>Honor traditional pairings like <strong>Tuscan Chianti Classico with bistecca alla fiorentina</strong>, where the wine's cherry fruit and savory herbs complement the simply grilled T-bone's pure beef flavor, creating harmony perfected over centuries of Italian dining culture.</p>
-
-<h2>Perfect Food Pairings</h2>
-
-<h3 class="text-wine-700">The Science Behind Steak and Wine Magic</h3>
-<p>The marriage between steak and wine isn't just tradition—it's pure chemistry. Red wine's tannins bind with proteins in beef, softening the wine's astringency while enhancing the meat's savory richness. Meanwhile, the wine's acidity cuts through marbled fat, cleansing the palate between bites. This symbiotic relationship explains why a bold Cabernet Sauvignon transforms from potentially harsh to perfectly balanced when paired with a well-marbled ribeye.</p>
-
-<h3 class="text-wine-700">Time-Tested Classic Pairings</h3>
-<p>The iconic pairing of <strong>Bordeaux with côte de bœuf</strong> exemplifies perfect harmony. A Left Bank Bordeaux, dominated by Cabernet Sauvignon with its structured tannins and cassis notes, complements the beef's iron-rich flavor while the wine's earthy undertones echo the meat's mineral complexity. Similarly, <strong>Argentine Malbec with grilled sirloin</strong> works brilliantly—the wine's plush texture and dark fruit intensity matches the char and smoke from the grill, while its moderate acidity balances the meat's richness without overwhelming its natural flavors.</p>
-
-<p>For prime rib, consider a <strong>Barolo from Piedmont</strong>. The Nebbiolo grape's high tannin content and rose petal aromatics create an elegant counterpoint to the beef's richness, while the wine's trademark tar and earth notes complement the meat's umami depth.</p>
-
-<h3 class="text-wine-700">Contemporary Creative Combinations</h3>
-<p>Modern cuisine calls for innovative pairings. <strong>Japanese wagyu with aged Burgundy</strong> showcases how delicate, silky tannins enhance rather than compete with ultra-marbled beef. The wine's evolved secondary flavors of forest floor and dried roses provide aromatic complexity that elevates the meat's buttery texture.</p>
-
-<p>Consider <strong>dry-aged New York strip with natural wine</strong>—specifically a Côtes du Rhône from a producer like Domaine de la Côte. The wine's rustic character and mineral-driven profile mirrors the concentrated, funky flavors developed during dry-aging, creating an unexpectedly harmonious pairing that celebrates both products' artisanal nature.</p>
-
-<h3 class="text-wine-700">Cooking Methods Matter</h3>
-<p>Preparation dramatically influences wine selection. <strong>Grilled steaks</strong> develop smoky, charred flavors that pair beautifully with bold, oak-aged wines like Napa Cabernet or Australian Shiraz—the wine's vanilla and spice notes from barrel aging complement the grill's smokiness. Conversely, <strong>braised short ribs</strong> become tender and sauce-enriched, calling for wines with softer tannins like Côtes du Rhône or Chianti Classico that won't compete with the dish's mellowed complexity.</p>
-
-<h3 class="text-wine-700">Sauce and Seasoning Considerations</h3>
-<p>Sauces fundamentally change pairing dynamics. <strong>Béarnaise-topped filet</strong> requires wines with enough acidity to cut through the butter-rich sauce—try a Chablis or even a crisp Sancerre. <strong>Peppercorn-crusted steak</strong> demands wines that can handle spice: Syrah from the Northern Rhône, with its white pepper notes, creates a harmonious spice echo. For <strong>chimichurri-topped skirt steak</strong>, the herb's brightness calls for wines with fresh acidity—consider a young Malbec or even a structured Rosé from Provence.</p>
-
-<h3 class="text-wine-700">Pairings to Avoid</h3>
-<p>Delicate wines like Pinot Grigio or light Beaujolais get completely overwhelmed by rich, heavily marbled cuts. Similarly, heavily oaked Chardonnay creates an unpleasant clash—the wine's buttery notes compete rather than complement the meat's richness, while lacking the tannin structure to handle beef's protein content.</p>
-
-<h3 class="text-wine-700">Regional Authenticity</h3>
-<p>Embrace traditional regional pairings: <strong>Tuscan Chianina beef with Brunello di Montalcino</strong>, or <strong>Scottish Highland beef with Bordeaux</strong>—these combinations have evolved over centuries, reflecting how local wines naturally complement regional cuisine through shared terroir influences.</p>
-
-<h2 class="text-wine-800 mb-6">Perfect Food Pairings</h2>
-
-<h3 class="text-wine-700 mb-4">Why Steak and Wine Work So Well Together</h3>
-<p class="mb-4">The marriage between steak and wine is rooted in biochemistry. Red wine's tannins—astringent compounds from grape skins and oak aging—bind with the proteins in beef, softening the wine's structure while cleansing the palate. Meanwhile, the wine's acidity cuts through rich marbled fat, preventing palate fatigue. This symbiotic relationship explains why a tannic Cabernet Sauvignon tastes smoother alongside a ribeye than it does on its own.</p>
-
-<h3 class="text-wine-700 mb-4">Classic Pairings That Never Fail</h3>
-<p class="mb-4">The quintessential pairing remains <strong>Cabernet Sauvignon with grilled ribeye</strong>. Napa Valley Cabernets like Caymus or Silver Oak provide concentrated cassis and cedar notes that complement the char and beef's umami depth. The wine's 14-15% alcohol and robust tannins stand up to the steak's richness without being overwhelmed.</p>
-
-<p class="mb-4">For <strong>filet mignon</strong>, turn to elegant Burgundy—specifically Gevrey-Chambertin or Chambolle-Musigny. These Pinot Noirs offer earthy undertones and silky tannins that won't overpower the tenderloin's delicate flavor. The wine's bright acidity enhances the beef's natural sweetness without masking its subtle mineral notes.</p>
-
-<h3 class="text-wine-700 mb-4">Modern Creative Combinations</h3>
-<p class="mb-4">Contemporary sommeliers are exploring unexpected territories with remarkable success. <strong>Aged Barolo with dry-aged porterhouse</strong> creates magic—the wine's tar, roses, and truffle notes echo the steak's concentrated, funky flavors developed during aging. The Nebbiolo's fierce tannins require the protein's richness to reach their full potential.</p>
-
-<p class="mb-4">For adventurous palates, try <strong>Côte-Rôtie with coffee-rubbed strip steak</strong>. The Syrah's white pepper and smoky bacon fat characteristics harmonize beautifully with coffee's bitter compounds and the meat's char.</p>
-
-<h3 class="text-wine-700 mb-4">Cooking Methods Matter</h3>
-<p class="mb-4"><strong>Grilled steaks</strong> develop char and smoky compounds that pair beautifully with wines showing similar characteristics—think Walla Walla Syrah or Argentine Malbec with their grilled herb and smoke notes.</p>
-
-<p class="mb-4"><strong>Braised short ribs</strong> require different treatment. The slow cooking breaks down tough fibers, creating silky textures that pair wonderfully with mature Bordeaux blends. A 10-year-old Pauillac offers resolved tannins and tertiary flavors of leather and tobacco that complement the dish's deep, wine-braised complexity.</p>
-
-<h3 class="text-wine-700 mb-4">Sauces Change Everything</h3>
-<p class="mb-4"><strong>Béarnaise sauce</strong> adds richness and herbaceous notes that call for wines with good acidity—try Loire Valley Chinon, whose Cabernet Franc provides green bell pepper notes that echo the sauce's tarragon.</p>
-
-<p class="mb-4"><strong>Peppercorn sauces</strong> demand spicy wines. Rhône reds like Châteauneuf-du-Pape contain enough Syrah and Mourvèdre to match the pepper's intensity while providing fruit sweetness to balance the heat.</p>
-
-<h3 class="text-wine-700 mb-4">Regional Authenticity</h3>
-<p class="mb-4">Honor tradition with <strong>Florentine steak and Brunello di Montalcino</strong>—both hail from Tuscany and share the region's love for bold, structured flavors. The wine's cherry and leather notes complement the simply grilled Chianina beef's mineral-rich taste.</p>
-
-<h3 class="text-wine-700 mb-4">Avoid These Mistakes</h3>
-<p class="mb-4">Skip <strong>light, high-acid whites</strong> with fatty steaks—Sauvignon Blanc's aggressive acidity clashes with rich marbling. Similarly, avoid <strong>sweet wines</strong> except with spicy preparations; residual sugar competes with beef's natural flavors rather than complementing them.</p>
-
-<h2>Perfect Food Pairings</h2>
-
-<h3>Why Steak and Wine Create Culinary Magic</h3>
-<p>The marriage between steak and wine operates on fundamental chemical principles that create harmony on the palate. <strong>Tannins in red wine bind with proteins in meat</strong>, softening the wine's astringency while enhancing the steak's savory qualities. Meanwhile, wine's natural acidity cuts through rich marbling and rendered fat, cleansing the palate between bites. The Maillard reaction that creates steak's coveted crust produces umami compounds that complement the earthy, mineral notes found in well-structured red wines.</p>
-
-<h3>Time-Tested Classic Pairings</h3>
-<p><strong>Cabernet Sauvignon with ribeye</strong> remains the gold standard for good reason. The wine's robust tannin structure and cassis fruit perfectly complement ribeye's rich marbling, while shared notes of cedar and tobacco from oak aging create seamless integration. <strong>Bordeaux blends with filet mignon</strong> offer another classic pairing—the wine's elegant tannins won't overpower the tender cut, while earthy undertones enhance the beef's subtle mineral character.</p>
-
-<p>For leaner cuts, <strong>Pinot Noir with filet mignon</strong> creates beautiful balance. Burgundy's silky tannins and bright acidity highlight the meat's delicate texture without masking its pure beef flavor. The wine's characteristic forest floor and mushroom notes add complexity to this refined pairing.</p>
-
-<h3>Contemporary Pairing Adventures</h3>
-<p>Modern sommeliers are discovering exciting new combinations that challenge traditional thinking. <strong>Aged Barolo with dry-aged steaks</strong> creates an extraordinary experience—both the wine and meat develop concentrated, complex flavors through extended aging that mirror each other beautifully. The wine's tar and rose petal aromatics add unexpected elegance to funky, concentrated beef flavors.</p>
-
-<p><strong>Natural wines with grass-fed steaks</strong> represent another innovative approach. These minimally-processed wines, with their vibrant acidity and earthy funk, complement the cleaner, more mineral-driven flavors of pasture-raised beef, creating pairings that feel both rustic and refined.</p>
-
-<h3>Cooking Method Considerations</h3>
-<p>Preparation dramatically influences wine selection. <strong>Grilled steaks</strong> develop smoky, charred flavors that pair beautifully with oak-aged wines like Napa Cabernet Sauvignon or Rhône Valley Syrah. The wine's vanilla and spice notes from barrel aging complement the grill's smokiness.</p>
-
-<p><strong>Pan-seared steaks</strong> finished with butter create richness that calls for wines with balancing acidity—think Chianti Classico or Sangiovese, whose bright cherry fruit and mineral backbone cut through the luxurious texture. <strong>Braised preparations</strong> require different consideration entirely, as slow cooking breaks down proteins and concentrates flavors, making them ideal partners for equally concentrated wines like Amarone or aged Rioja Reserva.</p>
-
-<h3>Sauce and Seasoning Synergy</h3>
-<p>Sauces fundamentally alter pairing dynamics. <strong>Béarnaise or hollandaise</strong> sauces add richness that requires wines with higher acidity—consider Burgundy or Loire Valley Cabernet Franc. <strong>Peppercorn crusts</strong> call for spicy wines like Côtes du Rhône or Zinfandel, where black pepper notes in the wine echo the seasoning.</p>
-
-<p><strong>Mushroom-based sauces</strong> create opportunities for earthy wines like aged Barolo or mature Bordeaux, while <strong>herb-crusted preparations</strong> pair wonderfully with Provençal blends that share those same herbal characteristics.</p>
-
-<h3>Regional Authenticity</h3>
-<p>Traditional regional pairings offer time-tested wisdom. <strong>Florentine T-bone (Bistecca alla Fiorentina) with Chianti Classico</strong> represents centuries of culinary evolution, while <strong>Argentine asado with Malbec</strong> showcases how wine and food develop together in shared terroir. These combinations work because they evolved together, creating natural harmony through generations of refinement.</p>
-
-<h3>Pairings to Avoid</h3>
-<p>Certain combinations clash rather than complement. <strong>Delicate Pinot Grigio overwhelms under rich, fatty cuts</strong>, while <strong>heavily oaked Chardonnay competes rather than complements red meat's savory character</strong>. High-alcohol wines can amplify spicy seasonings unpleasantly, creating burning sensations rather than balanced flavors.</p>
-
-<h2>Our Top Picks</h2>
-      <div class="bg-gray-50 rounded-lg p-6 mb-4">
-        <h3 class="text-xl font-semibold text-wine-700 mb-2">1. 2019 Abeja Cabernet Sauvignon</h3>
-        <p class="text-gray-600 mb-2"><strong>Producer:</strong> Abeja</p>
-        <p class="text-gray-600 mb-2"><strong>Region:</strong> Columbia Valley, Washington</p>
-        <p class="text-gray-600 mb-2"><strong>Variety:</strong> Cabernet Sauvignon</p>
-        <p class="text-gray-700 mt-3">Full-bodied with firm tannins and notes of dark fruit and oak.</p>
-      </div>
-
-      <div class="bg-gray-50 rounded-lg p-6 mb-4">
-        <h3 class="text-xl font-semibold text-wine-700 mb-2">2. 2019 Andrew Will Sorella</h3>
-        <p class="text-gray-600 mb-2"><strong>Producer:</strong> Andrew Will Winery</p>
-        <p class="text-gray-600 mb-2"><strong>Region:</strong> Horse Heaven Hills, Washington</p>
-        <p class="text-gray-600 mb-2"><strong>Variety:</strong> Cabernet Sauvignon</p>
-        <p class="text-gray-700 mt-3">Bold and structured with blackcurrant, cedar, and tobacco notes.</p>
-      </div>
-
-      <div class="bg-gray-50 rounded-lg p-6 mb-4">
-        <h3 class="text-xl font-semibold text-wine-700 mb-2">3. 2019 Betz Family Winery Pere de Famille Cabernet Sauvignon</h3>
-        <p class="text-gray-600 mb-2"><strong>Producer:</strong> Betz Family Winery</p>
-        <p class="text-gray-600 mb-2"><strong>Region:</strong> Columbia Valley, Washington</p>
-        <p class="text-gray-600 mb-2"><strong>Variety:</strong> Cabernet Sauvignon</p>
-        <p class="text-gray-700 mt-3">Full-bodied with firm tannins and notes of dark fruit and oak.</p>
-      </div>
-
-<h2>Expert Tips</h2>
-<ol class="list-decimal list-inside space-y-4 text-gray-700">
-  <li><strong>Match Tannin Structure to Your Steak Cut</strong> - The fattier your steak, the more tannic your wine should be. A ribeye's marbling requires the astringent tannins found in Cabernet Sauvignon or Barolo to cut through the richness, while a lean filet mignon pairs beautifully with softer tannins from Pinot Noir or aged Burgundy. The fat literally coats your palate, and tannins act as a palate cleanser, creating the perfect symbiotic relationship.</li>
-
-  <li><strong>Consider Your Cooking Method, Not Just the Cut</strong> - A grilled steak develops char and smoke that calls for bold, concentrated wines like Syrah or Zinfandel with their own smoky, peppery notes. However, the same cut prepared sous vide or pan-seared will showcase the meat's pure flavor, making it ideal for elegant Bordeaux blends or mature Rioja where subtle oak and earth notes complement rather than compete.</li>
-
-  <li><strong>Serve Red Wine Slightly Cooler Than Room Temperature</strong> - Most people serve red wine too warm with steak. Aim for 60-65°F (15-18°C) for full-bodied reds. At this temperature, the alcohol doesn't overpower the meat's flavors, and the wine's acidity remains bright enough to complement the richness. Store bottles in a wine fridge or place them in the refrigerator for 15-20 minutes before serving.</li>
-
-  <li><strong>Decant Young, Powerful Reds at Least 2 Hours Before Serving</strong> - Young Cabernet Sauvignon, Nebbiolo, or Tannat benefit enormously from extended decanting when paired with steak. The oxidation softens harsh tannins and allows the wine's fruit flavors to integrate with its structure, creating a more harmonious pairing. However, delicate older wines (15+ years) should only be decanted 30 minutes before serving to prevent over-oxidation.</li>
-
-  <li><strong>Use Large-Bowl Burgundy Glasses for All Red Wine and Steak Pairings</strong> - The wide bowl allows maximum surface area for aeration, which is crucial when drinking wine alongside rich meat. This glass shape concentrates the wine's aromatics while you're cutting and chewing, ensuring each sip complements the meat rather than being overwhelmed by it. Avoid small wine glasses that don't allow proper aeration.</li>
-
-  <li><strong>Account for Sauce and Seasoning in Your Wine Selection</strong> - A peppercorn-crusted steak demands a wine with complementary spice notes like Côtes du Rhône or Châteauneuf-du-Pape. Béarnaise sauce calls for wines with good acidity like Sangiovese or Barbera to cut through the richness. For herb-crusted steaks, consider wines with herbal notes such as Cabernet Franc or wines from regions like Provence where garrigue herbs influence the terroir.</li>
-
-  <li><strong>Choose Wines with 5-10 Years of Age for Prime Steaks</strong> - While young wines work with steak, moderately aged wines (5-10 years) offer the perfect balance of fruit concentration and developed complexity that elevates a great steak dinner. The primary fruit has evolved into more nuanced flavors, tannins have softened just enough, and secondary characteristics like leather, tobacco, and earth emerge to complement the meat's umami richness.</li>
-
-  <li><strong>Don't Overlook High-Quality Rosé for Grilled Steaks</strong> - A structured rosé from Bandol or Tavel, made primarily from Mourvèdre or Grenache, offers enough body and tannin structure to stand up to steak while providing refreshing acidity. This works exceptionally well with grilled steaks in warm weather, as the wine's mineral backbone and red fruit flavors complement the char without overwhelming your palate in the heat.</li>
-</ol>
-
-  <h2>Frequently Asked Questions</h2>
-<div class="space-y-6">
-  <div>
-    <h3 class="text-lg font-semibold text-wine-700 mb-2">What's the difference between pairing wine with filet mignon versus ribeye?</h3>
-    <p class="text-gray-700">Filet mignon's delicate, lean texture pairs beautifully with elegant wines like Pinot Noir or lighter Cabernet Sauvignon that won't overpower its subtle flavor. Ribeye's rich marbling and intense beef flavor can handle bold, full-bodied wines like Cabernet Sauvignon, Malbec, or Syrah that match its robust character. The key is matching the wine's intensity to the cut's richness and fat content.</p>
-  </div>
-
-  <div>
-    <h3 class="text-lg font-semibold text-wine-700 mb-2">Should I serve red wine at room temperature with steak?</h3>
-    <p class="text-gray-700">Serve red wine slightly below room temperature, around 60-65°F (15-18°C), not the 70-75°F that most dining rooms reach. This cooler temperature preserves the wine's structure and prevents the alcohol from becoming overpowering, while still allowing the tannins to complement the steak's proteins. Chill the bottle in the refrigerator for 15-20 minutes before serving if your room is warm.</p>
-  </div>
-
-  <div>
-    <h3 class="text-lg font-semibold text-wine-700 mb-2">What wine goes with grilled steak versus pan-seared steak?</h3>
-    <p class="text-gray-700">Grilled steak develops smoky, charred flavors that pair excellently with bold wines like Zinfandel, Syrah, or Malbec that have their own earthy, smoky notes. Pan-seared steak typically has a more refined crust and concentrated beef flavors, making it ideal for structured wines like Cabernet Sauvignon or Bordeaux blends. The cooking method's intensity should guide your wine's boldness level.</p>
-  </div>
-
-  <div>
-    <h3 class="text-lg font-semibold text-wine-700 mb-2">Can I pair white wine with steak successfully?</h3>
-    <p class="text-gray-700">Yes, but choose full-bodied, oak-aged white wines like Chardonnay or white Rhône blends that have enough weight and structure to complement the meat. These wines work particularly well with lighter cuts like filet mignon or when the steak is served with creamy sauces. Avoid light, crisp whites that will be overwhelmed by the steak's richness and umami compounds.</p>
-  </div>
-
-  <div>
-    <h3 class="text-lg font-semibold text-wine-700 mb-2">What's a good budget wine under $20 that pairs well with steak?</h3>
-    <p class="text-gray-700">Look for Argentine Malbec, Portuguese Douro reds, or Spanish Monastrell, which offer excellent value and bold flavors that complement steak beautifully. These regions produce wines with good tannin structure and fruit concentration without the premium pricing of Napa Cabernet or Bordeaux. Brands like Alamos Malbec or Marqués de Cáceres Crianza consistently deliver quality steak pairings under $20.</p>
-  </div>
-
-  <div>
-    <h3 class="text-lg font-semibold text-wine-700 mb-2">What's the biggest mistake people make when pairing wine with steak?</h3>
-    <p class="text-gray-700">The most common mistake is choosing wines that are too light or serving red wine too warm, which makes the pairing unbalanced. Many people also ignore the sauce and seasonings, focusing only on the meat itself—a peppercorn sauce demands a different wine than a simple salt-and-pepper preparation. Always consider the complete dish, including cooking method, cut richness, and accompaniments when selecting your wine.</p>
-  </div>
-
-  <div>
-    <h3 class="text-lg font-semibold text-wine-700 mb-2">How do steak seasonings and marinades affect wine pairing choices?</h3>
-    <p class="text-gray-700">Bold seasonings like black pepper, garlic, and herbs call for wines with complementary spice notes—try Syrah with peppercorn crusts or Sangiovese with herb-rubbed steaks. Sweet marinades like teriyaki or bourbon-based rubs pair well with fruit-forward wines like Zinfandel or Merlot that can handle the sweetness. Always match the dominant flavors in your preparation rather than just the base meat.</p>
-  </div>
-
-  <div>
-    <h3 class="text-lg font-semibold text-wine-700 mb-2">Is aged wine always better with steak than young wine?</h3>
-    <p class="text-gray-700">Not necessarily—it depends on the wine style and steak preparation. Young, tannic wines like Cabernet Sauvignon can actually pair better with fatty cuts because the tannins help cleanse the palate, while aged wines with softer tannins work beautifully with leaner cuts. The key is matching the wine's current structure and flavor profile to your specific steak rather than assuming age always equals better pairing potential.</p>
-  </div>
-</div>
-
-<!-- Related Articles -->
-  <div class="mt-10 pt-8 border-t border-gray-200">
-    <h3 class="text-xl font-semibold mb-6">Related Articles</h3>
-    <div class="grid md:grid-cols-2 gap-4">
-      <a href="/wine-pairings/best-wine-with-steak" class="block p-4 bg-white border border-gray-200 rounded-lg hover:border-wine-300 hover:shadow-md transition-all">
-        <h4 class="font-semibold text-gray-900 hover:text-wine-600">Best Wine With Steak - Expert Guide</h4>
-        <p class="text-sm text-gray-600 mt-1">Discover the best wine with steak. Expert recommendations, tasting notes, and ti...</p>
-      </a>
-      <a href="/wine-pairings/steak-wine-pairing" class="block p-4 bg-white border border-gray-200 rounded-lg hover:border-wine-300 hover:shadow-md transition-all">
-        <h4 class="font-semibold text-gray-900 hover:text-wine-600">Steak Wine Pairing - Expert Guide</h4>
-        <p class="text-sm text-gray-600 mt-1">Discover the best steak wine pairing. Expert recommendations, tasting notes, and...</p>
-      </a>
-      <a href="/wine-pairings/wine-with-bbq" class="block p-4 bg-white border border-gray-200 rounded-lg hover:border-wine-300 hover:shadow-md transition-all">
-        <h4 class="font-semibold text-gray-900 hover:text-wine-600">Wine With Bbq - Expert Guide</h4>
-        <p class="text-sm text-gray-600 mt-1">Discover the best wine with bbq. Expert recommendations, tasting notes, and tips...</p>
-      </a>
-    </div>
-  </div>
-
-  <div class="bg-gray-50 rounded-lg p-5 border border-gray-100">
-    <h3 class="text-lg font-semibold text-wine-700 mb-1">2019 Betz Family Winery Pere de Famille Cabernet Sauvignon</h3>
-    <p class="text-sm text-gray-600 mb-2">Columbia Valley, Washington | ~$35-75</p>
-    <p class="text-gray-700 text-sm">Full-bodied with firm tannins and notes of dark fruit and oak.</p>
-    <p class="text-xs text-wine-600 mt-2"><strong>Variety:</strong> Cabernet Sauvignon</p>
-  </div>
-
-  <div class="bg-gray-50 rounded-lg p-5 border border-gray-100">
-    <h3 class="text-lg font-semibold text-wine-700 mb-1">2002 Bill Harlan Harlan Estate</h3>
-    <p class="text-sm text-gray-600 mb-2">Napa Valley, Unknown Region | ~$35-75</p>
-    <p class="text-gray-700 text-sm">Full-bodied with firm tannins and notes of dark fruit and oak.</p>
-    <p class="text-xs text-wine-600 mt-2"><strong>Variety:</strong> Cabernet Sauvignon</p>
-  </div>
-
-  <div class="bg-gray-50 rounded-lg p-5 border border-gray-100">
-    <h3 class="text-lg font-semibold text-wine-700 mb-1">2025 Bill Harlan Harlan Estate</h3>
-    <p class="text-sm text-gray-600 mb-2">Napa Valley, Unknown Region | ~$35-75</p>
-    <p class="text-gray-700 text-sm">Rich cassis and plum flavors with hints of graphite and spice.</p>
-    <p class="text-xs text-wine-600 mt-2"><strong>Variety:</strong> Cabernet Sauvignon</p>
-  </div>
-
-  <div class="bg-gray-50 rounded-lg p-5 border border-gray-100">
-    <h3 class="text-lg font-semibold text-wine-700 mb-1">2016 Bond Estates Bond St. Eden</h3>
-    <p class="text-sm text-gray-600 mb-2">Napa Valley, California | ~$35-75</p>
-    <p class="text-gray-700 text-sm">Bold and structured with blackcurrant, cedar, and tobacco notes.</p>
-    <p class="text-xs text-wine-600 mt-2"><strong>Variety:</strong> Cabernet Sauvignon</p>
-  </div>
-
-  <div class="bg-gray-50 rounded-lg p-5 border border-gray-100">
-    <h3 class="text-lg font-semibold text-wine-700 mb-1">2018 Bryant Family Vineyard</h3>
-    <p class="text-sm text-gray-600 mb-2">Napa Valley, California | ~$35-75</p>
-    <p class="text-gray-700 text-sm">Full-bodied with firm tannins and notes of dark fruit and oak.</p>
-    <p class="text-xs text-wine-600 mt-2"><strong>Variety:</strong> Cabernet Sauvignon</p>
-  </div>
-</div>
-
-<div class="bg-gray-50 rounded-lg p-5 border border-gray-100">
-    <h3 class="text-lg font-semibold text-wine-700 mb-1">2019 Château Haut-Brion</h3>
-    <p class="text-sm text-gray-600 mb-2">Pessac-Léognan, Bordeaux | ~$35-75</p>
-    <p class="text-gray-700 text-sm">Full-bodied with firm tannins and notes of dark fruit and oak.</p>
-    <p class="text-xs text-wine-600 mt-2"><strong>Variety:</strong> Cabernet Sauvignon</p>
-  </div>
-
-  <div class="bg-gray-50 rounded-lg p-5 border border-gray-100">
-    <h3 class="text-lg font-semibold text-wine-700 mb-1">2018 Château Latour</h3>
-    <p class="text-sm text-gray-600 mb-2">Pauillac, Bordeaux | ~$35-75</p>
-    <p class="text-gray-700 text-sm">Full-bodied with firm tannins and notes of dark fruit and oak.</p>
-    <p class="text-xs text-wine-600 mt-2"><strong>Variety:</strong> Cabernet Sauvignon</p>
-  </div>
-
-  <div class="bg-gray-50 rounded-lg p-5 border border-gray-100">
-    <h3 class="text-lg font-semibold text-wine-700 mb-1">2018 Château Lynch-Bages</h3>
-    <p class="text-sm text-gray-600 mb-2">Pauillac, Bordeaux | ~$35-75</p>
-    <p class="text-gray-700 text-sm">Bold and structured with blackcurrant, cedar, and tobacco notes.</p>
-    <p class="text-xs text-wine-600 mt-2"><strong>Variety:</strong> Cabernet Sauvignon</p>
-  </div>
-
-  <div class="bg-gray-50 rounded-lg p-5 border border-gray-100">
-    <h3 class="text-lg font-semibold text-wine-700 mb-1">2018 Château Margaux</h3>
-    <p class="text-sm text-gray-600 mb-2">Margaux, Bordeaux | ~$35-75</p>
-    <p class="text-gray-700 text-sm">Bold and structured with blackcurrant, cedar, and tobacco notes.</p>
-    <p class="text-xs text-wine-600 mt-2"><strong>Variety:</strong> Cabernet Sauvignon</p>
-  </div>
-
-  <div class="bg-gray-50 rounded-lg p-5 border border-gray-100">
-    <h3 class="text-lg font-semibold text-wine-700 mb-1">2019 Château Margaux</h3>
-    <p class="text-sm text-gray-600 mb-2">Margaux, Bordeaux | ~$35-75</p>
-    <p class="text-gray-700 text-sm">Rich cassis and plum flavors with hints of graphite and spice.</p>
-    <p class="text-xs text-wine-600 mt-2"><strong>Variety:</strong> Cabernet Sauvignon</p>
-  </div>
-</div>
-
-<div class="bg-gray-50 rounded-lg p-5 border border-gray-100">
-    <h3 class="text-lg font-semibold text-wine-700 mb-1">2019 Colgin Cellars Colgin IX Estate</h3>
-    <p class="text-sm text-gray-600 mb-2">Napa Valley, California | ~$35-75</p>
-    <p class="text-gray-700 text-sm">Full-bodied with firm tannins and notes of dark fruit and oak.</p>
-    <p class="text-xs text-wine-600 mt-2"><strong>Variety:</strong> Cabernet Sauvignon</p>
-  </div>
-
-  <div class="bg-gray-50 rounded-lg p-5 border border-gray-100">
-    <h3 class="text-lg font-semibold text-wine-700 mb-1">2018 Delille Cellars Grand Ciel Cabernet Sauvignon</h3>
-    <p class="text-sm text-gray-600 mb-2">Red Mountain, Washington | ~$35-75</p>
-    <p class="text-gray-700 text-sm">Bold and structured with blackcurrant, cedar, and tobacco notes.</p>
-    <p class="text-xs text-wine-600 mt-2"><strong>Variety:</strong> Cabernet Sauvignon</p>
-  </div>
-
-  <div class="bg-gray-50 rounded-lg p-5 border border-gray-100">
-    <h3 class="text-lg font-semibold text-wine-700 mb-1">2018 Domaines Barons de Rothschild Château Lafite Rothschild</h3>
-    <p class="text-sm text-gray-600 mb-2">Pauillac, Bordeaux | ~$35-75</p>
-    <p class="text-gray-700 text-sm">Rich cassis and plum flavors with hints of graphite and spice.</p>
-    <p class="text-xs text-wine-600 mt-2"><strong>Variety:</strong> Cabernet Sauvignon</p>
-  </div>
-
-  <div class="bg-gray-50 rounded-lg p-5 border border-gray-100">
-    <h3 class="text-lg font-semibold text-wine-700 mb-1">2017 Domaines Barons de Rothschild Château Mouton Rothschild</h3>
-    <p class="text-sm text-gray-600 mb-2">Pauillac, Bordeaux | ~$35-75</p>
-    <p class="text-gray-700 text-sm">Rich cassis and plum flavors with hints of graphite and spice.</p>
-    <p class="text-xs text-wine-600 mt-2"><strong>Variety:</strong> Cabernet Sauvignon</p>
-  </div>
-
-  <div class="bg-gray-50 rounded-lg p-5 border border-gray-100">
-    <h3 class="text-lg font-semibold text-wine-700 mb-1">2018 Dominus Estate</h3>
-    <p class="text-sm text-gray-600 mb-2">Napa Valley, California | ~$35-75</p>
-    <p class="text-gray-700 text-sm">Bold and structured with blackcurrant, cedar, and tobacco notes.</p>
-    <p class="text-xs text-wine-600 mt-2"><strong>Variety:</strong> Cabernet Sauvignon</p>
-  </div>
-</div>
-
-  <h2>Related Guides</h2>
+  <h2>Best Next Click</h2>
   <ul>
-
-  <li>
-    <a href="/learn" class="internal-link">Wine Guides</a>
-    <span class="text-sm text-gray-600"> - Learn the broader context</span>
-  </li>
-
-  <li>
-    <a href="/wine-pairings" class="internal-link">Wine Pairings</a>
-    <span class="text-sm text-gray-600"> - See pairing-focused follow-ups</span>
-  </li>
-
-  <li>
-    <a href="/buy" class="internal-link">Buying Guides</a>
-    <span class="text-sm text-gray-600"> - Move into bottle-level decisions</span>
-  </li>
-
-  <li>
-    <a href="/buy/best-cabernet-sauvignon-under-20" class="internal-link">Best Cabernet Sauvignon Under 20 - Expert Guide</a>
-    <span class="text-sm text-gray-600"> - Commercial next step</span>
-  </li>
+    <li><a href="/wine-pairings/best-wine-with-steak" class="text-wine-600 hover:text-wine-700">Go to the main steak guide</a> for the full cut-by-cut answer.</li>
+    <li><a href="/wine-pairings/wine-with-beef" class="text-wine-600 hover:text-wine-700">Use the beef guide</a> if you are pairing roast beef, burgers, or braises instead of steak.</li>
+    <li><a href="/learn/best-bordeaux-wines" class="text-wine-600 hover:text-wine-700">Read the Bordeaux buying guide</a> if you want a steakhouse red with more structure.</li>
+    <li><a href="/learn" class="text-wine-600 hover:text-wine-700">Browse learn guides</a> for region explainers.</li>
+    <li><a href="/wine-pairings" class="text-wine-600 hover:text-wine-700">Browse pairing guides</a> for more food-specific help.</li>
+    <li><a href="/buy" class="text-wine-600 hover:text-wine-700">Browse buying guides</a> for bottle-selection help.</li>
   </ul>
-
-
-
-
-
-<h2>More Excellent Options</h2>
-<div class="grid md:grid-cols-2 gap-4 my-6">
-  <div class="bg-gray-50 rounded-lg p-5 border border-gray-100">
-    <h3 class="text-lg font-semibold text-wine-700 mb-1">2013 Chappellet Cabernet Sauvignon Pritchard Hill Estate Vineyard</h3>
-    <p class="text-sm text-gray-600 mb-2">Napa Valley, California | ~$35-75</p>
-    <p class="text-gray-700 text-sm">Rich cassis and plum flavors with hints of graphite and spice.</p>
-    <p class="text-xs text-wine-600 mt-2"><strong>Variety:</strong> Cabernet Sauvignon</p>
-  </div>
-
-  <div class="bg-gray-50 rounded-lg p-5 border border-gray-100">
-    <h3 class="text-lg font-semibold text-wine-700 mb-1">2001 duke waldrop</h3>
-    <p class="text-sm text-gray-600 mb-2">Walla Walla Valley, Unknown Region | ~$35-75</p>
-    <p class="text-gray-700 text-sm">Full-bodied with firm tannins and notes of dark fruit and oak.</p>
-    <p class="text-xs text-wine-600 mt-2"><strong>Variety:</strong> Cabernet Sauvignon</p>
-  </div>
-
-  <div class="bg-gray-50 rounded-lg p-5 border border-gray-100">
-    <h3 class="text-lg font-semibold text-wine-700 mb-1">2018 Ferrari-Carano Tresor</h3>
-    <p class="text-sm text-gray-600 mb-2">Sonoma County, California | ~$35-75</p>
-    <p class="text-gray-700 text-sm">Bold and structured with blackcurrant, cedar, and tobacco notes.</p>
-    <p class="text-xs text-wine-600 mt-2"><strong>Variety:</strong> Cabernet Sauvignon</p>
-  </div>
-
-  <div class="bg-gray-50 rounded-lg p-5 border border-gray-100">
-    <h3 class="text-lg font-semibold text-wine-700 mb-1">2019 Figgins Estate Red Wine</h3>
-    <p class="text-sm text-gray-600 mb-2">Walla Walla Valley, Washington | ~$35-75</p>
-    <p class="text-gray-700 text-sm">Full-bodied with firm tannins and notes of dark fruit and oak.</p>
-    <p class="text-xs text-wine-600 mt-2"><strong>Variety:</strong> Cabernet Sauvignon</p>
-  </div>
-
-  <div class="bg-gray-50 rounded-lg p-5 border border-gray-100">
-    <h3 class="text-lg font-semibold text-wine-700 mb-1">2018 Fortunate Son Cabernet Sauvignon Voyager VII</h3>
-    <p class="text-sm text-gray-600 mb-2">Napa Valley, California | ~$35-75</p>
-    <p class="text-gray-700 text-sm">Full-bodied with firm tannins and notes of dark fruit and oak.</p>
-    <p class="text-xs text-wine-600 mt-2"><strong>Variety:</strong> Cabernet Sauvignon</p>
-  </div>
-
-  <div class="bg-gray-50 rounded-lg p-5 border border-gray-100">
-    <h3 class="text-lg font-semibold text-wine-700 mb-1">2018 Hundred Acre Ark Vineyard</h3>
-    <p class="text-sm text-gray-600 mb-2">Napa Valley, California | ~$35-75</p>
-    <p class="text-gray-700 text-sm">Full-bodied with firm tannins and notes of dark fruit and oak.</p>
-    <p class="text-xs text-wine-600 mt-2"><strong>Variety:</strong> Cabernet Sauvignon</p>
-  </div>
-</div>
-
-<!-- Author Bio Footer -->
-  <div class="mt-12 p-6 bg-gray-50 rounded-lg border border-gray-200">
-    <h3 class="text-lg font-semibold mb-3">About the Author</h3>
-    <div class="flex items-start gap-4">
-      <div class="w-16 h-16 rounded-full bg-wine-100 flex items-center justify-center text-wine-700 font-bold text-xl flex-shrink-0">
-        JT
-      </div>
-      <div>
-        <a href="/about/james-thornton" class="font-semibold text-wine-600 hover:text-wine-800">James Thornton</a>
-        <p class="text-sm text-gray-600 mb-2">Founder & Lead Wine Consultant</p>
-        <p class="text-sm text-gray-700">Certified Sommelier and WSET Level 3 holder with 10+ years in wine education and consulting.</p>
-      </div>
-    </div>
-  </div>
 </ArticleLayout>
