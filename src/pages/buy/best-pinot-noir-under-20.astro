@@ -7,89 +7,57 @@ const frontmatter = {
   intentClass: "commercial",
   pageRole: "money",
   canonicalUrl: "https://winesquickstart.com/buy/best-pinot-noir-under-20",
-
-  title: "Best Pinot Noir Under 20 - Expert Guide",
-  description: "Discover outstanding pinot noir under 20 wines with our expert picks. Detailed tasting notes, food pairings, and value recommendations from certified...",
+  title: "Best Pinot Noir Under $20 That Still Tastes Like Pinot Noir",
+  description: "Find the best Pinot Noir under $20 without fake luxury. Use this guide for bottles that still deliver lift, red fruit, and food-friendly balance.",
   pubDate: "2026-01-20",
   author: "Elena Martinez",
   authorRole: "Senior Wine Writer",
   authorSlug: "elena-martinez",
-  readTime: "24 min",
-  keywords: ["best pinot noir under 20", "best", "pinot", "noir", "under", "20", "wine guide"],
+  readTime: "8 min",
+  keywords: ["best pinot noir under 20", "pinot noir under 20", "budget pinot noir", "cheap pinot noir worth buying"],
   structured_data: {
-            "@context": "https://schema.org",
-            "@graph": [
-                  {
-                        "@type": "Organization",
-                        "@id": "https://winesquickstart.com/#organization",
-                        "name": "Wine Quick Start",
-                        "url": "https://winesquickstart.com",
-                        "description": "Expert wine guidance from certified sommeliers"
-                  },
-                  {
-                        "@type": "WebSite",
-                        "@id": "https://winesquickstart.com/#website",
-                        "url": "https://winesquickstart.com",
-                        "name": "Wine Quick Start",
-                        "publisher": {
-                              "@id": "https://winesquickstart.com/#organization"
-                        }
-                  },
-                  {
-                        "@type": "BreadcrumbList",
-                        "itemListElement": [
-                              {
-                                    "@type": "ListItem",
-                                    "position": 1,
-                                    "name": "Home",
-                                    "item": "https://winesquickstart.com"
-                              },
-                              {
-                                    "@type": "ListItem",
-                                    "position": 2,
-                                    "name": "Buy",
-                                    "item": "https://winesquickstart.com/buy/"
-                              },
-                              {
-                                    "@type": "ListItem",
-                                    "position": 3,
-                                    "name": "Best Pinot Noir Under 20 - Expert Guide"
-                              }
-                        ]
-                  },
-                  {
-                        "@type": "Article",
-                        "headline": "Best Pinot Noir Under 20 - Expert Guide",
-                        "description": "Discover outstanding pinot noir under 20 wines with our expert picks. Detailed tasting notes, food pairings, and value recommendations from certified...",
-                        "author": {
-                              "@type": "Person",
-                              "name": "Elena Martinez",
-                              "jobTitle": "Senior Wine Writer"
-                        },
-                        "publisher": {
-                              "@id": "https://winesquickstart.com/#organization"
-                        },
-                        "datePublished": "2026-01-20",
-                        "dateModified": "2026-01-20",
-                        "mainEntityOfPage": {
-                              "@type": "WebPage",
-                              "@id": "https://winesquickstart.com/buy/best-pinot-noir-under-20"
-                        },
-                        "isPartOf": {
-                              "@id": "https://winesquickstart.com/#website"
-                        }
-                  }
-            ]
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Organization",
+        "@id": "https://winesquickstart.com/#organization",
+        "name": "Wine Quick Start",
+        "url": "https://winesquickstart.com",
+        "description": "Expert wine guidance from certified sommeliers"
+      },
+      {
+        "@type": "WebSite",
+        "@id": "https://winesquickstart.com/#website",
+        "url": "https://winesquickstart.com",
+        "name": "Wine Quick Start",
+        "publisher": { "@id": "https://winesquickstart.com/#organization" }
+      },
+      {
+        "@type": "Article",
+        "headline": "Best Pinot Noir Under $20 That Still Tastes Like Pinot Noir",
+        "description": "Find the best Pinot Noir under $20 without buying fake luxury. Use this guide for the bottles and styles that still deliver lift, red fruit, and food-friendly balance.",
+        "author": {
+          "@type": "Person",
+          "name": "Elena Martinez",
+          "jobTitle": "Senior Wine Writer"
+        },
+        "publisher": { "@id": "https://winesquickstart.com/#organization" },
+        "datePublished": "2026-01-20",
+        "dateModified": "2026-01-20",
+        "mainEntityOfPage": {
+          "@type": "WebPage",
+          "@id": "https://winesquickstart.com/buy/best-pinot-noir-under-20"
+        },
+        "isPartOf": { "@id": "https://winesquickstart.com/#website" }
       }
+    ]
+  }
 };
 ---
 
-<ArticleLayout canonical={frontmatter.canonicalUrl} categorySlug="buy" title={frontmatter.title} description={frontmatter.description} author={frontmatter.author} readTime={frontmatter.readTime} category="Wine Guide" schema={frontmatter.structured_data} featuredImage={featuredImage}>
-  <!-- Author Attribution -->
+<ArticleLayout canonical={frontmatter.canonicalUrl} categorySlug="buy" title={frontmatter.title} description={frontmatter.description} author={frontmatter.author} readTime={frontmatter.readTime} category="Buying Guide" schema={frontmatter.structured_data} featuredImage={featuredImage}>
   <div class="bg-gray-50 p-4 rounded-lg mb-6 flex items-center gap-4">
-    <div class="w-12 h-12 rounded-full bg-wine-100 flex items-center justify-center text-wine-700 font-bold">
-      EM
-    </div>
+    <div class="w-12 h-12 rounded-full bg-wine-100 flex items-center justify-center text-wine-700 font-bold">EM</div>
     <div>
       <a href="/about/elena-martinez" class="font-semibold text-gray-900 hover:text-wine-600">Elena Martinez</a>
       <p class="text-sm text-gray-600">Senior Wine Writer | WSET Level 2 Award in Wines</p>
@@ -97,434 +65,67 @@ const frontmatter = {
   </div>
 
   <div slot="quick-answer">
-    <p><strong>Quick Answer:</strong> The best options combine quality, value, and availability. We recommend exploring wines from established producers with consistent track records.</p>
+    <p><strong>Quick Answer:</strong> Good Pinot Noir under $20 is hard but not impossible. The smart move is to buy bottles that still show red fruit, light earth, and freshness instead of chasing fake “luxury Pinot” that tastes heavy and anonymous.</p>
   </div>
 
-  <h2>Understanding Best Pinot Noir Under 20</h2>
-  <p>The world of best pinot noir under 20 offers incredible diversity and complexity. In this guide, we'll help you navigate the options and find exactly what you're looking for.</p>
+  <h2>What Budget Pinot Noir Should Actually Do</h2>
+  <p>Pinot Noir under $20 is a category where labels overpromise constantly. You are not buying grand cru Burgundy at a discount. You are buying a bottle that should still taste lifted, red-fruited, and reasonably food-friendly. Once a cheap Pinot gets too dark, sweet, or oaky, it stops being useful as Pinot Noir and starts acting like generic red wine.</p>
 
-  <h2>Our Top Picks</h2>
-      <div class="bg-gray-50 rounded-lg p-6 mb-4">
-        <h3 class="text-xl font-semibold text-wine-700 mb-2">1. 2019 Adelsheim Vineyard Adelsheim Elizabeth's Reserve Pinot Noir</h3>
-        <p class="text-gray-600 mb-2"><strong>Producer:</strong> Adelsheim Vineyard</p>
-        <p class="text-gray-600 mb-2"><strong>Region:</strong> Chehalem Mountains, Oregon</p>
-        <p class="text-gray-600 mb-2"><strong>Variety:</strong> Pinot Noir</p>
-        <p class="text-gray-700 mt-3">Delicate red fruit aromas with hints of mushroom and forest floor.</p>
-      </div>
-
-      <div class="bg-gray-50 rounded-lg p-6 mb-4">
-        <h3 class="text-xl font-semibold text-wine-700 mb-2">2. 2018 Antica Terra Botanica Pinot Noir</h3>
-        <p class="text-gray-600 mb-2"><strong>Producer:</strong> Antica Terra</p>
-        <p class="text-gray-600 mb-2"><strong>Region:</strong> Eola-Amity Hills, Oregon</p>
-        <p class="text-gray-600 mb-2"><strong>Variety:</strong> Pinot Noir</p>
-        <p class="text-gray-700 mt-3">Light-bodied with vibrant acidity and a long, refined finish.</p>
-      </div>
-
-      <div class="bg-gray-50 rounded-lg p-6 mb-4">
-        <h3 class="text-xl font-semibold text-wine-700 mb-2">3. 2019 Aubert Pinot Noir Sonoma Coast</h3>
-        <p class="text-gray-600 mb-2"><strong>Producer:</strong> Aubert</p>
-        <p class="text-gray-600 mb-2"><strong>Region:</strong> Sonoma County, California</p>
-        <p class="text-gray-600 mb-2"><strong>Variety:</strong> Pinot Noir</p>
-        <p class="text-gray-700 mt-3">Light-bodied with vibrant acidity and a long, refined finish.</p>
-      </div>
-
-<h2>Expert Tips</h2>
-<ol class="list-decimal list-inside space-y-4 text-gray-700">
-  <li><strong>Target Oregon's Willamette Valley for Maximum Value</strong> - Skip expensive Burgundy and focus on Oregon producers like A to Z Wineworks ($18), Erath ($16), or King Estate ($19). These wines offer authentic Pinot Noir character with bright cherry fruit and earthy undertones at a fraction of the cost. The volcanic Jory soil creates wines with natural acidity that age gracefully for 3-5 years.</li>
-
-  <li><strong>Seek Out Entry-Level Wines from Premium Producers</strong> - Look for second labels or regional bottlings from respected houses like Louis Jadot's "Couvent des Jacobins" ($19) or Domaine Drouhin's Oregon Pinot Noir ($18). These wines benefit from the same winemaking expertise as their flagship bottles but use fruit from younger vines or less prestigious vineyard sites.</li>
-
-  <li><strong>Serve at Proper Cellar Temperature (60-62°F)</strong> - Unlike expensive Burgundy that can handle slightly warmer serving temperatures, budget Pinot Noirs under $20 show best when served cooler. This temperature preserves their delicate fruit character and prevents the alcohol (often 13.5-14.5%) from becoming too prominent. Remove from refrigerator 20-30 minutes before serving.</li>
-
-  <li><strong>Skip the Decanter for Most Under-$20 Bottles</strong> - Most affordable Pinot Noirs are made for immediate consumption and don't require decanting. However, if you find a bottle that seems tight or overly tannic (like some Russian River Valley selections), a simple swirl in your glass for 10-15 minutes will provide sufficient aeration without over-exposing the delicate aromatics.</li>
-
-  <li><strong>Use Burgundy-Style Glasses, Not Bordeaux Bowls</strong> - The wide bowl and narrow rim of a proper Burgundy glass concentrates the subtle red fruit and earth aromas that define good Pinot Noir. Avoid large Bordeaux glasses which can make lighter-bodied wines under $20 seem thin and diluted. A 16-20 oz Burgundy glass is ideal.</li>
-
-  <li><strong>Drink Young but Watch for These Age-Worthy Exceptions</strong> - Most Pinot Noirs under $20 are best consumed within 2-3 years of vintage. However, wines from cooler climates like Santa Rita Hills (Au Bon Climat $19) or Anderson Valley can develop beautiful secondary notes of forest floor and spice after 4-5 years in proper cellar conditions.</li>
-
-  <li><strong>Look for "Whole Cluster" on Labels for Food-Friendly Options</strong> - Producers like Lingua Franca ($19) or Evening Land ($18) that use whole cluster fermentation create wines with more structured tannins and savory complexity. These styles pair exceptionally well with roasted poultry, mushroom dishes, and aged cheeses—making them ideal everyday drinking wines.</li>
-
-  <li><strong>Shop End-of-Vintage Clearances in Late Spring</strong> - Wine shops often discount previous vintages of Pinot Noir in May-June to make room for new releases. This is when you'll find exceptional values like 2019 Bogle Pinot Noir (originally $15) marked down to $11, or aged Carneros Creek selections that have developed beautiful tertiary aromas through proper bottle aging.</li>
-</ol>
-
-  <h2>Buying Guide</h2>
-
-<p>Navigating the Pinot Noir market under $20 requires understanding what to expect at different price points and knowing where quality intersects with value. The sweet spot for exceptional <strong>best pinot noir under 20</strong> typically falls between $15-18, where careful selection can yield wines that punch well above their weight class.</p>
-
-<h3>Price Tier Expectations</h3>
-
-<p>In the <strong>$12-15 range</strong>, expect fruit-forward expressions from regions like Central Coast California or basic Burgundy appellations. These wines offer immediate drinking pleasure with bright cherry and strawberry notes, though they may lack the complexity of pricier bottles. The <strong>$15-20 tier</strong> is where serious value hunting pays off—look for single-vineyard offerings from Oregon's Willamette Valley, Russian River selections, or village-level Burgundies that showcase terroir-driven character with earthy undertones and silky tannins.</p>
-
-<h3>Label Intelligence</h3>
-
-<p>Key terms signal quality: <strong>"Estate Grown"</strong> indicates vineyard ownership and control, while <strong>"Old Vine"</strong> suggests concentrated fruit from mature plants. For Burgundy, village appellations like Gevrey-Chambertin or Volnay offer better value than generic Bourgogne Rouge. Oregon labels showing <strong>"Willamette Valley AVA"</strong> with specific sub-appellations like Dundee Hills indicate serious terroir focus. Avoid wines labeled simply "California" without regional specificity.</p>
-
-<h3>Vintage Strategy</h3>
-
-<p>The <strong>2020 and 2021 vintages</strong> are drinking beautifully now, offering immediate gratification with balanced acidity and approachable tannins. <strong>2018 and 2019</strong> wines from quality producers are entering their optimal drinking window, showing developed secondary characteristics. For cellaring potential under $20, focus on structured Oregon Pinots or Burgundy villages that can evolve for 3-5 years.</p>
-
-<h3>Smart Shopping</h3>
-
-<p>Independent wine shops often provide the best curation and value, with knowledgeable staff who can guide selections. <strong>Costco's wine buyers</strong> consistently source exceptional Pinot Noir values, often from respected producers under exclusive labels. Online retailers like Wine.com and local delivery services expand selection but factor in shipping costs. Avoid auction sites for this price range—the fees eliminate any potential savings.</p>
-
-<h3>Post-Purchase Storage</h3>
-
-<p>Most <strong>best pinot noir under 20</strong> selections are designed for near-term consumption within 2-3 years. Store bottles on their side in a cool, dark place around 55°F. If cellaring structured examples, maintain consistent temperature and humidity. Lighter styles from warm climates should be consumed within 18 months of purchase to preserve their fresh fruit character.</p>
-
-<h2>Buying Guide</h2>
-
-<h3>Price Tiers and Expectations</h3>
-<p>Finding exceptional <strong>Pinot Noir under $20</strong> requires understanding what each price tier delivers. In the $10-15 range, expect lighter-bodied wines from cooler climates like Oregon's Willamette Valley or Germany's Baden region, often featuring bright cherry notes and moderate tannins. The sweet spot of $15-20 opens doors to producers like A to Z Wineworks Oregon Pinot Noir ($16) or Bogle California Pinot Noir ($14), offering better fruit concentration and oak integration.</p>
-
-<p>Moving beyond our target range, $20-35 wines typically show more complexity and terroir expression, while $35-50 bottles often represent estate-grown fruit with careful winemaking. Premium selections above $50 showcase old-vine fruit, extended aging, and distinctive vineyard character.</p>
-
-<h3>Value Picks for Maximum Quality</h3>
-<p>The best quality-to-price ratios under $20 come from large-production Oregon wineries leveraging economies of scale, like King Estate ($18) or smaller German producers such as Dr. Loosen's Villa Wolf line ($12). Romanian Pinot Noir from producers like Cramele Recas offers exceptional value at $11-13, delivering surprising elegance and food-pairing versatility.</p>
-
-<h3>Label Intelligence</h3>
-<p>Look for key indicators of quality: <strong>"Estate Grown"</strong> suggests better fruit control, while <strong>"Reserve"</strong> typically means extended aging or premium barrel selection. Avoid vague terms like "Proprietor's Blend." German labels showing <strong>"Spätburgunder"</strong> (Pinot Noir) from Baden or Pfalz regions often deliver exceptional value. Pay attention to alcohol levels—12.5-13.5% typically indicates balanced, food-friendly styles.</p>
-
-<h3>Vintage Strategy</h3>
-<p>For immediate drinking under $20, focus on 2020-2022 vintages from Oregon and California, which are showing beautiful fruit-forward character now. The excellent 2018 vintage is still available at value prices and drinking superbly. Avoid cellaring wines under $20—they're designed for near-term consumption within 2-3 years of release.</p>
-
-<h3>Smart Shopping</h3>
-<p>Local wine shops often offer the best selection of value Pinot Noir, with staff who can guide you to hidden gems. Online retailers like Wine.com or Total Wine provide competitive pricing and frequent sales. Costco's Kirkland Signature Pinot Noir ($7-9) represents extraordinary value for everyday drinking.</p>
-
-<h3>Storage Essentials</h3>
-<p>Store purchased bottles on their side in a cool, dark place around 55°F. Most Pinot Noir under $20 should be consumed within 6-12 months of purchase for optimal freshness and fruit expression.</p>
-
-<h2>Buying Guide</h2>
-
-<h3>Price Tiers and Expectations</h3>
-<p>In the <strong>$12-18 range</strong>, expect solid everyday Pinot Noir from regions like Oregon's Willamette Valley (Willamette Valley Vineyards), California's Central Coast (La Crema, Bogle), or value-driven Burgundian producers like Louis Jadot's regional bottlings. These wines offer clean fruit expression with moderate complexity.</p>
-
-<p>The <strong>$18-25 tier</strong> unlocks significantly more character. Look for single-vineyard Oregon bottlings from producers like Argyle or Rex Hill, Russian River Valley offerings from Gary Farrell or Rodney Strong, and entry-level Burgundies from négociants like Joseph Drouhin. These wines show distinct terroir influence and age-worthy structure.</p>
-
-<p>Beyond $25, you enter premium territory with estate-grown Burgundies, top Oregon producers like Archery Summit, and prestigious California appellations like Santa Rita Hills and Anderson Valley.</p>
-
-<h3>Label Intelligence</h3>
-<p>Prioritize wines labeled <strong>"Estate Grown"</strong> or <strong>"Single Vineyard"</strong> for better quality control. In Burgundy, look for <strong>"Mis en bouteille au domaine"</strong> (estate bottled). Avoid wines with generic appellations like "California" or "France"—specific AVAs like "Dundee Hills" or "Vosne-Romanée" indicate higher quality sourcing.</p>
-
-<p>Watch for <strong>alcohol levels between 12.5-14%</strong>, which typically indicates balanced ripeness rather than over-extraction.</p>
-
-<h3>Vintage Strategy</h3>
-<p>For immediate enjoyment, focus on <strong>2019-2021 vintages</strong> from Oregon and California, which show excellent fruit-acid balance. <strong>2018 Burgundies</strong> are drinking beautifully now, while <strong>2020 Burgundies</strong> offer exceptional value as the market adjusts.</p>
-
-<p>Consider cellaring <strong>2017 Oregon</strong> (structured, age-worthy) and any <strong>2019 Burgundy</strong> under $20—these will reward 3-5 years of patience.</p>
-
-<h3>Smart Shopping</h3>
-<p>Independent wine shops often offer better Pinot Noir selections than large retailers, with knowledgeable staff guidance. <strong>Online platforms like Wine.com and Total Wine</strong> provide extensive inventories with customer reviews.</p>
-
-<p>For rare finds, check <strong>restaurant wine lists</strong> during retail wine sales—many offer bottles at near-wholesale pricing.</p>
-
-<h3>Post-Purchase Storage</h3>
-<p>Most sub-$20 Pinot Noir is designed for <strong>immediate consumption within 2-3 years</strong>. Store bottles on their side in a cool, dark location around 55°F. Higher-end bottles within your budget—particularly Oregon estate wines and village-level Burgundies—can benefit from 2-5 years of proper cellar aging, developing secondary notes of earth, mushroom, and leather.</p>
-
-<h2>Aging & Cellaring</h2>
-
-<p>Most <strong>best pinot noir under $20</strong> wines are crafted for early enjoyment, but many offer surprising aging potential when properly stored. Understanding their evolution helps maximize your investment in these accessible bottles.</p>
-
-<h3>Aging Potential by Style</h3>
-<p>Entry-level Oregon and California Pinot Noirs typically peak within <strong>2-4 years</strong> of vintage, while more structured examples from cooler climates like Sonoma Coast or Willamette Valley can develop beautifully for <strong>5-7 years</strong>. Burgundian-style producers like A to Z Wineworks or Elk Cove often create sub-$20 wines with surprising longevity due to higher natural acidity and restrained extraction.</p>
-
-<h3>Evolution Over Time</h3>
-<p>Young budget Pinot Noirs display vibrant red cherry and strawberry notes with bright acidity. As they age, the fruit transitions from primary to secondary characteristics—developing <strong>forest floor, mushroom, and leather notes</strong> around year three. The wine's naturally low tannins integrate further, creating silkier textures, while volatile compounds like esters evolve into more complex spice and earth tones.</p>
-
-<h3>Optimal Storage Conditions</h3>
-<p>Store bottles on their side at <strong>55-60°F with 60-70% humidity</strong>. Avoid temperature fluctuations above 5°F, which can cause premature aging in delicate Pinot Noir. A consistent basement or wine refrigerator works better than kitchen storage for wines you plan to age beyond two years.</p>
-
-<h3>Peak Drinking Windows</h3>
-<p>Fruit-forward styles from warmer regions like Central Coast are best consumed within <strong>18 months to 3 years</strong>. Cool-climate expressions show optimal balance between fruit and earthiness at <strong>3-5 years</strong>. Watch for the wine's color shifting from bright ruby to garnet with brick edges—this indicates proper development.</p>
-
-<p>Signs of spoilage include vinegar-like aromas, excessive browning, or cork taint's musty smell. Properly aged Pinot Noir should retain some fruit character while gaining complexity, never becoming completely dried out or oxidized.</p>
-
-<h2>Aging & Cellaring</h2>
-
-<p>Most <strong>Pinot Noir under $20</strong> are crafted for early enjoyment rather than extended cellaring, but understanding their aging potential helps maximize your investment and drinking pleasure.</p>
-
-<h3>Aging Potential by Style</h3>
-<p>Entry-level Pinot Noirs from regions like <strong>Willamette Valley</strong> or <strong>Central Coast California</strong> typically peak within <strong>2-4 years</strong> of vintage. These wines showcase bright red fruit that gradually softens, with primary cherry and raspberry flavors evolving into more complex dried fruit and earthy notes. Premium examples under $20, such as those from established Oregon producers like Elk Cove or A to Z, can develop beautifully for <strong>5-7 years</strong>, gaining secondary characteristics of forest floor, mushroom, and subtle spice.</p>
-
-<h3>Evolution and Peak Windows</h3>
-<p>Young budget Pinot Noir displays vibrant acidity and fresh fruit flavors. As it ages, <strong>tannins integrate and soften</strong>, while the wine develops tertiary aromas of leather, earth, and dried herbs. The optimal drinking window typically begins <strong>1-2 years post-release</strong> and extends 3-5 years, depending on the producer's winemaking approach and vintage conditions.</p>
-
-<h3>Proper Storage Requirements</h3>
-<p>Store bottles at <strong>55-58°F with 60-70% humidity</strong>, positioned horizontally to keep corks moist. Pinot Noir's delicate structure makes it particularly sensitive to temperature fluctuations and light exposure. A consistent, cool environment preserves the wine's elegant aromatics and prevents premature oxidation.</p>
-
-<h3>Aging vs. Spoilage Indicators</h3>
-<p>Properly aged Pinot Noir develops <strong>brick-red color</strong> and complex earthy aromas while maintaining bright acidity. Warning signs include browning beyond brick tones, vinegar-like smells, or cork taint (musty, wet cardboard odors). Most sub-$20 Pinot Noirs show their best within 3-5 years, offering optimal fruit-to-earth balance before declining.</p>
-
-<h2>Aging & Cellaring</h2>
-
-<p>Most <strong>Pinot Noir under $20</strong> is crafted for immediate enjoyment, but understanding their aging potential helps maximize your investment. Oregon Pinot Noirs from producers like King Estate or Elk Cove can develop beautifully for 3-5 years, while most California bottlings peak within 2-3 years of vintage.</p>
-
-<h3>Peak Drinking Windows</h3>
-<p>Fruit-forward styles from warm climates like Santa Barbara County show best within 18 months, when their bright cherry and strawberry flavors remain vibrant. Cooler-climate expressions from Willamette Valley or Russian River Valley reward patience—their higher acidity and more structured tannins allow graceful evolution over 3-4 years.</p>
-
-<h3>How Pinot Noir Evolves</h3>
-<p>Young budget Pinot Noirs display primary fruit flavors—fresh cherry, raspberry, and floral notes. With proper cellaring, these transform into <strong>secondary characteristics</strong>: earthy mushroom, forest floor, and leather notes emerge while fruit concentrates into deeper, more complex expressions. The wine's silky tannins integrate further, creating smoother mouthfeel.</p>
-
-<h3>Storage Requirements</h3>
-<p>Store bottles on their side at <strong>55-58°F</strong> with 60-70% humidity. Pinot Noir's delicate structure makes it particularly sensitive to temperature fluctuations—avoid kitchen storage. A consistent, dark environment prevents premature aging and preserves those essential bright acids that give Pinot its characteristic elegance.</p>
-
-<h3>Recognizing Proper Aging</h3>
-<p>Well-aged Pinot Noir develops <strong>brick-orange rim color</strong> while maintaining clarity. Aromas become more complex, showing savory elements alongside evolved fruit. Warning signs include brown coloration throughout, vinegar-like acetic acid smells, or cork taint (wet cardboard aroma). Most sub-$20 Pinot Noirs lack the tannin structure for extended aging—when in doubt, drink within three years of purchase to capture their intended bright, food-friendly character.</p>
-
-<h2>Frequently Asked Questions</h2>
-<div class="space-y-6">
-  <div>
-    <h3 class="text-lg font-semibold text-wine-700 mb-2">What makes a Pinot Noir under $20 worth buying compared to more expensive bottles?</h3>
-    <p class="text-gray-700">The best Pinot Noirs under $20 focus on fruit purity and approachable elegance rather than complex aging or premium vineyard sites. Look for wines from value-focused regions like Oregon's Willamette Valley or California's Central Coast, where producers can craft clean, expressive wines without the overhead of prestigious appellations. These bottles often showcase classic Pinot characteristics—bright cherry, earthy undertones, and silky tannins—making them excellent for everyday drinking and food pairing.</p>
+  <h2>Best Bottles Under $20</h2>
+  <div class="bg-gray-50 rounded-lg p-6 mb-4">
+    <h3 class="text-xl font-semibold text-wine-700 mb-2">1. A to Z Pinot Noir</h3>
+    <p class="text-gray-600 mb-2"><strong>Producer:</strong> A to Z Wineworks</p>
+    <p class="text-gray-600 mb-2"><strong>Region:</strong> Oregon</p>
+    <p class="text-gray-600 mb-2"><strong>Variety:</strong> Pinot Noir</p>
+    <p class="text-gray-700">One of the safest budget benchmarks because it still gives you red fruit, freshness, and enough earth to feel like Pinot rather than a soft generic blend.</p>
+  </div>
+  <div class="bg-gray-50 rounded-lg p-6 mb-4">
+    <h3 class="text-xl font-semibold text-wine-700 mb-2">2. Erath Pinot Noir</h3>
+    <p class="text-gray-600 mb-2"><strong>Producer:</strong> Erath</p>
+    <p class="text-gray-600 mb-2"><strong>Region:</strong> Oregon</p>
+    <p class="text-gray-600 mb-2"><strong>Variety:</strong> Pinot Noir</p>
+    <p class="text-gray-700">A useful bottle when you want a softer, more approachable style that still keeps some lift. This is the type of Pinot that works well for weeknight chicken, salmon, and mushroom dishes.</p>
+  </div>
+  <div class="bg-gray-50 rounded-lg p-6 mb-4">
+    <h3 class="text-xl font-semibold text-wine-700 mb-2">3. Villa Wolf Pinot Noir</h3>
+    <p class="text-gray-600 mb-2"><strong>Producer:</strong> Villa Wolf</p>
+    <p class="text-gray-600 mb-2"><strong>Region:</strong> Pfalz, Germany</p>
+    <p class="text-gray-600 mb-2"><strong>Variety:</strong> Pinot Noir</p>
+    <p class="text-gray-700">A better bottle for buyers who want a slightly leaner, fresher, more European expression without paying for Burgundy branding.</p>
   </div>
 
-  <div>
-    <h3 class="text-lg font-semibold text-wine-700 mb-2">Should I decant budget Pinot Noir or serve it straight from the bottle?</h3>
-    <p class="text-gray-700">Most Pinot Noirs under $20 benefit from 15-30 minutes of breathing time but don't require formal decanting. Simply open the bottle and let it sit, or pour into glasses and swirl gently to encourage aeration. These wines are crafted for immediate enjoyment and won't have the tannin structure that necessitates extended decanting like bigger reds.</p>
-  </div>
+  <h2>How to Buy Better at This Price</h2>
+  <p>At this budget, region matters. Oregon usually gives you the clearest value signal for American Pinot Noir, while Germany can be a good way to get freshness and lower oak influence. Avoid wines that lean too hard into dark fruit, vanilla, and sweet oak because they are often trying to imitate richer reds instead of being honest Pinot Noir.</p>
 
-  <div>
-    <h3 class="text-lg font-semibold text-wine-700 mb-2">Is affordable Pinot Noir good for wine beginners who find red wine too heavy?</h3>
-    <p class="text-gray-700">Absolutely—Pinot Noir under $20 is ideal for red wine newcomers because it offers lighter body, lower alcohol (typically 12.5-13.5%), and bright acidity without overwhelming tannins. The grape's natural elegance and food-friendly nature make it a perfect bridge wine for those transitioning from white wines. Start with fruit-forward examples from California or Oregon to experience Pinot's approachable side.</p>
-  </div>
+  <h2>What to Avoid</h2>
+  <p>Avoid bottles that are clearly selling luxury cues they cannot deliver. Expensive-sounding labels, heavy packaging, and jammy tasting notes are usually warnings, not selling points. Under $20 Pinot should aim for clarity and drinkability, not fake prestige.</p>
 
-  <div>
-    <h3 class="text-lg font-semibold text-wine-700 mb-2">What's the difference between Oregon and California Pinot Noir under $20?</h3>
-    <p class="text-gray-700">Oregon Pinot Noir under $20 typically shows more earthy, mushroom, and forest floor notes with bright acidity, reflecting the cooler Willamette Valley climate. California versions from Central Coast or Sonoma tend to be more fruit-forward with riper cherry and strawberry flavors, often with slightly higher alcohol. Both styles offer excellent value, but choose Oregon for Old World elegance and California for New World fruitiness.</p>
-  </div>
+  <h2>Who This Is Best For</h2>
+  <p>These wines are best for weeknight dinners, casual gatherings, and drinkers who want Pinot Noir’s lighter side without paying much. If you want a more profound bottle, the category usually gets meaningfully better above $20. Under that threshold, discipline matters more than ambition.</p>
 
-  <div>
-    <h3 class="text-lg font-semibold text-wine-700 mb-2">How long can I age Pinot Noir under $20, or should I drink it immediately?</h3>
-    <p class="text-gray-700">Most Pinot Noirs under $20 are designed for consumption within 2-3 years of the vintage date and won't improve significantly with extended aging. These wines prioritize fresh fruit character and immediate appeal rather than the complex structure needed for long-term cellaring. Store them in a cool, dark place and enjoy within 18 months of purchase for optimal flavor.</p>
-  </div>
+  <h2>Expert Tips</h2>
+  <ol class="list-decimal list-inside space-y-4 text-gray-700">
+    <li><strong>Buy freshness over richness.</strong> The best cheap Pinot is usually lighter and cleaner, not heavier and more “impressive.”</li>
+    <li><strong>Use food as a filter.</strong> Good budget Pinot should still work with chicken, salmon, mushrooms, and pork.</li>
+    <li><strong>Do not expect trophy complexity.</strong> Expect usefulness and varietal honesty instead.</li>
+  </ol>
 
-  <div>
-    <h3 class="text-lg font-semibold text-wine-700 mb-2">What are the biggest mistakes people make when buying cheap Pinot Noir?</h3>
-    <p class="text-gray-700">The most common error is buying Pinot Noir from regions too warm for the grape, resulting in jammy, unbalanced wines that lack the variety's signature elegance. Avoid bottles labeled simply "California" without specific AVA designation, and be wary of Pinot Noirs over 14% alcohol at this price point. Also, don't expect Burgundy-style complexity—embrace the straightforward fruit and food-friendly nature of affordable American Pinot Noir.</p>
-  </div>
+  <h2>FAQ</h2>
+  <h3>Can Pinot Noir under $20 be good?</h3>
+  <p>Yes, but it needs disciplined buying. The goal is a bottle that still tastes like Pinot Noir, not one that pretends to be premium Burgundy.</p>
 
-  <div>
-    <h3 class="text-lg font-semibold text-wine-700 mb-2">If I can't find good Pinot Noir under $20, what similar wines should I try instead?</h3>
-    <p class="text-gray-700">Look for Gamay from Beaujolais, which offers similar light body and bright fruit character, or try Grenache-based blends from Southern France for comparable elegance and food versatility. Dolcetto from Piedmont also provides that easy-drinking, low-tannin profile that makes Pinot Noir so appealing. These alternatives often deliver better quality-to-price ratios when good affordable Pinot Noir is scarce.</p>
-  </div>
+  <h3>What region is best for cheap Pinot Noir?</h3>
+  <p>Oregon is a strong starting point, and Germany can also offer good value at the lower end.</p>
 
-  <div>
-    <h3 class="text-lg font-semibold text-wine-700 mb-2">What foods pair best with budget-friendly Pinot Noir?</h3>
-    <p class="text-gray-700">Pinot Noir under $20 excels with roasted chicken, grilled salmon, mushroom dishes, and soft cheeses like Brie or Camembert. The wine's bright acidity and moderate tannins make it versatile enough for both lighter fare and heartier dishes like pork tenderloin or duck breast. Avoid pairing with heavily spiced foods or very rich sauces that might overwhelm the wine's delicate profile.</p>
-  </div>
-</div>
-
-<!-- Related Articles -->
-  <div class="mt-10 pt-8 border-t border-gray-200">
-    <h3 class="text-xl font-semibold mb-6">Related Articles</h3>
-    <div class="grid md:grid-cols-2 gap-4">
-      <a href="/wine-pairings/red-wine-food-pairing" class="block p-4 bg-white border border-gray-200 rounded-lg hover:border-wine-300 hover:shadow-md transition-all">
-        <h4 class="font-semibold text-gray-900 hover:text-wine-600">Red Wine Food Pairing - Expert Guide</h4>
-        <p class="text-sm text-gray-600 mt-1">Discover the best red wine food pairing. Expert recommendations, tasting notes, ...</p>
-      </a>
-      <a href="/learn/oregon-pinot-noir" class="block p-4 bg-white border border-gray-200 rounded-lg hover:border-wine-300 hover:shadow-md transition-all">
-        <h4 class="font-semibold text-gray-900 hover:text-wine-600">Oregon Pinot Noir - Expert Guide</h4>
-        <p class="text-sm text-gray-600 mt-1">Discover the best oregon pinot noir. Expert recommendations, tasting notes, and ...</p>
-      </a>
-      <a href="/wine-pairings/what-to-eat-with-pinot-noir" class="block p-4 bg-white border border-gray-200 rounded-lg hover:border-wine-300 hover:shadow-md transition-all">
-        <h4 class="font-semibold text-gray-900 hover:text-wine-600">What To Eat With Pinot Noir - Expert Guide</h4>
-        <p class="text-sm text-gray-600 mt-1">Discover the best what to eat with pinot noir. Expert recommendations, tasting n...</p>
-      </a>
-    </div>
-  </div>
-
-  <div class="bg-gray-50 rounded-lg p-5 border border-gray-100">
-    <h3 class="text-lg font-semibold text-wine-700 mb-1">2019 Bethel Heights Vineyard Bethel Heights Casteel Reserve Pinot Noir</h3>
-    <p class="text-sm text-gray-600 mb-2">Eola-Amity Hills, Oregon | ~$30-60</p>
-    <p class="text-gray-700 text-sm">Elegant with bright cherry and raspberry notes, silky tannins, and earthy undertones.</p>
-    <p class="text-xs text-wine-600 mt-2"><strong>Variety:</strong> Pinot Noir</p>
-  </div>
-
-  <div class="bg-gray-50 rounded-lg p-5 border border-gray-100">
-    <h3 class="text-lg font-semibold text-wine-700 mb-1">2025 Bill Harlan Bond</h3>
-    <p class="text-sm text-gray-600 mb-2">Sonoma Valley, Unknown Region | ~$30-60</p>
-    <p class="text-gray-700 text-sm">Delicate red fruit aromas with hints of mushroom and forest floor.</p>
-    <p class="text-xs text-wine-600 mt-2"><strong>Variety:</strong> Pinot Noir</p>
-  </div>
-
-  <div class="bg-gray-50 rounded-lg p-5 border border-gray-100">
-    <h3 class="text-lg font-semibold text-wine-700 mb-1">2025 Bill Harlan final</h3>
-    <p class="text-sm text-gray-600 mb-2">Côte de Nuits, Unknown Region | ~$30-60</p>
-    <p class="text-gray-700 text-sm">Delicate red fruit aromas with hints of mushroom and forest floor.</p>
-    <p class="text-xs text-wine-600 mt-2"><strong>Variety:</strong> Pinot Noir</p>
-  </div>
-
-  <div class="bg-gray-50 rounded-lg p-5 border border-gray-100">
-    <h3 class="text-lg font-semibold text-wine-700 mb-1">2018 Cristom Vineyards Cristom Louise Vineyard Pinot Noir</h3>
-    <p class="text-sm text-gray-600 mb-2">Eola-Amity Hills, Oregon | ~$30-60</p>
-    <p class="text-gray-700 text-sm">Elegant with bright cherry and raspberry notes, silky tannins, and earthy undertones.</p>
-    <p class="text-xs text-wine-600 mt-2"><strong>Variety:</strong> Pinot Noir</p>
-  </div>
-
-  <div class="bg-gray-50 rounded-lg p-5 border border-gray-100">
-    <h3 class="text-lg font-semibold text-wine-700 mb-1">2019 David Duband Bourgogne</h3>
-    <p class="text-sm text-gray-600 mb-2">Burgundy, Unknown Region | ~$30-60</p>
-    <p class="text-gray-700 text-sm">Delicate red fruit aromas with hints of mushroom and forest floor.</p>
-    <p class="text-xs text-wine-600 mt-2"><strong>Variety:</strong> Pinot Noir</p>
-  </div>
-</div>
-
-<div class="bg-gray-50 rounded-lg p-5 border border-gray-100">
-    <h3 class="text-lg font-semibold text-wine-700 mb-1">2017 Domaine Armand Rousseau Chambertin</h3>
-    <p class="text-sm text-gray-600 mb-2">Côte de Nuits, Burgundy | ~$30-60</p>
-    <p class="text-gray-700 text-sm">Light-bodied with vibrant acidity and a long, refined finish.</p>
-    <p class="text-xs text-wine-600 mt-2"><strong>Variety:</strong> Pinot Noir</p>
-  </div>
-
-  <div class="bg-gray-50 rounded-lg p-5 border border-gray-100">
-    <h3 class="text-lg font-semibold text-wine-700 mb-1">2019 Domaine Comte Georges de Vogüé Musigny</h3>
-    <p class="text-sm text-gray-600 mb-2">Côte de Nuits, Burgundy | ~$30-60</p>
-    <p class="text-gray-700 text-sm">Light-bodied with vibrant acidity and a long, refined finish.</p>
-    <p class="text-xs text-wine-600 mt-2"><strong>Variety:</strong> Pinot Noir</p>
-  </div>
-
-  <div class="bg-gray-50 rounded-lg p-5 border border-gray-100">
-    <h3 class="text-lg font-semibold text-wine-700 mb-1">2019 Domaine Comte Georges de Vogüé Musigny Cuvée Vieilles Vignes</h3>
-    <p class="text-sm text-gray-600 mb-2">Côte de Nuits, Burgundy | ~$30-60</p>
-    <p class="text-gray-700 text-sm">Delicate red fruit aromas with hints of mushroom and forest floor.</p>
-    <p class="text-xs text-wine-600 mt-2"><strong>Variety:</strong> Pinot Noir</p>
-  </div>
-
-  <div class="bg-gray-50 rounded-lg p-5 border border-gray-100">
-    <h3 class="text-lg font-semibold text-wine-700 mb-1">2019 Domaine de la Romanée-Conti La Tâche</h3>
-    <p class="text-sm text-gray-600 mb-2">Côte de Nuits, Burgundy | ~$30-60</p>
-    <p class="text-gray-700 text-sm">Light-bodied with vibrant acidity and a long, refined finish.</p>
-    <p class="text-xs text-wine-600 mt-2"><strong>Variety:</strong> Pinot Noir</p>
-  </div>
-
-  <div class="bg-gray-50 rounded-lg p-5 border border-gray-100">
-    <h3 class="text-lg font-semibold text-wine-700 mb-1">2017 Domaine de la Romanée-Conti Richebourg</h3>
-    <p class="text-sm text-gray-600 mb-2">Côte de Nuits, Burgundy | ~$30-60</p>
-    <p class="text-gray-700 text-sm">Delicate red fruit aromas with hints of mushroom and forest floor.</p>
-    <p class="text-xs text-wine-600 mt-2"><strong>Variety:</strong> Pinot Noir</p>
-  </div>
-</div>
-
-<div class="bg-gray-50 rounded-lg p-5 border border-gray-100">
-    <h3 class="text-lg font-semibold text-wine-700 mb-1">2018 Domaine Drouhin Laurène Pinot Noir</h3>
-    <p class="text-sm text-gray-600 mb-2">Dundee Hills, Oregon | ~$30-60</p>
-    <p class="text-gray-700 text-sm">Light-bodied with vibrant acidity and a long, refined finish.</p>
-    <p class="text-xs text-wine-600 mt-2"><strong>Variety:</strong> Pinot Noir</p>
-  </div>
-
-  <div class="bg-gray-50 rounded-lg p-5 border border-gray-100">
-    <h3 class="text-lg font-semibold text-wine-700 mb-1">2019 Domaine Dujac Clos de la Roche Grand Cru</h3>
-    <p class="text-sm text-gray-600 mb-2">Côte de Nuits, Burgundy | ~$30-60</p>
-    <p class="text-gray-700 text-sm">Elegant with bright cherry and raspberry notes, silky tannins, and earthy undertones.</p>
-    <p class="text-xs text-wine-600 mt-2"><strong>Variety:</strong> Pinot Noir</p>
-  </div>
-
-  <div class="bg-gray-50 rounded-lg p-5 border border-gray-100">
-    <h3 class="text-lg font-semibold text-wine-700 mb-1">2018 Domaine Faiveley Clos de Bèze</h3>
-    <p class="text-sm text-gray-600 mb-2">Côte de Nuits, Burgundy | ~$30-60</p>
-    <p class="text-gray-700 text-sm">Elegant with bright cherry and raspberry notes, silky tannins, and earthy undertones.</p>
-    <p class="text-xs text-wine-600 mt-2"><strong>Variety:</strong> Pinot Noir</p>
-  </div>
-
-  <div class="bg-gray-50 rounded-lg p-5 border border-gray-100">
-    <h3 class="text-lg font-semibold text-wine-700 mb-1">2018 Domaine Joseph Drouhin Clos de Vougeot Grand Cru</h3>
-    <p class="text-sm text-gray-600 mb-2">Côte de Nuits, Burgundy | ~$30-60</p>
-    <p class="text-gray-700 text-sm">Elegant with bright cherry and raspberry notes, silky tannins, and earthy undertones.</p>
-    <p class="text-xs text-wine-600 mt-2"><strong>Variety:</strong> Pinot Noir</p>
-  </div>
-
-  <div class="bg-gray-50 rounded-lg p-5 border border-gray-100">
-    <h3 class="text-lg font-semibold text-wine-700 mb-1">2018 Domaine Leroy Musigny</h3>
-    <p class="text-sm text-gray-600 mb-2">Côte de Nuits, Burgundy | ~$30-60</p>
-    <p class="text-gray-700 text-sm">Delicate red fruit aromas with hints of mushroom and forest floor.</p>
-    <p class="text-xs text-wine-600 mt-2"><strong>Variety:</strong> Pinot Noir</p>
-  </div>
-</div>
+  <h3>What food works with cheap Pinot Noir?</h3>
+  <p>Roast chicken, salmon, burgers, pork, and mushroom dishes are usually the safest pairings.</p>
 
   <h2>Related Guides</h2>
   <ul>
-
-  <li>
-    <a href="/learn" class="internal-link">Wine Guides</a>
-    <span class="text-sm text-gray-600"> - Learn the broader context</span>
-  </li>
-
-  <li>
-    <a href="/wine-pairings" class="internal-link">Wine Pairings</a>
-    <span class="text-sm text-gray-600"> - See pairing-focused follow-ups</span>
-  </li>
-
-  <li>
-    <a href="/buy" class="internal-link">Buying Guides</a>
-    <span class="text-sm text-gray-600"> - Move into bottle-level decisions</span>
-  </li>
-
-  <li>
-    <a href="/learn/best-pinot-noir" class="internal-link">Best Pinot Noir - Expert Guide</a>
-    <span class="text-sm text-gray-600"> - Same topic cluster</span>
-  </li>
+    <li><a href="/learn/best-pinot-noir" class="text-wine-600 hover:text-wine-700">Read the broader Pinot Noir buying guide</a> for better bottles above this price band.</li>
+    <li><a href="/wine-pairings/pinot-noir-food-pairing" class="text-wine-600 hover:text-wine-700">Use the Pinot Noir pairing guide</a> for food-first planning.</li>
+    <li><a href="/learn" class="text-wine-600 hover:text-wine-700">Browse learn guides</a> for style explainers.</li>
+    <li><a href="/wine-pairings" class="text-wine-600 hover:text-wine-700">Browse pairing guides</a> for food-first help.</li>
+    <li><a href="/buy" class="text-wine-600 hover:text-wine-700">Browse buying guides</a> for more bottle-first recommendations.</li>
   </ul>
-
-
-
-
-
-<h2>More Excellent Options</h2>
-<div class="grid md:grid-cols-2 gap-4 my-6">
-  <div class="bg-gray-50 rounded-lg p-5 border border-gray-100">
-    <h3 class="text-lg font-semibold text-wine-700 mb-1">2018 Domaine Anne Gros Richebourg Grand Cru</h3>
-    <p class="text-sm text-gray-600 mb-2">Côte de Nuits, Burgundy | ~$30-60</p>
-    <p class="text-gray-700 text-sm">Elegant with bright cherry and raspberry notes, silky tannins, and earthy undertones.</p>
-    <p class="text-xs text-wine-600 mt-2"><strong>Variety:</strong> Pinot Noir</p>
-  </div>
-
-  <div class="bg-gray-50 rounded-lg p-5 border border-gray-100">
-    <h3 class="text-lg font-semibold text-wine-700 mb-1">2019 Domaine Meo-Camuzet Cros Parantoux</h3>
-    <p class="text-sm text-gray-600 mb-2">Côte de Nuits, Burgundy | ~$30-60</p>
-    <p class="text-gray-700 text-sm">Elegant with bright cherry and raspberry notes, silky tannins, and earthy undertones.</p>
-    <p class="text-xs text-wine-600 mt-2"><strong>Variety:</strong> Pinot Noir</p>
-  </div>
-
-  <div class="bg-gray-50 rounded-lg p-5 border border-gray-100">
-    <h3 class="text-lg font-semibold text-wine-700 mb-1">2017 Domaine Michel Lafarge Volnay Clos des Chênes</h3>
-    <p class="text-sm text-gray-600 mb-2">Côte de Beaune, Burgundy | ~$30-60</p>
-    <p class="text-gray-700 text-sm">Elegant with bright cherry and raspberry notes, silky tannins, and earthy undertones.</p>
-    <p class="text-xs text-wine-600 mt-2"><strong>Variety:</strong> Pinot Noir</p>
-  </div>
-
-  <div class="bg-gray-50 rounded-lg p-5 border border-gray-100">
-    <h3 class="text-lg font-semibold text-wine-700 mb-1">2018 Domaine Ponsot Clos de la Roche</h3>
-    <p class="text-sm text-gray-600 mb-2">Côte de Nuits, Burgundy | ~$30-60</p>
-    <p class="text-gray-700 text-sm">Elegant with bright cherry and raspberry notes, silky tannins, and earthy undertones.</p>
-    <p class="text-xs text-wine-600 mt-2"><strong>Variety:</strong> Pinot Noir</p>
-  </div>
-
-  <div class="bg-gray-50 rounded-lg p-5 border border-gray-100">
-    <h3 class="text-lg font-semibold text-wine-700 mb-1">2018 Domaine Serene Monogram Pinot Noir</h3>
-    <p class="text-sm text-gray-600 mb-2">Willamette Valley, Oregon | ~$30-60</p>
-    <p class="text-gray-700 text-sm">Delicate red fruit aromas with hints of mushroom and forest floor.</p>
-    <p class="text-xs text-wine-600 mt-2"><strong>Variety:</strong> Pinot Noir</p>
-  </div>
-
-  <div class="bg-gray-50 rounded-lg p-5 border border-gray-100">
-    <h3 class="text-lg font-semibold text-wine-700 mb-1">2019 Ferren Wines Pinot Noir Frei Road Vineyard</h3>
-    <p class="text-sm text-gray-600 mb-2">Sonoma County, California | ~$30-60</p>
-    <p class="text-gray-700 text-sm">Delicate red fruit aromas with hints of mushroom and forest floor.</p>
-    <p class="text-xs text-wine-600 mt-2"><strong>Variety:</strong> Pinot Noir</p>
-  </div>
-</div>
-
-<!-- Author Bio Footer -->
-  <div class="mt-12 p-6 bg-gray-50 rounded-lg border border-gray-200">
-    <h3 class="text-lg font-semibold mb-3">About the Author</h3>
-    <div class="flex items-start gap-4">
-      <div class="w-16 h-16 rounded-full bg-wine-100 flex items-center justify-center text-wine-700 font-bold text-xl flex-shrink-0">
-        EM
-      </div>
-      <div>
-        <a href="/about/elena-martinez" class="font-semibold text-wine-600 hover:text-wine-800">Elena Martinez</a>
-        <p class="text-sm text-gray-600 mb-2">Senior Wine Writer</p>
-        <p class="text-sm text-gray-700">Wine writer and CSW holder specializing in making wine accessible to beginners.</p>
-      </div>
-    </div>
-  </div>
 </ArticleLayout>
