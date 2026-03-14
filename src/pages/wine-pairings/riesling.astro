@@ -8,259 +8,124 @@ const frontmatter = {
   pageRole: "supporting",
   keywords: ["riesling", "riesling pairing", "wine pairing guide", "Riesling"],
   canonicalUrl: "https://winesquickstart.com/wine-pairings/riesling",
-
-  title: "Riesling: Complete Guide & Expert Tips",
-  description: "Everything you need to know about riesling: tasting profiles, food pairings, and top bottle recommendations from certified sommeliers. Find your perfect match.",
+  title: "Riesling Pairing Guide: Dry, Off-Dry, and Sweet Styles",
+  description: "Riesling is one of the most food-friendly grapes in wine. Use this guide to pair dry, off-dry, and sweet Riesling with spicy food, pork, seafood, and more.",
   wine_type: "white",
   author: "James Thornton",
   authorSlug: "james-thornton",
   authorRole: "Founder & Lead Wine Consultant",
-  authorCredentials: ["WSET Level 3 Award in Wines","Certified Sommelier (Court of Master Sommeliers)","French Wine Scholar (Wine Scholar Guild)"],
   readTime: "7 min",
-  expert_score: 9,
-  article_format: "guide",
   structured_data: {
-            "@context": "https://schema.org",
-            "@graph": [
-                  {
-                        "@type": "Organization",
-                        "@id": "https://winesquickstart.com/#organization",
-                        "name": "Wine Quick Start",
-                        "url": "https://winesquickstart.com",
-                        "description": "Expert wine guidance from certified sommeliers"
-                  },
-                  {
-                        "@type": "WebSite",
-                        "@id": "https://winesquickstart.com/#website",
-                        "url": "https://winesquickstart.com",
-                        "name": "Wine Quick Start",
-                        "publisher": {
-                              "@id": "https://winesquickstart.com/#organization"
-                        }
-                  },
-                  {
-                        "@type": "BreadcrumbList",
-                        "itemListElement": [
-                              {
-                                    "@type": "ListItem",
-                                    "position": 1,
-                                    "name": "Home",
-                                    "item": "https://winesquickstart.com"
-                              },
-                              {
-                                    "@type": "ListItem",
-                                    "position": 2,
-                                    "name": "Wine Pairings",
-                                    "item": "https://winesquickstart.com/wine-pairings/"
-                              },
-                              {
-                                    "@type": "ListItem",
-                                    "position": 3,
-                                    "name": "Riesling: Complete Guide & Expert Tips"
-                              }
-                        ]
-                  },
-                  {
-                        "@type": "Article",
-                        "headline": "Riesling: Complete Guide & Expert Tips",
-                        "description": "Everything you need to know about riesling: tasting profiles, food pairings, and top bottle recommendations from certified sommeliers. Find your perfect match.",
-                        "author": {
-                              "@type": "Person",
-                              "name": "James Thornton",
-                              "jobTitle": "Founder & Lead Wine Consultant"
-                        },
-                        "publisher": {
-                              "@id": "https://winesquickstart.com/#organization"
-                        },
-                        "datePublished": "2026-01-20",
-                        "dateModified": "2026-01-20",
-                        "mainEntityOfPage": {
-                              "@type": "WebPage",
-                              "@id": "https://winesquickstart.com/wine-pairings/riesling"
-                        },
-                        "isPartOf": {
-                              "@id": "https://winesquickstart.com/#website"
-                        }
-                  }
-            ]
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Organization",
+        "@id": "https://winesquickstart.com/#organization",
+        "name": "Wine Quick Start",
+        "url": "https://winesquickstart.com",
+        "description": "Expert wine guidance from certified sommeliers"
       },
-  wines: []
+      {
+        "@type": "WebSite",
+        "@id": "https://winesquickstart.com/#website",
+        "url": "https://winesquickstart.com",
+        "name": "Wine Quick Start",
+        "publisher": { "@id": "https://winesquickstart.com/#organization" }
+      },
+      {
+        "@type": "Article",
+        "headline": "Riesling Pairing Guide: Dry, Off-Dry, and Sweet Styles",
+        "description": "Riesling is one of the most food-friendly grapes in wine. Use this guide to pair dry, off-dry, and sweet Riesling with spicy food, pork, seafood, and more.",
+        "author": {
+          "@type": "Person",
+          "name": "James Thornton",
+          "jobTitle": "Founder & Lead Wine Consultant"
+        },
+        "publisher": { "@id": "https://winesquickstart.com/#organization" },
+        "datePublished": "2026-01-20",
+        "dateModified": "2026-01-20",
+        "mainEntityOfPage": {
+          "@type": "WebPage",
+          "@id": "https://winesquickstart.com/wine-pairings/riesling"
+        },
+        "isPartOf": { "@id": "https://winesquickstart.com/#website" }
+      }
+    ]
+  }
 };
 ---
 
-<ArticleLayout canonical={frontmatter.canonicalUrl} categorySlug="wine-pairings" title={frontmatter.title} description={frontmatter.description} author={frontmatter.author} readTime={frontmatter.readTime} category="Wine Guide" schema={frontmatter.structured_data} featuredImage={featuredImage}>
-
-<div class="mt-12 p-6 bg-gray-50 rounded-lg border border-gray-200">
-  <h3 class="text-lg font-semibold mb-3">About the Author</h3>
-  <div class="flex items-start gap-4">
-    <div class="w-12 h-12 rounded-full bg-wine-100 flex items-center justify-center text-wine-700 font-bold">
-      JT
-    </div>
+<ArticleLayout canonical={frontmatter.canonicalUrl} categorySlug="wine-pairings" title={frontmatter.title} description={frontmatter.description} author={frontmatter.author} readTime={frontmatter.readTime} category="Wine Pairing" schema={frontmatter.structured_data} featuredImage={featuredImage}>
+  <div class="bg-gray-50 p-4 rounded-lg mb-6 flex items-center gap-4">
+    <div class="w-12 h-12 rounded-full bg-wine-100 flex items-center justify-center text-wine-700 font-bold">JT</div>
     <div>
       <a href="/about/james-thornton" class="font-semibold text-gray-900 hover:text-wine-600">James Thornton</a>
-      <p class="text-sm text-gray-600">Wine Quick Start contributor</p>
+      <p class="text-sm text-gray-600">Founder & Lead Wine Consultant | WSET Level 3 Award in Wines</p>
     </div>
   </div>
-</div>
 
-<div slot="quick-answer">
-  <p><strong>Quick Answer:</strong> Riesling's bright acidity and versatile sweetness levels make it perfect for spicy Asian cuisine, rich pork dishes, and fresh seafood. Off-dry styles complement heat and bold flavors, while dry versions excel with delicate preparations and lighter fare.</p>
-</div>
-
-<h2>Understanding Riesling's Pairing Potential</h2>
-
-<p>Riesling stands out as one of wine's most food-friendly grapes thanks to its natural acidity and range of sweetness levels. This German variety produces wines from bone-dry to lusciously sweet, each style bringing different pairing opportunities to your table.</p>
-
-<p>High acidity cuts through rich, fatty foods while cleansing the palate between bites. Residual sugar in off-dry and sweet styles balances spicy heat and complements fruit-forward dishes. The grape's inherent minerality adds complexity without overwhelming delicate flavors.</p>
-
-<p>German Rieslings typically show more minerality and restraint, while Alsatian versions offer fuller body and richer texture. Australian and American Rieslings often display more tropical fruit character with varying levels of sweetness.</p>
-
-<h2>Real Bottles To Explore</h2>
-<div class="grid md:grid-cols-2 gap-4 my-6">
-  <div class="bg-gray-50 rounded-lg p-5 border border-gray-100">
-    <h3 class="text-lg font-semibold text-wine-700 mb-1">1. 1982 Hopkins Albacore</h3>
-    <p class="text-sm text-gray-600 mb-2">North Canterbury, Unknown Region</p>
-    <p class="text-gray-700 text-sm">Vibrant and refreshing with green apple and petrol notes.</p>
-    <p class="text-xs text-wine-600 mt-2"><strong>Variety:</strong> Riesling</p>
+  <div slot="quick-answer">
+    <p><strong>Quick Answer:</strong> Riesling is one of the easiest wines to pair with food because acidity and sweetness do different jobs. Dry Riesling suits seafood and lighter dishes, off-dry Riesling is excellent with spicy food and pork, and sweeter styles work with stronger spice or dessert.</p>
   </div>
-  <div class="bg-gray-50 rounded-lg p-5 border border-gray-100">
-    <h3 class="text-lg font-semibold text-wine-700 mb-1">2. Unknown Cave Vinicole de Hunawihr Kuhlmann-Platz</h3>
-    <p class="text-sm text-gray-600 mb-2">Unknown Region</p>
-    <p class="text-gray-700 text-sm">Vibrant and refreshing with green apple and petrol notes.</p>
-    <p class="text-xs text-wine-600 mt-2"><strong>Variety:</strong> Riesling</p>
+
+  <h2>Why Riesling Is So Useful</h2>
+  <p>Riesling works where many wines fail because it can bring both acidity and sweetness. That combination makes it especially strong with spicy food, pork, shellfish, and dishes that combine salt, heat, and aromatics. Instead of forcing one bottle style on every meal, it helps to choose Riesling by sweetness level first.</p>
+
+  <h2>How to Pair by Riesling Style</h2>
+  <p><strong>Dry Riesling</strong> is best with shellfish, lighter fish, sushi, salads, and simple poultry. It behaves like a crisp, high-acid white with more aromatic interest. <strong>Off-dry Riesling</strong> is the smartest general-use style because it handles Thai food, Indian spice, glazed pork, and other dishes where a totally dry wine feels too sharp. <strong>Sweeter Riesling</strong> is best saved for very spicy food, strong blue cheese, or fruit-based desserts.</p>
+
+  <h2>Benchmark Bottles</h2>
+  <div class="bg-gray-50 rounded-lg p-6 mb-4">
+    <h3 class="text-xl font-semibold text-wine-700 mb-2">1. Trimbach Riesling</h3>
+    <p class="text-gray-600 mb-2"><strong>Producer:</strong> Trimbach</p>
+    <p class="text-gray-600 mb-2"><strong>Region:</strong> Alsace, France</p>
+    <p class="text-gray-600 mb-2"><strong>Variety:</strong> Riesling</p>
+    <p class="text-gray-700">A dry benchmark that shows why Riesling can work so well with seafood, roast chicken, and sharper herb-driven meals. It is clean, stony, and disciplined.</p>
   </div>
-  <div class="bg-gray-50 rounded-lg p-5 border border-gray-100">
-    <h3 class="text-lg font-semibold text-wine-700 mb-1">3. Unknown Definition  Kabinett</h3>
-    <p class="text-sm text-gray-600 mb-2">Mosel, Unknown Region</p>
-    <p class="text-gray-700 text-sm">Off-dry with honeyed citrus and mineral undertones.</p>
-    <p class="text-xs text-wine-600 mt-2"><strong>Variety:</strong> Riesling</p>
+  <div class="bg-gray-50 rounded-lg p-6 mb-4">
+    <h3 class="text-xl font-semibold text-wine-700 mb-2">2. Dr. Loosen Blue Slate Kabinett</h3>
+    <p class="text-gray-600 mb-2"><strong>Producer:</strong> Dr. Loosen</p>
+    <p class="text-gray-600 mb-2"><strong>Region:</strong> Mosel, Germany</p>
+    <p class="text-gray-600 mb-2"><strong>Variety:</strong> Riesling</p>
+    <p class="text-gray-700">A strong off-dry reference for spicy food and pork. This is the style that explains why Riesling is such a good answer when heat and sweetness hit the same plate.</p>
   </div>
-</div>
+  <div class="bg-gray-50 rounded-lg p-6 mb-4">
+    <h3 class="text-xl font-semibold text-wine-700 mb-2">3. Donnhoff Oberhauser Brucke Spatlese</h3>
+    <p class="text-gray-600 mb-2"><strong>Producer:</strong> Donnhoff</p>
+    <p class="text-gray-600 mb-2"><strong>Region:</strong> Nahe, Germany</p>
+    <p class="text-gray-600 mb-2"><strong>Variety:</strong> Riesling</p>
+    <p class="text-gray-700">A sweeter benchmark that shows how Riesling can still feel balanced with dessert, blue cheese, or strongly spiced dishes because the acidity stays alive.</p>
+  </div>
 
+  <h2>Best Foods with Riesling</h2>
+  <p>Spicy Thai, Indian, Korean, and Sichuan-style food all benefit from off-dry Riesling because a little sweetness cools the heat without flattening the meal. Pork is another natural match because Riesling’s acidity lifts the fat while the fruit plays nicely with apple, glaze, and herbs. Shellfish and sushi are strongest with dry Riesling, especially when you want freshness rather than oak.</p>
 
+  <h2>What to Avoid</h2>
+  <p>Avoid pairing sweet Riesling with very delicate food, because the wine will dominate it. Also avoid very dry Riesling with extreme spice, because the acidity can make the heat feel harsher instead of calmer.</p>
 
-<h2>Spicy Cuisine Pairings</h2>
+  <h2>Expert Tips</h2>
+  <ol class="list-decimal list-inside space-y-4 text-gray-700">
+    <li><strong>Choose sweetness level before you choose region.</strong> That decision usually matters more at the table.</li>
+    <li><strong>Use off-dry Riesling for spicy food more often than you think.</strong> It is one of the safest high-value pairings in wine.</li>
+    <li><strong>Do not assume Riesling is always sweet.</strong> Dry Riesling is one of the sharpest food wines in the category.</li>
+  </ol>
 
-<p>Off-dry Riesling excels with spicy foods because its residual sugar neutralizes capsaicin heat while acidity refreshes the palate. This combination makes it ideal for Thai, Indian, Korean, and Mexican cuisines.</p>
+  <h2>FAQ</h2>
+  <h3>What food goes best with Riesling?</h3>
+  <p>Spicy Asian food, pork, seafood, sushi, shellfish, and fruit-forward or sweet-savory dishes are the best starting places.</p>
 
-<p>Thai green curry benefits from Riesling's ability to cool burning spices while complementing coconut milk richness. The wine's fruit character echoes the dish's lemongrass and lime notes. Choose off-dry German Kabinett or Spätlese for best results.</p>
+  <h3>Is dry or sweet Riesling better with food?</h3>
+  <p>Neither is universally better. Dry is stronger for seafood and lighter meals, while off-dry or sweet styles work better with spice and richer sweet-savory food.</p>
 
-<p>Indian tandoori dishes work beautifully with medium-sweet Riesling. The wine's acidity cuts through yogurt marinades and ghee while sugar content balances garam masala heat. Avoid bone-dry styles which can taste harsh against strong spices.</p>
+  <h3>Can Riesling work with dessert?</h3>
+  <p>Yes, but only sweeter styles. Dry Riesling is usually better saved for savory food.</p>
 
-<p>Korean kimchi and bulgogi pair surprisingly well with off-dry Riesling. Fermented flavors complement the wine's complexity while sweetness tames chili heat. The pairing works especially well with pork bulgogi where Riesling's acidity cuts through meat fat.</p>
-
-<p>Mexican mole presents an excellent match for late-harvest Riesling. The wine's sweetness balances chocolate bitterness and chili heat while acidity prevents the pairing from becoming cloying. Fruit notes echo the sauce's dried chilies and spices.</p>
-
-<h2>Seafood and Riesling Combinations</h2>
-
-<p>Dry Riesling shines with delicate seafood preparations where its mineral character and bright acidity enhance rather than mask natural flavors. The wine's lighter body won't overpower subtle fish and shellfish.</p>
-
-<p>Raw oysters pair exceptionally with bone-dry Riesling, particularly those from cooler German regions like Mosel. Mineral notes complement briny shellfish while crisp acidity mimics lemon juice traditionally served alongside.</p>
-
-<p>Pan-seared scallops work best with dry to off-dry styles depending on sauce. Simple preparations call for mineral-driven dry Riesling, while cream-based sauces benefit from off-dry versions that can stand up to richness without clashing.</p>
-
-<p>Crab and lobster dishes showcase Riesling's versatility. Cold preparations like crab salad pair with dry styles, while butter-poached lobster calls for off-dry versions. The wine's acidity cuts through butter while fruit notes complement sweet shellfish meat.</p>
-
-<p>Sushi and sashimi find perfect partners in dry Riesling. Clean mineral character doesn't compete with delicate fish flavors, while acidity cleanses the palate between different pieces. Avoid oaked whites which can overwhelm subtle preparations.</p>
-
-<h2>Pork and Poultry Matches</h2>
-
-<p>Pork's natural sweetness and fat content make it Riesling's ideal meat partner. The wine's acidity cuts through richness while fruit character complements the meat's subtle sweetness across various preparations.</p>
-
-<p>Pork tenderloin with fruit-based sauces creates classic pairings. Apple-stuffed pork loin matches perfectly with off-dry German Riesling where fruit notes echo the stuffing while acidity balances rich meat juices. Choose Spätlese or Auslese levels for best harmony.</p>
-
-<p>Glazed ham benefits from Riesling's ability to handle both sweet and salty elements. Off-dry styles complement honey or maple glazes while cutting through fat. The wine's natural acidity prevents the pairing from becoming overly sweet.</p>
-
-<p>Duck presents interesting possibilities with late-harvest Riesling. The bird's rich, gamey meat needs wine with enough sweetness and acidity to balance its intensity. Orange-based sauces work particularly well as citrus notes bridge wine and food.</p>
-
-<p>Chicken preparations vary widely in their Riesling needs. Simple roasted chicken pairs with dry styles, while spicy buffalo chicken requires off-dry versions to tame heat. Cream-based chicken dishes benefit from the wine's ability to cut through richness.</p>
-
-<h2>Cheese and Dessert Pairings</h2>
-
-<p>Riesling's range from dry to dessert-sweet opens numerous cheese pairing opportunities. Match wine sweetness levels to cheese intensity and texture for optimal results.</p>
-
-<p>Soft-ripened cheeses like Brie and Camembert pair beautifully with off-dry Riesling. The wine's acidity cuts through creamy texture while fruit notes complement mushroom earthiness. Avoid overly sweet wines which can overpower subtle cheese flavors.</p>
-
-<p>Blue cheeses require careful Riesling selection. Strong varieties like Roquefort need late-harvest sweetness to balance salt and pungency, while milder blues work with off-dry styles. The wine's acidity prevents richness from overwhelming the palate.</p>
-
-<p>Fresh goat cheese creates delightful combinations with dry Riesling. Mineral character complements the cheese's tang while acidity enhances creamy texture. This pairing works especially well in salads with fruit components.</p>
-
-<p>Dessert pairings showcase late-harvest and ice wine styles. Apple tarts match perfectly with German Auslese where concentrated fruit flavors echo the dessert while acidity prevents excessive sweetness. Fruit-based desserts generally work better than chocolate preparations.</p>
-
-<h2>Expert Tips</h2>
-
-<ol>
-<li>Match Riesling sweetness to food spice levels - dry for mild dishes, off-dry for medium heat, sweet for very spicy preparations.</li>
-<li>Serve Riesling well-chilled (45-50°F) to maximize its refreshing acidity and prevent alcohol from overwhelming delicate flavors.</li>
-<li>Consider regional styles when pairing - German Rieslings offer more minerality, while Alsatian versions provide fuller body for richer dishes.</li>
-<li>Use Riesling's acidity to cut through fatty foods like pork belly, duck confit, or cream-based sauces for better flavor balance.</li>
-<li>Avoid pairing very dry Riesling with extremely spicy foods as the combination can taste harsh and unbalanced on the palate.</li>
-<li>Match wine age to food complexity - young, fresh Rieslings work with simple preparations while aged versions complement more complex dishes.</li>
-<li>Consider residual sugar levels on the label - Kabinett offers light sweetness, Spätlese medium sweetness, and Auslese rich sweetness for different pairing needs.</li>
-<li>Trust your palate over rules - if a pairing tastes good to you, it works regardless of traditional wine pairing conventions.</li>
-</ol>
-
-<h2>Common Pairing Mistakes</h2>
-
-<p>Matching overly sweet Riesling with delicate foods creates unbalanced combinations where wine overwhelms subtle flavors. Save dessert-style wines for appropriately rich or spicy dishes that can handle the intensity.</p>
-
-<p>Serving Riesling too warm diminishes its refreshing qualities and makes alcohol more prominent. Proper temperature control ensures the wine's acidity and fruit character shine through in food pairings.</p>
-
-<p>Ignoring regional differences leads to missed opportunities. German Rieslings excel with delicate preparations while Alsatian styles handle richer dishes better. Australian versions work well with bolder, fruit-forward cuisines.</p>
-
-<p>Pairing bone-dry Riesling with very spicy foods creates harsh, unpleasant combinations. The wine's acidity without balancing sweetness can amplify heat rather than cool it down.</p>
-
-<p>Overlooking Riesling's versatility means missing great pairing opportunities. The grape works with far more than just German cuisine - explore Asian, Mexican, and American regional dishes for surprising matches.</p>
-
-<h2>Related Guides</h2>
-<ul>
-  <li><a href="/learn" class="internal-link">Wine Guides</a><span class="text-sm text-gray-600"> - Learn the broader context</span></li>
-  <li><a href="/wine-pairings" class="internal-link">Wine Pairings</a><span class="text-sm text-gray-600"> - See pairing-focused follow-ups</span></li>
-  <li><a href="/buy" class="internal-link">Buying Guides</a><span class="text-sm text-gray-600"> - Move into bottle-level decisions</span></li>
-</ul>
-
-<h2>Frequently Asked Questions</h2>
-
-<div class="space-y-6">
-<div>
-<h3>What foods pair best with dry Riesling?</h3>
-<p>Dry Riesling pairs excellently with seafood, light poultry dishes, fresh cheeses, and Asian cuisine with mild spicing. Its mineral character and bright acidity complement delicate flavors without overwhelming them.</p>
-</div>
-
-<div>
-<h3>Can Riesling handle spicy food?</h3>
-<p>Off-dry and sweet Rieslings excel with spicy dishes because residual sugar neutralizes capsaicin heat while acidity refreshes the palate. Dry styles should be avoided with very spicy preparations.</p>
-</div>
-
-<div>
-<h3>What's the difference between German and Alsatian Riesling for food pairing?</h3>
-<p>German Rieslings typically show more minerality and restraint, making them ideal for delicate dishes. Alsatian Rieslings offer fuller body and richer texture, better suited for heartier fare.</p>
-</div>
-
-<div>
-<h3>Should I serve Riesling with red meat?</h3>
-<p>Riesling works best with lighter meats like pork and poultry. While it can complement certain red meat preparations with fruit-based sauces, fuller-bodied reds typically provide better balance.</p>
-</div>
-
-<div>
-<h3>How do I know if a Riesling is dry or sweet?</h3>
-<p>Check the label for German classifications (Kabinett is off-dry, Spätlese is medium-sweet) or alcohol content (higher alcohol usually indicates drier wine). Alsatian Rieslings are typically dry unless labeled otherwise.</p>
-</div>
-
-<div>
-<h3>What temperature should I serve Riesling?</h3>
-<p>Serve Riesling well-chilled at 45-50°F to maximize its refreshing acidity and prevent alcohol from overwhelming delicate flavors. This temperature range works for all sweetness levels.</p>
-</div>
-
-<div>
-<h3>Does aged Riesling pair differently than young Riesling?</h3>
-<p>Aged Rieslings develop more complex flavors and can handle richer, more complex dishes. Young Rieslings work better with simple preparations where their fresh fruit character shines.</p>
-</div>
-
-<div>
-<h3>Can Riesling pair with desserts?</h3>
-<p>Late-harvest and ice wine Rieslings pair beautifully with fruit-based desserts, especially apple and stone fruit preparations. The wine's acidity prevents excessive sweetness while echoing dessert flavors.</p>
-</div>
-</div>
-
+  <h2>Related Guides</h2>
+  <ul>
+    <li><a href="/learn/best-sauvignon-blanc" class="text-wine-600 hover:text-wine-700">Compare another crisp white option</a> if you are choosing between freshness styles.</li>
+    <li><a href="/learn/chardonnay-vs-sauvignon-blanc" class="text-wine-600 hover:text-wine-700">Use the white wine comparison guide</a> for broader white-wine context.</li>
+    <li><a href="/learn" class="text-wine-600 hover:text-wine-700">Browse learn guides</a> for style explainers.</li>
+    <li><a href="/wine-pairings" class="text-wine-600 hover:text-wine-700">Browse pairing guides</a> for more food-first advice.</li>
+    <li><a href="/buy" class="text-wine-600 hover:text-wine-700">Browse buying guides</a> for bottle-selection help.</li>
+  </ul>
 </ArticleLayout>
