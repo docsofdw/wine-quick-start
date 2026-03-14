@@ -47,6 +47,19 @@ interface SearchConsoleInsertRow {
   source: string;
 }
 
+function formatSupabaseError(error: any): string {
+  if (!error) return 'Unknown Supabase error';
+  const parts = [
+    error.message,
+    error.details,
+    error.hint,
+    error.code,
+    error.statusText,
+    typeof error === 'string' ? error : null,
+  ].filter(Boolean);
+  return parts.length > 0 ? parts.join(' | ') : JSON.stringify(error);
+}
+
 function splitCsvLine(line: string): string[] {
   const cells: string[] = [];
   let current = '';
@@ -158,6 +171,17 @@ async function main() {
     return;
   }
 
+  const { error: preflightError } = await supabase
+    .from('search_console_page_metrics')
+    .select('id')
+    .limit(1);
+
+  if (preflightError) {
+    console.error('❌ search_console_page_metrics is not ready for inserts:', formatSupabaseError(preflightError));
+    console.error('Run the table SQL in Supabase first, then retry the import.');
+    process.exit(1);
+  }
+
   const { error } = await supabase
     .from('search_console_page_metrics')
     .upsert(normalized, {
@@ -166,7 +190,7 @@ async function main() {
     });
 
   if (error) {
-    console.error('❌ Failed to upsert Search Console metrics:', error.message);
+    console.error('❌ Failed to upsert Search Console metrics:', formatSupabaseError(error));
     process.exit(1);
   }
 

@@ -6,6 +6,7 @@ export interface SearchConsoleMetricRow {
   impressions: number;
   ctr: number | null;
   position: number | null;
+  date?: string;
 }
 
 export interface SearchPerformanceSummary {
@@ -62,6 +63,25 @@ export async function loadLatestSearchPerformanceByUrl(): Promise<Map<string, Se
     return byPath;
   } catch (error: any) {
     if (isMissingMetricsTable(error)) return new Map();
+    throw error;
+  }
+}
+
+export async function loadLatestSearchPerformanceRows(): Promise<SearchConsoleMetricRow[]> {
+  const supabase = buildSupabaseClient();
+  if (!supabase) return [];
+
+  try {
+    const { data, error } = await supabase
+      .from('search_console_page_metrics')
+      .select('page_path, clicks, impressions, ctr, position, date')
+      .order('date', { ascending: false })
+      .limit(5000);
+
+    if (error) throw error;
+    return (data || []) as SearchConsoleMetricRow[];
+  } catch (error: any) {
+    if (isMissingMetricsTable(error)) return [];
     throw error;
   }
 }

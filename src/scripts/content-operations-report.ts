@@ -3,7 +3,7 @@ import fs from 'fs';
 import path from 'path';
 import { createClient } from '@supabase/supabase-js';
 import { collectContentGraph, rankRefreshCandidates } from '../lib/content-graph.js';
-import { loadLatestSearchPerformanceByUrl } from '../lib/search-console.js';
+import { loadLatestSearchPerformanceByUrl, type SearchPerformanceSummary } from '../lib/search-console.js';
 import { scoreArticleFiles, collectArticleFilePaths } from './qa-score-article.js';
 
 config({ path: '.env.local', override: true });
@@ -23,12 +23,49 @@ export interface ContentOperationsSnapshot {
   };
   underbuiltClusters: Array<{ clusterKey: string; total: number; money: number; seed: number; supporting: number }>;
   refreshBacklog: Array<{ slug: string; category: string; score: number; reasons: string[]; clusterKey: string }>;
+  performanceOpportunities: {
+    highImpressionLowCtr: Array<{ url: string; impressions: number; ctr: number | null; position: number | null }>;
+    nearPageOne: Array<{ url: string; impressions: number; clicks: number; position: number | null }>;
+  };
   reviewIssueBacklog: Array<{ issueType: string; count: number }>;
   qaDistribution: {
     pass: number;
     review: number;
     fail: number;
   };
+}
+
+function buildPerformanceOpportunities(performanceByUrl: Map<string, SearchPerformanceSummary>) {
+  const entries = Array.from(performanceByUrl.entries());
+
+  const highImpressionLowCtr = entries
+    .filter(([, metrics]) => metrics.impressions >= 150 && (metrics.ctr ?? 0) < 0.03)
+    .sort((a, b) => b[1].impressions - a[1].impressions)
+    .slice(0, 10)
+    .map(([url, metrics]) => ({
+      url,
+      impressions: metrics.impressions,
+      ctr: metrics.ctr,
+      position: metrics.position,
+    }));
+
+  const nearPageOne = entries
+    .filter(([, metrics]) => metrics.position !== null && metrics.position >= 5 && metrics.position <= 20)
+    .sort((a, b) => {
+      const aPos = a[1].position ?? 100;
+      const bPos = b[1].position ?? 100;
+      if (aPos !== bPos) return aPos - bPos;
+      return b[1].impressions - a[1].impressions;
+    })
+    .slice(0, 10)
+    .map(([url, metrics]) => ({
+      url,
+      impressions: metrics.impressions,
+      clicks: metrics.clicks,
+      position: metrics.position,
+    }));
+
+  return { highImpressionLowCtr, nearPageOne };
 }
 
 function isMissingSnapshotsTable(error: any): boolean {
@@ -61,6 +98,7 @@ export async function generateOperationsSnapshot(): Promise<ContentOperationsSna
     performanceByUrl: searchPerformanceByUrl,
     diversifyClusters: true,
   });
+  const performanceOpportunities = buildPerformanceOpportunities(searchPerformanceByUrl);
   const reviewIssueMap = new Map<string, number>();
   for (const score of activeScores.filter(entry => entry.totalScore >= 60 && entry.totalScore < 85)) {
     for (const issueType of score.issueTypes || []) {
@@ -98,6 +136,7 @@ export async function generateOperationsSnapshot(): Promise<ContentOperationsSna
       reasons: candidate.reasons,
       clusterKey: candidate.clusterKey,
     })),
+    performanceOpportunities,
     reviewIssueBacklog,
     qaDistribution,
   };
@@ -126,6 +165,27 @@ function printSnapshot(snapshot: ContentOperationsSnapshot): void {
   } else {
     for (const candidate of snapshot.refreshBacklog) {
       console.log(`   ${candidate.category}/${candidate.slug} (${candidate.score}) - ${candidate.reasons.join(', ')}`);
+    }
+  }
+
+  console.log('\n📈 Performance Opportunities');
+  if (
+    snapshot.performanceOpportunities.highImpressionLowCtr.length === 0 &&
+    snapshot.performanceOpportunities.nearPageOne.length === 0
+  ) {
+    console.log('   none');
+  } else {
+    if (snapshot.performanceOpportunities.highImpressionLowCtr.length > 0) {
+      console.log('   High-impression, low-CTR pages:');
+      for (const row of snapshot.performanceOpportunities.highImpressionLowCtr) {
+        console.log(`   ${row.url} | impressions=${row.impressions} ctr=${row.ctr ?? 'null'} position=${row.position ?? 'null'}`);
+      }
+    }
+    if (snapshot.performanceOpportunities.nearPageOne.length > 0) {
+      console.log('   Near-page-one pages:');
+      for (const row of snapshot.performanceOpportunities.nearPageOne) {
+        console.log(`   ${row.url} | impressions=${row.impressions} clicks=${row.clicks} position=${row.position ?? 'null'}`);
+      }
     }
   }
 
@@ -170,6 +230,7 @@ async function persistSnapshotToSupabase(snapshot: ContentOperationsSnapshot): P
         inventory_by_category: snapshot.inventory.byCategory,
         underbuilt_clusters: snapshot.underbuiltClusters,
         refresh_backlog: snapshot.refreshBacklog,
+        performance_opportunities: snapshot.performanceOpportunities,
         review_issue_backlog: snapshot.reviewIssueBacklog,
         qa_distribution: snapshot.qaDistribution,
         snapshot_json: snapshot,
