@@ -3,6 +3,7 @@ import fs from 'fs';
 import path from 'path';
 import { createClient } from '@supabase/supabase-js';
 import { collectContentGraph, rankRefreshCandidates } from '../lib/content-graph.js';
+import { loadLatestSearchPerformanceByUrl } from '../lib/search-console.js';
 import { scoreArticleFiles, collectArticleFilePaths } from './qa-score-article.js';
 
 config({ path: '.env.local', override: true });
@@ -40,6 +41,7 @@ export async function generateOperationsSnapshot(): Promise<ContentOperationsSna
   const filePaths = collectArticleFilePaths();
   const scores = await scoreArticleFiles(filePaths);
   const activeScores = scores.filter(score => !score.metrics.isNoindex);
+  const searchPerformanceByUrl = await loadLatestSearchPerformanceByUrl();
 
   const clusterMap = new Map<string, { total: number; money: number; seed: number; supporting: number }>();
   for (const node of graph) {
@@ -55,7 +57,10 @@ export async function generateOperationsSnapshot(): Promise<ContentOperationsSna
     .sort((a, b) => a.total - b.total || a.money - b.money)
     .slice(0, 15);
 
-  const refreshBacklog = rankRefreshCandidates(activeScores, graph, 15);
+  const refreshBacklog = rankRefreshCandidates(activeScores, graph, 15, {
+    performanceByUrl: searchPerformanceByUrl,
+    diversifyClusters: true,
+  });
   const reviewIssueMap = new Map<string, number>();
   for (const score of activeScores.filter(entry => entry.totalScore >= 60 && entry.totalScore < 85)) {
     for (const issueType of score.issueTypes || []) {

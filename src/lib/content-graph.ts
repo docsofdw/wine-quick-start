@@ -246,19 +246,34 @@ export interface RefreshCandidate {
   reasons: string[];
 }
 
+export interface SearchPerformanceSummary {
+  impressions: number;
+  clicks: number;
+  ctr: number | null;
+  position: number | null;
+}
+
+export interface RefreshCandidateOptions {
+  performanceByUrl?: Map<string, SearchPerformanceSummary>;
+  diversifyClusters?: boolean;
+}
+
 export function rankRefreshCandidates(
   scores: Array<{ slug: string; category: string; totalScore: number; issues: string[]; issueTypes?: string[]; metrics: { wordCount: number; internalLinkCount: number } }>,
   nodes: ContentNode[],
-  limit: number
+  limit: number,
+  options: RefreshCandidateOptions = {}
 ): RefreshCandidate[] {
   const coverage = computeClusterCoverage(nodes);
-  return scores
+  const candidates = scores
     .map(score => {
       const node = nodes.find(entry => entry.slug === score.slug && entry.category === score.category);
       if (node?.robots?.includes('noindex')) return null;
       const reasons: string[] = [];
       const issueTypes = score.issueTypes || [];
       let priorityScore = 0;
+      const url = `/${score.category}/${score.slug}`;
+      const performance = options.performanceByUrl?.get(url);
 
       if (score.totalScore < 85) {
         reasons.push('Below current publish threshold');
@@ -300,11 +315,25 @@ export function rankRefreshCandidates(
         reasons.push('Commercial page opportunity');
         priorityScore += 10;
       }
+      if (performance) {
+        if (performance.impressions >= 150 && (performance.ctr ?? 0) < 0.03) {
+          reasons.push('High-impression CTR opportunity');
+          priorityScore += 14;
+        }
+        if (performance.position !== null && performance.position >= 5 && performance.position <= 20) {
+          reasons.push('Near-page-one ranking opportunity');
+          priorityScore += 16;
+        }
+        if (performance.clicks >= 10) {
+          reasons.push('Existing search traction');
+          priorityScore += 8;
+        }
+      }
 
       return {
         slug: score.slug,
         category: score.category as ArticleCategory,
-        url: `/${score.category}/${score.slug}`,
+        url,
         clusterKey: node?.clusterKey || deriveClusterKey(score.slug),
         issueTypes,
         score: priorityScore,
@@ -312,6 +341,29 @@ export function rankRefreshCandidates(
       };
     })
     .filter((candidate): candidate is RefreshCandidate => candidate !== null && candidate.score > 0)
-    .sort((a, b) => b.score - a.score)
-    .slice(0, limit);
+    .sort((a, b) => b.score - a.score);
+
+  if (!options.diversifyClusters) {
+    return candidates.slice(0, limit);
+  }
+
+  const selected: RefreshCandidate[] = [];
+  const seenClusters = new Set<string>();
+
+  for (const candidate of candidates) {
+    if (selected.length >= limit) break;
+    if (seenClusters.has(candidate.clusterKey)) continue;
+    selected.push(candidate);
+    seenClusters.add(candidate.clusterKey);
+  }
+
+  if (selected.length < limit) {
+    for (const candidate of candidates) {
+      if (selected.length >= limit) break;
+      if (selected.some(entry => entry.slug === candidate.slug && entry.category === candidate.category)) continue;
+      selected.push(candidate);
+    }
+  }
+
+  return selected;
 }

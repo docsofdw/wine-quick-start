@@ -45,6 +45,7 @@ import {
   rankRefreshCandidates,
   type RankedKeywordCandidate,
 } from '../lib/content-graph.js';
+import { loadLatestSearchPerformanceByUrl } from '../lib/search-console.js';
 
 config({ path: '.env.local', override: true });
 
@@ -873,6 +874,7 @@ async function runPipeline(): Promise<PipelineResult> {
 
   // Determine scoring scope for this run
   let scoringFilePaths: string[] = [];
+  const searchPerformanceByUrl = await loadLatestSearchPerformanceByUrl();
   const shouldUseFullScan = fullScan || isDryRun || skipGenerate || result.generated.length === 0;
   if (shouldUseFullScan) {
     scoringFilePaths = collectArticleFilePaths();
@@ -905,11 +907,15 @@ async function runPipeline(): Promise<PipelineResult> {
     const refreshPriority = rankRefreshCandidates(
       allScores,
       collectContentGraph(),
-      refreshOnly ? Math.max(refreshLimit * 2, refreshLimit) : Math.max(enrichLimit * 2, 6)
+      refreshOnly ? Math.max(refreshLimit * 2, refreshLimit) : Math.max(enrichLimit * 2, 6),
+      {
+        performanceByUrl: searchPerformanceByUrl,
+        diversifyClusters: refreshOnly,
+      }
     );
     const refreshMap = new Map(refreshPriority.map(candidate => [`${candidate.category}/${candidate.slug}`, candidate.score]));
     const needsEnrichment = allScores
-      .filter(s => s.totalScore < AUTO_PUBLISH_THRESHOLD && s.totalScore >= REJECT_THRESHOLD)
+      .filter(s => !s.metrics.isNoindex && s.totalScore < AUTO_PUBLISH_THRESHOLD && s.totalScore >= REJECT_THRESHOLD)
       .sort((a, b) => {
         const aPriority = refreshMap.get(`${a.category}/${a.slug}`) || 0;
         const bPriority = refreshMap.get(`${b.category}/${b.slug}`) || 0;
@@ -999,7 +1005,10 @@ async function runPipeline(): Promise<PipelineResult> {
     avgScore: getScoreSummary(finalScores).avgScore,
   };
 
-  result.refreshTargets = rankRefreshCandidates(finalScores, contentGraph, Math.max(enrichLimit, 3))
+  result.refreshTargets = rankRefreshCandidates(finalScores, contentGraph, Math.max(enrichLimit, 3), {
+    performanceByUrl: searchPerformanceByUrl,
+    diversifyClusters: true,
+  })
     .map(candidate => ({
       slug: candidate.slug,
       category: candidate.category,

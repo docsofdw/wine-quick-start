@@ -44,6 +44,8 @@
     "ppc:export": "tsx src/scripts/ppc-keyword-analysis.ts --export",
     "ppc:audit": "tsx src/scripts/ppc-readiness-audit.ts",
     "keywords:import-planner": "tsx src/scripts/import-keyword-planner.ts",
+    "gsc:import": "tsx src/scripts/import-search-console.ts",
+    "gsc:import:dry": "tsx src/scripts/import-search-console.ts --dry-run",
     "qa:score": "tsx src/scripts/qa-score-article.ts --all",
     "qa:score:json": "tsx src/scripts/qa-score-article.ts --all --json",
     "qa:validate-wines": "tsx src/scripts/qa-score-article.ts --all --validate-wines",

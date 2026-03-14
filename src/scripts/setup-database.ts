@@ -270,6 +270,45 @@ FOR ALL USING (true);
       console.log('✅ content_operation_snapshots table exists');
     }
 
+    // Test search_console_page_metrics table
+    console.log('\n8. Testing search_console_page_metrics table...');
+    const { error: searchConsoleMetricsError } = await supabase
+      .from('search_console_page_metrics')
+      .select('*')
+      .limit(1);
+
+    if (searchConsoleMetricsError) {
+      console.log('❌ search_console_page_metrics table missing:', searchConsoleMetricsError.message);
+      console.log('📝 You need to create this table in Supabase dashboard');
+      console.log('\nSQL to run in Supabase SQL Editor:');
+      console.log(`
+CREATE TABLE search_console_page_metrics (
+  id BIGSERIAL PRIMARY KEY,
+  site_url TEXT NOT NULL,
+  page_path TEXT NOT NULL,
+  date DATE NOT NULL,
+  clicks INTEGER DEFAULT 0,
+  impressions INTEGER DEFAULT 0,
+  ctr NUMERIC(8,6),
+  position NUMERIC(8,2),
+  source TEXT DEFAULT 'csv_import',
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+  UNIQUE(page_path, date)
+);
+
+CREATE INDEX idx_search_console_page_metrics_page_path ON search_console_page_metrics(page_path);
+CREATE INDEX idx_search_console_page_metrics_date ON search_console_page_metrics(date DESC);
+CREATE INDEX idx_search_console_page_metrics_impressions ON search_console_page_metrics(impressions DESC);
+
+ALTER TABLE search_console_page_metrics ENABLE ROW LEVEL SECURITY;
+
+CREATE POLICY "Enable all access for authenticated users" ON search_console_page_metrics
+FOR ALL USING (true);
+      `);
+    } else {
+      console.log('✅ search_console_page_metrics table exists');
+    }
+
     console.log('\n📋 Database setup complete!');
     console.log('\n🔗 Next steps:');
     console.log('1. Go to your Supabase dashboard: https://app.supabase.com/project/nsyubkcfsrsowgefkbii');
