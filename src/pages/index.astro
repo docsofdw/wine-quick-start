@@ -12,25 +12,25 @@ import homepageHero from '../assets/images/hero/homepage-hero.png';
 const featuredPairings = [
   {
     title: "Best Wine with Salmon",
-    slug: "best-wine-with-salmon",
+    href: "/wine-pairings/best-wine-with-salmon/",
     description: "Light whites like Albariño or delicate Pinot Noir perfectly complement salmon's rich oils.",
     readTime: "5 min"
   },
   {
     title: "Pinot Noir Food Pairing",
-    slug: "pinot-noir-food-pairing",
+    href: "/wine-pairings/pinot-noir-food-pairing/",
     description: "The versatile red that pairs beautifully with everything from duck to mushrooms.",
     readTime: "7 min"
   },
   {
-    title: "Wine for Mushroom Risotto",
-    slug: "wine-pairing-mushroom-risotto",
-    description: "Earthy Nebbiolo or aged Chardonnay enhance risotto's creamy umami flavors.",
-    readTime: "4 min"
+    title: "Red Burgundy",
+    href: "/learn/red-burgundy/",
+    description: "A practical guide to the world’s benchmark Pinot Noir region and the bottles worth understanding first.",
+    readTime: "6 min"
   },
   {
     title: "Bordeaux Wine Guide",
-    slug: "bordeaux-wine-guide",
+    href: "/learn/bordeaux-wine/",
     description: "Master the world's most prestigious wine region with our complete guide.",
     readTime: "12 min"
   }
@@ -196,12 +196,12 @@ const schema = {
               <span class="text-sm text-wine-600 font-medium">{article.readTime}</span>
             </div>
             <h3 class="text-lg font-semibold mb-2 text-gray-900">
-              <a href={`/wine-pairings/${article.slug}/`} class="group-hover:text-wine-600 transition">
+              <a href={article.href} class="group-hover:text-wine-600 transition">
                 {article.title}
               </a>
             </h3>
             <p class="text-gray-600 text-sm leading-relaxed flex-grow">{article.description}</p>
-            <a href={`/wine-pairings/${article.slug}/`} class="mt-4 text-wine-600 text-sm font-medium link-underline inline-block">
+            <a href={article.href} class="mt-4 text-wine-600 text-sm font-medium link-underline inline-block">
               Read Guide
             </a>
           </article>
