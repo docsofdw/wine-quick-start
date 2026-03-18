@@ -7,6 +7,7 @@ const frontmatter = {
   intentClass: "commercial",
   pageRole: "supporting",
   canonicalUrl: "https://winesquickstart.com/learn/best-champagne",
+  robots: "noindex, follow",
 
   title: "Best Champagne - Expert Guide",
   description: "Expert guide for best champagne. Get sommelier-backed recommendations, key style cues, and practical tips without the filler.",
@@ -84,7 +85,7 @@ const frontmatter = {
 };
 ---
 
-<ArticleLayout canonical={frontmatter.canonicalUrl} categorySlug="learn" title={frontmatter.title} description={frontmatter.description} author={frontmatter.author} readTime={frontmatter.readTime} category="Wine Guide" schema={frontmatter.structured_data} featuredImage={featuredImage}>
+<ArticleLayout canonical={frontmatter.canonicalUrl} robots={frontmatter.robots} categorySlug="learn" title={frontmatter.title} description={frontmatter.description} author={frontmatter.author} readTime={frontmatter.readTime} category="Wine Guide" schema={frontmatter.structured_data} featuredImage={featuredImage}>
 
 <!-- Author Attribution -->
   <div class="bg-gray-50 p-4 rounded-lg mb-6 flex items-center gap-4">
@@ -100,6 +101,8 @@ const frontmatter = {
 <div slot="quick-answer">
   <p><strong>Quick Answer:</strong> If you want the best Champagne for most buyers, start with Pol Roger Brut Reserve for balance, Billecart-Salmon Brut Reserve for finesse, and Dom Perignon for a true splurge bottle. The right pick depends less on hype and more on whether you need value, gift appeal, or a richer prestige style.</p>
 </div>
+
+<p>This page now plays support to <a href="/learn/champagne-wine" class="internal-link">our main Champagne explainer</a>. Start there if you need the style, production, and serving basics; use this page when you already know you want bottle recommendations.</p>
 
 <p>The best Champagne is not always the most expensive bottle on the shelf. It is the bottle that fits the moment, the budget, and the drinker. Some buyers want a dependable non-vintage Brut for dinner parties. Others want a prestige label that looks impressive as a gift. A serious wine buyer may care more about grower producers, disgorgement dates, and village sourcing than brand recognition.</p>
 
