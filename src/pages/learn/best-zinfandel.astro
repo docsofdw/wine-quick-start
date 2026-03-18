@@ -7,6 +7,7 @@ const frontmatter = {
   intentClass: "commercial",
   pageRole: "supporting",
   canonicalUrl: "https://winesquickstart.com/learn/best-zinfandel",
+  robots: "noindex, follow",
 
   title: "Best Zinfandel - Expert Guide",
   description: "Find the best Zinfandel by style, budget, and food use. A practical buying guide to jammy, spicy, and old-vine California Zinfandel.",
@@ -84,7 +85,7 @@ const frontmatter = {
 };
 ---
 
-<ArticleLayout canonical={frontmatter.canonicalUrl} categorySlug="learn" title={frontmatter.title} description={frontmatter.description} author={frontmatter.author} readTime={frontmatter.readTime} category="Wine Guide" schema={frontmatter.structured_data} featuredImage={featuredImage}>
+<ArticleLayout canonical={frontmatter.canonicalUrl} robots={frontmatter.robots} categorySlug="learn" title={frontmatter.title} description={frontmatter.description} author={frontmatter.author} readTime={frontmatter.readTime} category="Wine Guide" schema={frontmatter.structured_data} featuredImage={featuredImage}>
   <div class="bg-gray-50 p-4 rounded-lg mb-6 flex items-center gap-4">
     <div class="w-12 h-12 rounded-full bg-wine-100 flex items-center justify-center text-wine-700 font-bold">
       EM
@@ -98,6 +99,8 @@ const frontmatter = {
   <div slot="quick-answer">
     <p><strong>Quick Answer:</strong> The best Zinfandel depends on whether you want jammy power, old-vine complexity, or something more restrained. Bedrock, Ridge, and Seghesio are strong starting points because they show California Zinfandel at different levels without drifting into generic sweetness.</p>
   </div>
+
+  <p>This page now acts as a support page to <a href="/wine-pairings/zinfandel" class="internal-link">our main Zinfandel explainer</a>. Start there if you need the grape’s style and food use first; use this page once you are ready to shop bottles.</p>
 
   <p>Zinfandel is easy to misunderstand because it can swing from balanced and spicy to hot, jammy, and exhausting. The best bottles keep the fruit intensity that makes Zinfandel fun, but also hold onto acidity, spice, and shape. If the wine only tastes like high-alcohol blackberry jam, it is not the best version of the grape.</p>
 
