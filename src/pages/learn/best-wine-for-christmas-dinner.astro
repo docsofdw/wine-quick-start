@@ -7,6 +7,7 @@ const frontmatter = {
   intentClass: "commercial",
   pageRole: "supporting",
   canonicalUrl: "https://winesquickstart.com/learn/best-wine-for-christmas-dinner",
+  robots: "noindex, follow",
 
   title: "Best Wine For Christmas Dinner - Expert Guide",
   description: "Expert guide for best wine for christmas dinner. Get sommelier-backed recommendations, key style cues, and practical tips without the filler.",
@@ -84,7 +85,7 @@ const frontmatter = {
 };
 ---
 
-<ArticleLayout canonical={frontmatter.canonicalUrl} categorySlug="learn" title={frontmatter.title} description={frontmatter.description} author={frontmatter.author} readTime={frontmatter.readTime} category="Wine Guide" schema={frontmatter.structured_data} featuredImage={featuredImage}>
+<ArticleLayout canonical={frontmatter.canonicalUrl} robots={frontmatter.robots} categorySlug="learn" title={frontmatter.title} description={frontmatter.description} author={frontmatter.author} readTime={frontmatter.readTime} category="Wine Guide" schema={frontmatter.structured_data} featuredImage={featuredImage}>
 
 <!-- Author Attribution -->
   <div class="bg-gray-50 p-4 rounded-lg mb-6 flex items-center gap-4">
@@ -100,6 +101,8 @@ const frontmatter = {
 <div slot="quick-answer">
   <p><strong>Quick Answer:</strong> For Christmas dinner, choose versatile wines that complement multiple dishes. Pinot Noir works with both turkey and ham, while Chardonnay pairs well with rich sides. Cava or Champagne adds festive sparkle for toasts.</p>
 </div>
+
+<p>This page now plays support to our stronger Christmas dinner pairing guide. For the main version of this topic, start with <a href="/wine-pairings/christmas-dinner-wine-pairing" class="internal-link">our Christmas dinner wine pairing guide</a>, then come back here if you want the shorter buyer-oriented checklist.</p>
 
 <h2>Top Wine Choices for Christmas Dinner</h2>
 
