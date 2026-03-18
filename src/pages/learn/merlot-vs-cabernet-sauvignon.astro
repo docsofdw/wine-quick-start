@@ -3,10 +3,11 @@ import ArticleLayout from '../../layouts/ArticleLayout.astro';
 import featuredImage from '../../assets/images/articles/merlot-vs-cabernet-sauvignon.png';
 
 const frontmatter = {
-  clusterKey: "merlot-cabernet",
+  clusterKey: "cabernet-sauvignon",
   intentClass: "commercial",
-  pageRole: "seed",
+  pageRole: "supporting",
   canonicalUrl: "https://winesquickstart.com/learn/merlot-vs-cabernet-sauvignon",
+  robots: "noindex, follow",
 
   title: "Merlot Vs Cabernet Sauvignon - Expert Guide",
   description: "Compare Merlot and Cabernet Sauvignon by texture, flavor, food pairing, and buying style. A practical guide to choosing the right red for the moment.",
@@ -59,7 +60,7 @@ const frontmatter = {
 };
 ---
 
-<ArticleLayout canonical={frontmatter.canonicalUrl} categorySlug="learn" title={frontmatter.title} description={frontmatter.description} author={frontmatter.author} readTime={frontmatter.readTime} category="Wine Guide" schema={frontmatter.structured_data} featuredImage={featuredImage}>
+<ArticleLayout canonical={frontmatter.canonicalUrl} robots={frontmatter.robots} categorySlug="learn" title={frontmatter.title} description={frontmatter.description} author={frontmatter.author} readTime={frontmatter.readTime} category="Wine Guide" schema={frontmatter.structured_data} featuredImage={featuredImage}>
   <div class="bg-gray-50 p-4 rounded-lg mb-6 flex items-center gap-4">
     <div class="w-12 h-12 rounded-full bg-wine-100 flex items-center justify-center text-wine-700 font-bold">JT</div>
     <div>
