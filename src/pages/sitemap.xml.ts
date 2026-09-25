@@ -1,28 +1,22 @@
 import type { APIRoute } from 'astro';
-import { getCollection } from 'astro:content';
-import fs from 'fs';
-import path from 'path';
 
 const SITE_URL = 'https://winesquickstart.com';
 
-function getAllPages(): string[] {
+const learnPages = import.meta.glob('./learn/*.astro');
+const pairingsPages = import.meta.glob('./wine-pairings/*.astro');
+const buyPages = import.meta.glob('./buy/*.astro');
+
+function extractSlugFromPath(filePath: string): string {
+  const match = filePath.match(/\/(learn|wine-pairings|buy)\/(.+)\.astro$/);
+  if (!match) return '';
+  const [, category, slug] = match;
+  return slug === 'index' ? '' : slug;
+}
+
+function buildPageList(): string[] {
   const pages: string[] = [];
-  const pagesDir = path.join(process.cwd(), 'src/pages');
   
-  const categories = ['learn', 'wine-pairings', 'buy'];
-  
-  for (const category of categories) {
-    const categoryDir = path.join(pagesDir, category);
-    if (fs.existsSync(categoryDir)) {
-      const files = fs.readdirSync(categoryDir).filter(f => f.endsWith('.astro') && f !== 'index.astro');
-      for (const file of files) {
-        const slug = file.replace('.astro', '');
-        pages.push(`/${category}/${slug}`);
-      }
-      pages.push(`/${category}/`);
-    }
-  }
-  
+  // Static pages
   pages.push('/');
   pages.push('/about');
   pages.push('/contact');
@@ -30,12 +24,42 @@ function getAllPages(): string[] {
   pages.push('/terms');
   pages.push('/gifts');
   pages.push('/shop');
+  pages.push('/subscription');
+  
+  // Category index pages
+  pages.push('/learn/');
+  pages.push('/wine-pairings/');
+  pages.push('/buy/');
+  
+  // Learn articles
+  for (const path of Object.keys(learnPages)) {
+    const slug = extractSlugFromPath(path);
+    if (slug) {
+      pages.push(`/learn/${slug}`);
+    }
+  }
+  
+  // Wine pairings articles
+  for (const path of Object.keys(pairingsPages)) {
+    const slug = extractSlugFromPath(path);
+    if (slug) {
+      pages.push(`/wine-pairings/${slug}`);
+    }
+  }
+  
+  // Buy guides
+  for (const path of Object.keys(buyPages)) {
+    const slug = extractSlugFromPath(path);
+    if (slug) {
+      pages.push(`/buy/${slug}`);
+    }
+  }
   
   return pages;
 }
 
 export const GET: APIRoute = async () => {
-  const pages = getAllPages();
+  const pages = buildPageList();
   const lastmod = new Date().toISOString();
   
   const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
