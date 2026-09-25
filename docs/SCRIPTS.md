@@ -366,7 +366,7 @@ npm run telegram:notify -- --article=best-pinot-noir
 # Send pipeline summary (new articles, scores, etc.)
 npm run telegram:test
 
-# Send weekly digest (total articles, word counts, categories)
+# Send weekly digest (total articles, word counts, categories, search metrics)
 npm run telegram:digest
 ```
 
@@ -384,6 +384,18 @@ npm run telegram:digest
 - QA score, word count, wine count
 - Keep/Delete inline buttons
 - Direct link to article
+
+**Weekly Digest includes:**
+- Content inventory (article counts, word counts, categories)
+- Search performance metrics (clicks, impressions, CTR, position) when available
+- Top pages by clicks
+- Opportunity pages (high impressions, low CTR)
+- Degrades gracefully when GSC data is not available
+
+**Required environment variables for search metrics:**
+- `SUPABASE_URL` - Supabase project URL
+- `SUPABASE_ANON_KEY` - Supabase anonymous key
+- Search metrics are optional; digest will send without them if not configured
 
 ---
 

@@ -229,7 +229,7 @@ Best Pinot Noir - Expert Guide
 - Delete button removes article via GitHub API
 
 #### 2. Weekly Digest
-Sent every Sunday with content stats:
+Sent every Sunday with content stats and search performance metrics:
 
 ```
 📊 Weekly Content Digest
@@ -243,9 +243,32 @@ By Category:
 • Wine Pairings: 34 articles
 • Buy Guides: 7 articles
 
+Search Performance:
+• Clicks: 1,234
+• Impressions: 45,678
+• Avg CTR: 2.7%
+• Avg Position: 8.5
+
+Top Pages by Clicks:
+• best pinot noir: 89 clicks
+• wine with salmon: 67 clicks
+• best chardonnay: 54 clicks
+
+Opportunities:
+• burgundy wine: 3,421 impr, 1.2% CTR
+• cabernet sauvignon: 2,987 impr, 1.8% CTR
+• merlot wine: 2,345 impr, 2.1% CTR
+
 Pipeline Schedule:
 Mon & Thu @ 2pm UTC
 ```
+
+**Search Metrics:**
+- Pulls data from Google Search Console via Supabase
+- Shows aggregate clicks, impressions, CTR, and position
+- Lists top performing pages
+- Highlights opportunity pages (high impressions, low CTR)
+- Degrades gracefully if GSC data is not available
 
 ### Schedule
 
@@ -373,20 +396,25 @@ workflow_dispatch:
 
 ```
 # Database
-SUPABASE_URL
-SUPABASE_ANON_KEY
-WINE_CATALOG_URL
-WINE_CATALOG_ANON_KEY
+SUPABASE_URL               # Required for content pipeline and weekly digest search metrics
+SUPABASE_ANON_KEY          # Required for content pipeline and weekly digest search metrics
+WINE_CATALOG_URL           # Required for wine validation
+WINE_CATALOG_ANON_KEY      # Required for wine validation
 
 # AI Services
-ANTHROPIC_API_KEY
-REPLICATE_API_TOKEN
+ANTHROPIC_API_KEY          # Required for article generation
+REPLICATE_API_TOKEN        # Required for image generation
 
 # Notifications
-TELEGRAM_BOT_TOKEN
-TELEGRAM_CHAT_ID
-SLACK_WEBHOOK_URL (optional)
+TELEGRAM_BOT_TOKEN         # Required for all Telegram notifications
+TELEGRAM_CHAT_ID           # Required for all Telegram notifications
+SLACK_WEBHOOK_URL          # Optional for Slack notifications
 ```
+
+**Note on Supabase Secrets:**
+- The `weekly-digest` job now requires `SUPABASE_URL` and `SUPABASE_ANON_KEY` to fetch search metrics
+- Search metrics are optional; the digest will send successfully without them
+- Ensure these secrets are configured in GitHub Actions for enhanced reporting
 
 ## Commands Reference
 

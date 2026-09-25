@@ -18,6 +18,7 @@ config({ path: '.env.local', override: true });
 
 import fs from 'fs';
 import path from 'path';
+import { loadLatestSearchPerformanceRows } from '../lib/search-console.js';
 
 const TELEGRAM_BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN;
 const TELEGRAM_CHAT_ID = process.env.TELEGRAM_CHAT_ID;
@@ -431,7 +432,78 @@ ${emoji} <b>Content Pipeline Complete</b> ${status}
 }
 
 /**
- * Send weekly digest with article stats
+ * Get search metrics from GSC/Supabase if available
+ */
+async function getSearchMetrics(): Promise<{
+  totalClicks: number;
+  totalImpressions: number;
+  avgCtr: number | null;
+  avgPosition: number | null;
+  topPages: { path: string; clicks: number }[];
+  opportunities: { path: string; impressions: number; ctr: number }[];
+} | null> {
+  try {
+    const rows = await loadLatestSearchPerformanceRows();
+    
+    if (rows.length === 0) {
+      return null;
+    }
+
+    // Aggregate metrics
+    const byPath = new Map<string, { clicks: number; impressions: number; ctr: number | null; position: number | null }>();
+    
+    for (const row of rows) {
+      const existing = byPath.get(row.page_path);
+      if (!existing) {
+        byPath.set(row.page_path, {
+          clicks: row.clicks,
+          impressions: row.impressions,
+          ctr: row.ctr,
+          position: row.position,
+        });
+      }
+    }
+
+    const metrics = Array.from(byPath.entries()).map(([path, data]) => ({ path, ...data }));
+    
+    const totalClicks = metrics.reduce((sum, m) => sum + m.clicks, 0);
+    const totalImpressions = metrics.reduce((sum, m) => sum + m.impressions, 0);
+    
+    const validCtrs = metrics.filter(m => m.ctr !== null).map(m => m.ctr!);
+    const avgCtr = validCtrs.length > 0 ? validCtrs.reduce((sum, ctr) => sum + ctr, 0) / validCtrs.length : null;
+    
+    const validPositions = metrics.filter(m => m.position !== null).map(m => m.position!);
+    const avgPosition = validPositions.length > 0 ? validPositions.reduce((sum, pos) => sum + pos, 0) / validPositions.length : null;
+    
+    // Top pages by clicks
+    const topPages = metrics
+      .sort((a, b) => b.clicks - a.clicks)
+      .slice(0, 5)
+      .map(m => ({ path: m.path, clicks: m.clicks }));
+    
+    // Opportunities: high impressions but low CTR
+    const opportunities = metrics
+      .filter(m => m.impressions >= 100 && m.ctr !== null && m.ctr < 0.03)
+      .sort((a, b) => b.impressions - a.impressions)
+      .slice(0, 5)
+      .map(m => ({ path: m.path, impressions: m.impressions, ctr: m.ctr! }));
+    
+    return {
+      totalClicks,
+      totalImpressions,
+      avgCtr,
+      avgPosition,
+      topPages,
+      opportunities,
+    };
+  } catch (error: any) {
+    console.log('Search Console metrics not available:', error.message || error);
+    return null;
+  }
+}
+
+/**
+ * Send weekly digest with article stats and search metrics
  */
 async function sendWeeklyDigest(): Promise<void> {
   const categories = ['learn', 'wine-pairings', 'buy'];
@@ -465,7 +537,7 @@ async function sendWeeklyDigest(): Promise<void> {
   const avgWords = totalArticles > 0 ? Math.round(totalWords / Math.min(totalArticles, 30)) : 0;
   const imagePercent = totalArticles > 0 ? Math.round((articlesWithImages / Math.min(totalArticles, 30)) * 100) : 0;
 
-  const message = `
+  let message = `
 📊 <b>Weekly Content Digest</b>
 
 <b>Total Articles:</b> ${totalArticles}
@@ -476,12 +548,56 @@ async function sendWeeklyDigest(): Promise<void> {
 • Learn: ${categoryStats['learn'] || 0} articles
 • Wine Pairings: ${categoryStats['wine-pairings'] || 0} articles
 • Buy Guides: ${categoryStats['buy'] || 0} articles
+`.trim();
+
+  // Add search metrics if available
+  const searchMetrics = await getSearchMetrics();
+  if (searchMetrics) {
+    message += `
+
+<b>Search Performance:</b>
+• Clicks: ${searchMetrics.totalClicks.toLocaleString()}
+• Impressions: ${searchMetrics.totalImpressions.toLocaleString()}`;
+    
+    if (searchMetrics.avgCtr !== null) {
+      message += `
+• Avg CTR: ${(searchMetrics.avgCtr * 100).toFixed(1)}%`;
+    }
+    
+    if (searchMetrics.avgPosition !== null) {
+      message += `
+• Avg Position: ${searchMetrics.avgPosition.toFixed(1)}`;
+    }
+
+    if (searchMetrics.topPages.length > 0) {
+      message += `
+
+<b>Top Pages by Clicks:</b>`;
+      for (const page of searchMetrics.topPages.slice(0, 3)) {
+        const pageTitle = page.path.split('/').pop()?.replace(/-/g, ' ') || page.path;
+        message += `
+• ${pageTitle}: ${page.clicks} clicks`;
+      }
+    }
+
+    if (searchMetrics.opportunities.length > 0) {
+      message += `
+
+<b>Opportunities:</b>`;
+      for (const opp of searchMetrics.opportunities.slice(0, 3)) {
+        const pageTitle = opp.path.split('/').pop()?.replace(/-/g, ' ') || opp.path;
+        message += `
+• ${pageTitle}: ${opp.impressions} impr, ${(opp.ctr * 100).toFixed(1)}% CTR`;
+      }
+    }
+  }
+
+  message += `
 
 <b>Pipeline Schedule:</b>
 Mon & Thu @ 2pm UTC
 
-🔗 <a href="${SITE_URL}">Visit Site</a>
-`.trim();
+🔗 <a href="${SITE_URL}">Visit Site</a>`;
 
   const keyboard = [
     [
